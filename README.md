@@ -1,0 +1,1 @@
+Agro360 se basa en la creacion de un proyecto con base en la evaluacion 360, para tener una mejor vision de los encuestados
