@@ -1,10 +1,10 @@
 import React from 'react';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import '../menu.css';
 
 const Menu = () => {
 
-    const [active, setActive] = useState('');
     const [close, setClose] = useState('');
 
     const handleClose = () => {
@@ -17,10 +17,6 @@ const Menu = () => {
         window.history.back();
     }
 
-    setTimeout(() => {
-        setActive('active');
-    }, 100);
-
     return (
         <>
             <div className={`navigation ${close.close ? 'close' : ''}`}>
@@ -29,29 +25,29 @@ const Menu = () => {
                     onClick={handleClose}
                 ></div>
                 <ul>
-                    <li className={`list ${location.pathname === "/" ? active : ''}`} style={{ "--clr": "#39A900" }}>
-                        <a href="/">
+                    <li className={`list ${location.pathname === "/inicio" ? "active" : ''}`} style={{ "--clr": "#39A900" }}>
+                        <Link to="/inicio">
                             <span className="icon">
                                 <ion-icon name="home-outline"></ion-icon>
                                 <span className="text">Inicio </span>
                             </span>
-                        </a>
+                        </Link>
                     </li>
-                    <li className={`list ${location.pathname === "/crear-formulario" ? active : ''}`} style={{ "--clr": "#00324D" }}>
-                        <a href="/crear-formulario">
+                    <li className={`list ${location.pathname === "/crear-formulario" ? "active" : ''}`} style={{ "--clr": "#00324D" }}>
+                        <Link  to="/crear-formulario">
                             <span className="icon">
                                 <ion-icon name="clipboard-outline"></ion-icon>
                                 <span className="text">Crear Formulario </span>
                             </span>
-                        </a>
+                        </Link>
                     </li>
-                    <li className={`list ${location.pathname === "/resultados" ? active : ''}`} style={{ "--clr": "#CB7766" }}>
-                        <a href="/resultados">
+                    <li className={`list ${location.pathname === "/resultados" ? "active" : ''}`} style={{ "--clr": "#CB7766" }}>
+                        <Link to="/resultados">
                             <span className="icon">
                                 <ion-icon name="stats-chart-outline"></ion-icon>
                                 <span className="text">Resultados </span>
                             </span>
-                        </a>
+                        </Link>
                     </li>
                 </ul>
                 <div
