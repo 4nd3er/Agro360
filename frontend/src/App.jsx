@@ -1,5 +1,4 @@
 import React from 'react';
-import './app.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import AuthLayout from './layouts/AuthLayout';
 import Home from './pages/Home';
@@ -7,6 +6,7 @@ import Quest from './pages/Quest';
 import Results from './pages/Results';
 import LayoutLogin from './layouts/LayoutLogin';
 import Login from './pages/Login';
+import CreateQuest from './pages/CreateQuest';
 
 function App() {
   return (
@@ -20,6 +20,7 @@ function App() {
         </Route>
         <Route path='/crear-formulario' element={<AuthLayout />}>
           <Route index element={<Quest />} />
+          <Route path='crear' element={<CreateQuest />} />
         </Route>
         <Route path='/resultados' element={<AuthLayout />}>
           <Route index element={<Results />} />

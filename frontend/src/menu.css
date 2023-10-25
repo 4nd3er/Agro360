@@ -11,7 +11,7 @@
 
 .navigation {
   position: fixed;
-  inset: 7rem 0 1.8rem 2rem;
+  inset: 7rem 0 1.8rem 1rem;
   width: 6rem;
   height: 80%;
   background: #fff;
@@ -181,11 +181,11 @@
   opacity: 0;
 }
 
-.navigation.close .menuToggle::before{
+.navigation.close .menuToggle::before {
   transform: translateY(0px) rotate(45deg);
 }
 
-.navigation.close .menuToggle::after{
+.navigation.close .menuToggle::after {
   transform: translateY(0px) rotate(-45deg);
   box-shadow: none;
 }

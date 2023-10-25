@@ -17,6 +17,9 @@ const Menu = () => {
         window.history.back();
     }
 
+    // const pathName = location.pathname
+    const pathName = (location.pathname.split('/')[1])
+
     return (
         <>
             <div className={`navigation ${close.close ? 'close' : ''}`}>
@@ -25,27 +28,27 @@ const Menu = () => {
                     onClick={handleClose}
                 ></div>
                 <ul>
-                    <li className={`list ${location.pathname === "/inicio" ? "active" : ''}`} style={{ "--clr": "#39A900" }}>
+                    <li className={`list ${pathName === "inicio" ? "active" : ''}`} style={{ "--clr": "#39A900" }}>
                         <Link to="/inicio">
                             <span className="icon">
                                 <ion-icon name="home-outline"></ion-icon>
-                                <span className="text">Inicio </span>
+                                <span className="text">Inicio</span>
                             </span>
                         </Link>
                     </li>
-                    <li className={`list ${location.pathname === "/crear-formulario" ? "active" : ''}`} style={{ "--clr": "#00324D" }}>
+                    <li className={`list ${pathName === "crear-formulario" ? "active" : ''}`} style={{ "--clr": "#00324D" }}>
                         <Link  to="/crear-formulario">
                             <span className="icon">
                                 <ion-icon name="clipboard-outline"></ion-icon>
-                                <span className="text">Crear Formulario </span>
+                                <span className="text">Crear Formulario</span>
                             </span>
                         </Link>
                     </li>
-                    <li className={`list ${location.pathname === "/resultados" ? "active" : ''}`} style={{ "--clr": "#CB7766" }}>
+                    <li className={`list ${pathName === "resultados" ? "active" : ''}`} style={{ "--clr": "#CB7766" }}>
                         <Link to="/resultados">
                             <span className="icon">
                                 <ion-icon name="stats-chart-outline"></ion-icon>
-                                <span className="text">Resultados </span>
+                                <span className="text">Resultados</span>
                             </span>
                         </Link>
                     </li>
