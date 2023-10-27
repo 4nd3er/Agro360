@@ -6,7 +6,13 @@ import Home from './pages/Home';
 import Quest from './pages/Quest';
 import Results from './pages/Results';
 import LayoutLogin from './layouts/LayoutLogin';
+
+
 import Login from './pages/Login';
+import Registrar from './pages/Registrar';
+import OlvidePassword from './pages/OlvidePassword';
+import NuevoPassword from './pages/NuevoPassword';
+import ConfirmarCuenta from './pages/ConfirmarCuenta';
 
 function App() {
   return (
@@ -14,6 +20,12 @@ function App() {
       <Routes>
         <Route path='/' element={<LayoutLogin />}>
           <Route index element={<Login />} />
+          <Route path='registrar' element={<Registrar />} />
+          <Route path='olvide-password' element={<OlvidePassword />} />
+          <Route path='olvide-password/:token' element={<NuevoPassword />} />
+          <Route path='confirmar/:id' element={<ConfirmarCuenta />} />
+          
+
         </Route>
         <Route path='/inicio' element={<AuthLayout />}>
           <Route index element={<Home />} />
