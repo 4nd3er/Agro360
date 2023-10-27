@@ -1,0 +1,21 @@
+import express from 'express'
+import dotenv from 'dotenv'
+import cors from 'cors'
+import morgan from 'morgan'
+import cookieParser from 'cookie-parser'
+
+import { loginRoutes } from './routes/routes.js'
+
+const app = express()
+
+dotenv.config({ path: './src/.env'});
+app.use(express.json())
+app.use(cookieParser())
+app.use(morgan("dev"))
+app.use(cors({
+    origin: "http://localhost:5173"
+}));
+
+app.use("/api", loginRoutes)
+
+export default app
