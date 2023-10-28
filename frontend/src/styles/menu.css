@@ -1,14 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400&display=swap");
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Work Sans", sans-serif;
-}
-
-
-
 .navigation {
   position: fixed;
   inset: 7rem 0 1.8rem 2rem;
