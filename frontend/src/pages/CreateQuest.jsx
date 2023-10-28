@@ -3,6 +3,10 @@ import { Link } from 'react-router-dom';
 import addQuestionSvg from '../assets/Add.svg';
 import importQuestionSvg from '../assets/Import.svg';
 import Options from '../components/Options';
+import Sobresalir from '../assets/sobresalir 1.svg';
+import BarsChart from '../components/BarsChart'
+import PiesChart from '../components/PiesChart';
+import '../question.css';
 
 const CreateQuest = () => {
 
@@ -29,11 +33,11 @@ const CreateQuest = () => {
     useEffect(() => {
         setOptionsAdded(false);
     }, [questionType])
-    
+
     useEffect(() => {
         setOptions([]);
     }, [questionType !== '3']);
-    
+
     const addOption = () => {
         if (questionType !== '3') {
             setOptions([...options, '']);
@@ -136,16 +140,46 @@ const CreateQuest = () => {
             ) : (
                 <>
                     <section className='flex flex-col justify-start mt-5 min-h-[70vh] w-3/4 mx-auto gap-10'>
-                        <div className='p-2 py-4 text-center border-2 border-gray-400 rounded-md flex flex-col gap-5 shadow-lg'>
-                            <h1 className='text-4xl font-bold'>Respuestas de la encuesta</h1>
+                        <div className='p-5 py-6 flex flex-col gap-5 shadow-lg'>
+                            <div className='flex flex-row items-center justify-between'>
+                                <h1 className='text-4xl font-bold'>Respuestas de la encuesta</h1>
+                                <img src={Sobresalir} alt="Descripción de la imagen" className="w-10 h-auto" />
+                            </div>
                             <h1 className='text-2xl'>Moises Garcia</h1>
+
+                            <div className='text-h text-center'>
+                                <a href='#' className='mr-3'>General</a>
+                                <a href='#' className='mr-3'>Individual</a>
+
+                            </div>
                         </div>
+
                         <div className='w-full flex flex-col justify-start mx-auto gap-10'>
                             <div className='border-2 border-gray-300 p-2 rounded-md flex flex-col gap-10'>
                                 <p>Respuestas</p>
                             </div>
                         </div>
+                        <div className="response">
+                            <div className="text-wrapper-10">Califique a (nombre)/califíquese usted en cuanto a su búsqueda de resultados, en comparación con sus compañeros:</div>
+                            <div className="text-wrapper-9">200 respuestas</div>
+                            <div className='mt-16'>
+                                <BarsChart />
+                            </div>
+
+                        </div>
+
+                        <div className="response">
+                            <div className="text-wrapper-10">Califique a (nombre)/califíquese usted en cuanto a su búsqueda de resultados, en comparación con sus compañeros:</div>
+                            <div className="text-wrapper-9">200 respuestas</div>
+                            <div className='my-20 mx-auto w-4/5 h-96'>
+                                <PiesChart />
+                            </div>
+
+                        </div>
+
+
                     </section>
+
                     <section className='fixed right-28 bottom-20 bg-white p-2 rounded-xl border-2 shadow-xl'>
                         <div className='flex flex-col gap-5 place-items-center'>
                             <Link
