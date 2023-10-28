@@ -1,10 +1,41 @@
-import React from 'react'
+import CardAprendiz from '../img/CardAprendiz.png'
+import CardInstructor from '../img/CardInstructor.png'
+import CardDirectivo from '../img/CardDirectivo.png'
+import '../App.css'
+import { Link } from 'react-router-dom'
 
 const Home = () => {
     return (
-        <div className='flex justify-center place-items-center min-h-[80vh]'>
-            <div className=''>
-                <p>Inicio Pagina</p>
+        <div className='min-h-[80vh]'>
+            <div className="w-[950px] mx-auto">
+                <header className='mt-10 mb-20'>
+                    <p className="text-center">
+                        <span className="font-bold text-black text-5xl font-work-sans">
+                            BIENVENIDO
+                            <br />
+                        </span>
+                        <span className="font-bold text-[#39a900] text-4xl">
+                            FELIX MAGE
+                        </span>
+                    </p>
+                </header>
+                <main className="grid grid-cols-3 gap-4">
+                    <Link
+                        to="/tematicas/1"
+                    >
+                        <img src={CardAprendiz} alt="card-aprendiz" />
+                    </Link>
+                    <Link
+                        to="/tematicas/2"
+                    >
+                        <img src={CardInstructor} alt="card-instructor" />
+                    </Link>
+                    <Link
+                        to="/tematicas/3"
+                    >
+                        <img src={CardDirectivo} alt="card-directivo" />
+                    </Link>
+                </main>
             </div>
         </div>
     )
