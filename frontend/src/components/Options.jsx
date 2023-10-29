@@ -1,12 +1,12 @@
 import React from 'react'
 
-const Options = ({ option, index, questionType, handleOptionChange, deleteOption }) => {
+const Options = ({ option, index, indexx, question, handleOptionChange, deleteOption }) => {
     return (
         <>
-            {questionType === '1' && (
+            {question[1] === 'radio' && (
                 <div className='px-10'>
                     <div className='flex items-center'>
-                        <input disabled id={index + 1} type="radio" name="default-radio" className="w-5 h-5 text-blue-600 focus:ring-blue-500 ring-offset-gray-800 bg-gray-700 border-gray-600" />
+                        <input disabled type="radio" name="default-radio" className="w-5 h-5 text-blue-600 focus:ring-blue-500 ring-offset-gray-800 bg-gray-700 border-gray-600" />
                         <input
                             id={index + 1}
                             key={index}
@@ -14,21 +14,21 @@ const Options = ({ option, index, questionType, handleOptionChange, deleteOption
                             htmlFor={index + 1}
                             placeholder={`Opción ${index + 1}`}
                             value={option}
-                            onChange={(e) => handleOptionChange(index, e.target.value)}
+                            onChange={(e) => handleOptionChange(index, e.target.value, indexx)}
                             className="ml-2 text-lg font-medium text-gray-900 focus:border-b-2 p-2 border-gray-400"
                         />
                         <button
-                            onClick={() => deleteOption(option)}
+                            onClick={() => deleteOption(index, indexx)}
                         >
                             Eliminar
                         </button>
                     </div>
                 </div>
             )}
-            {questionType === '2' && (
+            {question[1] === 'checkbox' && (
                 <div className='px-10'>
                     <div className='flex items-center'>
-                        <input disabled id={option + index} type="checkbox" className=" rounded w-5 h-5 text-blue-600 focus:ring-blue-500 ring-offset-gray-800 bg-gray-700 border-gray-600" />
+                        <input disabled type="checkbox" className=" rounded w-5 h-5 text-blue-600 focus:ring-blue-500 ring-offset-gray-800 bg-gray-700 border-gray-600" />
                         <input
                             id={index + 1}
                             key={index}
@@ -36,24 +36,24 @@ const Options = ({ option, index, questionType, handleOptionChange, deleteOption
                             htmlFor={option + index}
                             placeholder={`Opción ${index + 1}`}
                             value={option}
-                            onChange={(e) => handleOptionChange(index, e.target.value)}
+                            onChange={(e) => handleOptionChange(index, e.target.value, indexx)}
                             className="ml-2 text-lg font-medium text-gray-900 focus:border-b-2 p-2 border-gray-400"
                         />
                         <button
-                            onClick={() => deleteOption(option)}
+                            onClick={() => deleteOption(index, indexx)}
                         >
                             Eliminar
                         </button>
                     </div>
                 </div>
             )}
-            {questionType === '3' && (
+            {question[1] === 'scala' && (
                 <div className='px-10 py-4'>
                     <div className='flex justify-around'>
-                        <h3 className="mb-5 text-lg font-medium text-gray-900">No satifactorio</h3>
-                        <h3 className="mb-5 text-lg font-medium text-gray-900">Muy satifactorio</h3>
+                        <h3 className="mb-5 text-lg font-medium text-gray-900">No satisfactorio</h3>
+                        <h3 className="mb-5 text-lg font-medium text-gray-900">Muy satisfactorio</h3>
                     </div>
-                    <ul className="flex justify-center gap-10">
+                    <ul className="flex justify-center gap-10 mb-4">
                         <li>
                             <input type="radio" id="opcion1" name="escala" value="1" className="hidden peer" />
                             <label

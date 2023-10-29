@@ -5,7 +5,7 @@
     border-left-width: 5px;
     border-radius: 10px;
     box-shadow: 0px 4px 4px #00000040;
-    height: 370px;
+    height: 450px;
     position: relative;
     width: 1100px;
 }
@@ -353,7 +353,7 @@
     left: 24px;
     letter-spacing: 0.36px;
     line-height: normal;
-    position: absolute;
+    position: relative;
     top: 49px;
     white-space: nowrap;
 }
@@ -366,8 +366,7 @@
     left: 26px;
     letter-spacing: 0;
     line-height: normal;
-    position: absolute;
+    position: relative;
     top: 16px;
-    white-space: nowrap;
     width: 661px;
 }
