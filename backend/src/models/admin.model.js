@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
 
-const adminSchema = mongoose.Schema({
+const adminSchema = new mongoose.Schema({
     names: {
         type: String,
         trim: true,
@@ -22,5 +23,19 @@ const adminSchema = mongoose.Schema({
         required: true
     }
 }, { timestamps: true })
+
+adminSchema.pre('save', async function (next) {
+    try {
+        if (this.isModified('password')) {
+
+            const salt = await bcrypt.genSalt(10);
+            const hash = await bcrypt.hash(this.password, salt);
+            this.password = hash;
+        }
+        next();
+    } catch (error) {
+        next(error);
+    }
+});
 
 export default mongoose.model("Admin", adminSchema)

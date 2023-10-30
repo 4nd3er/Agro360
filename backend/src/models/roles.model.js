@@ -10,6 +10,7 @@ const rolSchema = new mongoose.Schema({
     description: {
         type: String,
         trim: true,
+        required: false
     }
 }, { timestamps: true })
 

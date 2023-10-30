@@ -1,12 +1,14 @@
 import jwt from 'jsonwebtoken';
 
-export function createToken(id) {
+function createToken(data) {
+
+    const { id, expires } = data
     return new Promise((resolve, reject) => {
         jwt.sign(
-            id,
+            { id: id},
             process.env.SECRET_TOKEN,
             {
-                expiresIn: "30d"
+                expiresIn: expires
             },
             (err, token) => {
                 if (err) reject(err);
@@ -15,3 +17,5 @@ export function createToken(id) {
         )
     })
 }
+
+export default createToken

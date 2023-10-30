@@ -4,7 +4,7 @@ import cors from 'cors'
 import morgan from 'morgan'
 import cookieParser from 'cookie-parser'
 
-import { loginRoutes } from './routes/routes.js'
+import { authRoutes, indexRoutes, rolesRoutes, topicsRoutes } from './routes/routes.js'
 
 const app = express()
 
@@ -16,6 +16,9 @@ app.use(cors({
     origin: "http://localhost:5173"
 }));
 
-app.use("/api", loginRoutes)
+app.use("/api", authRoutes)
+app.use("/api", indexRoutes)
+app.use("/api", rolesRoutes)
+app.use("/api", topicsRoutes)
 
 export default app

@@ -10,3 +10,4 @@ Dependencias del backend:
 - jsonwebtoken: Generador de tokens.
 - morgan: Logger de peticiones HTTP en consola.
 - zod: Validador de esquemas (validacion para los modelos).
+- nodemailer: Enviar correos electronicos.

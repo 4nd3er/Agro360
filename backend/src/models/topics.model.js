@@ -6,7 +6,7 @@ const topicsSchema = new mongoose.Schema({
         trim: true,
         required: true
     },
-    rol: {
+    role: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Roles",
         required: true,
