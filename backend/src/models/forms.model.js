@@ -31,8 +31,10 @@ const formsSchema = new mongoose.Schema({
     },
     questions: [
         {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Questions'
+            question: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Questions'
+            }
         }
     ]
 }, { timestamps: true })
