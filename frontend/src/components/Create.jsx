@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-
+import '../css/Create.css'; // Importa el archivo CSS donde tienes tus estilos
 
 const Create = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -44,58 +44,35 @@ const Create = () => {
 
       if (response.status === 201) {
         closeModal();
-       
       } else {
-        
+        // Manejar el caso de error
       }
     } catch (error) {
-      
+      // Manejar el caso de error
     }
   };
 
   return (
-    <div className='flex flex-col justify-center items-center min-h-[30vh] relative'>
+    <div className='flex-container'>
       <div className='text-center'>
-        <div
-          className="image-label text-Bold"
-          style={{
-            fontSize: "15px",
-            fontWeight: "bold",
-            fontFamily: "Verdana, sans-serif",
-            position: "relative",
-            top: "30px",
-            left: "-345px",
-          }}
-        >
+        <div className="image-label text-Bold">
           CREAR ENCUESTA
         </div>
-
         <img
           src="src/img/Icon.png"
           alt="img"
-          className="absolute left-5px h-32 w-22 m-4"
+          className="img-icon"
           onClick={openModal}
-          style={{ position: "relative", top: "20px", left: "-330px" }}
         />
       </div>
 
       {isModalOpen && (
-        <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-800 bg-opacity-70 z-50" onClick={handleModalClick}>
-          <div className="bg-white p-20 max-w-5xl rounded-lg shadow-md">
-            <h2 className="text-4xl text-green-600 mb-5 font-bold">CREAR ENCUESTA</h2>
+        <div className="modal" onClick={handleModalClick}>
+          <div className="modal-form">
+            <h2 className="modal-title">CREAR ENCUESTA</h2>
             <form onSubmit={handleSubmit}>
-              <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
-                <label
-                  htmlFor="titulo"
-                  style={{
-                    fontSize: "16px",
-                    fontFamily: "Arial, sans-serif",
-                    fontWeight: "bold",
-                    color: "black",
-                  }}
-                >
-                  Titulo
-                </label>
+              <div className="input-container">
+                <label htmlFor="titulo">Titulo</label>
                 <input
                   type="text"
                   id="titulo"
@@ -104,22 +81,12 @@ const Create = () => {
                   value={formValues.titulo}
                   onChange={handleInputChange}
                   required
-                  className="w-full p-4 border border-green-500 rounded-md focus:ring focus:ring-green-400 focus:border-green-800 text-gray-500 mb-4"
+                  className="input-text"
                 />
               </div>
 
-              <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
-                <label
-                  htmlFor="descripcion"
-                  style={{
-                    fontSize: "16px",
-                    fontFamily: "Arial, sans-serif",
-                    fontWeight: "bold",
-                    color: "black",
-                  }}
-                >
-                  Descripción:
-                </label>
+              <div className="input-container">
+                <label htmlFor="descripcion">Descripción:</label>
                 <textarea
                   id="descripcion"
                   name="descripcion"
@@ -128,31 +95,19 @@ const Create = () => {
                   onChange={handleInputChange}
                   rows="3"
                   required
-                  className="w-full p-2 border border-green-500 rounded-md focus:ring focus:ring-green-400 focus:border-green-800 text-gray-500 mb-4"
+                  className="input-text"
                 />
               </div>
 
-              <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}  >
-                <label
-                  htmlFor="opciones"
-                  style={{
-                    fontSize: "16px",
-                    fontFamily: "Arial, sans-serif",
-                    fontWeight: "bold",
-                    color: "black",
-
-
-                  }}
-                >
-                  Tematicas
-                </label>
+              <div className="input-container">
+                <label htmlFor="opciones">Tematicas</label>
                 <select
                   id="opciones"
                   name="opciones"
                   value={formValues.opciones}
                   onChange={handleInputChange}
                   required
-                  className="w-full p-2 border border-green-500 rounded-md focus:ring focus:ring-green-400 focus:border-green-800 text-gray-500 mb-4 "
+                  className="input-select"
                 >
                   <option value="">Seleccione Tematica</option>
                   <option value="opcion1">Pedagogica</option>
@@ -160,27 +115,20 @@ const Create = () => {
                 </select>
               </div>
 
-
-              <div className="flex justify-between space-x-4">
-                <button type="button" onClick={closeModal} className="bg-gray-300 text-gray-800 p-2 rounded-md hover:bg-gray-400 font-bold">
+              <div className="form-buttons">
+                <button type="button" onClick={closeModal} className="button-cancel">
                   Cerrar
                 </button>
-                
-      <button type="submit" className="bg-green-600 text-white p-2 rounded-md hover:bg-green-500 font-bold">
-        
-        <Link to='crear'>Aceptar</Link>
-      </button>
-
-    
-    
+                <button type="submit" className="button-accept">
+                  <Link to='crear'>Aceptar</Link>
+                </button>
               </div>
-
             </form>
           </div>
         </div>
       )}
     </div>
   );
-}
+};
 
-export default Create; 
+export default Create;
