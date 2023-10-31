@@ -11,7 +11,7 @@ const Quest = () => {
       </div>
 
       <div className='text-center' style={{
-        borderTop: '1px solid #ccc', width: '70%', marginLeft: '5%',
+        borderTop: '1px solid #ccc', width: '80%', marginLeft: '5%',
         height: '10px',
 
       }}>
@@ -19,14 +19,13 @@ const Quest = () => {
       </div>
 
       <div>
-      <Survey
-        title="Encuesta pedagógica"
-        imageSrc="src/img/encuesta.png"
-        color="#82DEF0"
-        isActive={true}
-      />
-      
-    </div>
+        <h1>ENCUESTAS RECIENTES</h1> 
+        <Survey
+          title="Encuesta pedagógica"
+          imageSrc="src/img/encuesta.png"
+          isActive={true}
+        />
+      </div>
 
 
     </div>
