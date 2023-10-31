@@ -52,7 +52,13 @@ export const questionValidator = z.object({
         })
         .min(24, {
             message: "Type must be at least 24 characters"
+        }),
+    option: z
+        .string()
+        .min(6, {
+            message: "Option must be at least 6 characters"
         })
+        .nullish()
 })
 
 export const questionTypeValidator = z.object({

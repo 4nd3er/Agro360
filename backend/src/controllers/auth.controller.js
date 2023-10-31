@@ -1,6 +1,6 @@
 import Admin from '../models/admin.model.js'
 import bcrypt from 'bcrypt'
-import { createToken, sendEmailResetPassword } from '../libs/libs.js'
+import { createToken, errorResponse, sendEmailResetPassword } from '../libs/libs.js'
 
 export const login = async (req, res) => {
 
@@ -14,6 +14,7 @@ export const login = async (req, res) => {
 
         const token = await createToken({ id: findUser.id, expires: "30d" })
         res.cookie("token", token)
+
         res.json({
             response: "User logged in successfully",
             data: {
@@ -24,7 +25,7 @@ export const login = async (req, res) => {
             }
         })
     } catch (error) {
-        res.status(500).json({ msg: error.message })
+        errorResponse(res, error)
     }
 }
 
@@ -45,6 +46,7 @@ export const register = async (req, res) => {
             password
         })
         const userSaved = await newUser.save()
+
         res.json({
             response: "User registered successfully",
             data: {
@@ -54,9 +56,8 @@ export const register = async (req, res) => {
                 email: userSaved.email
             }
         })
-
     } catch (error) {
-        res.status(500).json({ msg: error.message })
+        errorResponse(res, error)
     }
 }
 
@@ -71,7 +72,7 @@ export const forgetPassword = async (req, res) => {
         sendEmailResetPassword(res, { userEmail: finduser.email, token: token })
 
     } catch (error) {
-        res.status(500).json({ msg: error.message })
+        errorResponse(res, error)
     }
 }
 
@@ -83,7 +84,7 @@ export const resetPassword = async (req, res) => {
             new: true
         })
         if (!User) return res.status(400).json({ msg: 'User not found' })
-
+    
         res.json({
             response: "Password changed successfully",
             data: {

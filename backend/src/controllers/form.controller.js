@@ -1,6 +1,6 @@
-import { errorResponse, validObjectId, messages } from "../libs/libs.js"
-import mongoose from "mongoose"
+import { errorResponse, validObjectId, messages, compObjectId } from "../libs/libs.js"
 import { Forms, Topics, Admin, Questions, QuestionTypes } from "../models/models.js"
+import { createMethod, deleteMethod, getMethod, getOneMethod, updateMethod } from "../libs/methods.js"
 
 export const forms = async (req, res) => {
 
@@ -54,109 +54,78 @@ export const createForm = async (req, res) => {
 
 
 
+// *Questions
 export const questions = async (req, res) => {
 
-    try {
-        const findQuestions = await Questions.find({})
-        if (!findQuestions.length > 0) return res.status(404).json({ msg: messages.notFound("Questions") })
+    await getMethod(res, Questions, "Questions")
+}
 
-        res.json(findQuestions)
-    } catch (error) {
-        errorResponse(res, error)
-    }
+export const getQuestion = async (req, res) => {
+
+    const { id } = req.params
+    await getOneMethod(id, res, Questions, "Question")
 }
 
 export const createQuestion = async (req, res) => {
 
-    const { name, type, option } = req.body
+    const { name, type, options } = req.body
+    const data = { name, type, options }
+    const find = { name: name }
 
-    try {
-
-    } catch (error) {
-        errorResponse(res, error)
-    }
-
+    await compObjectId(type, res, QuestionTypes, "Type")
+    await createMethod(data, find, res, Questions, "Question")
 }
 
+export const updateQuestion = async (req, res) => {
+
+    const { id } = req.params
+    const { name, type, options } = req.body
+    const data = { name, type, options }
+    const find = { name: name }
+
+    await compObjectId(type, res, QuestionTypes, "Type")
+    await updateMethod(data, id, find, res, Questions, "Question")
+}
+
+export const deleteQuestion = async (req, res) => {
+
+    const { id } = req.params
+    await deleteMethod(id, res, Questions, "Question")
+}
+
+
+
+// *Question Types
 export const questionTypes = async (req, res) => {
 
-    try {
-        const findQuestionTypes = await QuestionTypes.find({})
-        if (!findQuestionTypes.length > 0) res.status(404).json({ msg: messages.notFound("Question Types") })
-        res.json(findQuestionTypes)
-    } catch (error) {
-        errorResponse(res, error)
-    }
+    await getMethod(res, QuestionTypes, "Question types")
 }
 
 export const getQuestionType = async (req, res) => {
 
     const { id } = req.params
-
-    try {
-        if (!validObjectId(id)) return res.status(400).json({ msg: messages.invalidId("question type") })
-        const findQuestionType = await QuestionTypes.findById(id)
-
-        res.json(findQuestionType)
-    } catch (error) {
-        errorResponse(res, error)
-    }
+    await getOneMethod(id, res, QuestionTypes, "Question type")
 }
 
 export const createQuestionType = async (req, res) => {
 
     const { name } = req.body
-
-    try {
-        const newQuestionType = new QuestionTypes({ name })
-        const saveQuestionType = await newQuestionType.save()
-        res.json({
-            response: "Question Type created successfully",
-            data: saveQuestionType
-        })
-    } catch (error) {
-        errorResponse(res, error)
-    }
+    const data = { name }
+    const find = { name: name }
+    await createMethod(data, find, res, QuestionTypes, "Question type")
 }
 
 export const updateQuestionType = async (req, res) => {
 
     const { id } = req.params
     const { name } = req.body
-
-    try {
-
-        if (!validObjectId(id)) return res.status(400).json({ msg: messages.invalidId("question type") })
-
-        const findQuestionType = await QuestionTypes.findByIdAndUpdate(id, { name }, {
-            new: true
-        })
-        if (!findQuestionType) return res.status(404).json({ msg: messages.notFound("Question type") })
-
-        res.json({
-            response: "Question type updated successfully",
-            data: findQuestionType
-        })
-    } catch (error) {
-        errorResponse(res, error)
-    }
+    const data = { name }
+    const find = { name: name }
+    await updateMethod(data, id, find, res, QuestionTypes, "Question Type")
 }
 
 export const deleteQuestionType = async (req, res) => {
 
     const { id } = req.params
-
-    try {
-        if (!validObjectId(id)) return res.status(400).json({ msg: messages.invalidId("question type") })
-
-        const findQuestionType = await QuestionTypes.findByIdAndDelete(id)
-        if (!findQuestionType) return res.status(404).json({ msg: messages.notFound("Question type") })
-
-        res.json({
-            response: "Question type deleted successfully",
-            data: findQuestionType
-        })
-    } catch (error) {
-        errorResponse(res, error)
-    }
+    await deleteMethod(id, res, QuestionTypes, "Question type")
 }

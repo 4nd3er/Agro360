@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { validate, validateTokenCookie } from '../middlewares/middlewares.js'
 import { topicsValidator } from '../validators/topics.validator.js'
-import { createTopic, deleteTopic, getTopic, getTopicsbyRole, topics, updateTopic } from '../controllers/topics.controller.js'
+import { createTopic, deleteTopic, getTopic, topics, updateTopic } from '../controllers/topics.controller.js'
 
 const router = Router()
 
