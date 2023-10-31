@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import '../css/Create.css'; // Importa el archivo CSS donde tienes tus estilos
+import '../css/Create.css'; 
 
 const Create = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

@@ -28,4 +28,4 @@ const Survey = ({ title, imageSrc, isActive }) => {
   );
 };
 
-export default Survey; // Exporta el componente Survey
+export default Survey; 
