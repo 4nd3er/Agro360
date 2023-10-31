@@ -13,11 +13,12 @@ const Login = () => {
                     </h1>
                 </div>
 
+
                 <div className="w-3/5 h-full ">
                     <div className=" flex flex-col justify-center place-items-center min-h-[80vh] ">
                         <strong className=' text-green-600  text-6xl capitalize font-sans'>Bienvenidos</strong>
 
-                        <form className='my-10 bg-white shadow rounded-lg px-10 py-5 w-1/2'>
+                        <form className='my-10 bg-white shadow rounded-lg px-10 py-5 w-1/2'/>
                             <div className='my-5'>
                                 <label className='uppercase text-gray-600 block text-xl font-bold'
                                     htmlFor='email'
@@ -42,6 +43,7 @@ const Login = () => {
                                 />
                                 <Link
                                     className='block  my-5 text-slate-500 uppercase text-xs'
+
                                     to='olvide-password '
                                 >¿Olvidaste tu contraseña?</Link>
                             </div>
@@ -57,6 +59,20 @@ const Login = () => {
                             <Link
                                 className='block my-5 text-slate-500 uppercase text-xs'
                                 to='registrar'
+
+                                    to='forget-password'
+                                >¿Olvidaste tu contraseña?</Link>
+                            </div>
+                            <input
+                                type="submit"
+                                value="Iniciar Sesion"
+                                className='bg-green-600 w-full py-1 text-white uppercase font-bold rounded-xl
+                hover: cursor-pointer hover:bg-green-700 transition-color'
+                            />
+                            <Link
+                                className='block my-5 text-slate-500 uppercase text-xs'
+                                to='register'
+
                             >¿No tiene una cuenta? Registrarse</Link>
                         </form>
 
