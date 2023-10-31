@@ -15,22 +15,66 @@ const Register = () => {
 
             <div className="w-3/5 h-full ">
             <div className=" flex flex-col justify-center place-items-center min-h-[80vh] ">
-            <strong className=' text-green-600  text-6xl capitalize font-sans'>Crea tu cuenta</strong>
+            <strong className=' text-green-600  text-5xl capitalize font-sans'>Crea tu cuenta</strong>
 
             <form className='my-10 bg-white shadow rounded-lg px-10 py-5 w-1/2'>
                 <div className='my-5'>
-                    <label className='uppercase text-gray-600 block text-xl font-bold'
-                    htmlFor='email'
-                    >Correo Electronico</label>
+                    <label className='uppercase text-gray-600 block text-sm font-bold'
+                    htmlFor='names'
+                    >Nombres</label>
                     <input 
-                    id='email'
+                    id='names'
                     type="text" 
-                    placeholder='Email de Registro'
+                    placeholder='Nombres'
                     className='w-full mt-3 p-3 border rounded-xl bg-gray-50'
                     />
                 </div>
                 <div className='my-5'>
-                    <label className='uppercase text-gray-600 block text-xl font-bold'
+                    <label className='uppercase text-gray-600 block text-sm font-bold'
+                    htmlFor='lastnames'
+                    >Apellidos</label>
+                    <input 
+                    id='lastnames'
+                    type="text" 
+                    placeholder='Apellidos'
+                    className='w-full mt-3 p-3 border rounded-xl bg-gray-50'
+                    />
+                </div>
+                <div className='my-5'>
+                  <label className='uppercase text-gray-600 block text-sm font-bold' htmlFor='select'>
+                    Tipo de Documento:
+                  </label>
+                  <select id='documentType' name='documentType' className='w-full mt-3 p-3 border rounded-xl bg-gray-50'>
+                    <option value='opcion1'>CC</option>
+                    <option value='opcion2'>CE</option>
+                    <option value='opcion3'>TI</option>
+                  </select>
+                </div>
+                <div className='my-5'>
+                    <label className='uppercase text-gray-600 block text-sm font-bold'
+                    htmlFor='document'
+                    >Documento</label>
+                    <input 
+                    id='document'
+                    type="number" 
+                    placeholder='Numero de documento'
+                    className='w-full mt-3 p-3 border rounded-xl bg-gray-50'
+                    />
+                </div>
+                <div className='my-5'>
+                     <label className='uppercase text-gray-600 block text-sm font-bold'
+                     htmlFor='email'
+                     >Correo Electronico</label>
+                     <input
+                     id='email'
+                     type="text"
+                     placeholder='Email de Registro'
+                     className='w-full mt-3 p-3 border rounded-xl bg-gray-50'
+                    />
+                   </div>
+                
+                <div className='my-5'>
+                    <label className='uppercase text-gray-600 block text-sm font-bold'
                     htmlFor='password'
                     >Contraseña</label>
                      
@@ -40,10 +84,7 @@ const Register = () => {
                     placeholder='Password de Registro'
                     className='w-full mt-3 p-3 border rounded-xl bg-gray-50'
                     />
-                    <Link
-                        className='block  my-5 text-slate-500 uppercase text-xs'
-                        to='olvide-password '
-                    >¿Olvidaste tu contraseña?</Link>
+
                 </div>
                 <input 
                 type="submit" 
@@ -53,8 +94,8 @@ const Register = () => {
                 />
                     <Link
                         className='block my-5 text-slate-500 uppercase text-xs'
-                        to='register'
-                    >¿No tiene una cuenta? Registrarse</Link>
+                        to='/'
+                    >¿Ya tienes una cuenta? Inicia sesion</Link>
             </form>
 
             <nav className='lg:flex lg: justify-between'>

@@ -21,7 +21,7 @@ const Login = () => {
 
                         <form className='my-10 bg-white shadow rounded-lg px-10 py-5 w-1/2'>
                             <div className='my-5'>
-                                <label className='uppercase text-gray-600 block text-xl font-bold'
+                                <label className='uppercase text-gray-600 block text-sm font-bold'
                                     htmlFor='email'
                                 >Correo Electronico</label>
                                 <input
@@ -32,7 +32,7 @@ const Login = () => {
                                 />
                             </div>
                             <div className='my-5'>
-                                <label className='uppercase text-gray-600 block text-xl font-bold'
+                                <label className='uppercase text-gray-600 block text-sm font-bold'
                                     htmlFor='password'
                                 >Contraseña</label>
 
@@ -51,7 +51,7 @@ const Login = () => {
                                 type="submit"
                                 value="Iniciar Sesion"
                                 className='bg-green-600 w-full py-1 text-white uppercase font-bold rounded-xl
-                hover: cursor-pointer hover:bg-green-700 transition-color'
+                                hover: cursor-pointer hover:bg-green-700 transition-color'
                             />
                             <Link
                                 className='block my-5 text-slate-500 uppercase text-xs'
