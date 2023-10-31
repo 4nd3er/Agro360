@@ -4,6 +4,7 @@ import AuthLayout from './layouts/AuthLayout';
 import Home from './pages/Home';
 import Quest from './pages/Quest';
 import Results from './pages/Results';
+import Topics from './pages/Topics';
 import LayoutLogin from './layouts/LayoutLogin';
 
 
@@ -38,6 +39,10 @@ function App() {
         </Route>
         <Route path='/resultados' element={<AuthLayout />}>
           <Route index element={<Results />} />
+        </Route>
+        <Route path='/tematicas' element={<AuthLayout />}>
+          <Route index element={<Topics />} />
+          <Route path=':idrol' element={<Topics />} />
         </Route>
       </Routes>
     </BrowserRouter>

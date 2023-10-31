@@ -31,26 +31,26 @@ const Create = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    // e.preventDefault();
 
-    try {
-      const response = await fetch('/api/encuestas', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formValues),
-      });
+    // try {
+    //   const response = await fetch('/api/encuestas', {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify(formValues),
+    //   });
 
-      if (response.status === 201) {
-        closeModal();
-       
-      } else {
-        
-      }
-    } catch (error) {
-      
-    }
+    //   if (response.status === 201) {
+    //     closeModal();
+
+    //   } else {
+
+    //   }
+    // } catch (error) {
+
+    // }
   };
 
   return (
@@ -73,7 +73,7 @@ const Create = () => {
         <img
           src="src/img/Icon.png"
           alt="img"
-          className="absolute left-5px h-32 w-22 m-4"
+          className="absolute left-5px h-32 w-22 m-4 cursor-pointer"
           onClick={openModal}
           style={{ position: "relative", top: "20px", left: "-330px" }}
         />
@@ -83,7 +83,7 @@ const Create = () => {
         <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-800 bg-opacity-70 z-50" onClick={handleModalClick}>
           <div className="bg-white p-20 max-w-5xl rounded-lg shadow-md">
             <h2 className="text-4xl text-green-600 mb-5 font-bold">CREAR ENCUESTA</h2>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} action='crear-formulario/crear/'>
               <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
                 <label
                   htmlFor="titulo"
@@ -128,7 +128,7 @@ const Create = () => {
                   onChange={handleInputChange}
                   rows="3"
                   required
-                  className="w-full p-2 border border-green-500 rounded-md focus:ring focus:ring-green-400 focus:border-green-800 text-gray-500 mb-4"
+                  className="w-full p-2 border border-green-500 rounded-md focus:ring focus:ring-green-400 focus:border-green-800 text-gray-500 mb-4 resize-none"
                 />
               </div>
 
@@ -155,8 +155,8 @@ const Create = () => {
                   className="w-full p-2 border border-green-500 rounded-md focus:ring focus:ring-green-400 focus:border-green-800 text-gray-500 mb-4 "
                 >
                   <option value="">Seleccione Tematica</option>
-                  <option value="opcion1">Pedagogica</option>
-                  <option value="opcion2">Actitudinal</option>
+                  <option value="Pedagogica">Pedagogica</option>
+                  <option value="Actitudinal">Actitudinal</option>
                 </select>
               </div>
 
@@ -165,14 +165,15 @@ const Create = () => {
                 <button type="button" onClick={closeModal} className="bg-gray-300 text-gray-800 p-2 rounded-md hover:bg-gray-400 font-bold">
                   Cerrar
                 </button>
-                
-      <button type="submit" className="bg-green-600 text-white p-2 rounded-md hover:bg-green-500 font-bold">
-        
-        <Link to='crear'>Aceptar</Link>
-      </button>
 
-    
-    
+                <button type="submit" className="bg-green-600 text-white p-2 rounded-md hover:bg-green-500 font-bold">
+
+                  {/* <Link to='crear'>Aceptar</Link> */}
+                  Aceptar
+                </button>
+
+
+
               </div>
 
             </form>

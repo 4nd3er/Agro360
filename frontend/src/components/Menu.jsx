@@ -5,12 +5,10 @@ import '../menu.css';
 
 const Menu = () => {
 
-    const [close, setClose] = useState('');
+    const [close, setClose] = useState(false);
 
     const handleClose = () => {
-        setClose(setClose => ({
-            close: !setClose.close
-        }));
+        setClose(() => (!close));
     }
 
     const handleBack = () => {
@@ -22,13 +20,13 @@ const Menu = () => {
 
     return (
         <>
-            <div className={`navigation ${close.close ? 'close' : ''}`}>
+            <div className={`navigation ${close ? 'close' : ''}`}>
                 <div
                     className="menuToggle"
                     onClick={handleClose}
                 ></div>
                 <ul>
-                    <li className={`list ${pathName === "inicio" ? "active" : ''}`} style={{ "--clr": "#39A900" }}>
+                    <li className={`list ${pathName === "inicio" || pathName === "tematicas" ? "active" : ''}`} style={{ "--clr": "#39A900" }}>
                         <Link to="/inicio">
                             <span className="icon">
                                 <ion-icon name="home-outline"></ion-icon>
