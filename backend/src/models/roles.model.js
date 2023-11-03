@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import { Topics } from './models.js';
 
 const rolSchema = new mongoose.Schema({
     name: {

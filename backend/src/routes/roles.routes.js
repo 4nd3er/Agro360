@@ -1,17 +1,21 @@
 import { Router } from 'express';
 import { validate, validateTokenCookie } from '../middlewares/middlewares.js'
 import { roleValidator } from '../validators/roles.validators.js'
-import { Rols, createRole, deleteRole, getRole, updateRole } from '../controllers/roles.controller.js'
+import { Rols, createRole, deleteRole, getRole, getRoleTopics, updateRole } from '../controllers/roles.controller.js'
 
 const router = Router()
 
 router.route("/roles")
-    .get(validateTokenCookie, Rols)
-    .post(validateTokenCookie, validate(roleValidator), createRole)
+    .all(validateTokenCookie)
+    .get(Rols)
+    .post(validate(roleValidator), createRole)
 
 router.route("/roles/:id")
-    .get(validateTokenCookie, getRole)
-    .put(validateTokenCookie, validate(roleValidator), updateRole)
-    .delete(validateTokenCookie, deleteRole)
+    .all(validateTokenCookie)
+    .get(getRole)
+    .put(validate(roleValidator), updateRole)
+    .delete(deleteRole)
+
+router.get("/roles/:id/topics", validateTokenCookie, getRoleTopics)
 
 export default router
