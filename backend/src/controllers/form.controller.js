@@ -1,6 +1,6 @@
 import { errorResponse, validObjectId, messages, compObjectId } from "../libs/libs.js"
 import { Forms, Topics, Admin, Questions, QuestionTypes } from "../models/models.js"
-import { createMethod, deleteMethod, getMethod, getOneMethod, updateMethod } from "../libs/methods.js"
+import { createMethod, creator, deleteMethod, getMethod, getOneMethod, updateMethod } from "../libs/methods.js"
 
 export const forms = async (req, res) => {
 
@@ -80,7 +80,7 @@ export const updateQuestion = async (req, res) => {
 
     const { id } = req.params
     const { name, type, options } = req.body
-    const data = { name, type, options }
+    const data = { name, type, options, creator: req.user.id }
     const find = { name: name }
 
     await compObjectId(type, res, QuestionTypes, "Type")
@@ -110,7 +110,7 @@ export const getQuestionType = async (req, res) => {
 export const createQuestionType = async (req, res) => {
 
     const { name } = req.body
-    const data = { name }
+    const data = { name, creator: creator }
     const find = { name: name }
     await createMethod(data, find, res, QuestionTypes, "Question type")
 }
@@ -119,7 +119,7 @@ export const updateQuestionType = async (req, res) => {
 
     const { id } = req.params
     const { name } = req.body
-    const data = { name }
+    const data = { name, creator: creator}
     const find = { name: name }
     await updateMethod(data, id, find, res, QuestionTypes, "Question Type")
 }

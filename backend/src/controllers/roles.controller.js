@@ -23,7 +23,7 @@ export const getRoleTopics = async (req, res) => {
 export const createRole = async (req, res) => {
 
     const { name, description } = req.body
-    const data = { name, description }
+    const data = { name, description, creator: req.user.id }
     const find = { name }
     createMethod(data, find, res, Roles, "Role")
 }
@@ -32,7 +32,7 @@ export const updateRole = async (req, res) => {
 
     const { id } = req.params
     const { name, description } = req.body
-    const data = { name, description }
+    const data = { name, description, creator: req.user.id }
     const find = { name }
     updateMethod(data, id, find, res, Roles, "Role")
 };

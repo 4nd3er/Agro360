@@ -16,7 +16,7 @@ export const getTopic = async (req, res) => {
 export const createTopic = async (req, res) => {
 
     const { name, role } = req.body
-    const data = { name, role }
+    const data = { name, role, creator: req.user.id }
     const find = { name }
     createMethod(data, find, res, Topics, "Topic")
 }
@@ -25,7 +25,7 @@ export const updateTopic = async (req, res) => {
 
     const { id } = req.params
     const { name, role } = req.body
-    const data = { name, role }
+    const data = { name, role, creator: req.user.id }
     const find = { name }
     updateMethod(data, id, find, res, Topics, "Topic")
 }

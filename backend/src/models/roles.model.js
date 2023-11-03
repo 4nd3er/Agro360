@@ -1,5 +1,4 @@
-import mongoose from 'mongoose'
-import { Topics } from './models.js';
+import mongoose from 'mongoose';
 
 const rolSchema = new mongoose.Schema({
     name: {
@@ -12,6 +11,11 @@ const rolSchema = new mongoose.Schema({
         type: String,
         trim: true,
         required: false
+    },
+    creator: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Admin',
+        required: true
     }
 }, { timestamps: true })
 
