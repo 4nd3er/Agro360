@@ -37,19 +37,27 @@ const ForgetPassword = () => {
                         hover: cursor-pointer hover:bg-green-700 transition-color'
                     />
                      
+                        
+                     <nav className=''>
+                       
+                        <Link
+                            className='block my-5 text-slate-500 uppercase text-xs'
+                            to='/'
+                            style={{ marginLeft: 'auto' }}
+                        >
+                            Iniciar sesión
+                        </Link>
+                        <Link
+                            className='block my-5 text-slate-500 uppercase text-xs'
+                            to='/register'
+                            style={{ marginRight: 'auto' }}
+                        >
+                            Registrarse
+                        </Link>
+                </nav>
                 </form>
 
-                <nav className='lg:flex lg: justify-between'>
-
-                <Link
-                        className='block my-5 text-slate-500 uppercase text-xs'
-                        to='/register'
-                     >Registrarse</Link>
-                      <Link
-                        className='block my-5 text-slate-500 uppercase text-xs'
-                        to='/'
-                     >Inicia sesion</Link>
-                </nav>
+                
 
             </div>
 
