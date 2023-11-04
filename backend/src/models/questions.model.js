@@ -12,6 +12,11 @@ const questionsSchema = new mongoose.Schema({
         ref: 'QuestionTypes',
         required: true
     },
+    creator: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Admin',
+        required: true
+    },
     options: [
         {
             option: {

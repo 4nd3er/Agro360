@@ -2,8 +2,6 @@ import errorResponse from "./ErrorResponse.js"
 import validObjectId from "./ValidObjectId.js"
 import { messages } from "./libs.js"
 
-export const creator = {creator: req.user.id}
-
 export const getMethod = async (res, model, name) => {
 
     const mayusName = name.charAt(0).toUpperCase() + name.slice(1)

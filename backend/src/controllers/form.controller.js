@@ -1,6 +1,6 @@
 import { errorResponse, validObjectId, messages, compObjectId } from "../libs/libs.js"
 import { Forms, Topics, Admin, Questions, QuestionTypes } from "../models/models.js"
-import { createMethod, creator, deleteMethod, getMethod, getOneMethod, updateMethod } from "../libs/methods.js"
+import { createMethod, deleteMethod, getMethod, getOneMethod, updateMethod } from "../libs/methods.js"
 
 export const forms = async (req, res) => {
 
