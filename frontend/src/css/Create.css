@@ -1,0 +1,102 @@
+/* Estilos para el contenedor principal */
+.flex-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 30vh;
+    position: relative;
+  }
+  
+  /* Estilos para la etiqueta "CREAR ENCUESTA" */
+  .image-label {
+    font-size: 15px;
+    font-weight: bold;
+    font-family: Verdana, sans-serif;
+    position: relative;
+    top: 30px;
+    left: -345px;
+  }
+  
+  /* Estilos para la imagen de "Icon" */
+  .img-icon {
+    position: relative;
+    top: 40px;
+    left: -340px;
+    width: 120px;
+    margin-bottom: 30px;
+  }
+  
+  /* Estilos para el modal */
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(41, 41, 41, 0.7);
+    z-index: 50;
+  }
+  
+  /* Estilos para el formulario dentro del modal */
+  .modal-form {
+    background-color: #fff;
+    padding: 20px;
+    max-width: 50rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Estilos para los elementos del formulario (por ejemplo, inputs y select) */
+  .input-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+  }
+  
+  .input-container label {
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    color: rgb(0, 0, 0);
+  }
+  
+  .input-container input,
+  .input-container select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 2px solid #159c15; 
+    border-radius: 0.25rem;
+    transition: border 0.2s;
+  }
+  
+  .input-container input:focus,
+  .input-container select:focus {
+    border-color: #139b13; 
+  }
+  
+  /* Estilos para los botones en el formulario */
+  .form-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+    border: #53a553;
+  }
+  
+  .form-buttons button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.25rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .form-buttons button:hover {
+    background-color: #1d9e1d; /* Cambia el color de fondo al pasar el mouse sobre el botón */
+  }
+  
