@@ -6,6 +6,11 @@ const questionTypesSchema = new mongoose.Schema({
         trim: true,
         required: true,
         unique: true
+    },
+    creator: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Admin',
+        required: true
     }
 }, { timestamps: true })
 

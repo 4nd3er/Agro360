@@ -10,6 +10,11 @@ const topicsSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Roles",
         required: true,
+    },
+    creator: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Admin',
+        required: true
     }
 }, { timestamps: true })
 
