@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import addQuestionSvg from '../assets/Add.svg';
-import importQuestionSvg from '../assets/Import.svg';
-import DeleteQuestionSvg from '../assets/delete.svg';
-import Options from '../components/Options';
-import Sobresalir from '../assets/sobresalir 1.svg';
-import BarsChart from '../components/BarsChart'
-import PiesChart from '../components/PiesChart';
+import { AddQuestionSvg, ImportQuestionSvg, DeleteQuestionSvg, ExcelSvg } from '../assets/Assets.jsx';
+import { Options, BarsChart, PiesChart } from '../components/Components';
 import '../question.css';
 import Swal from 'sweetalert2';
 
@@ -24,11 +19,11 @@ const CreateQuest = () => {
         if (titleParam) {
             localStorage.setItem('title', titleParam);
         }
-    
+
         if (descripParam) {
             localStorage.setItem('descrip', descripParam);
         }
-    
+
         if (topicParam) {
             localStorage.setItem('topic', topicParam);
         }
@@ -236,10 +231,10 @@ const CreateQuest = () => {
                             <Link
                                 onClick={addQuestion}
                             >
-                                <img className='max-w-8' src={addQuestionSvg} />
+                                <img className='max-w-8' src={AddQuestionSvg} />
                             </Link>
                             <Link>
-                                <img className='max-w-10' src={importQuestionSvg} />
+                                <img className='max-w-10' src={ImportQuestionSvg} />
                             </Link>
                         </div>
                     </section>
@@ -259,7 +254,7 @@ const CreateQuest = () => {
                         <div className='p-5 py-6 flex flex-col gap-5 shadow-lg rounded-md border-2'>
                             <div className='flex flex-row items-center justify-between'>
                                 <h1 className='text-4xl'>Respuestas de la encuesta</h1>
-                                <img src={Sobresalir} alt="Descripción de la imagen" className="w-10 h-auto" />
+                                <img src={ExcelSvg} alt="Descripción de la imagen" className="w-10 h-auto" />
                             </div>
                             <h1 className='text-2xl font-bold '>Moises Garcia</h1>
 
@@ -296,10 +291,10 @@ const CreateQuest = () => {
                             <Link
                                 onClick={addQuestion}
                             >
-                                <img className='max-w-8' src={addQuestionSvg} />
+                                <img className='max-w-8' src={AddQuestionSvg} />
                             </Link>
                             <Link>
-                                <img className='max-w-10' src={importQuestionSvg} />
+                                <img className='max-w-10' src={ImportQuestionSvg} />
                             </Link>
                         </div>
                     </section>
