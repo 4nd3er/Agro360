@@ -16,7 +16,6 @@ export const getMethod = async (res, model, name) => {
     }
 }
 
-
 export const getOneMethod = async (id, res, model, name) => {
 
     const mayusName = name.charAt(0).toUpperCase() + name.slice(1)

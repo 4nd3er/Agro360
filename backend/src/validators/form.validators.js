@@ -35,7 +35,15 @@ export const formValidator = z.object({
         })
         .min(24, {
             message: "Creator must be at least 24 characters"
+        }),
+    questions: z.array(
+        z.object({
+            name: z
+            .string({
+                required_error: ""
+            })
         })
+    )
 })
 
 export const questionValidator = z.object({

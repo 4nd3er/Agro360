@@ -1,15 +1,21 @@
 import { Router } from 'express';
 import { validate, validateTokenCookie } from '../middlewares/middlewares.js'
 import { formValidator, questionValidator, questionTypeValidator } from '../validators/form.validators.js';
-import { createForm, createQuestion, createQuestionType, deleteQuestion, deleteQuestionType, forms, getQuestion, getQuestionType, questionTypes, questions, updateQuestion, updateQuestionType } from '../controllers/form.controller.js'
+import { createForm, createQuestion, createQuestionType, deleteForm, deleteQuestion, deleteQuestionType, forms, getForm, getQuestion, getQuestionType, questionTypes, questions, updateForm, updateQuestion, updateQuestionType } from '../controllers/form.controller.js'
 
 const router = Router()
 
-router.route("/forms")
+// *Question Types
+router.route("/forms/questions/questiontypes")
     .all(validateTokenCookie)
-    .get(forms)
-    .post(createForm)
+    .get(questionTypes)
+    .post(validate(questionTypeValidator), createQuestionType)
 
+router.route("/forms/questions/questiontypes/:id")
+    .all(validateTokenCookie)
+    .get(getQuestionType)
+    .put(validate(questionTypeValidator), updateQuestionType)
+    .delete(deleteQuestionType)
 
 // *Questions
 router.route("/forms/questions")
@@ -23,16 +29,17 @@ router.route("/forms/questions/:id")
     .put(validate(questionValidator), updateQuestion)
     .delete(deleteQuestion)
 
-// *Question Types
-router.route("/forms/questions/questiontypes")
+// *Forms
+router.route("/forms")
     .all(validateTokenCookie)
-    .get(questionTypes)
-    .post(validate(questionTypeValidator), createQuestionType)
+    .get(forms)
+    .post(validate(formValidator), createForm)
 
-router.route("/forms/questions/questiontypes/:id")
+router.route("/forms/:id")
     .all(validateTokenCookie)
-    .get(getQuestionType)
-    .put(validate(questionTypeValidator), updateQuestionType)
-    .delete(deleteQuestionType)
+    .get(getForm)
+    .put(validate(formValidator), updateForm)
+    .delete(deleteForm)
+
 
 export default router

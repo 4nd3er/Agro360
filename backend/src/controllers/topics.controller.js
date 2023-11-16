@@ -1,8 +1,6 @@
 import { Roles, Topics } from "../models/models.js"
 import { createMethod, deleteMethod, getMethod, getOneMethod, updateMethod } from "../libs/methods.js"
 import compObjectId from "../libs/compObjectId.js"
-import errorResponse from "../libs/ErrorResponse.js"
-
 
 export const topics = async (req, res) => {
 
@@ -22,7 +20,7 @@ export const createTopic = async (req, res) => {
     const find = { name }
 
     const compRol = await compObjectId(role, res, Roles, "Role")
-    if (!compRol) return res.status(compRol.status).json({ msg: compRol.msg })
+    if (!compRol.success) return res.status(compRol.status).json({ msg: compRol.msg })
     await createMethod(data, find, res, Topics, "Topic")
 }
 
@@ -34,7 +32,7 @@ export const updateTopic = async (req, res) => {
     const find = { name }
 
     const compRol = await compObjectId(role, res, Roles, "Role")
-    if (!compRol) return res.status(compRol.status).json({ msg: compRol.msg })
+    if (!compRol.success) return res.status(compRol.status).json({ msg: compRol.msg })
     await updateMethod(data, id, find, res, Topics, "Topic")
 }
 

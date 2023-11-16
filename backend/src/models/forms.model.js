@@ -31,10 +31,27 @@ const formsSchema = new mongoose.Schema({
     },
     questions: [
         {
-            question: {
+            name: {
+                type: String,
+                trim: true,
+                required: true,
+                unique: true
+            },
+            type: {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: 'Questions'
-            }
+                ref: 'QuestionTypes',
+                required: true
+            },
+            options: [
+                {
+                    option: {
+                        type: String,
+                        trim: true,
+                        required: false
+                    }
+                }
+            ]
+
         }
     ]
 }, { timestamps: true })
