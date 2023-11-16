@@ -1,0 +1,10 @@
+export { default as BarsChart } from './BarsChart.jsx';
+export { default as CardTopic } from './CardTopic.jsx';
+export { default as Create } from './Create.jsx';
+export { default as Forms } from './Forms.jsx';
+export { default as Menu } from './Menu.jsx';
+export { default as ModalTopic } from './ModalTopic.jsx';
+export { default as Navbar } from './Navbar.jsx';
+export { default as Options } from './Options.jsx';
+export { default as PiesChart } from './PiesChart.jsx';
+export { default as Question } from './Question.jsx';
