@@ -51,7 +51,7 @@ const Login = () => {
                                 type="submit"
                                 value="Iniciar Sesion"
                                 className='bg-green-600 w-full py-1 text-white uppercase font-bold rounded-xl
-                hover: cursor-pointer hover:bg-green-700 transition-color'
+                                hover: cursor-pointer hover:bg-green-700 transition-color'
                             />
                             <Link
                                 className='block my-5 text-slate-500 uppercase text-xs'
@@ -68,13 +68,7 @@ const Login = () => {
 
                 </div>
             </div>
-
-
-
         </>
-
-
-
     )
 }
 

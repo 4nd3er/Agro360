@@ -1,7 +1,6 @@
 import React from 'react'
-import Forms from '../components/Forms';
+import Survey from '../components/Survey';
 import Create from '../components/Create';
-
 
 
 const Quest = () => {
@@ -12,17 +11,22 @@ const Quest = () => {
       </div>
 
       <div className='text-center' style={{
-        borderTop: '1px solid #ccc', width: '70%', marginLeft: '5%',
+        borderTop: '1px solid #ccc', width: '80%', marginLeft: '5%',
         height: '10px',
 
       }}>
 
       </div>
 
-
-      <div className='text-center mt-1' style={{ marginTop: '1rem' }}>
-        <Forms />
+      <div>
+        <h1>ENCUESTAS RECIENTES</h1> 
+        <Survey
+          title="Encuesta pedagógica"
+          imageSrc="src/img/encuesta.png"
+          isActive={true}
+        />
       </div>
+
 
     </div>
 
