@@ -3,7 +3,6 @@ import dotenv from 'dotenv'
 import cors from 'cors'
 import morgan from 'morgan'
 import cookieParser from 'cookie-parser'
-
 import { authRoutes, formsRoutes, rolesRoutes, topicsRoutes } from './routes/routes.js'
 
 const app = express()
