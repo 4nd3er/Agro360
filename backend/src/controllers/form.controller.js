@@ -1,6 +1,6 @@
 import { errorResponse, validObjectId, messages, compObjectId } from "../libs/libs.js"
 import { Forms, Topics, Admin, Questions, QuestionTypes } from "../models/models.js"
-import { createMethod, deleteMethod, getMethod, getOneMethod, updateMethod, updateMethodList } from "../libs/methods.js"
+import { createMethod, deleteMethod, getMethod, getOneMethod, updateMethod } from "../libs/methods.js"
 
 export const forms = async (req, res) => {
 
@@ -91,20 +91,6 @@ export const deleteQuestion = async (req, res) => {
 
     const { id } = req.params
     await deleteMethod(id, res, Questions, "Question")
-}
-
-// *Question Options
-export const updateQuestionOption = async (req, res) => {
-    
-    const { id, idoption } = req.params
-    const { option } = req.body
-
-    const reference = { _id: id, 'options._id': idoption }
-    const data = { 'options.$.option': option }
-    const find = { 'options.option': option }
-    const names = { model: "Question", list: "Option"}
-    
-    await updateMethodList(res, reference, data, find, Questions, names)
 }
 
 // *Question Types

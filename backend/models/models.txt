@@ -1,2 +1,0 @@
-archivo de texto de prueba para la creacion de la carpeta models
- en backend

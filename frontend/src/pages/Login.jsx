@@ -9,7 +9,7 @@ const Login = () => {
 
                     <h1 className="text-green-800 font-black text-6xl capitalize ">AGRO
                         <span className="text-green-500 text-8xl">360°</span>
-                        <h3 className='text-green-800 text-sm flex justify-center '>Evaluacion de desempeño</h3>
+                        <h3 className='text-green-800 text-sm flex justify-center '>Evaluación de desempeño</h3>
                     </h1>
                 </div>
 
@@ -21,29 +21,29 @@ const Login = () => {
 
                         <form className='my-10 bg-white shadow rounded-lg px-10 py-5 w-1/2'>
                             <div className='my-5'>
-                                <label className='uppercase text-gray-600 block text-sm font-bold'
+                                <label className='capitalize text-gray-600 block text-xl font-bold'
                                     htmlFor='email'
                                 >Correo Electronico</label>
                                 <input
                                     id='email'
                                     type="text"
-                                    placeholder='Email de Registro'
+                                    placeholder='Digite el Correo Electronico'
                                     className='w-full mt-3 p-3 border rounded-xl bg-gray-50'
                                 />
                             </div>
                             <div className='my-5'>
-                                <label className='uppercase text-gray-600 block text-sm font-bold'
+                                <label className='capitalize text-gray-600 block text-xl font-bold'
                                     htmlFor='password'
                                 >Contraseña</label>
 
                                 <input
                                     id='password'
                                     type="password"
-                                    placeholder='Password de Registro'
+                                    placeholder='Digite la contraseña'
                                     className='w-full mt-3 p-3 border rounded-xl bg-gray-50'
                                 />
                                 <Link
-                                    className='block  my-5 text-slate-500 uppercase text-xs'
+                                    className='block my-5 text-slate-500 uppercase text-xs'
                                     to='forget-password'
                                 >¿Olvidaste tu contraseña?</Link>
                             </div>
@@ -68,13 +68,7 @@ const Login = () => {
 
                 </div>
             </div>
-
-
-
         </>
-
-
-
     )
 }
 
