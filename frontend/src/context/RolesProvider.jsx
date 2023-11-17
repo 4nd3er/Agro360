@@ -5,15 +5,25 @@ import { useNavigate } from "react-router-dom"
 // Crear el contexto de los roles
 const RolesContext = createContext()
 
-const RolesProvider = ({ children }) => {
+const RolesProvider = ({children}) => {
+    const [modalTopicForm, setModalTopicForm] = useState(false)
+
+    // Open and close the Topic Modal
+    const handleModalTopic = () => {
+        setModalTopicForm(!modalTopicForm)
+    };
+
     return (
         <RolesContext.Provider
-        // value={}
+           value={{
+            modalTopicForm,
+            handleModalTopic
+           }}
         >
             {children}
         </RolesContext.Provider>
-    )
-} 
+    );
+};
 
 export {
     RolesProvider
