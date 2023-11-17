@@ -18,7 +18,7 @@ const Home = () => {
                     </p>
                 </header>
                 <main className="grid grid-cols-3 gap-4">
-                    <Link to='/tematicas/1'>
+                    <Link to='/tematicas'>
                     <CardRol/>
                     </Link>            
                 </main>
