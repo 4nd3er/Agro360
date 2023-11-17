@@ -23,25 +23,35 @@ export const formValidator = z.object({
             message: "Topic must be at least 24 characters"
         }),
     end: z
-        .date({
+        .string({
             required_error: "End is required"
         }),
     status: z
         .boolean()
         .nullish(),
-    creator: z
-        .string({
-            required_error: "Creator is required"
-        })
-        .min(24, {
-            message: "Creator must be at least 24 characters"
-        }),
     questions: z.array(
         z.object({
             name: z
-            .string({
-                required_error: ""
-            })
+                .string({
+                    required_error: ""
+                })
+                .min(10, {
+                    message: "Question must be at least 10 characters"
+                }),
+            type: z
+                .string({
+                    required_error: "Question Type is required"
+                }),
+            options: z.array(
+                z.object({
+                    option: z
+                        .string({})
+                        .min(8, {
+                            message: "Question Option must be at least 8 characters"
+                        })
+                        .nullish()
+                })
+            )
         })
     )
 })

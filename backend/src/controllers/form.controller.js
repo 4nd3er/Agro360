@@ -1,5 +1,5 @@
 import { compObjectId } from "../libs/libs.js"
-import { Forms, Questions, QuestionTypes, Topics } from "../models/models.js"
+import { Forms, QuestionTypes, Topics } from "../models/models.js"
 import { createMethod, deleteMethod, getMethod, getOneMethod, updateMethod } from "../libs/methods.js"
 
 // *Forms
@@ -22,7 +22,11 @@ export const createForm = async (req, res) => {
 
     const compTopic = await compObjectId(topic, Topics, "Topic")
     if (!compTopic.success) return res.status(compTopic.status).json({ msg: compTopic.msg })
-    await createMethod(data, find, res, Forms, "Form")
+
+    console.log(questions);
+
+    res.json({ msg: "ok"})
+    //await createMethod(data, find, res, Forms, "Form")
 }
 
 export const updateForm = async (req, res) => {
@@ -41,46 +45,6 @@ export const deleteForm = async (req, res) => {
 
     const { id } = req.params
     await deleteMethod(id, res, Forms, "Form")
-}
-
-// *Questions
-export const questions = async (req, res) => {
-
-    await getMethod(res, Questions, "Questions")
-}
-
-export const getQuestion = async (req, res) => {
-
-    const { id } = req.params
-    await getOneMethod(id, res, Questions, "Question")
-}
-
-export const createQuestion = async (req, res) => {
-
-    const { name, type, options } = req.body
-    const data = { name, type, options, creator: req.user.id }
-    const find = { name: name }
-
-    const compType = await compObjectId(type, QuestionTypes, "Question type")
-    if (!compType.success) return res.status(compType.status).json({ msg: compType.msg })
-    await createMethod(data, find, res, Questions, "Question")
-}
-
-export const updateQuestion = async (req, res) => {
-
-    const { id } = req.params
-    const { name, type, options } = req.body
-    const data = { name, type, options, creator: req.user.id }
-    const find = { name: name }
-
-    await compObjectId(type, res, QuestionTypes, "Type")
-    await updateMethod(data, id, find, res, Questions, "Question")
-}
-
-export const deleteQuestion = async (req, res) => {
-
-    const { id } = req.params
-    await deleteMethod(id, res, Questions, "Question")
 }
 
 // *Question Types
