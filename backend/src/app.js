@@ -16,8 +16,8 @@ app.use(cors({
 }));
 
 app.use((req, res, next) => {
-    req.user = { id: ""}
-    req.user.id = "6558108f93b71558f6e4631a"
+    req.admin = { id: ""}
+    req.admin.id = "6558108f93b71558f6e4631a"
     next();
 })
 app.use("/api", authRoutes)

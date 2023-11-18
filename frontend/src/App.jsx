@@ -32,6 +32,7 @@ function App() {
           </Route>
           <Route path='/inicio' element={<AuthLayout />}>
             <Route index element={<Home />} />
+            <Route path=':id/tematicas' element={<Topics />}/>
           </Route>
           <Route path='/crear-formulario' element={<AuthLayout />}>
             <Route index element={<Quest />} />
@@ -39,9 +40,6 @@ function App() {
           </Route>
           <Route path='/resultados' element={<AuthLayout />}>
             <Route index element={<Results />} />
-          </Route>
-          <Route path='/tematicas' element={<AuthLayout />}>
-            <Route index element={<Topics />} />
           </Route>
         </Routes>
       </RolesProvider>

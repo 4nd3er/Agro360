@@ -14,7 +14,7 @@ export const getForm = async (req, res) => {
 
 export const createForm = async (req, res) => {
     const { name, description, topic, end, status, questions } = req.body
-    const data = { name, description, topic, end, status, creator: req.user.id, questions }
+    const data = { name, description, topic, end, status, creator: req.admin.id, questions }
     const find = { name }
 
     //*Comprobar el id del topic
@@ -41,7 +41,7 @@ export const createForm = async (req, res) => {
 export const updateForm = async (req, res) => {
     const { id } = req.params
     const { name, description, topic, end, status, questions } = req.body
-    const data = { name, description, topic, end, status, creator: req.user.id, questions }
+    const data = { name, description, topic, end, status, creator: req.admin.id, questions }
     const find = { name }
 
     //*Comprobar el id del topic
@@ -83,7 +83,7 @@ export const getQuestionType = async (req, res) => {
 
 export const createQuestionType = async (req, res) => {
     const { name } = req.body
-    const data = { name, creator: creator }
+    const data = { name, creator: req.admin.id }
     const find = { name: name }
     await createMethod(data, find, res, QuestionTypes, "Question type")
 }
@@ -91,7 +91,7 @@ export const createQuestionType = async (req, res) => {
 export const updateQuestionType = async (req, res) => {
     const { id } = req.params
     const { name } = req.body
-    const data = { name, creator: creator }
+    const data = { name, creator: req.admin.id }
     const find = { name: name }
     await updateMethod(data, id, find, res, QuestionTypes, "Question Type")
 }
