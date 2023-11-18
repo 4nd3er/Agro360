@@ -2,10 +2,16 @@ import { useParams } from "react-router-dom";
 import useRoles from "../hooks/useRoles.jsx"
 import CardTopic from "../components/CardTopic.jsx";
 import ModalTopic from "../components/ModalTopic.jsx";
+import { useEffect } from "react";
 
 const Topics = () => {
-    
-    const { handleModalTopic } = useRoles()
+    const params = useParams() // Obtain id of rol
+    const { handleModalTopic, obtainTopic } = useRoles()
+
+    // Obtain topics
+    useEffect(() => {
+        obtainTopic(params.id)
+    }, [])
 
     return (
         <>

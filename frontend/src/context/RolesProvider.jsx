@@ -7,6 +7,7 @@ const RolesContext = createContext()
 
 const RolesProvider = ({ children }) => {
     const [roles, setRoles] = useState([]) // Roles
+    const [topic, setTopic] = useState({})
     const [modalTopicForm, setModalTopicForm] = useState(false)
 
     useEffect(() => {
@@ -24,6 +25,19 @@ const RolesProvider = ({ children }) => {
         };
     },[])
 
+    const obtainTopic = async id => {
+        try {
+            const { data } = await agro360Axios(`/roles/${id}/topics`)
+            console.log(data)
+        } catch (error) {
+            if (error.response.status === 404) {
+                console.log("No se encontraron temas para el rol.");
+              } else {
+                console.error("Error al traer las temáticas por rol:", error.response || error);
+              }
+        }
+    }
+
     // Open and close the Topic Modal
     const handleModalTopic = () => {
         setModalTopicForm(!modalTopicForm)
@@ -33,6 +47,7 @@ const RolesProvider = ({ children }) => {
         <RolesContext.Provider
             value={{
                 roles,
+                obtainTopic,
                 modalTopicForm,
                 handleModalTopic    
             }}
