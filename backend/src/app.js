@@ -7,7 +7,7 @@ import { authRoutes, formsRoutes, responseRoutes, rolesRoutes, topicsRoutes } fr
 
 const app = express()
 
-dotenv.config({ path: './src/.env'});
+dotenv.config({ path: './src/.env' });
 app.use(express.json())
 app.use(cookieParser())
 app.use(morgan("dev"))
@@ -15,6 +15,11 @@ app.use(cors({
     origin: "http://localhost:5173"
 }));
 
+app.use((req, res, next) => {
+    req.user = { id: ""}
+    req.user.id = "6558108f93b71558f6e4631a"
+    next();
+})
 app.use("/api", authRoutes)
 app.use("/api", rolesRoutes)
 app.use("/api", topicsRoutes)

@@ -18,20 +18,21 @@ export const getCode = async (req, res) => {
 
     const code = generateCode(6);
     req.user = { id: user._id, email: email, code: code }
-    //sendEmailFormCode(res, email, data, code)
-    console.log(req.code);
+    sendEmailFormCode(res, email, data, code)
 }
 
 export const compCode = async (req, res) => {
 
     const { code } = req.body
     if (req.user.code !== code) return res.status(401).json({ msg: "The code is incorrect" })
-    const token = createToken({ id: req.user.email, expires: "30m" })
+    const user = Users.findById(req.user.id)
+
 
     res.json({
         response: "Code comprobate successfully",
         data: {
-            e
+            code: req.user.code,
+            user: `${user.names} ${user.lastnames}`,            
         }
     })
 }
