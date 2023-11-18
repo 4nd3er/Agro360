@@ -13,13 +13,16 @@ const RolesProvider = ({ children }) => {
         const obtainRoles = async () => {
             try {
                 const { data } = await agro360Axios('/roles')
-                console.log(data)
+                setRoles(data)
             } catch (error) {
                 console.log(error)
             }
         }
         obtainRoles()
-    })
+        return () => {
+            // Limpieza del efecto si el componente es desmontado
+        };
+    },[])
 
     // Open and close the Topic Modal
     const handleModalTopic = () => {
@@ -29,8 +32,9 @@ const RolesProvider = ({ children }) => {
     return (
         <RolesContext.Provider
             value={{
+                roles,
                 modalTopicForm,
-                handleModalTopic
+                handleModalTopic    
             }}
         >
             {children}
