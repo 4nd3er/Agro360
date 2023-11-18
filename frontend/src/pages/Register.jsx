@@ -4,8 +4,9 @@ import Alert from "../components/Alert"
 import axios from 'axios'
 
 
-//Variable que contiene los datos del formulario
+
 const Register = () => {
+  //Variable que contiene los datos del formulario
   const [ names, setNames] = useState('')
   const [ lastnames, setLastnames] = useState('')
   const [ documentType, setDocumentType] = useState('')
@@ -38,7 +39,8 @@ const Register = () => {
 
     //Registro de usuario 
     try {
-      const {data} = await axios.post('http://localhost:4000/api/register', //Conexion a la API por medio del metodo Axios
+      //TODO: Mover hacia un cliente Axios
+      const {data} = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/register`, //Conexion a la API por medio del metodo Axios
       {names, lastnames, documentType, document, email, password})
       //Alerta de registro exitoso
       setAlert({
@@ -145,7 +147,7 @@ const Register = () => {
                      >Correo Electronico</label>
                      <input
                      id='email'
-                     type="text"
+                     type="email"
                      placeholder='Email de Registro'
                      className='w-full mt-3 p-3 border rounded-xl bg-gray-50'
                      value={email}
@@ -170,7 +172,7 @@ const Register = () => {
                 
                 <input 
                 type="submit" 
-                value="Iniciar Sesion"
+                value="Crear Cuenta"
                 className='bg-green-600 w-full py-1 text-white  font-bold rounded-xl
                 hover: cursor-pointer hover:bg-green-700 transition-color'
                 />
