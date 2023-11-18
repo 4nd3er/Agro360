@@ -44,53 +44,39 @@ const ModalTopic = () => {
               <div className="hidden sm:block absolute top-0 right-0 pt-4 pr-4">
                 <button
                   type="button"
-                  className="bg-white rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  className="bg-white text-red-400 hover:text-red-600"
                   onClick={handleModalTopic}
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
                   </svg>
                 </button>
               </div>
               <div className="sm:flex sm:items-start">
                 <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                  <Dialog.Title as="h1" className="text-2xl text-center leading-6 font-bold text-gray-900">
+                  <Dialog.Title as="h1" className="text-2xl text-center leading-6 font-bold text-color-sena">
                     Nueva Temática
                   </Dialog.Title>
                   
                   {/* inicio formulario crear tarea */}
                   <form
-                    className='my-10'>
+                    className='mt-8'>
                     <div className="mb-5">
                       <label
-                        htmlFor="nombre"
-                        className="text-gray-700 font-bold text-base">
+                        htmlFor="topic"
+                        className="text-black font-bold text-base">
                         Temática:
                       </label>
                       <input
-                        id='nombre'
+                        id='topic'
                         type="text"
                         placeholder='Nombre de la tarea'
                         className="border w-full p-2 mt-2 placeholder-gray-400 rounded-lg"
                          />
                     </div>
-
-                    <div className="mb-5">
-                      <label
-                        htmlFor="descripcion"
-                        className="text-gray-700 font-bold text-base">
-                        Descripción:
-                      </label>
-                      <textarea
-                        id='descripcion'
-                        type="text"
-                        placeholder='Descripción de la tematica'
-                        className="border w-full p-2 mt-2 placeholder-gray-400 rounded-lg"
-                        />
-                    </div>
                     <input
                       type="submit"
-                      className="bg-sky-600 hover:bg-sky-700 w-full p-3 text-white text-lg font-bold cursor-pointer transition-colors rounded-xl"
+                      className="bg-color-sena hover:bg-color-sena-hover w-full p-3 text-white text-lg font-bold cursor-pointer transition-colors rounded-xl"
                       value="Crear temática" />
                   </form>
                   {/* fin formulario crear tarea */}
