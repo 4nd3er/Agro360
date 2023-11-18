@@ -1,7 +1,7 @@
 import Router from 'express';
 import { validate, validateTokenParam } from '../middlewares/middlewares.js';
 import { emailValidator } from '../validators/response.validator.js';
-import { compForm, getCode } from '../controllers/response.controller.js'
+import { compCode, compForm, getCode } from '../controllers/response.controller.js'
 
 const router = Router()
 
@@ -12,5 +12,6 @@ router.route("/response/:id")
 
 router.route("/response/:id/verifycode")
     .all(compForm)
+    .post(compCode)
 
 export default router

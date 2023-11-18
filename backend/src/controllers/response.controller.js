@@ -13,20 +13,21 @@ export const getCode = async (req, res) => {
     const { email } = req.body
     const data = { email }
 
-    const user = Users.findOne({ email })
+    const user = await Users.findOne({ email })
     if (!user) return res.status(404).json({ msg: "User not found" })
 
     const code = generateCode(6);
-    req.user = { id: user._id, email: email, code: code }
+    req.user = { id: user._id.toString(), email: email, code: code }
+    console.log(req.user);
     sendEmailFormCode(res, email, data, code)
 }
 
 export const compCode = async (req, res) => {
 
     const { code } = req.body
+    console.log(req.user);
     if (req.user.code !== code) return res.status(401).json({ msg: "The code is incorrect" })
     const user = Users.findById(req.user.id)
-
 
     res.json({
         response: "Code comprobate successfully",
