@@ -8,10 +8,10 @@ const router = Router()
 // *Response
 router.route("/response/:id")
     .all(compForm)
-    .post(validate(emailValidator), getCode)
+    .get(validate(emailValidator, "query"), getCode)
+    .post(compCode)
 
 router.route("/response/:id/verifycode")
     .all(compForm)
-    .post(compCode)
 
 export default router

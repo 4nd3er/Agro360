@@ -1,6 +1,7 @@
 import { getOneMethod } from "../libs/methods.js"
 import { Forms, Users } from "../models/models.js"
 import { compObjectId, createToken, generateCode, sendEmailFormCode } from '../libs/libs.js'
+import bcrypt from 'bcrypt'
 
 export const compForm = async (req, res, next) => {
     const { id } = req.params
@@ -9,24 +10,26 @@ export const compForm = async (req, res, next) => {
     next();
 }
 
-export const getCode = async (req, res) => {
-    const { email } = req.body
-    const data = { email }
+export const getCode = async (req, res, next) => {
+    const { email } = req.query
 
     const user = await Users.findOne({ email })
     if (!user) return res.status(404).json({ msg: "User not found" })
 
     const code = generateCode(6);
-    req.user = { id: user._id.toString(), email: email, code: code }
-    console.log(req.user);
-    sendEmailFormCode(res, email, data, code)
+    const hashCode = await bcrypt.hash(code, 5)
+    //sendEmailFormCode(res, email, code)
+    const data = { id: user._id.toString(), email: email, sessionCode: hashCode }
+    res.locals.user = data
+    res.json({ msg: "OK" })
 }
 
 export const compCode = async (req, res) => {
 
+    console.log(res.locals.user);
     const { code } = req.body
-    console.log(req.user);
-    if (req.user.code !== code) return res.status(401).json({ msg: "The code is incorrect" })
+
+    /* if (req.user.code !== code) return res.status(401).json({ msg: "The code is incorrect" })
     const user = Users.findById(req.user.id)
 
     res.json({
@@ -35,5 +38,5 @@ export const compCode = async (req, res) => {
             code: req.user.code,
             user: `${user.names} ${user.lastnames}`,            
         }
-    })
+    }) */
 }

@@ -31,9 +31,8 @@ export function sendEmailResetPassword(res, data) {
   });
 }
 
-export function sendEmailFormCode(res, userEmail, data, code) {
+export function sendEmailFormCode(res, userEmail, code) {
 
-  const { email } = data
   const transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
