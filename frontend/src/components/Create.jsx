@@ -31,27 +31,28 @@ const Create = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    // e.preventDefault();
 
-    try {
-      const response = await fetch('/api/encuestas', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formValues),
-      });
+    // try {
+    //   const response = await fetch('/api/encuestas', {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify(formValues),
+    //   });
 
-      if (response.status === 201) {
-        closeModal();
-      } else {
-        // Manejar el caso de error
-      }
-    } catch (error) {
-      // Manejar el caso de error
-    }
+    //   if (response.status === 201) {
+    //     closeModal();
+    //   } else {
+    //     // Manejar el caso de error
+    //   }
+    // } catch (error) {
+    //   // Manejar el caso de error
+    // }
+    // window.location.href = `crear/titulo=${formValues.titulo}&&descripcion=${formValues.descripcion}&&opciones=${formValues.opciones}`
   };
-
+ 
   return (
     <div className='flex-container'>
       <div className='text-center'>
@@ -61,7 +62,7 @@ const Create = () => {
         <img
           src="src/img/Icon.png"
           alt="img"
-          className="img-icon"
+          className="img-icon cursor-pointer"
           onClick={openModal}
         />
       </div>
@@ -70,7 +71,7 @@ const Create = () => {
         <div className="modal" onClick={handleModalClick}>
           <div className="modal-form">
             <h2 className="modal-title">CREAR ENCUESTA</h2>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} action={`crear-formulario/crear/?titulo=${formValues.titulo}&&descripcion=${formValues.descripcion}&&opciones=${formValues.opciones}`}>
               <div className="input-container">
                 <label htmlFor="titulo">Titulo</label>
                 <input
@@ -110,8 +111,8 @@ const Create = () => {
                   className="input-select"
                 >
                   <option value="">Seleccione Tematica</option>
-                  <option value="opcion1">Pedagogica</option>
-                  <option value="opcion2">Actitudinal</option>
+                  <option value="Pedagogía">Pedagogía</option>
+                  <option value="Actitudinal">Actitudinal</option>
                 </select>
               </div>
 
@@ -120,7 +121,8 @@ const Create = () => {
                   Cerrar
                 </button>
                 <button type="submit" className="button-accept">
-                  <Link to='crear'>Aceptar</Link>
+                  {/* <Link to='crear'>Aceptar</Link> */}
+                  Aceptar
                 </button>
               </div>
             </form>

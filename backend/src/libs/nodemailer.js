@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer'
 
-function sendEmailResetPassword(res, data) {
+export function sendEmailResetPassword(res, data) {
 
   const { userEmail, token } = data
   const transporter = nodemailer.createTransport({
@@ -31,4 +31,34 @@ function sendEmailResetPassword(res, data) {
   });
 }
 
-export default sendEmailResetPassword
+export function sendEmailFormCode(res, userEmail, data, code) {
+
+  const { email } = data
+  const transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+      user: 'ladigiococ@gmail.com',
+      pass: 'xurdifznneprfewg'
+    }
+  })
+
+  const mailOptions = {
+    from: 'ladigiococ@gmail.com',
+    to: userEmail,
+    subject: 'Agro360 - Codigo',
+    text: `Ingresa este codigo para acceder al formulario: ${code}`
+  }
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log('Error al enviar el correo electrónico: ' + error);
+    }
+    else {
+      res.json({
+        msg: "Email sent successfully to " + userEmail,
+        info: info.response
+      });
+    }
+  });
+}
+

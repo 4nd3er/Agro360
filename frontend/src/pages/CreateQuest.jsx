@@ -1,23 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import addQuestionSvg from '../assets/Add.svg';
-import importQuestionSvg from '../assets/Import.svg';
-import DeleteQuestionSvg from '../assets/delete.svg';
-import Options from '../components/Options';
-import Sobresalir from '../assets/sobresalir 1.svg';
-import BarsChart from '../components/BarsChart'
-import PiesChart from '../components/PiesChart';
+import { AddQuestionSvg, ImportQuestionSvg, DeleteQuestionSvg, ExcelSvg } from '../assets/Assets.jsx';
+import { Options, BarsChart, PiesChart } from '../components/Components';
 import '../question.css';
+import Swal from 'sweetalert2';
 
 const CreateQuest = () => {
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
-    const [title, setTitle] = useState(searchParams.get('titulo'));
-    const [descrip, setDescrip] = useState(searchParams.get('descripcion'));
-    const [topic, setTopic] = useState(searchParams.get('opciones'));
-    localStorage.setItem('title', title);
-    localStorage.setItem('descrip', descrip);
-    localStorage.setItem('topic', topic);
+    const [title, setTitle] = useState('');
+    const [descrip, setDescrip] = useState('');
+    const [topic, setTopic] = useState('');
+
+    useEffect(() => {
+        const titleParam = searchParams.get('titulo');
+        const descripParam = searchParams.get('descripcion');
+        const topicParam = searchParams.get('opciones');
+        if (titleParam) {
+            localStorage.setItem('title', titleParam);
+        }
+
+        if (descripParam) {
+            localStorage.setItem('descrip', descripParam);
+        }
+
+        if (topicParam) {
+            localStorage.setItem('topic', topicParam);
+        }
+    }, [searchParams])
 
     useEffect(() => {
         setTitle(localStorage.getItem('title'));
@@ -43,6 +53,9 @@ const CreateQuest = () => {
             const currentQuestion = updatedQuestions[index];
             if (question[1] === 'scaleRikert' || question[1] === 'scaleRating') {
                 currentQuestion[2] = [['', '']];
+            }
+            if (question[1] === 'text') {
+                currentQuestion[2] = [''];
             }
             updatedQuestions[index] = currentQuestion;
             setQuestions(updatedQuestions);
@@ -102,6 +115,9 @@ const CreateQuest = () => {
             currentQuestion[2] = [['', '']];
             setOptionsAdded(() => !optionsAdded);
         }
+        if (value === 'text') {
+            setOptionsAdded(() => !optionsAdded);
+        }
         const array2 = ['', ''];
         if (currentQuestion[2][0].length == array2.length && currentQuestion[2][0].every(function (v, i) { return v = '' === array2[i] })) {
             currentQuestion[2][0] = [''];
@@ -120,6 +136,25 @@ const CreateQuest = () => {
         }
         updatedQuestions[questionIndex] = currentQuestion;
         setQuestions(updatedQuestions);
+    };
+
+    const handleSubmit = () => {
+        Swal.fire({
+            icon: 'success',
+            title: 'Encuesta Guardada',
+            text: 'Se ha guardado la encuesta satisfactoriamente!',
+            timer: 2000,
+            showConfirmButton: false
+        })
+        // setTimeout(() => { 
+        //     window.location.href = '/crear-formulario';
+        //     localStorage.clear();
+        // }, 2100); // ? redigire a la pagina de crear formulario
+        // * NO ELIMINAR
+    };
+
+    const handleBlur = () => {
+
     };
 
     return (
@@ -148,6 +183,8 @@ const CreateQuest = () => {
                                             className='border-b-2 p-2 border-gray-400 w-3/6'
                                             value={question[0]}
                                             onChange={(e) => handleQuestionChange(e.target.value, questionIndex)}
+                                            onBlur={handleBlur}
+                                            required
                                         />
                                         <select
                                             className='px-4 shadow-[0_0_0_1px_rgba(0,0,0,0.5)] rounded-lg'
@@ -155,11 +192,12 @@ const CreateQuest = () => {
                                             onChange={(e) => handleQuestionTypeChange(e.target.value, questionIndex)}
                                         >
                                             <option value="">Seleccione el tipo de pregunta</option>
-                                            <option value="radio">Seleccion Unica</option>
-                                            <option value="checkbox">Seleccion Multiple</option>
-                                            <option value="scaleRikert">Escala de rikert</option>
-                                            <option value="scaleRating">Escala de puntuacion</option>
-                                            <option value="scaleSemantic">Escala Semantica</option>
+                                            <option value="text">Respuesta Abierta</option>
+                                            <option value="radio">Selección Única</option>
+                                            <option value="checkbox">Selección Múltiple</option>
+                                            <option value="scaleRikert">Escala de Rikert</option>
+                                            <option value="scaleRating">Escala de Puntuación</option>
+                                            <option value="scaleSemantic">Escala Semántica</option>
                                         </select>
                                         <button onClick={() => deleteQuestion(questionIndex)}>
                                             <img src={DeleteQuestionSvg} />
@@ -178,7 +216,7 @@ const CreateQuest = () => {
                                                 deleteOption={deleteOption}
                                             />
                                         ))}
-                                        {question[1] && (question[1] !== 'scaleRikert' && question[1] !== 'scaleRating') ? (
+                                        {question[1] && (question[1] !== 'scaleRikert' && question[1] !== 'scaleRating' && question[1] !== 'text') ? (
                                             <div className='flex justify-end mb-5'>
                                                 <button onClick={() => addOption(questionIndex)} className="border-2 p-2 rounded left-1 top-0">Agregar Opción</button>
                                             </div>
@@ -193,12 +231,21 @@ const CreateQuest = () => {
                             <Link
                                 onClick={addQuestion}
                             >
-                                <img className='max-w-8' src={addQuestionSvg} />
+                                <img className='max-w-8' src={AddQuestionSvg} />
                             </Link>
                             <Link>
-                                <img className='max-w-10' src={importQuestionSvg} />
+                                <img className='max-w-10' src={ImportQuestionSvg} />
                             </Link>
                         </div>
+                    </section>
+                    <section>
+                        <button
+                            type='submit'
+                            className='fixed bottom-8 right-6 bg-[#39A900] px-3 py-2 text-white rounded-lg'
+                            onClick={handleSubmit}
+                        >
+                            Guardar
+                        </button>
                     </section>
                 </>
             ) : (
@@ -207,7 +254,7 @@ const CreateQuest = () => {
                         <div className='p-5 py-6 flex flex-col gap-5 shadow-lg rounded-md border-2'>
                             <div className='flex flex-row items-center justify-between'>
                                 <h1 className='text-4xl'>Respuestas de la encuesta</h1>
-                                <img src={Sobresalir} alt="Descripción de la imagen" className="w-10 h-auto" />
+                                <img src={ExcelSvg} alt="Descripción de la imagen" className="w-10 h-auto" />
                             </div>
                             <h1 className='text-2xl font-bold '>Moises Garcia</h1>
 
@@ -244,10 +291,10 @@ const CreateQuest = () => {
                             <Link
                                 onClick={addQuestion}
                             >
-                                <img className='max-w-8' src={addQuestionSvg} />
+                                <img className='max-w-8' src={AddQuestionSvg} />
                             </Link>
                             <Link>
-                                <img className='max-w-10' src={importQuestionSvg} />
+                                <img className='max-w-10' src={ImportQuestionSvg} />
                             </Link>
                         </div>
                     </section>

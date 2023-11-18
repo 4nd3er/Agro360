@@ -1,126 +1,87 @@
-import { errorResponse, validObjectId, messages, compObjectId } from "../libs/libs.js"
-import { Forms, Topics, Admin, Questions, QuestionTypes } from "../models/models.js"
-import { createMethod, deleteMethod, getMethod, getOneMethod, updateMethod, updateMethodList } from "../libs/methods.js"
+import { compObjectId, compDuplicate } from "../libs/libs.js"
+import { Forms, QuestionTypes, Topics } from "../models/models.js"
+import { createMethod, deleteMethod, getMethod, getOneMethod, updateMethod } from "../libs/methods.js"
 
+// *Forms
 export const forms = async (req, res) => {
-
-    try {
-        const findForms = await Forms.find({})
-        if (!findForms.lenght > 0) return res.status(404).json({ msg: messages.notFound("Forms") })
-        res.json(findForms)
-
-    } catch (error) {
-        errorResponse(res, error)
-    }
+    await getMethod(res, Forms, "Forms")
 }
 
 export const getForm = async (req, res) => {
-
     const { id } = req.params
-
-    try {
-
-        if (!validObjectId(id)) return res.status(400).json({ msg: messages.invalidId("form") })
-        const findForm = await Forms.findById(id)
-        if (!findForm) return res.status(404).json({ msg: messages.notFound("Form") })
-
-        res.json(findForm)
-
-    } catch (error) {
-        errorResponse(res, error)
-    }
+    await getOneMethod(id, res, Forms, "Form")
 }
 
 export const createForm = async (req, res) => {
-
     const { name, description, topic, end, status, questions } = req.body
+    const data = { name, description, topic, end, status, creator: req.user.id, questions }
+    const find = { name }
 
-    try {
+    //*Comprobar el id del topic
+    const compTopic = await compObjectId(topic, Topics, "Topic")
+    if (!compTopic.success) return res.status(compTopic.status).json({ msg: compTopic.msg })
 
-        if (!validObjectId(topic)) return res.status(400).json({ msg: messages.invalidId("topic") })
+    // *Validaciones a la lista de questions
+    // Comprobar duplicados
+    const questionNames = questions.map((question) => question.question)
+    if (compDuplicate(questionNames)) return res.status(400).json({ msg: "Existing duplicate questions" })
 
-        const findTopic = await Topics.findById(topic)
-        if (!findTopic) return res.status(404).json({ msg: messages.notFound("Topic") })
-
-
-        const newForm = new Forms({ name, description, topic, end, status, creator: req.user.id, questions })
-        const savedForm = newForm.save()
-
-        res.json(savedForm)
-    } catch (error) {
-        errorResponse(res, error)
+    //Comprobar ObjectId del type de question
+    for (const [index, question] of questions.entries()) {
+        const type = question.type
+        const compQuestionType = await compObjectId(type, QuestionTypes, `Question type [${index}]`)
+        if (!compQuestionType.success) {
+            res.status(compQuestionType.status).json({ msg: compQuestionType.msg });
+            return;
+        }
     }
+    await createMethod(data, find, res, Forms, "Form")
 }
 
-
-
-// *Questions
-export const questions = async (req, res) => {
-
-    await getMethod(res, Questions, "Questions")
-}
-
-export const getQuestion = async (req, res) => {
-
+export const updateForm = async (req, res) => {
     const { id } = req.params
-    await getOneMethod(id, res, Questions, "Question")
+    const { name, description, topic, end, status, questions } = req.body
+    const data = { name, description, topic, end, status, creator: req.user.id, questions }
+    const find = { name }
+
+    //*Comprobar el id del topic
+    const compTopic = await compObjectId(topic, Topics, "Topic")
+    if (!compTopic.success) return res.status(compTopic.status).json({ msg: compTopic.msg })
+
+    // *Validaciones a la lista de questions
+    // Comprobar duplicados
+    const questionNames = questions.map((question) => question.question)
+    if (compDuplicate(questionNames)) return res.status(400).json({ msg: "Existing duplicate questions" })
+
+    //Comprobar ObjectId del type de question
+    for (const [index, question] of questions.entries()) {
+        const type = question.type
+        const compQuestionType = await compObjectId(type, QuestionTypes, `Question type [${index}]`)
+        if (!compQuestionType.success) {
+            res.status(compQuestionType.status).json({ msg: compQuestionType.msg });
+            return;
+        }
+    }
+    await updateMethod(data, id, find, res, Forms, "Form")
 }
 
-export const createQuestion = async (req, res) => {
-
-    const { name, type, options } = req.body
-    const data = { name, type, options, creator: req.user.id }
-    const find = { name: name }
-
-    await compObjectId(type, res, QuestionTypes, "Type")
-    await createMethod(data, find, res, Questions, "Question")
-}
-
-export const updateQuestion = async (req, res) => {
-
+export const deleteForm = async (req, res) => {
     const { id } = req.params
-    const { name, type, options } = req.body
-    const data = { name, type, options, creator: req.user.id }
-    const find = { name: name }
-
-    await compObjectId(type, res, QuestionTypes, "Type")
-    await updateMethod(data, id, find, res, Questions, "Question")
-}
-
-export const deleteQuestion = async (req, res) => {
-
-    const { id } = req.params
-    await deleteMethod(id, res, Questions, "Question")
-}
-
-// *Question Options
-export const updateQuestionOption = async (req, res) => {
-    
-    const { id, idoption } = req.params
-    const { option } = req.body
-
-    const reference = { _id: id, 'options._id': idoption }
-    const data = { 'options.$.option': option }
-    const find = { 'options.option': option }
-    const names = { model: "Question", list: "Option"}
-    
-    await updateMethodList(res, reference, data, find, Questions, names)
+    await deleteMethod(id, res, Forms, "Form")
 }
 
 // *Question Types
-export const questionTypes = async (req, res) => {
 
+export const questionTypes = async (req, res) => {
     await getMethod(res, QuestionTypes, "Question types")
 }
 
 export const getQuestionType = async (req, res) => {
-
     const { id } = req.params
     await getOneMethod(id, res, QuestionTypes, "Question type")
 }
 
 export const createQuestionType = async (req, res) => {
-
     const { name } = req.body
     const data = { name, creator: creator }
     const find = { name: name }
@@ -128,7 +89,6 @@ export const createQuestionType = async (req, res) => {
 }
 
 export const updateQuestionType = async (req, res) => {
-
     const { id } = req.params
     const { name } = req.body
     const data = { name, creator: creator }
@@ -137,7 +97,6 @@ export const updateQuestionType = async (req, res) => {
 }
 
 export const deleteQuestionType = async (req, res) => {
-
     const { id } = req.params
     await deleteMethod(id, res, QuestionTypes, "Question type")
 }

@@ -27,7 +27,7 @@ const Login = () => {
                                 <input
                                     id='email'
                                     type="text"
-                                    placeholder='Email de Registro'
+                                    placeholder='Digite el Correo Electronico'
                                     className='w-full mt-3 p-3 border rounded-xl bg-gray-50'
                                 />
                             </div>
@@ -39,11 +39,11 @@ const Login = () => {
                                 <input
                                     id='password'
                                     type="password"
-                                    placeholder='Password de Registro'
+                                    placeholder='Digite la contraseña'
                                     className='w-full mt-3 p-3 border rounded-xl bg-gray-50'
                                 />
                                 <Link
-                                    className='block  my-5 text-slate-500 uppercase text-xs'
+                                    className='block my-5 text-slate-500 uppercase text-xs'
                                     to='forget-password'
                                 >¿Olvidaste tu contraseña?</Link>
                             </div>
@@ -68,13 +68,7 @@ const Login = () => {
 
                 </div>
             </div>
-
-
-
         </>
-
-
-
     )
 }
 

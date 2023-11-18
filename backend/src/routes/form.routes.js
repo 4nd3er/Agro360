@@ -1,32 +1,9 @@
 import { Router } from 'express';
 import { validate, validateTokenCookie } from '../middlewares/middlewares.js'
-import { formValidator, questionValidator, questionTypeValidator } from '../validators/form.validators.js';
-import { createForm, createQuestion, createQuestionType, deleteQuestion, deleteQuestionType, forms, getQuestion, getQuestionType, questionTypes, questions, updateQuestion, updateQuestionOption, updateQuestionType } from '../controllers/form.controller.js'
+import { formValidator, questionTypeValidator } from '../validators/form.validators.js';
+import { createForm, createQuestionType, deleteForm, deleteQuestionType, forms, getForm, getQuestionType, questionTypes, updateForm, updateQuestionType } from '../controllers/form.controller.js'
 
 const router = Router()
-
-router.route("/forms")
-    .all(validateTokenCookie)
-    .get(forms)
-    .post(createForm)
-
-
-// *Questions
-router.route("/forms/questions")
-    .all(validateTokenCookie)
-    .get(questions)
-    .post(validate(questionValidator), createQuestion)
-
-router.route("/forms/questions/:id")
-    .all(validateTokenCookie)
-    .get(getQuestion)
-    .put(validate(questionValidator), updateQuestion)
-    .delete(deleteQuestion)
-
-// *Question Options
-router.route("/forms/questions/:id/options/:idoption")
-    .all(validateTokenCookie)
-    .put(updateQuestionOption)
 
 // *Question Types
 router.route("/forms/questions/questiontypes")
@@ -39,5 +16,18 @@ router.route("/forms/questions/questiontypes/:id")
     .get(getQuestionType)
     .put(validate(questionTypeValidator), updateQuestionType)
     .delete(deleteQuestionType)
+
+// *Forms
+router.route("/forms")
+    .all(validateTokenCookie)
+    .get(forms)
+    .post(validate(formValidator), createForm)
+
+router.route("/forms/:id")
+    .all(validateTokenCookie)
+    .get(getForm)
+    .put(validate(formValidator), updateForm)
+    .delete(deleteForm)
+
 
 export default router

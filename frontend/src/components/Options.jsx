@@ -1,8 +1,21 @@
-import React from 'react'
-
 const Options = ({ option, index, questionIndex, question, handleOptionChange, deleteOption }) => {
     return (
         <>
+            {question[1] === 'text' && (
+                <div className='flex items-center'>
+                    <textarea
+                        id={index + 1}
+                        key={index}
+                        type="text"
+                        htmlFor={index + 1}
+                        placeholder='Campo para respuesta abierta'
+                        value={option}
+                        onChange={(e) => handleOptionChange(questionIndex, index, e.target.value, null)}
+                        className="border-2 p-2 border-gray-400 resize-none rounded-lg w-full mb-3"
+                        disabled
+                    />
+                </div>
+            )}
             {question[1] === 'radio' && (
                 <div className='flex items-center'>
                     <input disabled type="radio" name="default-radio" className="w-5 h-5 text-blue-600 focus:ring-blue-500 ring-offset-gray-800 bg-gray-700 border-gray-600" />
@@ -16,12 +29,14 @@ const Options = ({ option, index, questionIndex, question, handleOptionChange, d
                         onChange={(e) => handleOptionChange(questionIndex, index, e.target.value, null)}
                         className="ml-2 text-lg font-medium text-gray-900 focus:border-b-2 p-2 border-gray-400"
                     />
-                    <button
-                        className='font-bold hover:bg-gray-100 p-2 text-xs rounded-md transition-all'
-                        onClick={() => deleteOption(index, questionIndex)}
-                    >
-                        Eliminar opcion
-                    </button>
+                    {question[2].length > 1 && (
+                        <button
+                            className='font-bold hover:bg-gray-100 p-2 text-xs rounded-md transition-all'
+                            onClick={() => deleteOption(index, questionIndex)}
+                        >
+                        Eliminar opción
+                        </button>
+                    )}
                 </div>
             )}
             {question[1] === 'checkbox' && (
@@ -39,12 +54,14 @@ const Options = ({ option, index, questionIndex, question, handleOptionChange, d
                             className="ml-2 text-lg font-medium text-gray-900 focus:border-b-2 p-2 border-gray-400"
                         />
                     </div>
-                    <button
-                        className='font-bold hover:bg-gray-100 p-2 text-xs rounded-md transition-all'
-                        onClick={() => deleteOption(index, questionIndex)}
-                    >
-                        Eliminar opcion
-                    </button>
+                    {question[2].length > 1 && (
+                        <button
+                            className='font-bold hover:bg-gray-100 p-2 text-xs rounded-md transition-all'
+                            onClick={() => deleteOption(index, questionIndex)}
+                        >
+                        Eliminar opción
+                        </button>
+                    )}
                 </div>
             )}
             {question[1] === 'scaleRikert' && (
@@ -231,12 +248,14 @@ const Options = ({ option, index, questionIndex, question, handleOptionChange, d
                             />
                         </li>
                     </ul>
-                    <button
-                        className='font-bold hover:bg-gray-100 p-2 text-xs rounded-md transition-all'
-                        onClick={() => deleteOption(index, questionIndex)}
-                    >
-                        Eliminar opcion
-                    </button>
+                    {question[2].length > 1 && (
+                        <button
+                            className='font-bold hover:bg-gray-100 p-2 text-xs rounded-md transition-all'
+                            onClick={() => deleteOption(index, questionIndex)}
+                        >
+                        Eliminar opción
+                        </button>
+                    )}
                 </div>
             )}
         </>

@@ -85,11 +85,12 @@ export const resetPassword = async (req, res) => {
 
     const { password } = req.body
     try {
-        const User = await Admin.findOneAndUpdate({ email: req.user.id }, { password: password }, {
-            new: true
-        })
+        const User = await Admin.findOne({ email: req.user.id })
         if (!User) return res.status(400).json({ msg: 'User not found' })
     
+        User.password = password
+        await User.save()
+        
         res.json({
             response: "Password changed successfully",
             data: {

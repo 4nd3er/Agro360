@@ -1,6 +1,4 @@
-import CardAprendiz from '../img/CardAprendiz.png'
-import CardInstructor from '../img/CardInstructor.png'
-import CardDirectivo from '../img/CardDirectivo.png'
+import CardRol from '../components/CardRol'
 import '../App.css'
 import { Link } from 'react-router-dom'
 
@@ -20,21 +18,9 @@ const Home = () => {
                     </p>
                 </header>
                 <main className="grid grid-cols-3 gap-4">
-                    <Link
-                        to="/tematicas/1"
-                    >
-                        <img src={CardAprendiz} alt="card-aprendiz" />
-                    </Link>
-                    <Link
-                        to="/tematicas/2"
-                    >
-                        <img src={CardInstructor} alt="card-instructor" />
-                    </Link>
-                    <Link
-                        to="/tematicas/3"
-                    >
-                        <img src={CardDirectivo} alt="card-directivo" />
-                    </Link>
+                    <Link to='/tematicas'>
+                    <CardRol/>
+                    </Link>            
                 </main>
             </div>
         </div>

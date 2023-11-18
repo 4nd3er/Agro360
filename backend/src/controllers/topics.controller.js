@@ -1,6 +1,6 @@
-import { Topics } from "../models/models.js"
+import { Roles, Topics } from "../models/models.js"
 import { createMethod, deleteMethod, getMethod, getOneMethod, updateMethod } from "../libs/methods.js"
-
+import compObjectId from "../libs/compObjectId.js"
 
 export const topics = async (req, res) => {
 
@@ -18,7 +18,10 @@ export const createTopic = async (req, res) => {
     const { name, role } = req.body
     const data = { name, role, creator: req.user.id }
     const find = { name }
-    createMethod(data, find, res, Topics, "Topic")
+
+    const compRol = await compObjectId(role, res, Roles, "Role")
+    if (!compRol.success) return res.status(compRol.status).json({ msg: compRol.msg })
+    await createMethod(data, find, res, Topics, "Topic")
 }
 
 export const updateTopic = async (req, res) => {
@@ -27,7 +30,10 @@ export const updateTopic = async (req, res) => {
     const { name, role } = req.body
     const data = { name, role, creator: req.user.id }
     const find = { name }
-    updateMethod(data, id, find, res, Topics, "Topic")
+
+    const compRol = await compObjectId(role, res, Roles, "Role")
+    if (!compRol.success) return res.status(compRol.status).json({ msg: compRol.msg })
+    await updateMethod(data, id, find, res, Topics, "Topic")
 }
 
 export const deleteTopic = async (req, res) => {
