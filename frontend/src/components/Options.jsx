@@ -1,7 +1,7 @@
-const Options = ({ option, index, questionIndex, question, handleOptionChange, deleteOption }) => {
+const Options = ({ option, index, questionIndex, question, handleOptionChange, deleteOption, questionTypeValue, validationQuestionOption }) => {
     return (
         <>
-            {question[1] === 'text' && (
+            {questionTypeValue[question[1]] === 'text' && (
                 <div className='flex items-center'>
                     <textarea
                         id={index + 1}
@@ -16,7 +16,7 @@ const Options = ({ option, index, questionIndex, question, handleOptionChange, d
                     />
                 </div>
             )}
-            {question[1] === 'radio' && (
+            {questionTypeValue[question[1]] === 'radio' && (
                 <div className='flex items-center'>
                     <input disabled type="radio" name="default-radio" className="w-5 h-5 text-blue-600 focus:ring-blue-500 ring-offset-gray-800 bg-gray-700 border-gray-600" />
                     <input
@@ -30,16 +30,19 @@ const Options = ({ option, index, questionIndex, question, handleOptionChange, d
                         className="ml-2 text-lg font-medium text-gray-900 focus:border-b-2 p-2 border-gray-400"
                     />
                     {question[2].length > 1 && (
-                        <button
-                            className='font-bold hover:bg-gray-100 p-2 text-xs rounded-md transition-all'
+                        <div
+                            className='font-bold hover:bg-gray-100 p-2 text-xs rounded-md transition-all cursor-pointer'
                             onClick={() => deleteOption(index, questionIndex)}
                         >
-                        Eliminar opción
-                        </button>
+                            Eliminar opción
+                        </div>
                     )}
+                    <div className='px-10 text-red-500 flex justify-around select-none'>
+                        <span className={`${option === '' && validationQuestionOption ? 'opacity-100' : 'opacity-0'} transition-[.1s_all] text-xs`}>Las opción no debe ser vacia</span>
+                    </div>
                 </div>
             )}
-            {question[1] === 'checkbox' && (
+            {questionTypeValue[question[1]] === 'checkbox' && (
                 <div className='flex items-center'>
                     <div className=''>
                         <input disabled type="checkbox" className=" rounded w-5 h-5 text-blue-600 focus:ring-blue-500 ring-offset-gray-800 bg-gray-700 border-gray-600" />
@@ -55,26 +58,34 @@ const Options = ({ option, index, questionIndex, question, handleOptionChange, d
                         />
                     </div>
                     {question[2].length > 1 && (
-                        <button
-                            className='font-bold hover:bg-gray-100 p-2 text-xs rounded-md transition-all'
+                        <div
+                            className='font-bold hover:bg-gray-100 p-2 text-xs rounded-md transition-all cursor-pointer'
                             onClick={() => deleteOption(index, questionIndex)}
                         >
-                        Eliminar opción
-                        </button>
+                            Eliminar opción
+                        </div>
                     )}
+                    <div className='px-10 text-red-500 flex justify-around select-none'>
+                        <span className={`${option === '' && validationQuestionOption ? 'opacity-100' : 'opacity-0'} transition-[.1s_all] text-xs`}>Las opción no debe ser vacia</span>
+                    </div>
                 </div>
             )}
-            {question[1] === 'scaleRikert' && (
+            {questionTypeValue[question[1]] === 'scaleRikert' && (
                 <div className='py-4'>
                     <div className='flex justify-around'>
                         {option.map((content, indexContent) => (
-                            <input
-                                type="text"
-                                value={content}
-                                placeholder={`parametro ${indexContent + 1}`}
-                                className="mb-6 text-lg font-medium text-gray-900 rounded"
-                                onChange={(e) => handleOptionChange(questionIndex, index, e.target.value, indexContent)}
-                            />
+                            <>
+                                <input
+                                    type="text"
+                                    value={content}
+                                    placeholder={`parametro ${indexContent + 1}`}
+                                    className="mb-6 text-lg font-medium text-gray-900 rounded"
+                                    onChange={(e) => handleOptionChange(questionIndex, index, e.target.value, indexContent)}
+                                />
+                                <div className='px-10 text-red-500 flex justify-around select-none'>
+                                    <span className={`${content === '' && validationQuestionOption ? 'opacity-100' : 'opacity-0'} transition-[.1s_all] text-xs`}>Las opción no debe ser vacia</span>
+                                </div>
+                            </>
                         ))}
                     </div>
                     <ul className="flex justify-center gap-10 mb-4">
@@ -126,17 +137,22 @@ const Options = ({ option, index, questionIndex, question, handleOptionChange, d
                     </ul>
                 </div>
             )}
-            {question[1] === 'scaleRating' && (
+            {questionTypeValue[question[1]] === 'scaleRating' && (
                 <div className='py-4'>
                     <div className='flex justify-between'>
                         {option.map((content, indexContent) => (
-                            <input
-                                type="text"
-                                value={content}
-                                placeholder={`parametro ${indexContent + 1}`}
-                                className="mb-6 text-lg font-medium text-gray-900 rounded"
-                                onChange={(e) => handleOptionChange(questionIndex, index, e.target.value, indexContent)}
-                            />
+                            <>
+                                <input
+                                    type="text"
+                                    value={content}
+                                    placeholder={`parametro ${indexContent + 1}`}
+                                    className="mb-6 text-lg font-medium text-gray-900 rounded"
+                                    onChange={(e) => handleOptionChange(questionIndex, index, e.target.value, indexContent)}
+                                />
+                                <div className='px-10 text-red-500 flex justify-around select-none'>
+                                    <span className={`${content === '' && validationQuestionOption ? 'opacity-100' : 'opacity-0'} transition-[.1s_all] text-xs`}>Las opción no debe ser vacia</span>
+                                </div>
+                            </>
                         ))}
                     </div>
                     <ul className="flex justify-center gap-10 mb-4">
@@ -233,7 +249,7 @@ const Options = ({ option, index, questionIndex, question, handleOptionChange, d
                     </ul>
                 </div>
             )}
-            {question[1] === 'scaleSemantic' && (
+            {questionTypeValue[question[1]] === 'scaleSemantic' && (
                 <div className='flex items-center'>
                     <ul className='flex justify-center gap-10 mb-4'>
                         <li
@@ -249,13 +265,16 @@ const Options = ({ option, index, questionIndex, question, handleOptionChange, d
                         </li>
                     </ul>
                     {question[2].length > 1 && (
-                        <button
-                            className='font-bold hover:bg-gray-100 p-2 text-xs rounded-md transition-all'
+                        <div
+                            className='font-bold hover:bg-gray-100 p-2 text-xs rounded-md transition-all cursor-pointer'
                             onClick={() => deleteOption(index, questionIndex)}
                         >
-                        Eliminar opción
-                        </button>
+                            Eliminar opción
+                        </div>
                     )}
+                    <div className='px-10 text-red-500 flex justify-around select-none'>
+                        <span className={`${option === '' && validationQuestionOption ? 'opacity-100' : 'opacity-0'} transition-[.1s_all] text-xs`}>Las opción no debe ser vacia</span>
+                    </div>
                 </div>
             )}
         </>
