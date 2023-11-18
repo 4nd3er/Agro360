@@ -9,7 +9,7 @@ const Login = () => {
 
                     <h1 className="text-green-800 font-black text-6xl capitalize ">AGRO
                         <span className="text-green-500 text-8xl">360°</span>
-                        <h3 className='text-green-800 text-sm flex justify-center '>Evaluación de desempeño</h3>
+                        <p className='text-green-800 text-sm flex justify-center '>Evaluación de desempeño</p>
                     </h1>
                 </div>
 
@@ -17,11 +17,11 @@ const Login = () => {
 
                 <div className="w-3/5 h-full ">
                     <div className=" flex flex-col justify-center place-items-center min-h-[80vh] ">
-                        <strong className=' text-green-600  text-6xl capitalize font-sans'>Bienvenidos</strong>
+                        <strong className=' text-green-600  text-6xl capitalize font-sans'>Bienvenido</strong>
 
                         <form className='my-10 bg-white shadow rounded-lg px-10 py-5 w-1/2'>
                             <div className='my-5'>
-                                <label className='capitalize text-gray-600 block text-xl font-bold'
+                                <label className=' text-gray-600 block text-sm font-bold'
                                     htmlFor='email'
                                 >Correo Electronico</label>
                                 <input
@@ -32,7 +32,7 @@ const Login = () => {
                                 />
                             </div>
                             <div className='my-5'>
-                                <label className='capitalize text-gray-600 block text-xl font-bold'
+                                <label className=' text-gray-600 block text-sm font-bold'
                                     htmlFor='password'
                                 >Contraseña</label>
 

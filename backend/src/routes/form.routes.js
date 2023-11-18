@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { validate, validateTokenCookie } from '../middlewares/middlewares.js'
-import { formValidator, questionValidator, questionTypeValidator } from '../validators/form.validators.js';
-import { createForm, createQuestion, createQuestionType, deleteForm, deleteQuestion, deleteQuestionType, forms, getForm, getQuestion, getQuestionType, questionTypes, questions, updateForm, updateQuestion, updateQuestionType } from '../controllers/form.controller.js'
+import { formValidator, questionTypeValidator } from '../validators/form.validators.js';
+import { createForm, createQuestionType, deleteForm, deleteQuestionType, forms, getForm, getQuestionType, questionTypes, updateForm, updateQuestionType } from '../controllers/form.controller.js'
 
 const router = Router()
 
@@ -16,18 +16,6 @@ router.route("/forms/questions/questiontypes/:id")
     .get(getQuestionType)
     .put(validate(questionTypeValidator), updateQuestionType)
     .delete(deleteQuestionType)
-
-// *Questions
-router.route("/forms/questions")
-    .all(validateTokenCookie)
-    .get(questions)
-    .post(validate(questionValidator), createQuestion)
-
-router.route("/forms/questions/:id")
-    .all(validateTokenCookie)
-    .get(getQuestion)
-    .put(validate(questionValidator), updateQuestion)
-    .delete(deleteQuestion)
 
 // *Forms
 router.route("/forms")

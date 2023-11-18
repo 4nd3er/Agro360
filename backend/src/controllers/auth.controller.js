@@ -6,9 +6,12 @@ export const login = async (req, res) => {
 
     const { email, password } = req.body
     try {
+
+        //Validacion 
         const findUser = await Admin.findOne({ email })
         if (!findUser) return res.status(400).json({ msg: "User not found" })
 
+        //Validacion
         const isPassword = await bcrypt.compare(password, findUser.password)
         if (!isPassword) return res.status(400).json({ msg: "Incorrect password" })
 
@@ -36,8 +39,9 @@ export const register = async (req, res) => {
 
     const { names, lastnames, email, password } = req.body
     try {
+        //Validadion Usuario ya existe en base de datos
         const findUser = await Admin.findOne({ email })
-        if (findUser) return res.status(400).json({ msg: 'This user already exists' })
+        if (findUser) return res.status(400).json({ msg: 'Usuario ya Existe' })
 
         const newUser = new Admin({
             names,
@@ -45,10 +49,11 @@ export const register = async (req, res) => {
             email,
             password
         })
+        //Validacion Registro de usuario 
         const userSaved = await newUser.save()
 
         res.json({
-            response: "User registered successfully",
+            msg: "Usuario creado exitosamente",
             data: {
                 id: userSaved._id,
                 names: userSaved.names,
@@ -80,11 +85,12 @@ export const resetPassword = async (req, res) => {
 
     const { password } = req.body
     try {
-        const User = await Admin.findOneAndUpdate({ email: req.user.id }, { password: password }, {
-            new: true
-        })
+        const User = await Admin.findOne({ email: req.user.id })
         if (!User) return res.status(400).json({ msg: 'User not found' })
     
+        User.password = password
+        await User.save()
+        
         res.json({
             response: "Password changed successfully",
             data: {

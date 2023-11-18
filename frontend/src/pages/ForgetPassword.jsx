@@ -7,7 +7,7 @@ const ForgetPassword = () => {
 
             <h1 className="text-green-800 font-black text-6xl capitalize ">AGRO
                 <span className="text-green-500 text-8xl">360°</span>
-                <h3 className='text-green-800 text-sm flex justify-center '>Evaluacion de desempeño</h3>
+                <p className='text-green-800 text-sm flex justify-center '>Evaluacion de desempeño</p>
             </h1>
         </div>
 
@@ -19,7 +19,7 @@ const ForgetPassword = () => {
 
                 <form className='my-10 bg-white shadow rounded-lg px-10 py-5 w-1/2'>
                     <div className='my-5'>
-                        <label className='uppercase text-gray-600 block text-sm font-bold'
+                        <label className='text-gray-600 block text-sm font-bold'
                             htmlFor='email'
                         >Correo Electronico</label>
                         <input

@@ -31,7 +31,7 @@ const formsSchema = new mongoose.Schema({
     },
     questions: [
         {
-            name: {
+            question: {
                 type: String,
                 trim: true,
                 required: true,

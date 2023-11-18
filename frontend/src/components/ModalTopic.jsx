@@ -1,31 +1,16 @@
-import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useState } from 'react'
+import { Dialog, Transition } from '@headlessui/react'
+import useRoles from '../hooks/useRoles'
 
-export default function ModalTopic() {
-  let [isOpen, setIsOpen] = useState(true)
-
-  function closeModal() {
-    setIsOpen(false)
-  }
-
-  function openModal() {
-    setIsOpen(true)
-  }
+const ModalTopic = () => {
+  
+  // Extract the logic to open and close the modal
+  const { modalTopicForm, handleModalTopic } = useRoles()
 
   return (
-    <>
-      <div className="fixed inset-0 flex items-center justify-center">
-        <button
-          type="button"
-          onClick={openModal}
-          className="rounded-md bg-black/20 px-4 py-2 text-sm font-medium text-white hover:bg-black/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
-        >
-          Open dialog
-        </button>
-      </div>
-
-      <Transition appear show={isOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={closeModal}>
+    <Transition.Root show={modalTopicForm} as={Fragment}>
+      <Dialog as="div" className="fixed z-10 inset-0 overflow-y-auto" onClose={handleModalTopic}>
+        <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -35,49 +20,88 @@ export default function ModalTopic() {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-black/25" />
+            <Dialog.Overlay
+              className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+            />
           </Transition.Child>
 
-          <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex min-h-full items-center justify-center p-4 text-center">
-              <Transition.Child
-                as={Fragment}
-                enter="ease-out duration-300"
-                enterFrom="opacity-0 scale-95"
-                enterTo="opacity-100 scale-100"
-                leave="ease-in duration-200"
-                leaveFrom="opacity-100 scale-100"
-                leaveTo="opacity-0 scale-95"
-              >
-                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                  <Dialog.Title
-                    as="h3"
-                    className="text-lg font-medium leading-6 text-gray-900"
-                  >
-                    Payment successful
-                  </Dialog.Title>
-                  <div className="mt-2">
-                    <p className="text-sm text-gray-500">
-                      Your payment has been successfully submitted. We’ve sent
-                      you an email with all of the details of your order.
-                    </p>
-                  </div>
+          {/* This element is to trick the browser into centering the modal contents. */}
+          <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">
+            &#8203;
+          </span>
 
-                  <div className="mt-4">
-                    <button
-                      type="button"
-                      className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                      onClick={closeModal}
-                    >
-                      Got it, thanks!
-                    </button>
-                  </div>
-                </Dialog.Panel>
-              </Transition.Child>
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+            enterTo="opacity-100 translate-y-0 sm:scale-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+            leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+          >
+            <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
+              {/* cerrar modal */}
+              <div className="hidden sm:block absolute top-0 right-0 pt-4 pr-4">
+                <button
+                  type="button"
+                  className="bg-white rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  onClick={handleModalTopic}
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                  </svg>
+                </button>
+              </div>
+              <div className="sm:flex sm:items-start">
+                <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                  <Dialog.Title as="h1" className="text-2xl text-center leading-6 font-bold text-gray-900">
+                    Nueva Temática
+                  </Dialog.Title>
+                  
+                  {/* inicio formulario crear tarea */}
+                  <form
+                    className='my-10'>
+                    <div className="mb-5">
+                      <label
+                        htmlFor="nombre"
+                        className="text-gray-700 font-bold text-base">
+                        Temática:
+                      </label>
+                      <input
+                        id='nombre'
+                        type="text"
+                        placeholder='Nombre de la tarea'
+                        className="border w-full p-2 mt-2 placeholder-gray-400 rounded-lg"
+                         />
+                    </div>
+
+                    <div className="mb-5">
+                      <label
+                        htmlFor="descripcion"
+                        className="text-gray-700 font-bold text-base">
+                        Descripción:
+                      </label>
+                      <textarea
+                        id='descripcion'
+                        type="text"
+                        placeholder='Descripción de la tematica'
+                        className="border w-full p-2 mt-2 placeholder-gray-400 rounded-lg"
+                        />
+                    </div>
+                    <input
+                      type="submit"
+                      className="bg-sky-600 hover:bg-sky-700 w-full p-3 text-white text-lg font-bold cursor-pointer transition-colors rounded-xl"
+                      value="Crear temática" />
+                  </form>
+                  {/* fin formulario crear tarea */}
+                </div>
+              </div>
             </div>
-          </div>
-        </Dialog>
-      </Transition>
-    </>
+          </Transition.Child>
+        </div>
+      </Dialog>
+    </Transition.Root>
   )
 }
+
+export default ModalTopic

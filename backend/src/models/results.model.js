@@ -23,7 +23,7 @@ const resultsSchema = new mongoose.Schema({
                 ref: 'Users',
                 required: true
             },
-            content: {
+            answer: {
                 type: String,
                 trim: true,
                 required: true
