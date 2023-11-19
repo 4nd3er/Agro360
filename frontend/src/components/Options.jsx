@@ -1,7 +1,7 @@
 const Options = ({ option, index, questionIndex, question, handleOptionChange, deleteOption, questionTypeValue, validationQuestionOption }) => {
     return (
         <>
-            {questionTypeValue[question[1]] === 'text' && (
+            {questionTypeValue[question[1][1]] === 'text' && (
                 <div className='flex items-center'>
                     <textarea
                         id={index + 1}
@@ -16,7 +16,7 @@ const Options = ({ option, index, questionIndex, question, handleOptionChange, d
                     />
                 </div>
             )}
-            {questionTypeValue[question[1]] === 'radio' && (
+            {questionTypeValue[question[1][1]] === 'radio' && (
                 <div className='flex items-center'>
                     <input disabled type="radio" name="default-radio" className="w-5 h-5 text-blue-600 focus:ring-blue-500 ring-offset-gray-800 bg-gray-700 border-gray-600" />
                     <input
@@ -42,7 +42,7 @@ const Options = ({ option, index, questionIndex, question, handleOptionChange, d
                     </div>
                 </div>
             )}
-            {questionTypeValue[question[1]] === 'checkbox' && (
+            {questionTypeValue[question[1][1]] === 'checkbox' && (
                 <div className='flex items-center'>
                     <div className=''>
                         <input disabled type="checkbox" className=" rounded w-5 h-5 text-blue-600 focus:ring-blue-500 ring-offset-gray-800 bg-gray-700 border-gray-600" />
@@ -70,7 +70,7 @@ const Options = ({ option, index, questionIndex, question, handleOptionChange, d
                     </div>
                 </div>
             )}
-            {questionTypeValue[question[1]] === 'scaleRikert' && (
+            {questionTypeValue[question[1][1]] === 'scaleRikert' && (
                 <div className='py-4'>
                     <div className='flex justify-around'>
                         {option.map((content, indexContent) => (
@@ -137,7 +137,7 @@ const Options = ({ option, index, questionIndex, question, handleOptionChange, d
                     </ul>
                 </div>
             )}
-            {questionTypeValue[question[1]] === 'scaleRating' && (
+            {questionTypeValue[question[1][1]] === 'scaleRating' && (
                 <div className='py-4'>
                     <div className='flex justify-between'>
                         {option.map((content, indexContent) => (
@@ -249,7 +249,7 @@ const Options = ({ option, index, questionIndex, question, handleOptionChange, d
                     </ul>
                 </div>
             )}
-            {questionTypeValue[question[1]] === 'scaleSemantic' && (
+            {questionTypeValue[question[1][1]] === 'scaleSemantic' && (
                 <div className='flex items-center'>
                     <ul className='flex justify-center gap-10 mb-4'>
                         <li
