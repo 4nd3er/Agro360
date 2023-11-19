@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 const Topics = () => {
     const params = useParams() // Obtain id of rol
     const { handleModalTopic, obtainTopic } = useRoles()
-    const [topics, setTopics] = useState([]) // para guardar lastematicas de cada rol e iterar
+    const [topics, setTopics] = useState([]) // para guardar las tematicas de cada rol e iterar
 
 
     // Obtain topics 
