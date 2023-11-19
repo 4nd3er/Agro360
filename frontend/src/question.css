@@ -5,21 +5,11 @@
     border-left-width: 5px;
     border-radius: 10px;
     box-shadow: 0px 4px 4px #00000040;
-    height: 450px;
+    height: 250px;
     position: relative;
     width: 1100px;
 }
 
-.response .options {
-    align-items: flex-start;
-    display: inline-flex;
-    flex-direction: column;
-    gap: 19px;
-    height: 150px;
-    left: 463px;
-    position: absolute;
-    top: 114px;
-}
 
 .response .yellow {
     height: 20.5px;

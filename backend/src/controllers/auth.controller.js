@@ -7,19 +7,19 @@ export const login = async (req, res) => {
     const { email, password } = req.body
     try {
 
-        //Validacion 
+        //Validacion Usuario no existe en base de datos
         const findUser = await Admin.findOne({ email })
-        if (!findUser) return res.status(400).json({ msg: "User not found" })
+        if (!findUser) return res.status(400).json({ msg: "El usuario no existe" })
 
-        //Validacion
+        //Validacion Contraseña incorrecta
         const isPassword = await bcrypt.compare(password, findUser.password)
-        if (!isPassword) return res.status(400).json({ msg: "Incorrect password" })
+        if (!isPassword) return res.status(400).json({ msg: "Contraseña incorrecta" })
 
         const token = await createToken({ id: findUser.id, expires: "30d" })
         res.cookie("token", token)
 
         res.json({
-            response: "User logged in successfully",
+            response: "Inicio de sesion",
             data: {
                 id: findUser._id,
                 names: findUser.names,
@@ -65,7 +65,7 @@ export const register = async (req, res) => {
         errorResponse(res, error)
     }
 }
-
+  
 export const forgetPassword = async (req, res) => {
 
     const { email } = req.body
@@ -80,17 +80,17 @@ export const forgetPassword = async (req, res) => {
         errorResponse(res, error)
     }
 }
-
+//Reestablecer contraseña 
 export const resetPassword = async (req, res) => {
 
     const { password } = req.body
     try {
         const User = await Admin.findOne({ email: req.user.id })
         if (!User) return res.status(400).json({ msg: 'User not found' })
-    
+    //Actualizar contraseña
         User.password = password
         await User.save()
-        
+       //respuesta exitosa 
         res.json({
             response: "Password changed successfully",
             data: {

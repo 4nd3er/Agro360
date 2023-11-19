@@ -1,7 +1,22 @@
-import React from 'react';
+import {useForm}  from 'react-hook-form'
 import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContex';
 
 const Login = () => {
+
+   const {
+    register,
+     handleSubmit,
+     formState: {errors},
+    } = useForm();  
+    const {signin} = useAuth();
+   
+   const onSubmit = handleSubmit((data) => {
+    signin(data);
+   })
+   
+
+        
     return (
         <>
             <div className="flex  justify-center items-center min-h-[80vh]">
@@ -19,18 +34,23 @@ const Login = () => {
                     <div className=" flex flex-col justify-center place-items-center min-h-[80vh] ">
                         <strong className=' text-green-600  text-6xl capitalize font-sans'>Bienvenido</strong>
 
-                        <form className='my-10 bg-white shadow rounded-lg px-10 py-5 w-1/2'>
+                       
+                        <form 
+                        className='my-10 bg-white shadow rounded-lg px-10 py-5 w-1/2'
+                        onSubmit={onSubmit}>
                             <div className='my-5'>
                                 <label className=' text-gray-600 block text-sm font-bold'
                                     htmlFor='email'
                                 >Correo Electronico</label>
                                 <input
                                     id='email'
-                                    type="text"
+                                    {... register('email', { required: true })}
+                                    type="email"
                                     placeholder='Digite el Correo Electronico'
                                     className='w-full mt-3 p-3 border rounded-xl bg-gray-50'
                                 />
                             </div>
+                            
                             <div className='my-5'>
                                 <label className=' text-gray-600 block text-sm font-bold'
                                     htmlFor='password'
@@ -38,6 +58,7 @@ const Login = () => {
 
                                 <input
                                     id='password'
+                                    {... register('password', { required: true })}
                                     type="password"
                                     placeholder='Digite la contraseña'
                                     className='w-full mt-3 p-3 border rounded-xl bg-gray-50'
