@@ -3,7 +3,6 @@ import { createMethod, deleteMethod, getMethod, getOneMethod, updateMethod } fro
 import compObjectId from "../libs/compObjectId.js"
 
 export const topics = async (req, res) => {
-
     getMethod(res, Topics, "Topics")
 }
 

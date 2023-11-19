@@ -34,8 +34,7 @@ const formsSchema = new mongoose.Schema({
             question: {
                 type: String,
                 trim: true,
-                required: true,
-                unique: true
+                required: true
             },
             type: {
                 type: mongoose.Schema.Types.ObjectId,
