@@ -1,7 +1,7 @@
 export { default as Admin } from './admin.model.js'
 export { default as Users} from './users.model.js'
 export { default as Forms} from './forms.model.js'
-export { default as Results} from './results.model.js'
+export { default as Responses} from './responses.model.js'
 export { default as Roles} from './roles.model.js'
 export { default as Topics} from './topics.model.js'
 export { default as QuestionTypes} from './questiontypes.model.js'

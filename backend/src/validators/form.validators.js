@@ -23,15 +23,18 @@ export const formValidator = z.object({
             message: "Topic must be at least 24 characters"
         }),
     end: z
-        .string({
-            required_error: "End is required"
-        }),
+        .coerce
+        .date()
+        .min(new Date(), {
+            message: "The date is invalid"
+        }),        
     status: z
         .boolean()
+        .default(false)
         .nullish(),
     questions: z.array(
         z.object({
-            name: z
+            question: z
                 .string({
                     required_error: ""
                 })
@@ -54,29 +57,6 @@ export const formValidator = z.object({
             )
         })
     )
-})
-
-export const questionValidator = z.object({
-    name: z
-        .string({
-            required_error: "Name is required"
-        })
-        .min(10, {
-            message: "Name must be at least 10 characters"
-        }),
-    type: z
-        .string({
-            required_error: "Type is required"
-        })
-        .min(24, {
-            message: "Type must be at least 24 characters"
-        }),
-    option: z
-        .string()
-        .min(6, {
-            message: "Option must be at least 6 characters"
-        })
-        .nullish()
 })
 
 export const questionTypeValidator = z.object({
