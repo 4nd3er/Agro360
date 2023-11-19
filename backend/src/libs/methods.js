@@ -2,6 +2,13 @@ import errorResponse from "./ErrorResponse.js"
 import validObjectId from "./ValidObjectId.js"
 import { messages } from "./libs.js"
 
+// *Funcion para capitalizar el valor del primer campo de un objeto
+function capitalizeCamp(data) {
+    const objects = Object.entries(data)
+    const [key, value] = objects[0]
+    data[key] = value.charAt(0).toUpperCase() + value.toLowerCase().slice(1)
+}
+
 export const getMethod = async (res, model, name) => {
 
     const mayusName = name.charAt(0).toUpperCase() + name.slice(1)
@@ -9,7 +16,7 @@ export const getMethod = async (res, model, name) => {
 
     try {
         const findModel = await model.find({})
-        if (!findModel.length > 0) res.status(404).json({ msg: messages.notFound(mayusName) })
+        if (!findModel.length > 0) return res.status(404).json({ msg: messages.notFound(mayusName) })
         res.json(findModel)
     } catch (error) {
         errorResponse(res, error)
@@ -22,7 +29,7 @@ export const getOneMethod = async (id, res, model, name) => {
     name = name.toLowerCase()
 
     try {
-        if (!validObjectId(id)) return res.status(400).json({ msg: messages.invalidId(name) })
+        // if (!validObjectId(id)) return res.status(400).json({ msg: messages.invalidId(name) })
         const findModel = await model.findById(id)
         if (!findModel) return res.status(404).json({ msg: messages.notFound(mayusName) })
 
@@ -36,6 +43,8 @@ export const createMethod = async (data, find, res, model, name) => {
 
     const mayusName = name.charAt(0).toUpperCase() + name.slice(1)
     name = name.toLowerCase()
+    capitalizeCamp(data)
+    capitalizeCamp(find)
 
     try {
         const findModel = await model.findOne(find)
@@ -57,6 +66,8 @@ export const updateMethod = async (data, id, find, res, model, name) => {
 
     const mayusName = name.charAt(0).toUpperCase() + name.slice(1)
     name = name.toLowerCase()
+    capitalizeCamp(data)
+    capitalizeCamp(find)
 
     try {
         if (!validObjectId(id)) return res.status(400).json({ msg: messages.invalidId(name) })
@@ -122,7 +133,7 @@ export const getRelations = async (id, find, res, model, name, searchModel, sear
 export const verifyObjectId = async (res) => {
 
     try {
-        
+
     } catch (error) {
         errorResponse(res, error)
     }
