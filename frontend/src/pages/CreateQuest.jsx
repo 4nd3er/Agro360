@@ -5,6 +5,7 @@ import { Options, BarsChart, PiesChart } from '../components/Components';
 import '../question.css';
 import Swal from 'sweetalert2';
 import axios from 'axios';
+import { Formik, Field, Form, ErrorMessage, FieldArray } from 'formik';
 
 const CreateQuest = () => {
     const location = useLocation();
@@ -33,18 +34,12 @@ const CreateQuest = () => {
         const titleParam = searchParams.get('titulo');
         const descripParam = searchParams.get('descripcion');
         const topicParam = searchParams.get('opciones');
-        if (titleParam) {
+        if (titleParam && descripParam && topicParam) {
             localStorage.setItem('title', titleParam);
-        }
-
-        if (descripParam) {
             localStorage.setItem('descrip', descripParam);
-        }
-
-        if (topicParam) {
             localStorage.setItem('topic', topicParam);
         }
-    }, [searchParams])
+    }, [])
 
     useEffect(() => {
         setTitle(localStorage.getItem('title'));
@@ -73,7 +68,6 @@ const CreateQuest = () => {
             if (questionTypeValue[question[1]] === 'text' || questionTypeValue[question[1]] === 'radio' || questionTypeValue[question[1]] === 'checkbox' || questionTypeValue[question[1]] === 'scaleSemantic') {
                 currentQuestion[2] = [''];
             }
-            console.log(currentQuestion[2]);
             updatedQuestions[index] = currentQuestion;
             setQuestions(updatedQuestions);
         })
@@ -85,13 +79,11 @@ const CreateQuest = () => {
         currentQuestion[2].push('');
         updatedQuestions[questionIndex] = currentQuestion;
         setQuestions(updatedQuestions);
-        // if (window.scrollY >= window.scrollY / 2) {
-        //     window.scrollBy({
-        //         top: window.scrollY,
-        //         left: 0,
-        //         behavior: 'smooth'
-        //     });
-        // }
+        window.scrollBy({
+            top: 40,
+            left: 0,
+            behavior: 'smooth'
+        });
     };
 
     const addQuestion = () => {
@@ -159,28 +151,63 @@ const CreateQuest = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        questions.map((question) => {
-            question[0] === '' && setValidationQuestionContent(true);
-            question[1] === '' && setValidationQuestionType(true);
-            question[2].map((option) => {
-                option === '' && setValidationQuestionOption(true);
-                option.map((content) => {
-                    content === '' && setValidationQuestionOption(true);
-                })
-            })
-        })
-        // Swal.fire({
-        //     icon: 'success',
-        //     title: 'Encuesta Guardada',
-        //     text: 'Se ha guardado la encuesta satisfactoriamente!',
-        //     timer: 2000,
-        //     showConfirmButton: false
-        // })
-        // setTimeout(() => {
-        //     window.location.href = '/crear-formulario';
-        //     localStorage.clear();
-        // }, 2100); // ? redigire a la pagina de crear formulario
-        // * NO ELIMINAR
+        let isContentValid = false;
+        let isTypeValid = false;
+        let isOptionValid = false;
+        questions.forEach((question) => {
+            if (question[0] === '') {
+                setValidationQuestionContent(true);
+                isContentValid = false;
+            } else {
+                setValidationQuestionContent(false);
+                isContentValid = true;
+            }
+
+            if (question[1] === '') {
+                setValidationQuestionType(true);
+                isTypeValid = false;
+            } else {
+                setValidationQuestionType(false);
+                isTypeValid = true;
+            }
+
+            question[2].forEach((option) => {
+                if (option.length < 2 || option[0] === '' || option[1] === '') {
+                    setValidationQuestionOption(true);
+                    isOptionValid = false;
+                } else {
+                    setValidationQuestionOption(false);
+                    isOptionValid = true;
+                }
+            });
+        });
+        if (isContentValid && isTypeValid && isOptionValid) {
+            try {
+                // const data = axios.post('http://localhost:4000/api/forms', {
+                //     name: title, description: descrip, topic: '654481cd0223fc9db9532bf9', creator: '6558096819d178e8586c6244',
+                //     questions: questions
+                // });
+                // if (data) {
+                //     Swal.fire({
+                //         icon: 'success',
+                //         title: 'Encuesta Guardada',
+                //         text: 'Se ha guardado la encuesta satisfactoriamente!',
+                //         timer: 2000,
+                //         showConfirmButton: false
+                //     });
+                // }
+                // setTimeout(() => {
+                //     window.location.href = '/crear-formulario';
+                //     localStorage.clear();
+                // }, 2100);
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    text: error,
+                    showConfirmButton: true
+                });
+            }
+        }
     };
 
     const handleBlur = () => {

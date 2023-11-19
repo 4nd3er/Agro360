@@ -17,24 +17,24 @@ export const createForm = async (req, res) => {
     const data = { name, description, topic, end, status, creator: req.admin.id, questions }
     const find = { name }
 
-    //*Comprobar el id del topic
-    const compTopic = await compObjectId(topic, Topics, "Topic")
-    if (!compTopic.success) return res.status(compTopic.status).json({ msg: compTopic.msg })
+    // //*Comprobar el id del topic
+    // const compTopic = await compObjectId(topic, Topics, "Topic")
+    // if (!compTopic.success) return res.status(compTopic.status).json({ msg: compTopic.msg })
 
-    // *Validaciones a la lista de questions
-    // Comprobar duplicados
-    const questionNames = questions.map((question) => question.question)
-    if (compDuplicate(questionNames)) return res.status(400).json({ msg: "Existing duplicate questions" })
+    // // *Validaciones a la lista de questions
+    // // Comprobar duplicados
+    // const questionNames = questions.map((question) => question.question)
+    // if (compDuplicate(questionNames)) return res.status(400).json({ msg: "Existing duplicate questions" })
 
-    //Comprobar ObjectId del type de question
-    for (const [index, question] of questions.entries()) {
-        const type = question.type
-        const compQuestionType = await compObjectId(type, QuestionTypes, `Question type [${index}]`)
-        if (!compQuestionType.success) {
-            res.status(compQuestionType.status).json({ msg: compQuestionType.msg });
-            return;
-        }
-    }
+    // //Comprobar ObjectId del type de question
+    // for (const [index, question] of questions.entries()) {
+    //     const type = question.type
+    //     const compQuestionType = await compObjectId(type, QuestionTypes, `Question type [${index}]`)
+    //     if (!compQuestionType.success) {
+    //         res.status(compQuestionType.status).json({ msg: compQuestionType.msg });
+    //         return;
+    //     }
+    // }
     await createMethod(data, find, res, Forms, "Form")
 }
 

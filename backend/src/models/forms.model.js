@@ -19,7 +19,7 @@ const formsSchema = new mongoose.Schema({
     end: {
         type: Date,
         required: true,
-        default: Date.now
+        default: Date.now()
     },
     status: {
         type: Boolean,
@@ -51,7 +51,6 @@ const formsSchema = new mongoose.Schema({
                     }
                 }
             ]
-
         }
     ]
 }, { timestamps: true })
