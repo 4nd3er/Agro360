@@ -15,7 +15,7 @@ export const getForm = async (req, res) => {
 export const createForm = async (req, res) => {
     const { name, description, topic, end, status, questions } = req.body
     const data = { name, description, topic, end, status, creator: req.admin.id, questions }
-    const find = { name }
+    const find = { name: name, topic: topic }
 
     //*Comprobar el id del topic
     const compTopic = await compObjectId(topic, Topics, "Topic")
