@@ -19,12 +19,22 @@ const ModalTopic = () => {
         title: "Oops...",
         text: "Se nesecita un nombre para crear una temática",
       });
+      return;
     }
 
+    if (errors && errors.length > 0) {
+      const errorMessage = errors.join('\n'); // Unir mensajes de error con saltos de línea
+      Swal.fire({
+        icon: 'warning',
+        title: 'Alert',
+        text: errorMessage,
+      });
+    }
     // Intenta realizar la solicitud al servidor
     await createTopic({ name, role: idrol.id });
     // Limpiar el modal
     setName('');
+    
 
   }
 
@@ -76,11 +86,11 @@ const ModalTopic = () => {
               </div>
               <div className="sm:flex sm:items-start">
                 <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                    {errors.map((error, i) => (
+                    {/* {errors.map((error, i) => (
                       <div className="bg-red-500 p-2 text-white my-5 rounded-md" key={i}>
                         {error}
                       </div>
-                    ))}
+                    ))} */}
                   <Dialog.Title as="h1" className="text-2xl text-center leading-6 font-bold text-color-sena">
                     Nueva Temática
                   </Dialog.Title>
