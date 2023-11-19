@@ -13,7 +13,7 @@ const Results = () => {
     return (
         <div className='flex flex-col  min-h-[80vh] '>
 
-            <div className='flex flex-row h-1'> {/* Agrega la clase flex-row */}
+            <div className='flex flex-row h-2'> {/* Agrega la clase flex-row */}
                 {data.map((quest) => (
                     <Survey
                         id={quest._id}
