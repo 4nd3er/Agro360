@@ -25,7 +25,7 @@ const Survey = ({ title, imageSrc, isActive, id }) => {
           <img src={imageSrc} className='' style={{ width: "105px", height: "100px" }} />
         </div>
         <div className='w-full mb-4'>
-          <h2 className="h2Style text-xs border-t-2 pt-2 border-[#39A900]">
+          <h2 className="h2Style text-xs border-t-2 px-4 border-[#39A900]">
             {title}
             {/* <div className="menuStyle">
           <button onClick={toggleMenu}>...</button> Un botón que muestra puntos  y se activa al hacer clic
