@@ -14,7 +14,11 @@ import {
   NewPassword,
   Register,
   ForgetPassword,
-  ConfirmAccount
+  ConfirmAccount,
+  ResultQuest,
+  UserValidation,
+  TokenValidation,
+  Answers
 } from './pages/Pages';
 
 console.log(import.meta.env.VITE_BACKEND_URL)
@@ -24,6 +28,7 @@ function App() {
     <AuthProvider>
       <BrowserRouter>
         <RolesProvider>
+
           <Routes>
             <Route path='/' element={<LayoutLogin />}>
               <Route index element={<Login />} />
@@ -42,8 +47,23 @@ function App() {
             </Route>
             <Route path='/resultados' element={<AuthLayout />}>
               <Route index element={<Results />} />
+              <Route path=':idQuest' element={<ResultQuest />} />
+            </Route>
+            <Route path=':id/tematicas' element={<AuthLayout />}>
+              <Route index element={<Topics />} />
+              <Route path=':idrol' element={<Topics />} />
+            </Route>
+            <Route path='/validacion-usuario' element={<LayoutLogin />}>
+              <Route index element={<UserValidation />} />
+            </Route>
+            <Route path='/validacion-token' element={<LayoutLogin />}>
+              <Route index element={<TokenValidation />} />
+            </Route>
+            <Route path='/respuestas' element={<LayoutLogin />}>
+              <Route index element={<Answers />} />
             </Route>
           </Routes>
+
         </RolesProvider>
       </BrowserRouter>
     </AuthProvider>
