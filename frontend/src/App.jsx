@@ -14,7 +14,10 @@ import {
   Register,
   ForgetPassword,
   ConfirmAccount,
-  ResultQuest
+  ResultQuest,
+  UserValidation,
+  TokenValidation,
+  Answers
 } from './pages/Pages';
 
 console.log(import.meta.env.VITE_BACKEND_URL)
@@ -47,6 +50,41 @@ function App() {
           <Route index element={<Topics />} />
           <Route path=':idrol' element={<Topics />} />
         </Route>
+       
+
+
+
+
+
+
+
+
+
+
+
+        <Route path='/validacion-usuario' element={<LayoutLogin />}>
+          <Route index element={<UserValidation />} />
+        </Route>
+
+        <Route path='/validacion-token' element={<LayoutLogin />}>
+          <Route index element={<TokenValidation />} />
+        </Route>
+
+        <Route path='/respuestas' element={<LayoutLogin />}>
+          <Route index element={<Answers />} />
+        </Route>
+
+
+
+
+
+
+
+
+
+
+       
+
       </Routes>
       <RolesProvider>
         <Routes>
