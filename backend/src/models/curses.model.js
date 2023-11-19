@@ -16,11 +16,6 @@ const cursesSchema = new mongoose.Schema({
         trim: true,
         required: true,
         unique: true
-    },
-    end: {
-        type: Date,
-        required: true,
-        default: Date.now
     }
 }, { timestamps: true })
 

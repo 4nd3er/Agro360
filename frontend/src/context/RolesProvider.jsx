@@ -9,7 +9,7 @@ const RolesProvider = ({ children }) => {
     const [roles, setRoles] = useState([]) // Roles
     const [topic, setTopic] = useState({})
     const [modalTopicForm, setModalTopicForm] = useState(false)
-    const [errors, setErrors] = useState([])
+    const [errors, setErrors] = useState([''])
 
     // Obtain roles
     useEffect(() => {

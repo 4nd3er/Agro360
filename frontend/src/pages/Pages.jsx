@@ -9,3 +9,7 @@ export { default as Register } from './Register.jsx';
 export { default as Results } from './Results.jsx';
 export { default as ResultQuest } from './ResultQuest.jsx';
 export { default as Topics } from './Topics.jsx';
+export { default as UserValidation } from './UserValidation.jsx';
+export { default as TokenValidation } from './TokenValidation.jsx';
+export { default as Answers } from "./Answers.jsx";
+
