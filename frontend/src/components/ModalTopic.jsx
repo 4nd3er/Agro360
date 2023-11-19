@@ -1,11 +1,33 @@
 import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import useRoles from '../hooks/useRoles'
+import Swal from 'sweetalert2'
+import { useParams } from 'react-router-dom';
 
 const ModalTopic = () => {
-  
-  // Extract the logic to open and close the modal
-  const { modalTopicForm, handleModalTopic } = useRoles()
+  const [name, setName] = useState(''); // Name of topic or title
+  const idrol = useParams() // id of rol
+
+  // Extract the logic to open and close the modal and 
+  const { modalTopicForm, createTopic, handleModalTopic, errors} = useRoles()
+
+  const handleSubmit = async e => {
+    e.preventDefault();
+    if ([name].includes('')) {
+      Swal.fire({
+        icon: "warning",
+        title: "Oops...",
+        text: "Se nesecita un nombre para crear una temática",
+      });
+    }
+
+    // Intenta realizar la solicitud al servidor
+    await createTopic({ name, role: idrol.id });
+    // Limpiar el modal
+    setName('');
+
+  }
+
 
   return (
     <Transition.Root show={modalTopicForm} as={Fragment}>
@@ -54,12 +76,18 @@ const ModalTopic = () => {
               </div>
               <div className="sm:flex sm:items-start">
                 <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                    {errors.map((error, i) => (
+                      <div className="bg-red-500 p-2 text-white my-5 rounded-md" key={i}>
+                        {error}
+                      </div>
+                    ))}
                   <Dialog.Title as="h1" className="text-2xl text-center leading-6 font-bold text-color-sena">
                     Nueva Temática
                   </Dialog.Title>
-                  
+
                   {/* inicio formulario crear tarea */}
                   <form
+                    onSubmit={handleSubmit}
                     className='mt-8'>
                     <div className="mb-5">
                       <label
@@ -72,7 +100,9 @@ const ModalTopic = () => {
                         type="text"
                         placeholder='Nombre de la tarea'
                         className="border w-full p-2 mt-2 placeholder-gray-400 rounded-lg"
-                         />
+                        value={name}
+                        onChange={e => setName(e.target.value)}
+                      />
                     </div>
                     <input
                       type="submit"

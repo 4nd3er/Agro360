@@ -75,7 +75,7 @@ export default function Bars() {
     };
 
     return (
-        <div style={{ width: '600px', height: '550px', margin: '0 auto' }}>
+        <div style={{ width: '500px', height: '550px', margin: '0 auto' }}>
             <div>
                 <Bar data={midata} options={misoptions} />
             </div>
