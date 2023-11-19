@@ -12,7 +12,8 @@ import {
   NewPassword,
   Register,
   ForgetPassword,
-  ConfirmAccount
+  ConfirmAccount,
+  ResultQuest
 } from './pages/Pages';
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
         </Route>
         <Route path='/resultados' element={<AuthLayout />}>
           <Route index element={<Results />} />
+          <Route path=':idQuest' element={<ResultQuest />} />
         </Route>
         <Route path='/tematicas' element={<AuthLayout />}>
           <Route index element={<Topics />} />
