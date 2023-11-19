@@ -1,7 +1,8 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import Alert from "../components/Alert"
-import axios from 'axios'
+import agro360Axios from "../config/agro360Axios"
+//import axios from 'axios'
 
 
 
@@ -39,8 +40,8 @@ const Register = () => {
 
     //Registro de usuario 
     try {
-      //TODO: Mover hacia un cliente Axios
-      const {data} = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/register`, //Conexion a la API por medio del metodo Axios
+     
+      const {data} = await agro360Axios.post(`register`, //Conexion a la API por medio del metodo Axios
       {names, lastnames, documentType, document, email, password})
       //Alerta de registro exitoso
       setAlert({

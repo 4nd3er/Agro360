@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import AuthLayout from './layouts/AuthLayout';
+import {AuthProvider} from './context/RolesProvider';
 import LayoutLogin from './layouts/LayoutLogin';
 import { RolesProvider } from './context/RolesProvider';
 import {
@@ -20,7 +21,8 @@ console.log(import.meta.env.VITE_BACKEND_URL)
 
 function App() {
   return (
-    <BrowserRouter>
+   <AuthProvider>
+     <BrowserRouter>
       <RolesProvider>
         <Routes>
           <Route path='/' element={<LayoutLogin />}>
@@ -44,6 +46,7 @@ function App() {
         </Routes>
       </RolesProvider>
     </BrowserRouter>
+   </AuthProvider>
   )
 }
 
