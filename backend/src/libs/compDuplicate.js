@@ -1,10 +1,6 @@
 
 function compDuplicate(list) {
-
-    const hasDuplicates = array =>
-    new Set(list).size < array.lenght
-
-    return hasDuplicates
+    return new Set(list).size < list.lenght
 }
 
 export default compDuplicate

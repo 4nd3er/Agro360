@@ -8,7 +8,11 @@ export default {
       },
       boxShadow: {
         'shadow-button': '0px 5px 5px rgba(0, 0, 0, 0.5)',
-      }
+      },
+      colors: {
+        'color-sena': '#39a900',
+        'color-sena-hover': '#369206'
+      },
     },
   },
   plugins: [],

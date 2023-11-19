@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-const resultsSchema = new mongoose.Schema({
+const responsesSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Users',
@@ -32,5 +32,5 @@ const resultsSchema = new mongoose.Schema({
     ]
 }, { timestamps: true })
 
-export default mongoose.model("Results", resultsSchema)
+export default mongoose.model("Responses", responsesSchema)
 

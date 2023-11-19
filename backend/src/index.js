@@ -8,7 +8,7 @@ const PORT = process.env.PORT
 
 
 //Configuracion del CORS
-const whitelist = ["http://localhost:5173"]
+const whitelist = [process.env.FRONTEND_URLy]
 
 const corsOptions = {
     origin: function(origin, callback){

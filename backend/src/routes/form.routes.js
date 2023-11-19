@@ -7,7 +7,7 @@ const router = Router()
 
 // *Question Types
 router.route("/forms/questions/questiontypes")
-    .all(validateTokenCookie)
+    // .all(validateTokenCookie)
     .get(questionTypes)
     .post(validate(questionTypeValidator), createQuestionType)
 
@@ -19,13 +19,13 @@ router.route("/forms/questions/questiontypes/:id")
 
 // *Forms
 router.route("/forms")
-    .all(validateTokenCookie)
+    // .all(validateTokenCookie)
     .get(forms)
     // .post(validate(formValidator), createForm)
     .post(createForm)
 
 router.route("/forms/:id")
-    .all(validateTokenCookie)
+    // .all(validateTokenCookie)
     .get(getForm)
     .put(validate(formValidator), updateForm)
     .delete(deleteForm)

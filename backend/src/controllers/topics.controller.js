@@ -3,7 +3,6 @@ import { createMethod, deleteMethod, getMethod, getOneMethod, updateMethod } fro
 import compObjectId from "../libs/compObjectId.js"
 
 export const topics = async (req, res) => {
-
     getMethod(res, Topics, "Topics")
 }
 
@@ -19,7 +18,7 @@ export const createTopic = async (req, res) => {
     const data = { name, role, creator: req.admin.id }
     const find = { name }
 
-    const compRol = await compObjectId(role, res, Roles, "Role")
+    const compRol = await compObjectId(role, Roles, "Role")
     if (!compRol.success) return res.status(compRol.status).json({ msg: compRol.msg })
     await createMethod(data, find, res, Topics, "Topic")
 }
@@ -31,7 +30,7 @@ export const updateTopic = async (req, res) => {
     const data = { name, role, creator: req.admin.id }
     const find = { name }
 
-    const compRol = await compObjectId(role, res, Roles, "Role")
+    const compRol = await compObjectId(role, Roles, "Role")
     if (!compRol.success) return res.status(compRol.status).json({ msg: compRol.msg })
     await updateMethod(data, id, find, res, Topics, "Topic")
 }

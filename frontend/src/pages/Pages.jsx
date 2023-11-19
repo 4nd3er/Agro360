@@ -7,4 +7,5 @@ export { default as NewPassword } from './NewPassword.jsx';
 export { default as Quest } from './Quest.jsx';
 export { default as Register } from './Register.jsx';
 export { default as Results } from './Results.jsx';
+export { default as ResultQuest } from './ResultQuest.jsx';
 export { default as Topics } from './Topics.jsx';
