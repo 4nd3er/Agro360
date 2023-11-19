@@ -1,6 +1,6 @@
 import z from 'zod'
 
-export const cursesNamesValidator = z.object({
+export const coursesNamesValidator = z.object({
     name: z
         .string({
             required_error: "Name is required"
@@ -10,17 +10,17 @@ export const cursesNamesValidator = z.object({
         })
 })
 
-export const cursesValidator = z.object({
+export const coursesValidator = z.object({
     name: z
         .string({
             required_error: "Name is required"
-        })
-        .min(10, {
-            message: "Name must be last at 10 characters"
         }),
     type: z
         .string({
             required_error: "Type is required"
+        })
+        .min(6, {
+            message: "Type must be last at 6 characters"
         }),
     number: z
         .string({
