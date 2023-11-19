@@ -1,9 +1,9 @@
 import mongoose from 'mongoose'
 
-const cursesSchema = new mongoose.Schema({
+const coursesSchema = new mongoose.Schema({
     name: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'CursesNames',
+        ref: 'CoursesNames',
         required: true
     },
     type: {
@@ -19,5 +19,5 @@ const cursesSchema = new mongoose.Schema({
     }
 }, { timestamps: true })
 
-export default mongoose.model("Curses", cursesSchema)
+export default mongoose.model("Courses", coursesSchema)
 

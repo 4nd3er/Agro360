@@ -9,6 +9,16 @@ function capitalizeCamp(data) {
     data[key] = value.charAt(0).toUpperCase() + value.toLowerCase().slice(1)
 }
 
+//*Funcion para capitalizar una cadena
+export function capitalizeString(string) {
+    const transformed = []
+    for (const word of string.toString().split(" ")) {
+        const capWord = word.charAt(0).toUpperCase() + word.toLowerCase().slice(1)
+        transformed.push(capWord)
+    }
+    return transformed.join(" ")
+}
+
 export const getMethod = async (res, model, name) => {
 
     const mayusName = name.charAt(0).toUpperCase() + name.slice(1)

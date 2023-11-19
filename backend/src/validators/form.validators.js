@@ -36,7 +36,7 @@ export const formValidator = z.object({
         z.object({
             question: z
                 .string({
-                    required_error: ""
+                    required_error: "Question is required"
                 })
                 .min(10, {
                     message: "Question must be at least 10 characters"
