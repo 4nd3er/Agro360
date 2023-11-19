@@ -7,8 +7,10 @@ const RolesContext = createContext()
 
 const RolesProvider = ({ children }) => {
     const [roles, setRoles] = useState([]) // Roles
+    const [topic, setTopic] = useState({})
     const [modalTopicForm, setModalTopicForm] = useState(false)
 
+    // Obtain roles
     useEffect(() => {
         const obtainRoles = async () => {
             try {
@@ -20,9 +22,21 @@ const RolesProvider = ({ children }) => {
         }
         obtainRoles()
         return () => {
-            // Limpieza del efecto si el componente es desmontado
+            // Cleaning of the effect if the component is disassembled
         };
-    },[])
+    }, [])
+
+    // Obtain topics by rol
+    const obtainTopic = async id => {
+        try {
+            const { data } = await agro360Axios(`/roles/${id}/topics`);
+            return data;  // Return the thematic obtained
+        } catch (error) {
+            console.error("Error al traer las temáticas por rol:", error.response || error);
+            return [];  // Return an empty array in case of error
+        }
+    };
+
 
     // Open and close the Topic Modal
     const handleModalTopic = () => {
@@ -33,8 +47,9 @@ const RolesProvider = ({ children }) => {
         <RolesContext.Provider
             value={{
                 roles,
+                obtainTopic,
                 modalTopicForm,
-                handleModalTopic    
+                handleModalTopic
             }}
         >
             {children}
