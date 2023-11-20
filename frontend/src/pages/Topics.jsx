@@ -6,18 +6,28 @@ import { useEffect, useState } from "react";
 
 const Topics = () => {
     const params = useParams() // Obtain id of rol
-    const { handleModalTopic, obtainTopic } = useRoles()
+    const { handleModalTopic, obtainTopics } = useRoles()
+    const { obtainRol } = useRoles() // Obtain rol
     const [topics, setTopics] = useState([]) // para guardar las tematicas de cada rol e iterar
-
+    const [role, setRole] = useState()
 
     // Obtain topics 
     useEffect(() => {
         const iterateTopics = async () => {
-            const themes = await obtainTopic(params.id);
+            const themes = await obtainTopics(params.id);
             setTopics(themes);
         }
         iterateTopics();
-    }, [obtainTopic, params.id])
+    }, [obtainTopics, params.id])
+
+    // Obtain rol
+    useEffect(() => {
+        const Role = async () => {
+            const role = await obtainRol(params.id);
+            setRole(role.name)
+        };
+        Role();
+    }, [])
 
     return (
         <>
@@ -27,7 +37,7 @@ const Topics = () => {
                         <span
                             className="text-4xl font-bold uppercase">Temáticas</span>
                         <br />
-                        <span className="text-lg text-gray-500 uppercase">Aprendiz</span>
+                        <span className="text-lg text-gray-500 uppercase">{role}</span>
                     </p>
                     <button
                         onClick={handleModalTopic}
@@ -35,9 +45,9 @@ const Topics = () => {
                         Añadir Temática
                     </button>
                 </header>
-                <ModalTopic/> 
+                <ModalTopic />
                 <main className="grid grid-cols-3 gap-8 mr-10 mt-24">
-                {topics.length ?
+                    {topics.length ?
                         topics.map(topic => (
                             <CardTopic
                                 key={topic._id}
@@ -46,7 +56,7 @@ const Topics = () => {
                         ))
                         : <h3 className="text-2xl text-gray-600">Aún no hay temáticas para este rol</h3>}
                 </main>
-            </section>        
+            </section>
         </>
     )
 }

@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { validate, validateTokenCookie } from '../middlewares/middlewares.js'
 import { topicsValidator } from '../validators/topics.validator.js'
-import { createTopic, deleteTopic, getTopic, topics, updateTopic } from '../controllers/topics.controller.js'
+import { createTopic, deleteTopic, getTopic, getTopicForms, topics, updateTopic } from '../controllers/topics.controller.js'
 
 const router = Router()
 
@@ -16,5 +16,6 @@ router.route("/topics/:id")
     .put(validate(topicsValidator), updateTopic)
     .delete(deleteTopic)
 
+router.get("/topics/:id/forms", getTopicForms)
 
 export default router

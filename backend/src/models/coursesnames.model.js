@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-const cursesNamesSchema = new mongoose.Schema({
+const coursesNamesSchema = new mongoose.Schema({
     name: {
         type: String,
         trim: true,
@@ -9,5 +9,5 @@ const cursesNamesSchema = new mongoose.Schema({
     }
 }, { timestamps: true })
 
-export default mongoose.model("CursesNames", cursesNamesSchema)
+export default mongoose.model("CoursesNames", coursesNamesSchema)
 

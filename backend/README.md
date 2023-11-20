@@ -11,3 +11,5 @@ Dependencias del backend:
 - morgan: Logger de peticiones HTTP en consola.
 - zod: Validador de esquemas (validacion para los modelos).
 - nodemailer: Enviar correos electronicos.
+- multer: Subir archivos al servidor.
+- xlsx: Leer archivos excel.

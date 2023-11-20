@@ -2,14 +2,15 @@ import { useEffect, useState, createContext } from "react";
 import agro360Axios from "../config/agro360Axios";
 import { useNavigate } from "react-router-dom"
 
-// Crear el contexto de los roles
+// Create the role context
 const RolesContext = createContext()
 
 const RolesProvider = ({ children }) => {
     const [roles, setRoles] = useState([]) // Roles
+    const [role, setRole] = useState()
     const [topic, setTopic] = useState({})
     const [modalTopicForm, setModalTopicForm] = useState(false)
-    const [errors, setErrors] = useState([''])
+    const [errors, setErrors] = useState([])
 
     // Obtain roles
     useEffect(() => {
@@ -22,13 +23,32 @@ const RolesProvider = ({ children }) => {
             }
         }
         obtainRoles()
-        return () => {
-            // Cleaning of the effect if the component is disassembled
-        };
     }, [])
 
+    // Obtain rol
+    const obtainRol = async id => {
+        try {
+            const { data } = await agro360Axios(`/roles/${id}`);
+            return(data)
+        } catch (error) {
+            console.log(error);
+            return[]
+        }
+    };
+
+    // Obtain name topic
+    const obtainTopic = async idtopic => {
+        try {
+            const { data } = await agro360Axios(`/topics/${idtopic}`);
+            return(data)
+        } catch (error) {
+            console.log(error);
+            return[]
+        }
+    }
+
     // Obtain topics by rol
-    const obtainTopic = async id => {
+    const obtainTopics = async id => {
         try {
             const { data } = await agro360Axios(`/roles/${id}/topics`);
             return data;  // Return the thematic obtained
@@ -38,11 +58,21 @@ const RolesProvider = ({ children }) => {
         }
     };
 
+    // Obtain forms by topic
+    const obtainForm = async idtopic => {
+        try {
+            const { data } = await agro360Axios(`/topics/${idtopic}/forms`)
+            return data; // Return the forms obtained
+        } catch (error) {
+            console.error("Error al traer los formularios por temática:", error.response || error);
+            return []; // Return an empty array in case of error
+        }
+    }
+
+    // Create topic
     const createTopic = async topic => {
         try {
-            console.log('Datos de la temática:', topic);
             const { data } = await agro360Axios.post('/topics', topic);
-            console.log(data);
             setModalTopicForm(false);
         } catch (error) {
             console.log("Error al crear la tematica");
@@ -60,6 +90,9 @@ const RolesProvider = ({ children }) => {
         <RolesContext.Provider
             value={{
                 roles,
+                obtainTopics,
+                obtainForm,
+                obtainRol,
                 obtainTopic,
                 createTopic,
                 modalTopicForm,
