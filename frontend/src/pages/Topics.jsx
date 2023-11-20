@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 
 const Topics = () => {
     const params = useParams() // Obtain id of rol
-    const { handleModalTopic, obtainTopic } = useRoles()
+    const { handleModalTopic, obtainTopics } = useRoles()
     const { obtainRol } = useRoles() // Obtain rol
     const [topics, setTopics] = useState([]) // para guardar las tematicas de cada rol e iterar
     const [role, setRole] = useState()
@@ -14,11 +14,11 @@ const Topics = () => {
     // Obtain topics 
     useEffect(() => {
         const iterateTopics = async () => {
-            const themes = await obtainTopic(params.id);
+            const themes = await obtainTopics(params.id);
             setTopics(themes);
         }
         iterateTopics();
-    }, [obtainTopic, params.id])
+    }, [obtainTopics, params.id])
 
     // Obtain rol
     useEffect(() => {

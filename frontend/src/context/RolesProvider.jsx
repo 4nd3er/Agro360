@@ -36,8 +36,19 @@ const RolesProvider = ({ children }) => {
         }
     };
 
+    // Obtain name topic
+    const obtainTopic = async idtopic => {
+        try {
+            const { data } = await agro360Axios(`/topics/${idtopic}`);
+            return(data)
+        } catch (error) {
+            console.log(error);
+            return[]
+        }
+    }
+
     // Obtain topics by rol
-    const obtainTopic = async id => {
+    const obtainTopics = async id => {
         try {
             const { data } = await agro360Axios(`/roles/${id}/topics`);
             return data;  // Return the thematic obtained
@@ -79,9 +90,10 @@ const RolesProvider = ({ children }) => {
         <RolesContext.Provider
             value={{
                 roles,
-                obtainTopic,
+                obtainTopics,
                 obtainForm,
                 obtainRol,
+                obtainTopic,
                 createTopic,
                 modalTopicForm,
                 handleModalTopic,

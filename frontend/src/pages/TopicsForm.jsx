@@ -6,8 +6,9 @@ import useRoles from '../hooks/useRoles'
 const TopicsForm = () => {
     const params = useParams();
     const { idtopic } = params; // Obtain idtopic of url
-    const { obtainForm } = useRoles(); // hook useRoles
+    const { obtainForm, obtainTopic } = useRoles(); // hook useRoles
     const [forms, setForms] = useState([]); // 
+    const [topic, setTopic] = useState(); 
     // Extract forms
     useEffect(() => {
         const iterateForms = async () => { // get forms function
@@ -16,6 +17,14 @@ const TopicsForm = () => {
         }
         iterateForms(); // call the function
     }, [obtainForm, idtopic])
+    // Obtain name topic
+    useEffect(() => {
+        const Topic = async () => {
+            const topic = await obtainTopic(idtopic)
+            setTopic(topic.name)
+        }
+        Topic();
+    }, [])
     return (
         <section className='min-h-[80vh]'>
             <header className="flex justify-between mt-16">
@@ -23,7 +32,7 @@ const TopicsForm = () => {
                     <span
                         className="text-4xl font-bold uppercase">Encuestas</span>
                     <br />
-                    <span className="text-lg text-gray-500 uppercase">tematica:</span>
+                    <span className="text-lg text-gray-700 uppercase">tematica:{' '} {topic}</span>
                 </p>
                 <div className="relative">
                     <input type="search" className="w-80 h-12 pl-10 pr-4 border rounded-full focus:outline-none focus:ring focus:border-blue-300 shadow-lg" placeholder="Buscar..." />
