@@ -80,9 +80,12 @@ export const coursesCronogram = async (req, res) => {
     await getMethod(res, CoursesCronogram, "Course Cronogram")
 }
 
+export const getCourseCronogram = async(req, res) => {
+    const { id } = req.params
+    await getOneMethod(id, res, CoursesCronogram, "Course Cronogram")
+}
+
 export const createCourseCronogram = async (req, res) => {
-    const { course, start, end, instructor } = req.body
-    const find = { course: course, start: start, end: end, instructor: instructor }
 
     try {
         //const buffer = req.file.buffer;
@@ -101,23 +104,58 @@ export const createCourseCronogram = async (req, res) => {
         //Arreglo para los datos
         const coursesCronogram = []
         for (const [index, object] of fileData.entries()) {
-            const course = object.ficha.toString()
-            const start = parseDate(object.inicio)
-            const end = parseDate(object.fin)
-            const instructor = capitalizeString(object.instructor)
+            const values = Object.values(object)
+
+            const course = values[0].toString()
+            const start = parseDate(values[1])
+            const end = parseDate(values[2])
+            const instructor = capitalizeString(values[3])
             const nameInstructor = instructor.split(" ")[0]
 
-            const findCourse = await Courses.findOne({ number: course })
-            if (!findCourse) return res.status(404).json({ msg: messages.notFound(`Course ${index}`) })
-            const findInstructor = await Users.findOne({ names: nameInstructor })
-            if (!findInstructor) return res.status(404).json({ msg: messages.notFound(`Instructor ${index}`) })
+            if (instructor.length > 6) {
+                /*
+                const findCourse = await Courses.findOne({ number: course })
+                if (!findCourse) return res.status(404).json({ msg: messages.notFound(`Course ${index}`) })
+                const findInstructor = await Users.findOne({ names: nameInstructor })
+                if (!findInstructor) return res.status(404).json({ msg: messages.notFound(`Instructor ${index}`) })
+                */
+                const data = { course: course, start: start, end: end, instructor: instructor }
+                /*
+                const findCronogram = await CoursesCronogram.findOne(data)
+                if (findCronogram) return res.status(400).json({ msg: messages.alreadyExists(`Cronogram ${index}`) })
+    
+                const newCronogram = new CoursesCronogram(data)
+                const saveCronogram = await newCronogram.save()
+                */
 
-            const data = { course: course, start: start, end: end, instructor: instructor }
-            coursesCronogram.push({...data})
+                coursesCronogram.push({ ...data })
+            }
         }
-        await createMethod(coursesCronogram, find, res, CoursesCronogram, "Course Cronogram")
+
+        /*res.json({
+            response: "Course Cronogram importes successfully",
+            data: coursesCronogram
+        })*/
     } catch (error) {
         errorResponse(res, error)
     }
 }
 
+export const updateCourseCronogram = async (req, res) => {
+    const { id } = req.params
+    const { course, start, end, instructor } = req.body
+    const data = { course, start, end, instructor }
+    const find = data
+
+    const compCourse = await compObjectId(course, Courses, "Course")
+    if (!compCourse.success) return res.status(compCourse.status).json({ msg: compCourse.msg })
+    const compInstructor = await compObjectId(instructor, Courses, "Instructor")
+    if (!compInstructor.success) return res.status(compInstructor.status).json({ msg: compInstructor.msg })
+
+    await updateMethod(data, id, find, res, CoursesCronogram, "Course Cronogram")
+}
+
+export const deleteCourseCronogram = async (req, res) => {
+    const { id } = req.params
+    await deleteMethod(id, res, CoursesCronogram, "Course Cronogram")
+}

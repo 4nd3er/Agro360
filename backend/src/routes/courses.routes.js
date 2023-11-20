@@ -1,13 +1,12 @@
 import Router from 'express'
 import multer from 'multer'
 import { validateTokenCookie, validate } from '../middlewares/middlewares.js'
-import { createCourse, createCourseName, courses, coursesNames, deleteCourse, deleteCourseName, getCourse, getCourseName, updateCourse, updateCourseName, createCourseCronogram, coursesCronogram } from '../controllers/courses.controller.js'
-import { coursesNamesValidator, coursesValidator } from '../validators/courses.validators.js'
+import { createCourse, createCourseName, courses, coursesNames, deleteCourse, deleteCourseName, getCourse, getCourseName, updateCourse, updateCourseName, createCourseCronogram, coursesCronogram, getCourseCronogram, updateCourseCronogram, deleteCourseCronogram } from '../controllers/courses.controller.js'
+import { coursesCronogramValidator, coursesNamesValidator, coursesValidator } from '../validators/courses.validators.js'
 
 const router = Router()
 
 //*Cronogram courses
-
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage })
 
@@ -15,6 +14,12 @@ router.route("/courses/cronograms")
     .all(validateTokenCookie)
     .get(coursesCronogram)
     .post(createCourseCronogram)
+
+router.route("/courses/cronograms/:id")
+    .all(validateTokenCookie)
+    .get(getCourseCronogram)
+    .put(validate(coursesCronogramValidator), updateCourseCronogram)
+    .delete(deleteCourseCronogram)
 
 // *Courses names
 router.route("/courses/coursenames")

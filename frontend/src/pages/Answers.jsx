@@ -54,7 +54,7 @@ const Answers = () => {
 
             {/* 
             carrusel */}
-            <div className='p-5 py-4 text-center  rounded-md flex flex-col gap-8 shadow-lg'>
+            <div className='p-5 py-4 text-center rounded-md flex flex-col gap-4 shadow-lg'>
                 <Slider {...settings}>
                     {images.map((image, index) => (
                         <div

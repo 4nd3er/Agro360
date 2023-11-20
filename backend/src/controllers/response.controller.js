@@ -1,6 +1,6 @@
-import { createMethod, getOneMethod } from "../libs/methods.js"
-import { Forms, Users } from "../models/models.js"
-import { compObjectId, createToken, errorResponse, generateCode, sendEmailFormCode } from '../libs/libs.js'
+import { capitalizeWord, createMethod, getMethod, getOneMethod } from "../libs/methods.js"
+import { Forms, Responses, Users } from "../models/models.js"
+import { compObjectId, createToken, errorResponse, generateCode, messages, sendEmailFormCode } from '../libs/libs.js'
 import bcrypt from 'bcrypt'
 
 //* Comprobar existencia del formulario
@@ -13,9 +13,10 @@ export const compForm = async (req, res, next) => {
 
 //* Comprobar la cookie y que el codigo este correcto para el acceso
 export const compFormCookie = async (req, res, next) => {
-    const { id } = req.params
+    const { form } = req.params
     const user = req.cookies.user
-    const { idUser, email, sessionCode, userCode } = user
+    if (!user) return res.status(401).json({ msg: "Code not found" })
+    const { id, email, sessionCode, userCode } = user
 
     try {
         //Si no se ha definido un codigo
@@ -23,7 +24,7 @@ export const compFormCookie = async (req, res, next) => {
         if (!userCode) return res.status(401).json({ msg: "You have not entered any code" })
         if (!await bcrypt.compare(userCode, sessionCode)) return res.status(401).json({ msg: "The code is incorrect" })
 
-        const findForm = await compObjectId(id, Forms, "Form")
+        const findForm = await compObjectId(form, Forms, "Form")
         if (!findForm.success) return res.status(findForm.status).json({ msg: findForm.msg })
         next()
     } catch (error) {
@@ -46,7 +47,7 @@ export const getCode = async (req, res) => {
         const hashCode = await bcrypt.hash(code, 5)
         //Crear cookie
         const data = { id: user._id.toString(), email: email, sessionCode: hashCode, userCode: "" }
-        res.cookie("user", data, { maxAge: 900000, httpOnly: true })
+        res.cookie("user", data, { maxAge: 1800000, httpOnly: true })
 
         sendEmailFormCode(res, email, code)
     } catch (error) {
@@ -66,7 +67,7 @@ export const compCode = async (req, res) => {
 
         //Redefinir cookie
         user.userCode = code
-        res.cookie("user", user, { maxAge: 900000, httpOnly: true })
+        res.cookie("user", user, { maxAge: 1800000, httpOnly: true })
 
         const findUser = await Users.findById(id)
         res.json({
@@ -74,7 +75,6 @@ export const compCode = async (req, res) => {
             data: {
                 code: code,
                 user: `${findUser.names} ${findUser.lastnames}`,
-                userCode: code
             }
         })
     } catch (error) {
@@ -83,16 +83,58 @@ export const compCode = async (req, res) => {
 }
 
 // *Recibir formulario
-export const getForm = async (req, res) => {
-    const { id } = req.params
-    await getOneMethod(id, res, Forms, "Form")
+export const getResponseForm = async (req, res) => {
+    const { form } = req.params
+    await getOneMethod(form, res, Forms, "Form")
 }
 
 export const createResponse = async (req, res) => {
-    const { id } = req.params
+    const { form } = req.params
     const user = req.cookies.user
     const { answers } = req.body
-    const data = { user: user.id, form: id, answers}
+    const data = { user: user.id, form: form, answers }
 
-    //await createMethod(data, null, res, model, "Response")
+    try {
+        for (const [index, answer] of answers.entries()) {
+            const question = answer.question
+            const instructor = answer.instructor
+            const response = answer.answer
+            answer.answer = capitalizeWord(response)
+
+            const findQuestion = await Forms.findOne({ _id: form, "questions.question": question })
+            if (!findQuestion) return res.status(400).json({ msg: messages.notFound(`Question ${index} for this form`) })
+            const findInstructor = await compObjectId(instructor, Users, "Instructor")
+            if (!findInstructor.success) return res.status(findInstructor.success) - json({ msg: findInstructor.msg })
+        }
+        await createMethod(data, null, res, Responses, "Response")
+
+    } catch (error) {
+        errorResponse(res, error)
+    }
+}
+
+// *Show Responses
+export const responses = async (req, res) => {
+    await getMethod(res, Responses, "Responses")
+}
+
+export const getResponse = async (req, res) => {
+    const { id } = req.params
+    await getOneMethod(id, res, Responses, "Response")
+}
+
+export const getResponseInstructor = async (req, res) => {
+    const { id, instructor } = req.params
+
+    const findForm = await Responses.findOne({ _id: id, "answers.instructor": instructor })
+    if (!findForm) return res.status(404).json({ msg: messages.notFound("Answers Instructor") })
+    const answers = findForm.answers
+
+    const answersInstructor = []
+    for (const answer of answers){
+        const instructorId = answer.instructor.toString()
+        if (instructorId === instructor ) answersInstructor.push(answer)
+    }
+
+    res.json(answersInstructor)
 }

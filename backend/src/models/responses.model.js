@@ -14,8 +14,8 @@ const responsesSchema = new mongoose.Schema({
     answers: [
         {
             question: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'Questions',
+                type: String,
+                trim: true,
                 required: true
             },
             instructor: {
