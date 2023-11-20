@@ -9,6 +9,7 @@ import {
   Quest,
   Results,
   Topics,
+  TopicsForm,
   Login,
   CreateQuest,
   NewPassword,
@@ -28,7 +29,6 @@ function App() {
     <AuthProvider>
       <BrowserRouter>
         <RolesProvider>
-
           <Routes>
             <Route path='/' element={<LayoutLogin />}>
               <Route index element={<Login />} />
@@ -39,7 +39,8 @@ function App() {
             </Route>
             <Route path='/inicio' element={<AuthLayout />}>
               <Route index element={<Home />} />
-              <Route path=':id/tematicas' element={<Topics />} />
+              <Route path='tematicas/:id' element={<Topics />} />
+              <Route path='tematicas/:id/encuestas/:idtopic' element={<TopicsForm />} />
             </Route>
             <Route path='/crear-formulario' element={<AuthLayout />}>
               <Route index element={<Quest />} />
@@ -48,10 +49,6 @@ function App() {
             <Route path='/resultados' element={<AuthLayout />}>
               <Route index element={<Results />} />
               <Route path=':idQuest' element={<ResultQuest />} />
-            </Route>
-            <Route path=':id/tematicas' element={<AuthLayout />}>
-              <Route index element={<Topics />} />
-              <Route path=':idrol' element={<Topics />} />
             </Route>
             <Route path='/validacion-usuario' element={<LayoutLogin />}>
               <Route index element={<UserValidation />} />
@@ -63,7 +60,6 @@ function App() {
               <Route index element={<Answers />} />
             </Route>
           </Routes>
-
         </RolesProvider>
       </BrowserRouter>
     </AuthProvider>

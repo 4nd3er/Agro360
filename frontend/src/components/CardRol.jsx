@@ -6,7 +6,7 @@ const CardRol = ({ rol }) => {
     return (
         <>
             <Link 
-            to={`${_id}/tematicas`}
+            to={`tematicas/${_id}`}
              className="bg-[#82def0]  rounded-lg py-8 cursor-pointer">
                 <p className=" text-white text-2xl text-center font-black uppercase">{name}</p>
             </Link>
