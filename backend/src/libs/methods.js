@@ -45,7 +45,7 @@ export const getOneMethod = async (id, res, model, name) => {
     name = name.toLowerCase()
 
     try {
-        // if (!validObjectId(id)) return res.status(400).json({ msg: messages.invalidId(name) })
+        if (!validObjectId(id)) return res.status(400).json({ msg: messages.invalidId(name) })
         const findModel = await model.findById(id)
         if (!findModel) return res.status(404).json({ msg: messages.notFound(mayusName) })
 

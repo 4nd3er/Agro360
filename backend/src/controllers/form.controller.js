@@ -1,5 +1,5 @@
 import { compObjectId, compDuplicate } from "../libs/libs.js"
-import { Forms, QuestionTypes, Topics } from "../models/models.js"
+import { Forms, QuestionTypes, Responses, Topics } from "../models/models.js"
 import { createMethod, deleteMethod, getMethod, getOneMethod, updateMethod } from "../libs/methods.js"
 
 // *Forms
@@ -10,6 +10,17 @@ export const forms = async (req, res) => {
 export const getForm = async (req, res) => {
     const { id } = req.params
     await getOneMethod(id, res, Forms, "Form")
+}
+
+export const getFormsResponse = async (req, res) => {
+    const formsResponse = []
+    const forms = await Forms.find({})
+    for (const [index, form] of forms.entries()) {
+        const id = form._id
+        const findResponse = await Responses.findOne({ form: id })
+        if (findResponse) formsResponse.push(form)
+    } 
+    res.json(formsResponse)
 }
 
 export const createForm = async (req, res) => {
