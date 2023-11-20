@@ -1,6 +1,7 @@
 export { default as BarsChart } from './BarsChart.jsx';
 export { default as CardTopic } from './CardTopic.jsx';
 export { default as CardRol } from './CardRol.jsx';
+export { default as CardForm } from './CardForm.jsx';
 export { default as Create } from './Create.jsx';
 export { default as Forms } from './Forms.jsx';
 export { default as Menu } from './Menu.jsx';

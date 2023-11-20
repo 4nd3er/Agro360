@@ -25,7 +25,7 @@ export const createRole = async (req, res) => {
     const { name, description } = req.body
     const data = { name, description, creator: req.admin.id }
     const find = { name }
-    createMethod(data, find, res, Roles, "Role")
+    createMethod(data, find, res, Roles, "Role", "capitalize")
 }
 
 export const updateRole = async (req, res) => {
@@ -34,7 +34,7 @@ export const updateRole = async (req, res) => {
     const { name, description } = req.body
     const data = { name, description, creator: req.admin.id }
     const find = { name }
-    updateMethod(data, id, find, res, Roles, "Role")
+    updateMethod(data, id, find, res, Roles, "Role", "capitalize")
 };
 
 export const deleteRole = async (req, res) => {

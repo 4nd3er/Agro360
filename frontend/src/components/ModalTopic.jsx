@@ -7,37 +7,31 @@ import { useParams } from 'react-router-dom';
 const ModalTopic = () => {
   const [name, setName] = useState(''); // Name of topic or title
   const idrol = useParams() // id of rol
-
   // Extract the logic to open and close the modal and 
   const { modalTopicForm, createTopic, handleModalTopic, errors} = useRoles()
 
+  // Submitting the form
   const handleSubmit = async e => {
     e.preventDefault();
     if ([name].includes('')) {
-      Swal.fire({
+      Swal.fire({ // Empty field alert
         icon: "warning",
-        title: "Oops...",
-        text: "Se nesecita un nombre para crear una temática",
+        title: "Alerta",
+        text: "Se nesecita un título para crear una temática",
       });
       return;
     }
-
-    if (errors && errors.length > 0) {
-      const errorMessage = errors.join('\n'); // Unir mensajes de error con saltos de línea
+    if (errors && errors.length > 0) { //Server message (validation) alert
+      const errorMessage = errors.join('\n');
       Swal.fire({
         icon: 'warning',
-        title: 'Alert',
+        title: 'Alerta',
         text: errorMessage,
       });
     }
-    // Intenta realizar la solicitud al servidor
-    await createTopic({ name, role: idrol.id });
-    // Limpiar el modal
-    setName('');
-    
-
+    await createTopic({ name, role: idrol.id }); // send the request to the server
+    setName(''); // Clean the modal
   }
-
 
   return (
     <Transition.Root show={modalTopicForm} as={Fragment}>
@@ -56,12 +50,10 @@ const ModalTopic = () => {
               className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
             />
           </Transition.Child>
-
           {/* This element is to trick the browser into centering the modal contents. */}
           <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">
             &#8203;
           </span>
-
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -72,7 +64,7 @@ const ModalTopic = () => {
             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
             <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
-              {/* cerrar modal */}
+              {/* close modal */}
               <div className="hidden sm:block absolute top-0 right-0 pt-4 pr-4">
                 <button
                   type="button"
@@ -95,7 +87,7 @@ const ModalTopic = () => {
                     Nueva Temática
                   </Dialog.Title>
 
-                  {/* inicio formulario crear tarea */}
+                  {/* inicio formulario crear temática */}
                   <form
                     onSubmit={handleSubmit}
                     className='mt-8'>
@@ -108,7 +100,7 @@ const ModalTopic = () => {
                       <input
                         id='topic'
                         type="text"
-                        placeholder='Nombre de la tarea'
+                        placeholder='Título de la temática'
                         className="border w-full p-2 mt-2 placeholder-gray-400 rounded-lg"
                         value={name}
                         onChange={e => setName(e.target.value)}
