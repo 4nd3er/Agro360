@@ -20,50 +20,50 @@ export const registerValidator = z.object({
             required_error: "Email is required"
         })
         .email({
-            message: "Invalid email"
+            message: "Correo electrónico no válido"
         }),
     password: z
         .string({
             required_error: "Password is required"
         })
         .min(8, {
-            message: "Password must be at least 8 characters"
+            message: "La contraseña debe tener al menos 8 caracteres"
         })
 })
 
 export const loginValidator = z.object({
     email: z
     .string({
-        required_error: "Email is required"
+        required_error: "El correo electrónico es obligatorio"
     })
     .email({
-        message: "Invalid email"
+        message: "Correo electrónico no válido"
     }),
     password: z
     .string({
-        required_error: "Password is required"
+        required_error: "La contraseña es obligatoria"
     })
     .min(8, {
-        message: "Password must be at least 8 characters"
+        message: "La contraseña debe tener al menos 8 caracteres"
     })
 })
 
 export const emailValidator = z.object({
     email:  z
     .string({
-        required_error: "Email is required"
+        required_error: "El correo electrónico es obligatori"
     })
     .email({
-        message: "Invalid email"
+        message: "Correo electrónico no válido"
     })
 })
 
 export const passwordValidator = z.object({
     password: z
     .string({
-        required_error: "Password is required"
+        required_error: "La contraseña es obligatoria"
     })
     .min(8, {
-        message: "Password must be at least 8 characters"
+        message: "La contraseña debe tener al menos 8 caracteres"
     })
 })

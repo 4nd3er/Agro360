@@ -1,68 +1,31 @@
-import { useState } from "react"
 import { Link } from "react-router-dom"
-import Alert from "../components/Alert"
-import agro360Axios from "../config/agro360Axios"
+import {useForm}  from 'react-hook-form'
+import { useAuth } from '../context/AuthContex';
+import { useEffect } from "react";
+import {useNavigate} from 'react-router-dom'
 //import axios from 'axios'
 
 
 
 const Register = () => {
   //Variable que contiene los datos del formulario
-  const [ names, setNames] = useState('')
-  const [ lastnames, setLastnames] = useState('')
-  const [ documentType, setDocumentType] = useState('')
-  const [ document, setDocument] = useState('')
-  const [ email, setEmail] = useState('')
-  const [ password, setPassword] = useState('')
-  const [ alert, setAlert] = useState({})
+  const { 
+     register,
+     handleSubmit,
+     formState: {errors},
 
-  // variable para el envio de datos por el boton 
-  const handleSubmit = async e =>{
-    e.preventDefault()
+  } = useForm();
+  const {signup, isAuthenticated, errors: registerErrors} = useAuth();
+  const navigate = useNavigate()
 
-    //Validacion todos los campos deben ser obligatorios
-    if ([names, lastnames, documentType, document, email, password].includes('')) {
-      setAlert({
-        msg: 'Todos los campos son obligatorios',
-        error: true
-      })
-      return
-    }
-     //Validacion de contraseña mayor a 8 caracteres
-    if (password.length <8) {
-      setAlert({
-        msg: 'la contraseña es muy corta, minimo 8 caracteres',
-        error: true
-      })
-      return
-    }
-    setAlert({})
+  useEffect(() =>{
+    if (isAuthenticated) navigate("/inicio");
+  }, [isAuthenticated])
 
-    //Registro de usuario 
-    try {
-     
-      const {data} = await agro360Axios.post(`register`, //Conexion a la API por medio del metodo Axios
-      {names, lastnames, documentType, document, email, password})
-      //Alerta de registro exitoso
-      setAlert({
-        msg: data.msg,
-        error: false
-      })
-      setNames('')
-      setLastnames('')
-      setDocumentType('')
-      setDocument('')
-      setEmail('')
-      setPassword('')
-      //Alerta de usuario ya registrado
-    } catch (error) {
-      setAlert({
-        msg: error.response.data.msg,
-        error: true
-      })
-    }
-  }
-  const { msg } = alert
+  const onSubmit = handleSubmit(async (value) => {
+    signup(value);
+  })
+
 
   return (
     <>
@@ -79,12 +42,18 @@ const Register = () => {
             <div className=" flex flex-col justify-center place-items-center min-h-[80vh] ">
             <strong className=' text-green-600  text-5xl capitalize font-sans'>Crea tu cuenta</strong>
 
-            {msg && <Alert alert={alert}/>}
+            {
+              registerErrors.map((error, i) => (
+                <div className="bg-red-500 p-4 text-white text-center rounded-md shadow-md my-2 w-2/4" key={i}>
+                  {error}
+                  </div>
+              ))
+            }
             <form 
             
               className='my-10 bg-white shadow rounded-lg px-10 py-5 w-1/2'
               //boton listo para envio de datos
-              onSubmit={handleSubmit}> 
+              onSubmit={onSubmit}> 
                 <div className='my-5'>
                     <label className=' text-gray-600 block text-sm font-bold'
                     htmlFor='names'
@@ -94,9 +63,11 @@ const Register = () => {
                     type="text" 
                     placeholder='Nombres'
                     className='w-full mt-3 p-3 border rounded-xl bg-gray-50'
-                    value={names}
-                    onChange={e => setNames (e.target.value)}
+                    {... register('names', { required: true })}
                     />
+                   {errors.names && (
+                      <p className="text-red-600">Nombre es requerido</p>
+                    )}
                 </div>
                 <div className='my-5'>
                     <label className=' text-gray-600 block text-sm font-bold'
@@ -107,9 +78,11 @@ const Register = () => {
                     type="text" 
                     placeholder='Apellidos'
                     className='w-full mt-3 p-3 border rounded-xl bg-gray-50'
-                    value={lastnames}
-                    onChange={e => setLastnames (e.target.value)}
+                    {... register('lastnames', { required: true })}
                     />
+                  {errors.lastnames && (
+                      <p className="text-red-600">Apellido es requerido</p>
+                    )}
                 </div>
                 <div className='my-5'>
                   <label className=' text-gray-600 block text-sm font-bold' 
@@ -120,14 +93,16 @@ const Register = () => {
                     type="text"
                     name='documentType' 
                     className='w-full mt-3 p-3 border rounded-xl bg-gray-50'
-                    value={documentType}
-                    onChange={e => setDocumentType (e.target.value)}>
+                    {... register('documentType', { required: true })}
+                    >
                     <option value=''>Seleccione</option>
                     <option value='opcion2'>CC</option>
                     <option value='opcion2'>CE</option>
                     <option value='opcion3'>TI</option>
-                    
                   </select>
+                  {errors.documentType && (
+                      <p className="text-red-600">Tipo documento es requerido</p>
+                    )}
                 </div>
                 <div className='my-5'>
                     <label className=' text-gray-600 block text-sm font-bold'
@@ -138,9 +113,11 @@ const Register = () => {
                     type="number" 
                     placeholder='Numero de documento'
                     className='w-full mt-3 p-3 border rounded-xl bg-gray-50'
-                    value={document}
-                    onChange={e => setDocument (e.target.value)}
+                    {... register('document', { required: true })}
                     />
+                   {errors.document && (
+                      <p className="text-red-600">Documento es requerido</p>
+                    )}
                 </div>
                 <div className='my-5'>
                      <label className=' text-gray-600 block text-sm font-bold'
@@ -151,9 +128,11 @@ const Register = () => {
                      type="email"
                      placeholder='Email de Registro'
                      className='w-full mt-3 p-3 border rounded-xl bg-gray-50'
-                     value={email}
-                     onChange={e => setEmail (e.target.value)}
+                     {... register('email', { required: true })}
                     />
+                   {errors.email && (
+                      <p className="text-red-600">Email es requerido</p>
+                    )}
                    </div>
 
                 <div className='my-5'>
@@ -165,9 +144,11 @@ const Register = () => {
                      type="password" 
                      placeholder="Contraseña" 
                      className="w-full mt-3 p-3 border rounded-xl bg-gray-50" 
-                     value={password}
-                     onChange={e => setPassword (e.target.value)}
+                     {... register('password', { required: true })}
                      />
+                    {errors.password && (
+                      <p className="text-red-600">La contraseña es requerida</p>
+                    )}
                     </div>
                 
                 
