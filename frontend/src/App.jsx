@@ -4,6 +4,7 @@ import AuthLayout from './layouts/AuthLayout';
 import { AuthProvider } from './context/AuthContex';
 import LayoutLogin from './layouts/LayoutLogin';
 import { RolesProvider } from './context/RolesProvider';
+import ProtectedRoute from './ProtectedRoute'
 import {
   Home,
   Quest,

@@ -9,7 +9,7 @@ const Login = () => {
      handleSubmit,
      formState: {errors},
     } = useForm();  
-    const {signin} = useAuth();
+    const {signin, errors: loginErrors} = useAuth();
    
    const onSubmit = handleSubmit((data) => {
     signin(data);
@@ -34,7 +34,13 @@ const Login = () => {
                     <div className=" flex flex-col justify-center place-items-center min-h-[80vh] ">
                         <strong className=' text-green-600  text-6xl capitalize font-sans'>Bienvenido</strong>
 
-                       
+                        {
+                        loginErrors.map((error, i) => (
+                            <div className="bg-red-500 p-4 text-white text-center rounded-md shadow-md my-2 w-2/4" key={i}>
+                            {error}
+                            </div>
+                        ))
+                        }
                         <form 
                         className='my-10 bg-white shadow rounded-lg px-10 py-5 w-1/2'
                         onSubmit={onSubmit}>
@@ -49,7 +55,9 @@ const Login = () => {
                                     placeholder='Digite el Correo Electronico'
                                     className='w-full mt-3 p-3 border rounded-xl bg-gray-50'
                                 />
+                                {errors.email && <p className='text-red-600'>El correo electronico es requerido</p>}
                             </div>
+
                             
                             <div className='my-5'>
                                 <label className=' text-gray-600 block text-sm font-bold'
@@ -63,6 +71,8 @@ const Login = () => {
                                     placeholder='Digite la contraseña'
                                     className='w-full mt-3 p-3 border rounded-xl bg-gray-50'
                                 />
+                                 {errors.password && (<p className='text-red-600'>La contraseña es requerida</p>
+                                 )}
                                 <Link
                                     className='block my-5 text-slate-500 uppercase text-xs'
                                     to='forget-password'
@@ -70,7 +80,7 @@ const Login = () => {
                             </div>
                             <input
                                 type="submit"
-                                value="Iniciar Sesion"
+                                value="Iniciar Sesion"  
                                 className='bg-green-600 w-full py-1 text-white uppercase font-bold rounded-xl
                                 hover: cursor-pointer hover:bg-green-700 transition-color'
                             />

@@ -1,6 +1,8 @@
 import Admin from '../models/admin.model.js'
 import bcrypt from 'bcrypt'
 import { createToken, errorResponse, sendEmailResetPassword } from '../libs/libs.js'
+import  JsonWebTokenError from 'jsonwebtoken'
+
 
 export const login = async (req, res) => {
 
@@ -19,7 +21,7 @@ export const login = async (req, res) => {
         res.cookie("token", token)
 
         res.json({
-            response: "Inicio de sesion",
+            response: "Inicio exitoso",
             data: {
                 id: findUser._id,
                 names: findUser.names,
@@ -41,7 +43,7 @@ export const register = async (req, res) => {
     try {
         //Validadion Usuario ya existe en base de datos
         const findUser = await Admin.findOne({ email })
-        if (findUser) return res.status(400).json({ msg: 'Usuario ya Existe' })
+        if (findUser) return res.status(400).json(['El correo ya esta en eso'])
 
         const newUser = new Admin({
             names,
@@ -123,4 +125,27 @@ export const profile = async (req, res) => {
         session_token: token,
         user: findUser
     })
+};
+
+//COOKIE
+
+export const verifyToken = async(req, res) => {
+    const {token} = req.cookies
+
+    if(!token) return res.status(401).json({ msg: "No autorizado"});
+
+    JsonWebTokenError.verify(token, createToken, async (err, user) =>{
+        if (err) return res.status(401).json({msg: "No autoritazo"})
+
+        const findUser = await User.findById(user.id)
+        if(!findUser) return res.status(401).json({msg:
+        "No autorizado"})
+
+        return res.json({
+            id: findUser._id,
+            names: findUser.names,
+            email: findUser.email 
+        });
+    })
 }
+
