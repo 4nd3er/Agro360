@@ -7,7 +7,7 @@ import 'slick-carousel/slick/slick-theme.css';
 const Answers = () => {
     // Estado para la imagen seleccionada en el carrusel
     const [selectedImage, setSelectedImage] = useState(null);
-    
+
     // Estado para la calificación del instructor
     const [rating, setRating] = useState(null);
 
@@ -16,90 +16,90 @@ const Answers = () => {
         dots: false,
         infinite: true,
         speed: 500,
-        slidesToShow: 6,
+        slidesToShow: 5,
         slidesToScroll: 1,
+        centerMode: true,
     };
 
+    // Datos de las imágenes y nombres de instructores
     const images = [
-        'src/img/instructores/AnaLucia.jpg',
-        'src/img/instructores/DiegoMarin.jpg',
-        'src/img/instructores/MartaLucia.jpg',
-        'src/img/instructores/MoisesVargas.jpg',
-        'src/img/instructores/mauricioahumada.jpg',
-        'src/img/instructores/nose.jpg',
-        'src/img/instructores/nose2.jpg',
-        'src/img/instructores/daniel.jpg',
-        'src/img/instructores/mujer1.jpeg',
-        'src/img/instructores/mujer2.jpeg',
+        { src: 'src/img/instructores/AnaLucia.jpg', name: 'Ana Lucía' },
+        { src: 'src/img/instructores/DiegoMarin.jpg', name: 'Diego Marín' },
+        { src: 'src/img/instructores/Daniel.jpg', name: 'Daniel' },
+        { src: 'src/img/instructores/MartaLucia.jpg', name: 'Marta Lucia' },
+        { src: 'src/img/instructores/mauricioahumada.jpg', name: 'Mauricio Ahumada' },
+        { src: 'src/img/instructores/MoisesVargas.jpg', name: 'Moises Vargas' },
+        { src: 'src/img/instructores/nose.jpg', name: 'Llanet Liliana' },
+        { src: 'src/img/instructores/EdwinDavid.jpg', name: 'Edwin David' },
+        { src: 'src/img/instructores/CristianFelipe.jpg', name: 'Cristian Felipe' },
+        { src: 'src/img/instructores/KarenElizabeth.jpg', name: 'Karen Elizabeth' },
+        { src: 'src/img/instructores/ManuelVicente.png', name: 'Manuel Vicente' },
+        
     ];
-
-    // esto es para selecciónar la calificación
+    // Función para manejar la selección de la calificación
     const handleRatingSelect = (value) => {
         setRating(value);
     };
 
-    
+    // Función para cambiar la imagen y reiniciar la calificación
     const goToNextImage = () => {
-        // cambia la calificación cuando cambia  de imagen
         setRating(null);
     };
 
+    
+
     return (
-        <div className='p-2 py-4 text-center border-4 rounded-md flex flex-col gap-8 shadow-lg'>
-           
+        <div className='container d-flex justify-content-center align-items-center vh-100'>
+            <div className='p-4 text-center border rounded-md shadow-lg'>
+                <h1 className='text-4xl font-bold'>Titulo de la Encuesta</h1>
+                <h1 className='text-2xl'>Descripcion de la encuesta</h1>
+                <h1 className='text-xl text-green-600'>Tematica de la encuesta</h1>
+            </div>
 
-            <h1 className='text-4xl font-bold'>Titulo de la Encuesta</h1>
-            <h1 className='text-2xl'>Descripcion de la encuesta</h1>
-            <h1 className='text-xl text-green-600'>Tematica de la encuesta</h1>
-
-            {/* 
-            carrusel */}
-            <div className='p-5 py-4 text-center rounded-md flex flex-col gap-4 shadow-lg'>
+            <div className='p-4 text-center mt-4 border rounded-md shadow-lg'>
                 <Slider {...settings}>
-                    {images.map((image, index) => (
+                    {images.map((item, index) => (
                         <div
                             key={index}
-                            className={`image-container ${image !== selectedImage ? 'blur' : ''}`}
+                            className={`image-container ${item.src !== selectedImage ? 'blur' : ''}`}
                             onClick={() => {
-                                setSelectedImage(image);
+                                setSelectedImage(item.src);
                                 goToNextImage();
                             }}
                         >
                             <img
-                                src={image}
+                                src={item.src}
                                 alt={`Image ${index + 1}`}
                                 style={{
-                                    width: '80%',
+                                    width: '100%',
                                     height: 'auto',
-                                    borderRadius: '5px',
-                                    border: '1px solid green',
+                                    borderRadius: '8px',
+                                    border: '1px solid transparent',
                                 }}
                             />
+                            <p className="image-name">{item.name}</p>
                         </div>
                     ))}
                 </Slider>
             </div>
 
-            {/* Sección de la pregunta y la escala de calificación */}
-            <div className='p-5 py-4 text-center border-2 rounded-md flex flex-col gap-8 shadow-lg'>
-                {selectedImage && (
-                    <div className='mt-4'>
-                        <p>¿El instructor maneja material de apoyo para dar a entender los temas?</p>
-                        <div className='flex items-center justify-center'>
-                            {[1, 2, 3, 4, 5].map((value) => (
-                                <div
-                                    key={value}
-                                    onClick={() => handleRatingSelect(value)}
-                                    className={`cursor-pointer p-4 m-2 rounded-full transition duration-300 border ${rating === value ? 'bg-green-500' : 'hover:bg-green-400'
-                                    }`}
-                                >
-                                    {value}
-                                </div>
-                            ))}
-                        </div>
+            {selectedImage && (
+                <div className='p-4 text-center mt-4 border rounded-md shadow-lg'>
+                    <p>¿El instructor maneja material de apoyo para dar a entender los temas?</p>
+                    <div className='flex items-center justify-center'>
+                        {[1, 2, 3, 4, 5].map((value) => (
+                            <div
+                                key={value}
+                                onClick={() => handleRatingSelect(value)}
+                                className={`cursor-pointer p-4 m-2 rounded-full transition duration-300 border rounded-full ${rating === value ? 'bg-green-500' : 'hover:bg-green-400'
+                                }`}
+                            >
+                                {value}
+                            </div>
+                        ))}
                     </div>
-                )}
-            </div>
+                </div>
+            )}
         </div>
     );
 };
