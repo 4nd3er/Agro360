@@ -19,6 +19,12 @@ export function capitalizeString(string) {
     return transformed.join(" ")
 }
 
+//*Funcion para capitalizar la primera letra
+export function capitalizeWord(word){
+    const string = word.split(" ")[0]
+    return string.charAt(0).toUpperCase() + string.toLowerCase().slice(1)
+}
+
 export const getMethod = async (res, model, name) => {
 
     const mayusName = name.charAt(0).toUpperCase() + name.slice(1)
@@ -49,12 +55,15 @@ export const getOneMethod = async (id, res, model, name) => {
     }
 }
 
-export const createMethod = async (data, find, res, model, name) => {
+export const createMethod = async (data, find, res, model, name, capitalize) => {
 
     const mayusName = name.charAt(0).toUpperCase() + name.slice(1)
     name = name.toLowerCase()
-    capitalizeCamp(data)
-    capitalizeCamp(find)
+    
+    if (capitalize) {
+        capitalizeCamp(data)
+        capitalizeCamp(find)
+    }
 
     try {
         const findModel = await model.findOne(find)
