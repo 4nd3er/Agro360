@@ -7,6 +7,7 @@ const RolesContext = createContext()
 
 const RolesProvider = ({ children }) => {
     const [roles, setRoles] = useState([]) // Roles
+    const [role, setRole] = useState()
     const [topic, setTopic] = useState({})
     const [modalTopicForm, setModalTopicForm] = useState(false)
     const [errors, setErrors] = useState([])
@@ -23,6 +24,17 @@ const RolesProvider = ({ children }) => {
         }
         obtainRoles()
     }, [])
+
+    // Obtain rol
+    const obtainRol = async id => {
+        try {
+            const { data } = await agro360Axios(`/roles/${id}`);
+            return(data)
+        } catch (error) {
+            console.log(error);
+            return[]
+        }
+    };
 
     // Obtain topics by rol
     const obtainTopic = async id => {
@@ -69,6 +81,7 @@ const RolesProvider = ({ children }) => {
                 roles,
                 obtainTopic,
                 obtainForm,
+                obtainRol,
                 createTopic,
                 modalTopicForm,
                 handleModalTopic,
