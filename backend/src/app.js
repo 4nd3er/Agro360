@@ -1,9 +1,9 @@
-import express from 'express'
+import express from 'Express'
 import dotenv from 'dotenv'
 import cors from 'cors'
 import morgan from 'morgan'
 import cookieParser from 'cookie-parser'
-import { authRoutes, coursesRoutes, formsRoutes, responseRoutes, rolesRoutes, topicsRoutes } from './routes/routes.js'
+import { authRoutes, coursesRoutes, formsRoutes, responseRoutes, rolesRoutes, topicsRoutes, usersRoutes } from './routes/routes.js'
 
 const app = express()
 
@@ -21,6 +21,7 @@ app.use((req, res, next) => {
     next();
 })
 app.use("/api", authRoutes)
+app.use("/api", usersRoutes)
 app.use("/api", coursesRoutes)
 app.use("/api", rolesRoutes)
 app.use("/api", topicsRoutes)

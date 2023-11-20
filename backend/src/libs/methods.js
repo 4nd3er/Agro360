@@ -20,7 +20,7 @@ export function capitalizeString(string) {
 }
 
 //*Funcion para capitalizar la primera letra
-export function capitalizeWord(word){
+export function capitalizeWord(word) {
     const string = word.split(" ")[0]
     return string.charAt(0).toUpperCase() + string.toLowerCase().slice(1)
 }
@@ -59,10 +59,22 @@ export const createMethod = async (data, find, res, model, name, capitalize) => 
 
     const mayusName = name.charAt(0).toUpperCase() + name.slice(1)
     name = name.toLowerCase()
-    
-    if (capitalize) {
-        capitalizeCamp(data)
-        capitalizeCamp(find)
+
+    if (capitalize == "capitalize") {
+        for (const [key, value] of Object.entries(data)) {
+            if (key === "names" || key === "name") {
+                data[key] = capitalizeString(value)
+                find[key] ? find[key] = data[key] : null;
+            }
+        }
+    }
+    else if (capitalize == "capitalize 2") {
+        for (const [key, value] of Object.entries(data)) {
+            if (key === "names" || key === "lastnames") {
+                data[key] = capitalizeString(value)
+                find[key] ? find[key] = data[key] : null;
+            }
+        }
     }
 
     try {
@@ -81,12 +93,27 @@ export const createMethod = async (data, find, res, model, name, capitalize) => 
 
 }
 
-export const updateMethod = async (data, id, find, res, model, name) => {
+export const updateMethod = async (data, id, find, res, model, name, capitalize) => {
 
     const mayusName = name.charAt(0).toUpperCase() + name.slice(1)
     name = name.toLowerCase()
-    capitalizeCamp(data)
-    capitalizeCamp(find)
+
+    if (capitalize == "capitalize") {
+        for (const [key, value] of Object.entries(data)) {
+            if (key === "names" || key === "name") {
+                data[key] = capitalizeString(value)
+                find[key] ? find[key] = data[key] : null;
+            }
+        }
+    }
+    else if (capitalize == "capitalize 2") {
+        for (const [key, value] of Object.entries(data)) {
+            if (key === "names" || key === "lastnames") {
+                data[key] = capitalizeString(value)
+                find[key] ? find[key] = data[key] : null;
+            }
+        }
+    }
 
     try {
         if (!validObjectId(id)) return res.status(400).json({ msg: messages.invalidId(name) })
