@@ -15,7 +15,7 @@ export const compForm = async (req, res, next) => {
 export const compFormCookie = async (req, res, next) => {
     const { form } = req.params
     const user = req.cookies.user
-    if (!user) return res.status(401).json({ msg: "Code not found" })
+    if (!user) return res.status(401).json({ msg: "Code not found, you are not authorized" })
     const { id, email, sessionCode, userCode } = user
 
     try {
@@ -85,7 +85,11 @@ export const compCode = async (req, res) => {
 // *Recibir formulario
 export const getResponseForm = async (req, res) => {
     const { form } = req.params
-    await getOneMethod(form, res, Forms, "Form")
+    const user = { id: "", email: "" }
+
+    console.log(user)
+    res.json({ msg: "OK" })
+    //await getOneMethod(form, res, Forms, "Form")
 }
 
 export const createResponse = async (req, res) => {
