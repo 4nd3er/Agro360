@@ -51,7 +51,7 @@ const Answers = () => {
     return (
         <div className='container d-flex justify-content-center align-items-center vh-100'>
             <div className='p-4 text-center border rounded-md shadow-lg'>
-                <h1 className='text-4xl font-bold'>Titulo de la Encuesta</h1>
+                <h1 className='text-4xl font-bold'>"Título de la Encuesta"</h1>
                 <h1 className='text-2xl'>Descripcion de la encuesta</h1>
                 <h1 className='text-xl text-green-600'>Tematica de la encuesta</h1>
             </div>
@@ -91,7 +91,7 @@ const Answers = () => {
                             <div
                                 key={value}
                                 onClick={() => handleRatingSelect(value)}
-                                className={`cursor-pointer p-4 m-2 rounded-full transition duration-300 border rounded-full ${rating === value ? 'bg-green-500' : 'hover:bg-green-400'
+                                className={`cursor-pointer p-4 m-2 transition duration-300 border rounded-full ${rating === value ? 'bg-green-500' : 'hover:bg-green-400'
                                 }`}
                             >
                                 {value}

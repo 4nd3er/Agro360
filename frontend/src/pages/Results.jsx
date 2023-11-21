@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Survey from '../components/Survey';
-import axios from 'axios';
+import agro360Axios from '../config/agro360Axios';
 
 
 const Results = () => {
     const [data, setData] = useState([]);
     useEffect(() => {
-        axios(`http://localhost:4000/api/forms`).then((response) => {
+        agro360Axios('forms/responses').then((response) => {
             setData(response.data);
         });
     }, []);

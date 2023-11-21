@@ -32,7 +32,7 @@ const TopicsForm = () => {
                     <span
                         className="text-4xl font-bold uppercase">Encuestas</span>
                     <br />
-                    <span className="text-lg text-gray-700 uppercase">tematica:{' '} {topic}</span>
+                    <span className="text-lg text-gray-700 uppercase">tématica:{' '} {topic}</span>
                 </p>
                 <div className="relative">
                     <input type="search" className="w-80 h-12 pl-10 pr-4 border rounded-full focus:outline-none focus:ring focus:border-blue-300 shadow-lg" placeholder="Buscar..." />
@@ -43,7 +43,7 @@ const TopicsForm = () => {
                     </div>
                 </div>
             </header>
-            <h3 className='text-bold text-xl text-gray-600 text-center uppercase mt-10 mb-2'>recientes</h3>
+            <h3 className='text-bold text-xl text-gray-600 text-center uppercase mt-10 mb-2'>Recientes</h3>
             <hr />
             <main className="grid grid-cols-3 gap-4 mr-5 mt-10">
                 {/* iterate forms  */}
@@ -54,7 +54,7 @@ const TopicsForm = () => {
                             form={form}
                         />
                     ))
-                    : <h3 className="text-2xl text-gray-600">No hay Encuestas para esta temática</h3>}
+                    : <h3 className="text-2xl text-gray-600">No hay Encuestas para esta tématica</h3>}
             </main>
         </section>
     )

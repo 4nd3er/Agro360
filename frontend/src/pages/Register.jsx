@@ -36,15 +36,15 @@ const Register = () => {
           </h1>
         </div>
 
-        <div className="w-3/5 h-full ">
-          <div className=" flex flex-col justify-center place-items-center min-h-[80vh] ">
+            <div className="w-3/5 h-full ">
+            <div className=" flex flex-col justify-center place-items-center min-h-[80vh] ">
             <strong className=' text-green-600  text-5xl capitalize font-sans'>Crea tu cuenta</strong>
 
             {
               registerErrors.map((error, i) => (
                 <div className="bg-red-500 p-4 text-white text-center rounded-md shadow-md my-2 w-2/4" key={i}>
                   {error}
-                </div>
+                  </div>
               ))
             }
             <form
@@ -133,45 +133,45 @@ const Register = () => {
                 )}
               </div>
 
-              <div className='my-5'>
-                <label className=' text-gray-600 block text-sm font-bold'
-                  htmlFor='password'
-                >Contraseña</label>
-                <input
-                  id="password"
-                  type="password"
-                  placeholder="Contraseña"
-                  className="w-full mt-3 p-3 border rounded-xl bg-gray-50"
-                  {...register('password', { required: true })}
-                />
-                {errors.password && (
-                  <p className="text-red-600">La contraseña es requerida</p>
-                )}
-              </div>
-
-
-              <input
-                type="submit"
+                <div className='my-5'>
+                     <label className=' text-gray-600 block text-sm font-bold'
+                     htmlFor='password'
+                     >Contraseña</label>
+                     <input 
+                     id="password" 
+                     type="password" 
+                     placeholder="Contraseña" 
+                     className="w-full mt-3 p-3 border rounded-xl bg-gray-50" 
+                     {... register('password', { required: true })}
+                     />
+                    {errors.password && (
+                      <p className="text-red-600">La contraseña es requerida</p>
+                    )}
+                    </div>
+                
+                
+                <input 
+                type="submit" 
                 value="Crear Cuenta"
                 className='bg-green-600 w-full py-1 text-white  font-bold rounded-xl
                 hover: cursor-pointer hover:bg-green-700 transition-color'
-              />
-              <Link
-                className='block my-5 text-slate-500  text-xs'
-                to='/'
-              >¿Ya tienes una cuenta? Inicia sesion</Link>
+                />
+                    <Link
+                        className='block my-5 text-slate-500  text-xs'
+                        to='/'
+                    >¿Ya tienes una cuenta? Inicia sesion</Link>
             </form>
 
             <nav className='lg:flex lg: justify-between'>
-
-
+                    
+                    
             </nav>
 
-          </div>
+             </div>
 
         </div>
-      </div>
-
+    </div>
+      
 
 
     </>

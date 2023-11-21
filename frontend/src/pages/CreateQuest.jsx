@@ -4,7 +4,7 @@ import { AddQuestionSvg, ImportQuestionSvg, DeleteQuestionSvg, ExcelSvg } from '
 import { Options, BarsChart, PiesChart } from '../components/Components';
 import '../question.css';
 import Swal from 'sweetalert2';
-import axios from 'axios';
+import agro360Axios from '../config/agro360Axios.jsx';
 import { Formik, Field, Form, ErrorMessage, FieldArray } from 'formik';
 
 const CreateQuest = () => {
@@ -44,7 +44,7 @@ const CreateQuest = () => {
         setTitle(localStorage.getItem('title'));
         setDescrip(localStorage.getItem('descrip'));
         setTopic(localStorage.getItem('topic'));
-        axios('http://localhost:4000/api/forms/questions/questiontypes').then((response) => {
+        agro360Axios('forms/questions/questiontypes').then((response) => {
             setQuestionsType(response.data);
         });
     }, [])
@@ -181,7 +181,7 @@ const CreateQuest = () => {
                 questions.map((question) => {
                     questionsObject.push(arraytoObject(question));
                 })
-                axios.post('http://localhost:4000/api/forms', {
+                agro360Axios.post('api/forms', {
                     name: title, description: descrip, topic: '654481cd0223fc9db9532bf9', creator: '6558096819d178e8586c6244',
                     questions: questionsObject
                 }).then((response) => {
@@ -261,14 +261,13 @@ const CreateQuest = () => {
                                         {questionsType.map((questionType) => (
                                             <option value={questionType._id}>{questionType.name}</option>
                                         ))}
-
                                     </select>
                                     <div className='cursor-pointer my-auto' onClick={() => deleteQuestion(questionIndex)}>
                                         <img src={DeleteQuestionSvg} />
                                     </div>
                                 </div>
                                 <div className='px-10 mb-5 text-red-500 flex justify-around select-none'>
-                                    <span className={`${question[0][1] === '' && validationQuestionContent ? 'opacity-100' : 'opacity-0'} transition-[.1s_all]`}>Este campo es Obligatorio</span>
+                                    <span className={`${question[0][1] === '' && validationQuestionContent ? 'opacity-100' : 'opacity-0'} transition-[.1s_all]`}>Este campo es obligatorio</span>
                                     <span className={`${question[1][1] === '' && validationQuestionType ? 'opacity-100' : 'opacity-0'} transition-[.1s_all]`}>Seleccione un elemento de la lista</span>
                                 </div>
                                 <div className='px-10'>
