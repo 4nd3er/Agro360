@@ -1,42 +1,40 @@
 import { Link } from "react-router-dom"
-import {useForm}  from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { useAuth } from '../context/AuthContex';
 import { useEffect } from "react";
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 //import axios from 'axios'
 
 
 
 const Register = () => {
+  const { signup, errors: registerErrors, isAuthenticated } = useAuth();
   //Variable que contiene los datos del formulario
-  const { 
-     register,
-     handleSubmit,
-     formState: {errors},
-
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
   } = useForm();
-  const {signup, isAuthenticated, errors: registerErrors} = useAuth();
   const navigate = useNavigate()
 
-  useEffect(() =>{
-    if (isAuthenticated) navigate("/inicio");
-  }, [isAuthenticated])
-
   const onSubmit = handleSubmit(async (value) => {
-    signup(value);
+    await signup(value);
   })
 
+  useEffect(() => {
+    if (isAuthenticated) navigate("/inicio");
+  }, [isAuthenticated]);
 
   return (
     <>
-    <div className="flex  justify-center items-center min-h-[80vh]">
-            <div className="w-1/4 h-full flex flex-col justify-center">
-            
-            <h1 className="text-green-800 font-black text-6xl capitalize ">AGRO
-                    <span className="text-green-500 text-8xl">360°</span>
-                    <p className='text-green-800 text-sm flex justify-center '>Evaluación de Desempeño</p>
-                </h1>
-            </div>
+      <div className="flex  justify-center items-center min-h-[80vh]">
+        <div className="w-1/4 h-full flex flex-col justify-center">
+
+          <h1 className="text-green-800 font-black text-6xl capitalize ">AGRO
+            <span className="text-green-500 text-8xl">360°</span>
+            <p className='text-green-800 text-sm flex justify-center '>Evaluacion de desempeño</p>
+          </h1>
+        </div>
 
             <div className="w-3/5 h-full ">
             <div className=" flex flex-col justify-center place-items-center min-h-[80vh] ">
@@ -49,91 +47,91 @@ const Register = () => {
                   </div>
               ))
             }
-            <form 
-            
+            <form
+
               className='my-10 bg-white shadow rounded-lg px-10 py-5 w-1/2'
               //boton listo para envio de datos
-              onSubmit={onSubmit}> 
-                <div className='my-5'>
-                    <label className=' text-gray-600 block text-sm font-bold'
-                    htmlFor='names'
-                    >Nombres</label>
-                    <input 
-                    id='names'
-                    type="text" 
-                    placeholder='Nombres'
-                    className='w-full mt-3 p-3 border rounded-xl bg-gray-50'
-                    {... register('names', { required: true })}
-                    />
-                   {errors.names && (
-                      <p className="text-red-600">Nombre es requerido</p>
-                    )}
-                </div>
-                <div className='my-5'>
-                    <label className=' text-gray-600 block text-sm font-bold'
-                    htmlFor='lastnames'
-                    >Apellidos</label>
-                    <input 
-                    id='lastnames'
-                    type="text" 
-                    placeholder='Apellidos'
-                    className='w-full mt-3 p-3 border rounded-xl bg-gray-50'
-                    {... register('lastnames', { required: true })}
-                    />
-                  {errors.lastnames && (
-                      <p className="text-red-600">Apellido es requerido</p>
-                    )}
-                </div>
-                <div className='my-5'>
-                  <label className=' text-gray-600 block text-sm font-bold' 
-                    htmlFor='select'
-                    >Tipo de Documento:</label>
-                  <select 
-                    id='documentType' 
-                    type="text"
-                    name='documentType' 
-                    className='w-full mt-3 p-3 border rounded-xl bg-gray-50'
-                    {... register('documentType', { required: true })}
-                    >
-                    <option value=''>Seleccione</option>
-                    <option value='opcion2'>CC</option>
-                    <option value='opcion2'>CE</option>
-                    <option value='opcion3'>TI</option>
-                  </select>
-                  {errors.documentType && (
-                      <p className="text-red-600">Tipo de documento es requerido</p>
-                    )}
-                </div>
-                <div className='my-5'>
-                    <label className=' text-gray-600 block text-sm font-bold'
-                    htmlFor='document'
-                    >Documento</label>
-                    <input 
-                    id='document'
-                    type="number" 
-                    placeholder='Numero de documento'
-                    className='w-full mt-3 p-3 border rounded-xl bg-gray-50'
-                    {... register('document', { required: true })}
-                    />
-                   {errors.document && (
-                      <p className="text-red-600">Documento es requerido</p>
-                    )}
-                </div>
-                <div className='my-5'>
-                     <label className=' text-gray-600 block text-sm font-bold'
-                     htmlFor='email'
-                     >Correo Electrónico</label>
-                     <input
-                     id='email'
-                     type="email"
-                     placeholder='Email de Registro'
-                     className='w-full mt-3 p-3 border rounded-xl bg-gray-50'
-                     {... register('email', { required: true })}
-                    />
-                   {errors.email && (
-                      <p className="text-red-600">El correo electrónico es requerido</p>
-                    )}
-                   </div>
+              onSubmit={onSubmit}>
+              <div className='my-5'>
+                <label className=' text-gray-600 block text-sm font-bold'
+                  htmlFor='names'
+                >Nombres</label>
+                <input
+                  id='names'
+                  type="text"
+                  placeholder='Nombres'
+                  className='w-full mt-3 p-3 border rounded-xl bg-gray-50'
+                  {...register('names', { required: true })}
+                />
+                {errors.names && (
+                  <p className="text-red-600">Nombre es requerido</p>
+                )}
+              </div>
+              <div className='my-5'>
+                <label className=' text-gray-600 block text-sm font-bold'
+                  htmlFor='lastnames'
+                >Apellidos</label>
+                <input
+                  id='lastnames'
+                  type="text"
+                  placeholder='Apellidos'
+                  className='w-full mt-3 p-3 border rounded-xl bg-gray-50'
+                  {...register('lastnames', { required: true })}
+                />
+                {errors.lastnames && (
+                  <p className="text-red-600">Apellido es requerido</p>
+                )}
+              </div>
+              <div className='my-5'>
+                <label className=' text-gray-600 block text-sm font-bold'
+                  htmlFor='select'
+                >Tipo de Documento:</label>
+                <select
+                  id='documentType'
+                  type="text"
+                  name='documentType'
+                  className='w-full mt-3 p-3 border rounded-xl bg-gray-50'
+                  {...register('documentType', { required: true })}
+                >
+                  <option value=''>Seleccione</option>
+                  <option value='opcion2'>CC</option>
+                  <option value='opcion2'>CE</option>
+                  <option value='opcion3'>TI</option>
+                </select>
+                {errors.documentType && (
+                  <p className="text-red-600">Tipo documento es requerido</p>
+                )}
+              </div>
+              <div className='my-5'>
+                <label className=' text-gray-600 block text-sm font-bold'
+                  htmlFor='document'
+                >Documento</label>
+                <input
+                  id='document'
+                  type="number"
+                  placeholder='Numero de documento'
+                  className='w-full mt-3 p-3 border rounded-xl bg-gray-50'
+                  {...register('document', { required: true })}
+                />
+                {errors.document && (
+                  <p className="text-red-600">Documento es requerido</p>
+                )}
+              </div>
+              <div className='my-5'>
+                <label className=' text-gray-600 block text-sm font-bold'
+                  htmlFor='email'
+                >Correo Electronico</label>
+                <input
+                  id='email'
+                  type="email"
+                  placeholder='Email de Registro'
+                  className='w-full mt-3 p-3 border rounded-xl bg-gray-50'
+                  {...register('email', { required: true })}
+                />
+                {errors.email && (
+                  <p className="text-red-600">Email es requerido</p>
+                )}
+              </div>
 
                 <div className='my-5'>
                      <label className=' text-gray-600 block text-sm font-bold'
@@ -161,7 +159,7 @@ const Register = () => {
                     <Link
                         className='block my-5 text-slate-500  text-xs'
                         to='/'
-                    >¿Ya tienes una cuenta? Inicia sesión</Link>
+                    >¿Ya tienes una cuenta? Inicia sesion</Link>
             </form>
 
             <nav className='lg:flex lg: justify-between'>
@@ -175,7 +173,7 @@ const Register = () => {
     </div>
       
 
-   
+
     </>
   )
 }

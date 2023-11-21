@@ -1,26 +1,24 @@
-import express from 'Express'
+import express from 'express'
 import dotenv from 'dotenv'
 import cors from 'cors'
 import morgan from 'morgan'
 import cookieParser from 'cookie-parser'
+import { FRONTEND_URL } from './config/config.js'
 import { authRoutes, coursesRoutes, formsRoutes, responseRoutes, rolesRoutes, topicsRoutes, usersRoutes } from './routes/routes.js'
 
 const app = express()
 
-dotenv.config({ path: './src/.env' });
+//* Dependencies
+dotenv.config({ path: "./src/.env" });
 app.use(express.json())
 app.use(cookieParser())
 app.use(morgan("dev"))
 app.use(cors({
-    origin: "http://localhost:5173",
-    credentials:true
+    credentials:true,
+    origin: FRONTEND_URL,
 }));
 
-app.use((req, res, next) => {
-    req.admin = { id: ""}
-    req.admin.id = "6558108f93b71558f6e4631a"
-    next();
-})
+//* Routes
 app.use("/api", authRoutes)
 app.use("/api", usersRoutes)
 app.use("/api", coursesRoutes)
