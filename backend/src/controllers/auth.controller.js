@@ -135,7 +135,7 @@ export const verifyToken = async(req, res) => {
     if(!token) return res.status(401).json({ msg: "No autorizado"});
 
     JsonWebTokenError.verify(token, createToken, async (err, user) =>{
-        if (err) return res.status(401).json({msg: "No autoritazo"})
+        if (err) return res.status(401).json({msg: "No autoritazo"});
 
         const findUser = await Admin.findById(user.id)
         if(!findUser) return res.status(401).json({msg:
