@@ -15,7 +15,7 @@
     font-weight: bold;
     font-family: Verdana, sans-serif;
     position: relative;
-    top: 30px;
+    top: 25px;
     left: -345px;
   }
   
@@ -45,32 +45,37 @@
   /* Estilos para el formulario dentro del modal */
   .modal-form {
     background-color: #fff;
-    padding: 20px;
-    max-width: 50rem;
+    padding: 30px;
+    max-width: 70rem; 
+    margin: auto;
     border-radius: 0.5rem;
-    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.2);
-  }
-  
+    box-shadow: 0 0 1rem rgba(83, 80, 80, 0.2);
+}
+
+
   /* Estilos para los elementos del formulario (por ejemplo, inputs y select) */
   .input-container {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     margin-bottom: 1rem;
+    
   }
   
   .input-container label {
-    font-size: 16px;
+    font-size: 15px;
     font-family: Arial, sans-serif;
-    font-weight: bold;
+    font-weight: 600; /* Utiliza 600 para semibold */
     color: rgb(0, 0, 0);
-  }
+}
+
   
   .input-container input,
+  .input-container textarea,
   .input-container select {
     width: 100%;
     padding: 0.5rem;
-    border: 2px solid #159c15; 
+    border: 1px solid #159c15; 
     border-radius: 0.25rem;
     transition: border 0.2s;
   }
@@ -95,9 +100,31 @@
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.2s;
+    background-color: rgb(36, 119, 39); /* Color verde, puedes cambiarlo a tu preferencia */
+    color: white; /* Texto en color blanco para contrastar */
   }
   
   .form-buttons button:hover {
-    background-color: #1d9e1d; /* Cambia el color de fondo al pasar el mouse sobre el botón */
+    background-color: #1c431c; /* Cambia el color de fondo al pasar el mouse sobre el botón */
   }
+
+  .input-select option:hover {
+    background-color: #58c25b; /* Cambia el color de fondo al pasar el cursor */
+    color: white; /* Cambia el color del texto para contrastar con el fondo */
+    
+}
+
+.modal-title {
+  font-weight: bold;
+  margin: 20px 0;
+  font-size: 20px; /* Tamaño de fuente */
+  color: #000000; /* Color del texto, puedes cambiarlo según tu diseño */
+  text-align: center; /* Alineación del texto al centro */
+  text-transform: uppercase; /* Convertir el texto a mayúsculas */
+  letter-spacing: 1px; /* Espaciado entre letras */
+  
+  }
+
+
+
   
