@@ -4,7 +4,7 @@ import { AddQuestionSvg, ImportQuestionSvg, DeleteQuestionSvg, ExcelSvg } from '
 import { Options, BarsChart, PiesChart } from '../components/Components';
 import '../question.css';
 import Swal from 'sweetalert2';
-import axios from 'axios';
+import agro360Axios from '../config/agro360Axios.jsx';
 import { Formik, Field, Form, ErrorMessage, FieldArray } from 'formik';
 
 const CreateQuest = () => {
@@ -44,7 +44,7 @@ const CreateQuest = () => {
         setTitle(localStorage.getItem('title'));
         setDescrip(localStorage.getItem('descrip'));
         setTopic(localStorage.getItem('topic'));
-        axios('http://localhost:4000/api/forms/questions/questiontypes').then((response) => {
+        agro360Axios('forms/questions/questiontypes').then((response) => {
             setQuestionsType(response.data);
         });
     }, [])
@@ -181,7 +181,7 @@ const CreateQuest = () => {
                 questions.map((question) => {
                     questionsObject.push(arraytoObject(question));
                 })
-                axios.post('http://localhost:4000/api/forms', {
+                agro360Axios.post('api/forms', {
                     name: title, description: descrip, topic: '654481cd0223fc9db9532bf9', creator: '6558096819d178e8586c6244',
                     questions: questionsObject
                 }).then((response) => {
@@ -261,7 +261,6 @@ const CreateQuest = () => {
                                         {questionsType.map((questionType) => (
                                             <option value={questionType._id}>{questionType.name}</option>
                                         ))}
-
                                     </select>
                                     <div className='cursor-pointer my-auto' onClick={() => deleteQuestion(questionIndex)}>
                                         <img src={DeleteQuestionSvg} />

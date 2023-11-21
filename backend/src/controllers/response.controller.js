@@ -130,9 +130,8 @@ export const getResponse = async (req, res) => {
 //Traer la response de un formulario segun su id
 export const getResponseForm = async (req, res) => {
     const { form } = req.params
-
-    const findResponse = await Responses.findOne({ form: form })
-    if (!findResponse) return res.status(404).json({ msg: messages.notFound("Form Response") })
+    const findResponse = await Responses.find({ form: form })
+    if (!findResponse) return res.status(404).json({ msg: messages.notFound("Form not found") })
     res.json(findResponse)
 }
 
