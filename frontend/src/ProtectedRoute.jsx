@@ -1,13 +1,14 @@
-import { useAuth} from "./context/AuthContex"
-import {Navigate, Outlet} from 'react-router-dom'
+import {Navigate, Outlet} from 'react-router-dom';
+import { useAuth} from "./context/AuthContex";
 
-const ProtectedRoute = () => {
-    const {user, isAuthenticated} = useAuth()
+function ProtectedRoute()  {
+    const {loading, isAuthenticated} = useAuth();
+    console.log(loading,isAuthenticated);
 
-    if(!isAuthenticated) return <Navigate to='/' replace />
+    if (loading) return <h1>Cargando..</h1>;
+    if (!loading && !isAuthenticated) return <Navigate to="/" replace/>;
 
-
-  return  <Outlet/>;
+    return <Outlet />;
 }
 
-export default ProtectedRoute
+export default ProtectedRoute;

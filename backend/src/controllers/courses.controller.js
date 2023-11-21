@@ -112,14 +112,13 @@ export const createCourseCronogram = async (req, res) => {
             const instructor = capitalizeString(values[3])
             const nameInstructor = instructor.split(" ")[0]
 
-            if (instructor.length > 6) {
-                /*
+            if (instructor.length > 6) {            
                 const findCourse = await Courses.findOne({ number: course })
                 if (!findCourse) return res.status(404).json({ msg: messages.notFound(`Course ${index}`) })
                 const findInstructor = await Users.findOne({ names: nameInstructor })
-                if (!findInstructor) return res.status(404).json({ msg: messages.notFound(`Instructor ${index}`) })
-                */
-                const data = { course: course, start: start, end: end, instructor: instructor }
+                if (!findInstructor) return res.status(404).json({ msg: messages.notFound(`Instructor ${index}`) })                
+                const data = { course: findCourse._id, start: start, end: end, instructor: findInstructor._id }
+                console.log(data)
                 /*
                 const findCronogram = await CoursesCronogram.findOne(data)
                 if (findCronogram) return res.status(400).json({ msg: messages.alreadyExists(`Cronogram ${index}`) })
@@ -131,7 +130,7 @@ export const createCourseCronogram = async (req, res) => {
                 coursesCronogram.push({ ...data })
             }
         }
-
+        res.json({ msg: "OK" })
         /*res.json({
             response: "Course Cronogram importes successfully",
             data: coursesCronogram

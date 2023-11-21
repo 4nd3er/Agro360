@@ -16,6 +16,7 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [errors, setErrors] = useState([]);
+    const [loading, setLoading] = useState(true);
     
 
     const signup = async (user) => {
@@ -55,39 +56,49 @@ export const AuthProvider = ({ children }) => {
         }
     },[errors])
 
-    useEffect(()=>{
-        function chekLogin  ()  {
-            const cookies = Cookies.get();
+    useEffect(() => {
+        async function checkLogin() {
+          const cookies = Cookies.get();
+        
+          if (!cookies.token) {
+            setIsAuthenticated(false);
+            setLoading(false);
+            return setUser(null);
+          }
+           
+            try {
+                const res = await verifyTokenRequest(cookies.token);
+                if(!res.data) {
+                setIsAuthenticated(false);
+                setLoading(false);
+                return;
+                } 
 
-        console.log(cookies)
-        if(cookies.token){
-         try {
-            const res =   verifyTokenRequest(cookies.token)
-            console.log(res)
-            if (!res.data) setIsAuthenticated(false)
-            
-            isAuthenticated(true)
-            setUser(res.data)
-         } catch (error) {
-            setIsAuthenticated(false)
-            setUser(null)
-         }
+                setIsAuthenticated(true);
+                setUser(res.data);
+                setLoading(false);
+            } catch (error) {
+                console.log(error);
+                setIsAuthenticated(false);
+                setUser(null);
+                setLoading(false);
+            } 
         }
-        }
-        chekLogin()
-    },[])
+        checkLogin();
+      }, []);
 
     return(
         <AuthContext.Provider 
         value={{ 
             signup,
             signin,
+            loading,
             user,
             isAuthenticated,
-            errors
+            errors,
         }}
         > 
         {children} 
         </AuthContext.Provider>
-    )
-}
+    );
+};

@@ -33,9 +33,9 @@ const usersSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
-    curse: {
+    course: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Curses',
+        ref: 'Courses',
         required: false
     }
 }, { timestamps: true })

@@ -15,7 +15,7 @@ export const compForm = async (req, res, next) => {
 export const compFormCookie = async (req, res, next) => {
     const { form } = req.params
     const user = req.cookies.user
-    if (!user) return res.status(401).json({ msg: "Code not found" })
+    if (!user) return res.status(401).json({ msg: "Code not found, you are not authorized" })
     const { id, email, sessionCode, userCode } = user
 
     try {
@@ -83,9 +83,13 @@ export const compCode = async (req, res) => {
 }
 
 // *Recibir formulario
-export const getResponseForm = async (req, res) => {
+export const getFormtoResponse = async (req, res) => {
     const { form } = req.params
-    await getOneMethod(form, res, Forms, "Form")
+    const user = { id: "", email: "" }
+
+    console.log(user)
+    res.json({ msg: "OK" })
+    //await getOneMethod(form, res, Forms, "Form")
 }
 
 export const createResponse = async (req, res) => {
@@ -123,6 +127,16 @@ export const getResponse = async (req, res) => {
     await getOneMethod(id, res, Responses, "Response")
 }
 
+//Traer la response de un formulario segun su id
+export const getResponseForm = async (req, res) => {
+    const { form } = req.params
+
+    const findResponse = await Responses.findOne({ form: form })
+    if (!findResponse) return res.status(404).json({ msg: messages.notFound("Form Response") })
+    res.json(findResponse)
+}
+
+//Traer las repuestas de una response segun el instructor
 export const getResponseInstructor = async (req, res) => {
     const { id, instructor } = req.params
 
@@ -131,9 +145,9 @@ export const getResponseInstructor = async (req, res) => {
     const answers = findForm.answers
 
     const answersInstructor = []
-    for (const answer of answers){
+    for (const answer of answers) {
         const instructorId = answer.instructor.toString()
-        if (instructorId === instructor ) answersInstructor.push(answer)
+        if (instructorId === instructor) answersInstructor.push(answer)
     }
 
     res.json(answersInstructor)
