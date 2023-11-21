@@ -8,7 +8,7 @@ function createToken(data) {
             { id: id},
             process.env.SECRET_TOKEN,
             {
-                expiresIn: expires
+                expiresIn: "30d"
             },
             (err, token) => {
                 if (err) reject(err);
