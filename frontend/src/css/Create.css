@@ -1,13 +1,14 @@
 /* Estilos para el contenedor principal */
 .flex-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: 30vh;
-    position: relative;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  position: relative;
+ 
+}
+
   /* Estilos para la etiqueta "CREAR ENCUESTA" */
   .image-label {
     font-size: 15px;
