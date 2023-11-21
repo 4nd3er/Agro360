@@ -1,4 +1,4 @@
-import Admin from '../models/admin.model.js'
+import { Admin } from '../models/models.js'
 import bcrypt from 'bcrypt'
 import { createToken, errorResponse, sendEmailResetPassword } from '../libs/libs.js'
 import  JsonWebTokenError from 'jsonwebtoken'
@@ -137,8 +137,8 @@ export const verifyToken = async(req, res) => {
     JsonWebTokenError.verify(token, createToken, async (err, user) =>{
         if (err) return res.status(401).json({msg: "No autoritazo"});
 
-        const findUser = await User.findById(user.id);
-        if (!findUser) return res.status(401).json({msg:
+        const findUser = await Admin.findById(user.id)
+        if(!findUser) return res.status(401).json({msg:
         "No autorizado"})
 
         return res.json({
