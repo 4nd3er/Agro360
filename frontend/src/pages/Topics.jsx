@@ -35,14 +35,14 @@ const Topics = () => {
                 <header className="flex justify-between mt-16">
                     <p>
                         <span
-                            className="text-4xl font-bold uppercase">Temáticas</span>
+                            className="text-4xl font-bold uppercase">"Tématicas"</span>
                         <br />
                         <span className="text-lg text-gray-500 uppercase">{role}</span>
                     </p>
                     <button
                         onClick={handleModalTopic}
                         className='bg-[#00324D] text-white font-bold py-2 px-3 rounded-lg uppercase mr-10 shadow-shadow-button'>
-                        Añadir Temática
+                        Añadir Tématicas
                     </button>
                 </header>
                 <ModalTopic />
@@ -54,7 +54,7 @@ const Topics = () => {
                                 topic={topic}
                             />
                         ))
-                        : <h3 className="text-2xl text-gray-600">Aún no hay temáticas para este rol</h3>}
+                        : <h3 className="text-2xl text-gray-600">Aún no hay tématicas para este rol</h3>}
                 </main>
             </section>
         </>

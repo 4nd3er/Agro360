@@ -1,22 +1,29 @@
-import {useForm}  from 'react-hook-form'
-import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form'
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContex';
 
 const Login = () => {
 
-   const {
-    register,
-     handleSubmit,
-     formState: {errors},
-    } = useForm();  
-    const {signin, errors: loginErrors} = useAuth();
-   
-   const onSubmit = handleSubmit((data) => {
-    signin(data);
-   })
-   
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm();
 
-        
+    const { signin, errors: loginErrors, isAuthenticated } = useAuth();
+    const navigate = useNavigate();
+
+    const onSubmit = handleSubmit((data) => {
+        signin(data);
+    })
+
+    useEffect(() => {
+        if (isAuthenticated) {
+          navigate("/inicio");
+        }
+      }, [isAuthenticated]);
+
     return (
         <>
             <div className="flex  justify-center items-center min-h-[80vh]">
@@ -24,7 +31,7 @@ const Login = () => {
 
                     <h1 className="text-green-800 font-black text-6xl capitalize ">AGRO
                         <span className="text-green-500 text-8xl">360°</span>
-                        <p className='text-green-800 text-sm flex justify-center '>Evaluación de desempeño</p>
+                        <p className='text-green-800 text-sm flex justify-center '>Evaluación de Desempeño</p>
                     </h1>
                 </div>
 
@@ -35,30 +42,30 @@ const Login = () => {
                         <strong className=' text-green-600  text-6xl capitalize font-sans'>Bienvenido</strong>
 
                         {
-                        loginErrors.map((error, i) => (
-                            <div className="bg-red-500 p-4 text-white text-center rounded-md shadow-md my-2 w-2/4" key={i}>
-                            {error}
-                            </div>
-                        ))
+                            loginErrors.map((error, i) => (
+                                <div className="bg-red-500 p-4 text-white text-center rounded-md shadow-md my-2 w-2/4" key={i}>
+                                    {error}
+                                </div>
+                            ))
                         }
-                        <form 
-                        className='my-10 bg-white shadow rounded-lg px-10 py-5 w-1/2'
-                        onSubmit={onSubmit}>
+                        <form
+                            className='my-10 bg-white shadow rounded-lg px-10 py-5 w-1/2'
+                            onSubmit={onSubmit}>
                             <div className='my-5'>
                                 <label className=' text-gray-600 block text-sm font-bold'
                                     htmlFor='email'
-                                >Correo Electronico</label>
+                                >Correo Electrónico</label>
                                 <input
                                     id='email'
-                                    {... register('email', { required: true })}
+                                    {...register('email', { required: true })}
                                     type="email"
                                     placeholder='Digite el Correo Electronico'
                                     className='w-full mt-3 p-3 border rounded-xl bg-gray-50'
                                 />
-                                {errors.email && <p className='text-red-600'>El correo electronico es requerido</p>}
+                                {errors.email && <p className='text-red-600'>El correo electrónico es requerido</p>}
                             </div>
 
-                            
+
                             <div className='my-5'>
                                 <label className=' text-gray-600 block text-sm font-bold'
                                     htmlFor='password'
@@ -66,13 +73,13 @@ const Login = () => {
 
                                 <input
                                     id='password'
-                                    {... register('password', { required: true })}
+                                    {...register('password', { required: true })}
                                     type="password"
                                     placeholder='Digite la contraseña'
                                     className='w-full mt-3 p-3 border rounded-xl bg-gray-50'
                                 />
-                                 {errors.password && (<p className='text-red-600'>La contraseña es requerida</p>
-                                 )}
+                                {errors.password && (<p className='text-red-600'>La contraseña es requerida</p>
+                                )}
                                 <Link
                                     className='block my-5 text-slate-500 uppercase text-xs'
                                     to='forget-password'
@@ -80,14 +87,14 @@ const Login = () => {
                             </div>
                             <input
                                 type="submit"
-                                value="Iniciar Sesion"  
+                                value="Iniciar Sesion"
                                 className='bg-green-600 w-full py-1 text-white uppercase font-bold rounded-xl
                                 hover: cursor-pointer hover:bg-green-700 transition-color'
                             />
                             <Link
                                 className='block my-5 text-slate-500 uppercase text-xs'
                                 to='register'
-                            >¿No tiene una cuenta? Registrarse</Link>
+                            >¿No tiene una cuenta? Regístrese</Link>
                         </form>
 
                         <nav className='lg:flex lg: justify-between'>

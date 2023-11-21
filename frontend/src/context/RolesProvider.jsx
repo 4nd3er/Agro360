@@ -1,6 +1,5 @@
 import { useEffect, useState, createContext } from "react";
 import agro360Axios from "../config/agro360Axios";
-import { useNavigate } from "react-router-dom"
 
 // Create the role context
 const RolesContext = createContext()

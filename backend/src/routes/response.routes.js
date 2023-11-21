@@ -1,7 +1,7 @@
 import Router from 'express';
-import { validate, validateTokenCookie, validateTokenParam } from '../middlewares/middlewares.js';
+import { validate, validateTokenCookie } from '../middlewares/middlewares.js';
 import { emailValidator, responseValidator } from '../validators/response.validator.js';
-import { compCode, compForm, compFormCookie, createResponse, getCode, getResponse, getResponseForm, getResponseInstructor, responses } from '../controllers/response.controller.js'
+import { compCode, compForm, compFormCookie, createResponse, getCode, getFormtoResponse, getResponse, getResponseForm, getResponseInstructor, responses } from '../controllers/response.controller.js'
 
 const router = Router()
 
@@ -12,7 +12,8 @@ router.route("/forms/v/:id")
     .post(compCode)
 
 router.route("/forms/r/:form")
-    .get(getResponseForm)
+    .all(compFormCookie)
+    .get(getFormtoResponse)
     .post(validate(responseValidator), createResponse)
 
 
@@ -20,6 +21,10 @@ router.route("/forms/r/:form")
 router.route("/responses")
     .all(validateTokenCookie)
     .get(responses)
+
+router.route("/responses/:form")
+    .all(validateTokenCookie)
+    .get(getResponseForm)
 
 router.route("/responses/:id")
     .all(validateTokenCookie)

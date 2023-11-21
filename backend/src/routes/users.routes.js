@@ -1,4 +1,4 @@
-import Router from 'Express'
+import Router from 'express'
 import { validateTokenCookie, validate } from '../middlewares/middlewares.js'
 import { usersValidator } from '../validators/users.validators.js'
 import { users, getUser, createUser, updateUser } from '../controllers/users.controller.js'

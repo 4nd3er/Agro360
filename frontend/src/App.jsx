@@ -2,9 +2,9 @@ import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import AuthLayout from './layouts/AuthLayout';
 import { AuthProvider } from './context/AuthContex';
+import ProtectedRoute from './ProtectedRoute'
 import LayoutLogin from './layouts/LayoutLogin';
 import { RolesProvider } from './context/RolesProvider';
-import ProtectedRoute from './ProtectedRoute'
 import {
   Home,
   Quest,
@@ -23,13 +23,11 @@ import {
   Answers
 } from './pages/Pages';
 
-console.log(import.meta.env.VITE_BACKEND_URL)
-
 function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
-        <RolesProvider>
+      <RolesProvider>
+        <BrowserRouter>
           <Routes>
             <Route path='/' element={<LayoutLogin />}>
               <Route index element={<Login />} />
@@ -40,23 +38,33 @@ function App() {
             </Route>
 
 
-            <Route element={<ProtectedRoute />}>
-              <Route path='/inicio' element={<AuthLayout />}>
-                <Route index element={<Home />} />
-                <Route path=':id/tematicas' element={<Topics />} />
-              </Route>
-              <Route path='/crear-formulario' element={<AuthLayout />}>
-                <Route index element={<Quest />} />
-                <Route path='crear' element={<CreateQuest />} />
-              </Route>
-              <Route path='/resultados' element={<AuthLayout />}>
-                <Route index element={<Results />} />
-              </Route>
+            <Route path='/inicio' element={<AuthLayout />}>
+              <Route index element={<Home />} />
+              <Route path='tematicas/:id' element={<Topics />} />
+              <Route path='tematicas/:id/encuestas/:idtopic' element={<TopicsForm />} />
+            </Route>
+            <Route path='/crear-formulario' element={<AuthLayout />}>
+              <Route index element={<Quest />} />
+              <Route path='crear' element={<CreateQuest />} />
+            </Route>
+            <Route path='/resultados' element={<AuthLayout />}>
+              <Route index element={<Results />} />
+              <Route path=':idQuest' element={<ResultQuest />} />
+            </Route>
+            <Route path='/validacion-usuario' element={<LayoutLogin />}>
+              <Route index element={<UserValidation />} />
+            </Route>
+            <Route path='/validacion-token' element={<LayoutLogin />}>
+              <Route index element={<TokenValidation />} />
+            </Route>
+            <Route path='/respuestas' element={<LayoutLogin />}>
+              <Route index element={<Answers />} />
             </Route>
 
+
           </Routes>
-        </RolesProvider>
-      </BrowserRouter>
+        </BrowserRouter>
+      </RolesProvider>
     </AuthProvider>
   )
 }

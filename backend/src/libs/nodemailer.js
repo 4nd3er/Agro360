@@ -24,7 +24,7 @@ export function sendEmailResetPassword(res, data) {
     }
     else {
       res.json({
-        msg: "Email sent successfully to " + userEmail,
+        response: "Email sent successfully to " + userEmail,
         info: info.response
       });
     }
@@ -54,7 +54,7 @@ export function sendEmailFormCode(res, userEmail, code) {
     }
     else {
       res.json({
-        msg: "Email sent successfully to " + userEmail,
+        response: "Email sent successfully to " + userEmail,
         info: info.response
       });
     }
