@@ -65,7 +65,7 @@
   .input-container label {
     font-size: 15px;
     font-family: Arial, sans-serif;
-    font-weight: 600; /* Utiliza 600 para semibold */
+    font-weight: 600; 
     color: rgb(0, 0, 0);
 }
 
@@ -100,28 +100,28 @@
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.2s;
-    background-color: rgb(36, 119, 39); /* Color verde, puedes cambiarlo a tu preferencia */
-    color: white; /* Texto en color blanco para contrastar */
+    background-color: rgb(36, 119, 39); 
+    color: white;
   }
   
   .form-buttons button:hover {
-    background-color: #1c431c; /* Cambia el color de fondo al pasar el mouse sobre el botón */
+    background-color: #1c431c; 
   }
 
   .input-select option:hover {
-    background-color: #58c25b; /* Cambia el color de fondo al pasar el cursor */
-    color: white; /* Cambia el color del texto para contrastar con el fondo */
+    background-color: #58c25b;
+    color: white; 
     
 }
 
 .modal-title {
   font-weight: bold;
   margin: 20px 0;
-  font-size: 20px; /* Tamaño de fuente */
-  color: #000000; /* Color del texto, puedes cambiarlo según tu diseño */
-  text-align: center; /* Alineación del texto al centro */
-  text-transform: uppercase; /* Convertir el texto a mayúsculas */
-  letter-spacing: 1px; /* Espaciado entre letras */
+  font-size: 20px; 
+  color: #000000; 
+  text-align: center; 
+  text-transform: uppercase; 
+  letter-spacing: 1px; 
   
   }
 
