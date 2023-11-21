@@ -91,7 +91,7 @@ const Answers = () => {
                             <div
                                 key={value}
                                 onClick={() => handleRatingSelect(value)}
-                                className={`cursor-pointer p-4 m-2 rounded-full transition duration-300 border rounded-full ${rating === value ? 'bg-green-500' : 'hover:bg-green-400'
+                                className={`cursor-pointer p-4 m-2 transition duration-300 border rounded-full ${rating === value ? 'bg-green-500' : 'hover:bg-green-400'
                                 }`}
                             >
                                 {value}
