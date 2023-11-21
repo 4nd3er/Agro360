@@ -101,7 +101,7 @@ const Create = () => {
               </div>
 
               <div className="input-container">
-                <label htmlFor="opciones">Tematicas</label>
+                <label htmlFor="opciones">Temáticas</label>
                 <select
                   id="opciones"
                   name="opciones"
@@ -110,7 +110,7 @@ const Create = () => {
                   required
                   className="input-select"
                 >
-                  <option value="">Seleccione Tematica</option>
+                  <option value="">Seleccione Temática</option>
                   <option value="Pedagogía">Pedagogía</option>
                   <option value="Actitudinal">Actitudinal</option>
                 </select>
