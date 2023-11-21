@@ -35,7 +35,7 @@ const Topics = () => {
                 <header className="flex justify-between mt-16">
                     <p>
                         <span
-                            className="text-4xl font-bold uppercase">"Tématicas"</span>
+                            className="text-4xl font-bold uppercase">Tématicas</span>
                         <br />
                         <span className="text-lg text-gray-500 uppercase">{role}</span>
                     </p>
@@ -54,7 +54,7 @@ const Topics = () => {
                                 topic={topic}
                             />
                         ))
-                        : <h3 className="text-2xl text-gray-600">Aún no hay tématicas para este rol</h3>}
+                        : <h3 className="text-2xl text-gray-600">No hay tématicas creadas para este rol</h3>}
                 </main>
             </section>
         </>
