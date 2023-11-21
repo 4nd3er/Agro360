@@ -24,7 +24,7 @@ const Login = () => {
 
                     <h1 className="text-green-800 font-black text-6xl capitalize ">AGRO
                         <span className="text-green-500 text-8xl">360°</span>
-                        <p className='text-green-800 text-sm flex justify-center '>Evaluación de desempeño</p>
+                        <p className='text-green-800 text-sm flex justify-center '>Evaluación de Desempeño</p>
                     </h1>
                 </div>
 
@@ -47,7 +47,7 @@ const Login = () => {
                             <div className='my-5'>
                                 <label className=' text-gray-600 block text-sm font-bold'
                                     htmlFor='email'
-                                >Correo Electronico</label>
+                                >Correo Electrónico</label>
                                 <input
                                     id='email'
                                     {... register('email', { required: true })}
@@ -55,7 +55,7 @@ const Login = () => {
                                     placeholder='Digite el Correo Electronico'
                                     className='w-full mt-3 p-3 border rounded-xl bg-gray-50'
                                 />
-                                {errors.email && <p className='text-red-600'>El correo electronico es requerido</p>}
+                                {errors.email && <p className='text-red-600'>El correo electrónico es requerido</p>}
                             </div>
 
                             
@@ -87,7 +87,7 @@ const Login = () => {
                             <Link
                                 className='block my-5 text-slate-500 uppercase text-xs'
                                 to='register'
-                            >¿No tiene una cuenta? Registrarse</Link>
+                            >¿No tiene una cuenta? Regístrese</Link>
                         </form>
 
                         <nav className='lg:flex lg: justify-between'>

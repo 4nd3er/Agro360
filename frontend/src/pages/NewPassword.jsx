@@ -1,7 +1,7 @@
 const NewPassword = () => {
   return (
     <div>
-       NewPassword
+       NewPasssword
     </div>
   )
 }

@@ -45,7 +45,7 @@ const ForgetPassword = () => {
 
             <h1 className="text-green-800 font-black text-6xl capitalize ">AGRO
                 <span className="text-green-500 text-8xl">360°</span>
-                <p className='text-green-800 text-sm flex justify-center '>Evaluacion de desempeño</p>
+                <p className='text-green-800 text-sm flex justify-center '>Evaluación de Desempeño</p>
             </h1>
         </div>
 
@@ -64,7 +64,7 @@ const ForgetPassword = () => {
                     <div className='my-5'>
                      <label className=' text-gray-600 block text-sm font-bold'
                      htmlFor='email'
-                     >Correo Electronico</label>
+                     >Correo Electrónico</label>
                      <input
                      id='email'
                      type="email"

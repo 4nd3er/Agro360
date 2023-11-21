@@ -23,7 +23,7 @@ const UserValidation = () => {
                         <div className='my-2'>
                             <label className=' text-gray-600 block text-sm font-bold'
                                 htmlFor='email'
-                            >Ingresa el codigo de verificación enviado a tu correo</label>
+                            >Ingresa el código de verificación enviado a tu correo</label>
                             <input
                                 id='codigo'
                                 type="text"

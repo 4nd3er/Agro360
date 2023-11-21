@@ -11,7 +11,7 @@ const Home = () => {
                 <header className='mt-10 mb-20'>
                     <p className="text-center">
                         <span className="font-bold text-black text-5xl font-work-sans">
-                            BIENVENIDO
+                            BIENVENIDOS
                             <br />
                         </span>
                         <span className="font-bold text-[#39a900] text-4xl">

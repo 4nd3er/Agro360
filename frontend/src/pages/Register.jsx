@@ -34,7 +34,7 @@ const Register = () => {
             
             <h1 className="text-green-800 font-black text-6xl capitalize ">AGRO
                     <span className="text-green-500 text-8xl">360°</span>
-                    <p className='text-green-800 text-sm flex justify-center '>Evaluacion de desempeño</p>
+                    <p className='text-green-800 text-sm flex justify-center '>Evaluación de Desempeño</p>
                 </h1>
             </div>
 
@@ -101,7 +101,7 @@ const Register = () => {
                     <option value='opcion3'>TI</option>
                   </select>
                   {errors.documentType && (
-                      <p className="text-red-600">Tipo documento es requerido</p>
+                      <p className="text-red-600">Tipo de documento es requerido</p>
                     )}
                 </div>
                 <div className='my-5'>
@@ -122,7 +122,7 @@ const Register = () => {
                 <div className='my-5'>
                      <label className=' text-gray-600 block text-sm font-bold'
                      htmlFor='email'
-                     >Correo Electronico</label>
+                     >Correo Electrónico</label>
                      <input
                      id='email'
                      type="email"
@@ -131,7 +131,7 @@ const Register = () => {
                      {... register('email', { required: true })}
                     />
                    {errors.email && (
-                      <p className="text-red-600">Email es requerido</p>
+                      <p className="text-red-600">El correo electrónico es requerido</p>
                     )}
                    </div>
 
@@ -161,7 +161,7 @@ const Register = () => {
                     <Link
                         className='block my-5 text-slate-500  text-xs'
                         to='/'
-                    >¿Ya tienes una cuenta? Inicia sesion</Link>
+                    >¿Ya tienes una cuenta? Inicia sesión</Link>
             </form>
 
             <nav className='lg:flex lg: justify-between'>

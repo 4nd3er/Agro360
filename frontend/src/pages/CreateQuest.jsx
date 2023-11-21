@@ -268,7 +268,7 @@ const CreateQuest = () => {
                                     </div>
                                 </div>
                                 <div className='px-10 mb-5 text-red-500 flex justify-around select-none'>
-                                    <span className={`${question[0][1] === '' && validationQuestionContent ? 'opacity-100' : 'opacity-0'} transition-[.1s_all]`}>Este campo es Obligatorio</span>
+                                    <span className={`${question[0][1] === '' && validationQuestionContent ? 'opacity-100' : 'opacity-0'} transition-[.1s_all]`}>Este campo es obligatorio</span>
                                     <span className={`${question[1][1] === '' && validationQuestionType ? 'opacity-100' : 'opacity-0'} transition-[.1s_all]`}>Seleccione un elemento de la lista</span>
                                 </div>
                                 <div className='px-10'>

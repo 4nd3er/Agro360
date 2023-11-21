@@ -23,7 +23,7 @@ const UserValidation = () => {
                         <div className='my-2'>
                             <label className=' text-gray-600 block text-sm font-bold'
                                 htmlFor='email'
-                            >Correo Electronico</label>
+                            >Correo Electrónico</label>
                             <input
                                 id='email'
                                 type="text"
@@ -33,8 +33,7 @@ const UserValidation = () => {
                         </div>
                         <div className="flex items-center justify-center">
                             <p className="mt-1 mb-6 text-gray-600 text-center block text-sm font-bold ">
-                                Digita tu correo electrónico para enviarte un código de verificación y puedas responder el formulario
-                            </p>
+                            Digita tu correo electrónico para que te enviemos un código de verificación y puedas responder al formulario  </p>
                         </div>
 
 
