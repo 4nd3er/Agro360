@@ -12,6 +12,7 @@ export const getForm = async (req, res) => {
     await getOneMethod(id, res, Forms, "Form")
 }
 
+// Obtener los formularios que han tenido una respuesta
 export const getFormsResponse = async (req, res) => {
     const formsResponse = []
     const forms = await Forms.find({})
