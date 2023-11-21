@@ -32,7 +32,7 @@ export const getMethod = async (res, model, name) => {
 
     try {
         const findModel = await model.find({})
-        if (!findModel.length > 0) return res.status(404).json({ msg: messages.notFound(mayusName) })
+        if (!findModel.length > 0) return res.status(404).json({ message: [messages.notFound(mayusName)] })
         res.json(findModel)
     } catch (error) {
         errorResponse(res, error)
@@ -45,9 +45,9 @@ export const getOneMethod = async (id, res, model, name) => {
     name = name.toLowerCase()
 
     try {
-        if (!validObjectId(id)) return res.status(400).json({ msg: messages.invalidId(name) })
+        if (!validObjectId(id)) return res.status(400).json({ message: [messages.invalidId(name)] })
         const findModel = await model.findById(id)
-        if (!findModel) return res.status(404).json({ msg: messages.notFound(mayusName) })
+        if (!findModel) return res.status(404).json({ message: [messages.notFound(mayusName)] })
 
         res.json(findModel)
     } catch (error) {
@@ -79,7 +79,7 @@ export const createMethod = async (data, find, res, model, name, capitalize) => 
 
     try {
         const findModel = await model.findOne(find)
-        if (findModel) return res.status(400).json({ msg: messages.alreadyExists(mayusName) })
+        if (findModel) return res.status(400).json({ message: [messages.alreadyExists(mayusName)] })
 
         const newModel = new model(data)
         const saveModel = await newModel.save()
@@ -116,15 +116,15 @@ export const updateMethod = async (data, id, find, res, model, name, capitalize)
     }
 
     try {
-        if (!validObjectId(id)) return res.status(400).json({ msg: messages.invalidId(name) })
+        if (!validObjectId(id)) return res.status(400).json({ message: [messages.invalidId(name)] })
 
         const findExistsModel = await model.findOne(find)
-        if (findExistsModel && findExistsModel._id.toString() !== id) return res.status(400).json({ msg: messages.alreadyExists(mayusName) })
+        if (findExistsModel && findExistsModel._id.toString() !== id) return res.status(400).json({ message: [messages.alreadyExists(mayusName)] })
 
         const findModel = await model.findByIdAndUpdate(id, data, {
             new: true
         })
-        if (!findModel) return res.status(404).json({ msg: messages.notFound(mayusName) })
+        if (!findModel) return res.status(404).json({ message: [messages.notFound(mayusName)] })
 
         res.json({
             response: `${mayusName} updated successfully`,
@@ -141,10 +141,10 @@ export const deleteMethod = async (id, res, model, name) => {
     name = name.toLowerCase()
 
     try {
-        if (!validObjectId(id)) return res.status(400).json({ msg: messages.invalidId(name) })
+        if (!validObjectId(id)) return res.status(400).json({ message: [messages.invalidId(name)] })
 
         const findModel = await model.findByIdAndDelete(id)
-        if (!findModel) return res.status(404).json({ msg: messages.notFound(mayusName) })
+        if (!findModel) return res.status(404).json({ message: [messages.notFound(mayusName)] })
 
         res.json({
             response: `${mayusName} deleted successfully`,
@@ -161,13 +161,13 @@ export const getRelations = async (id, find, res, model, name, searchModel, sear
     name = name.toLowerCase()
 
     try {
-        if (!validObjectId(id)) return res.status(400).json({ msg: messages.invalidId(name) })
+        if (!validObjectId(id)) return res.status(400).json({ message: [messages.invalidId(name)] })
 
         const findModel = await model.findById(id)
-        if (!findModel) return res.status(404).json({ msg: messages.notFound(mayusName) })
+        if (!findModel) return res.status(404).json({ message: [messages.notFound(mayusName)] })
 
         const findSearchModel = await searchModel.find(find)
-        if (!findSearchModel.length > 0) return res.status(404).json({ msg: messages.notFound(searchName) })
+        if (!findSearchModel.length > 0) return res.status(404).json({ message: [messages.notFound(searchName)] })
 
         res.json(findSearchModel)
     } catch (error) {

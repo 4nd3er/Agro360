@@ -52,7 +52,7 @@ export const createCourse = async (req, res) => {
     const find = { number }
 
     const compName = await compObjectId(name, CoursesNames, "Course Name")
-    if (!compName.success) return res.status(compName.status).json({ msg: compName.msg })
+    if (!compName.success) return res.status(compName.status).json({ message: [compName.msg] })
 
     await createMethod(data, find, res, Courses, "Course")
 }
@@ -64,7 +64,7 @@ export const updateCourse = async (req, res) => {
     const find = { number }
 
     const compName = await compObjectId(name, CoursesNames, "Course Name")
-    if (!compName.success) return res.status(compName.status).json({ msg: compName.msg })
+    if (!compName.success) return res.status(compName.status).json({ message: [compName.msg] })
 
     await updateMethod(data, id, find, res, Courses, "Course")
 }
@@ -80,7 +80,7 @@ export const coursesCronogram = async (req, res) => {
     await getMethod(res, CoursesCronogram, "Course Cronogram")
 }
 
-export const getCourseCronogram = async(req, res) => {
+export const getCourseCronogram = async (req, res) => {
     const { id } = req.params
     await getOneMethod(id, res, CoursesCronogram, "Course Cronogram")
 }
@@ -109,28 +109,40 @@ export const createCourseCronogram = async (req, res) => {
             const course = values[0].toString()
             const start = parseDate(values[1])
             const end = parseDate(values[2])
-            const instructor = capitalizeString(values[3])
-            const nameInstructor = instructor.split(" ")[0]
 
-            if (instructor.length > 6) {            
+            const instructor = capitalizeString(values[3])
+            const stringInstructor = instructor.split(" ")
+            let instructorNames = ""
+            let instructorLastnames = ""
+            if (stringInstructor.length === 4) {
+                instructorNames = `${stringInstructor[0]} ${stringInstructor[1]}`
+                instructorLastnames = `${stringInstructor[2]} ${stringInstructor[3]}`
+            } else if (stringInstructor.length === 3) {
+                instructorNames = `${stringInstructor[0]}`
+                instructorLastnames = `${stringInstructor[1]} ${stringInstructor[2]}`
+            } else if (stringInstructor.length === 2) {
+                instructorNames = `${stringInstructor[0]}`
+                instructorLastnames = `${stringInstructor[1]}`
+            }
+
+            if (instructor.length > 6) {
                 const findCourse = await Courses.findOne({ number: course })
-                if (!findCourse) return res.status(404).json({ msg: messages.notFound(`Course ${index}`) })
-                const findInstructor = await Users.findOne({ names: nameInstructor })
-                if (!findInstructor) return res.status(404).json({ msg: messages.notFound(`Instructor ${index}`) })                
+                if (!findCourse) return res.status(404).json({ message: [messages.notFound(`Course ${index}`)] })
+                const findInstructor = await Users.findOne({ names: instructorNames, lastnames: instructorLastnames })
+                if (!findInstructor) return res.status(404).json({ message: [messages.notFound(`Instructor ${index}`)] })
                 const data = { course: findCourse._id, start: start, end: end, instructor: findInstructor._id }
                 console.log(data)
-                /*
-                const findCronogram = await CoursesCronogram.findOne(data)
-                if (findCronogram) return res.status(400).json({ msg: messages.alreadyExists(`Cronogram ${index}`) })
-    
-                const newCronogram = new CoursesCronogram(data)
-                const saveCronogram = await newCronogram.save()
-                */
 
-                coursesCronogram.push({ ...data })
+                const findCronogram = await CoursesCronogram.findOne(data)
+                if (findCronogram) return res.status(400).json({ message: [messages.alreadyExists(`Cronogram ${index}`)] })
+
+                coursesCronogram.push(data)
             }
+
+            const newCronogram = new CoursesCronogram(coursesCronogram)
+            const saveCronogram = await newCronogram.save()
         }
-        res.json({ msg: "OK" })
+        res.json({ message: ["OK"] })
         /*res.json({
             response: "Course Cronogram importes successfully",
             data: coursesCronogram
@@ -147,9 +159,9 @@ export const updateCourseCronogram = async (req, res) => {
     const find = data
 
     const compCourse = await compObjectId(course, Courses, "Course")
-    if (!compCourse.success) return res.status(compCourse.status).json({ msg: compCourse.msg })
+    if (!compCourse.success) return res.status(compCourse.status).json({ message: [compCourse.msg] })
     const compInstructor = await compObjectId(instructor, Courses, "Instructor")
-    if (!compInstructor.success) return res.status(compInstructor.status).json({ msg: compInstructor.msg })
+    if (!compInstructor.success) return res.status(compInstructor.status).json({ message: [compInstructor.msg] })
 
     await updateMethod(data, id, find, res, CoursesCronogram, "Course Cronogram")
 }

@@ -17,10 +17,10 @@ export const createUser = async (req, res) => {
     const find = { names }
 
     const compRol = await compObjectId(rol, Roles, "Role")
-    if (!compRol.success) return res.status(compRol.status).json({ msg: compRol.msg })
+    if (!compRol.success) return res.status(compRol.status).json({ message: [compRol.msg] })
     if (course) {
         const compCourse = await compObjectId(course, Courses, "Course")
-        if (!compCourse.success) return res.status(compCourse.status).json({ msg: compCourse.msg })
+        if (!compCourse.success) return res.status(compCourse.status).json({ message: [compCourse.msg] })
     }
     await createMethod(data, find, res, Users, "User", "capitalize 2")
 }
@@ -32,10 +32,10 @@ export const updateUser = async (req, res) => {
     const find = { names }
 
     const compRol = await compObjectId(rol, Roles, "Role")
-    if (!compRol.success) return res.status(compRol.status).json({ msg: compRol.msg })
+    if (!compRol.success) return res.status(compRol.status).json({ message: [compRol.msg] })
     if (course) {
         const compCourse = await compObjectId(course, Courses, "Course")
-        if (!compCourse.success) return res.status(compCourse.status).json({ msg: compCourse.msg })
+        if (!compCourse.success) return res.status(compCourse.status).json({ message: [compCourse.msg] })
     }
     await updateMethod(data, id, find, res, Users, "User", "capitalize 2")
 }

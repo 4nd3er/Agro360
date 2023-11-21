@@ -12,6 +12,7 @@ router.route("/forms/v/:id")
     .post(compCode)
 
 router.route("/forms/r/:form")
+    .all(compFormCookie)
     .get(getFormtoResponse)
     .post(validate(responseValidator), createResponse)
 

@@ -5,14 +5,14 @@ export const usersValidator = z.object({
         .string({
             required_error: "Names is required"
         })
-        .min(6, {
+        .min(5, {
             message: "Names must be last at 6 characters"
         }),
     lastnames: z
         .string({
             required_error: "Lastanames is required"
         })
-        .min(6, {
+        .min(4, {
             message: "Lastnames must be last at 6 characters"
         }),
     documentType: z
@@ -41,6 +41,6 @@ export const usersValidator = z.object({
             message: "Email is invalid"
         }),
     course: z
-        .string({})
+        .string()
         .nullish()
 })
