@@ -146,7 +146,7 @@ export const getResponse = async (req, res) => {
 export const getResponseForm = async (req, res) => {
     const { form } = req.params
 
-    const findResponse = await Responses.findOne({ form: form })
+    const findResponse = await Responses.find({ form: form })
     if (!findResponse) return res.status(404).json({ message: [messages.notFound("Form Response")] })
     res.json(findResponse)
 }
