@@ -37,31 +37,31 @@ function App() {
               <Route path='confirm/:id' element={<ConfirmAccount />} />
             </Route>
 
-            <Route element={<ProtectedRoute />}>
-              <Route path='/inicio' element={<AuthLayout />}>
-                <Route index element={<Home />} />
-                <Route path='tematicas/:id' element={<Topics />} />
-                <Route path='tematicas/:id/encuestas/:idtopic' element={<TopicsForm />} />
-              </Route>
-              <Route path='/crear-formulario' element={<AuthLayout />}>
-                <Route index element={<Quest />} />
-                <Route path='crear' element={<CreateQuest />} />
-              </Route>
-              <Route path='/resultados' element={<AuthLayout />}>
-                <Route index element={<Results />} />
-                <Route path=':idQuest' element={<ResultQuest />} />
-              </Route>
-              <Route path='/validacion-usuario' element={<LayoutLogin />}>
-                <Route index element={<UserValidation />} />
-              </Route>
-              <Route path='/validacion-token' element={<LayoutLogin />}>
-                <Route index element={<TokenValidation />} />
-              </Route>
-              <Route path='/respuestas' element={<LayoutLogin />}>
-                <Route index element={<Answers />} />
-              </Route>
+
+            <Route path='/inicio' element={<AuthLayout />}>
+              <Route index element={<Home />} />
+              <Route path='tematicas/:id' element={<Topics />} />
+              <Route path='tematicas/:id/encuestas/:idtopic' element={<TopicsForm />} />
             </Route>
-            
+            <Route path='/crear-formulario' element={<AuthLayout />}>
+              <Route index element={<Quest />} />
+              <Route path='crear' element={<CreateQuest />} />
+            </Route>
+            <Route path='/resultados' element={<AuthLayout />}>
+              <Route index element={<Results />} />
+              <Route path=':idQuest' element={<ResultQuest />} />
+            </Route>
+            <Route path='/validacion-usuario' element={<LayoutLogin />}>
+              <Route index element={<UserValidation />} />
+            </Route>
+            <Route path='/validacion-token' element={<LayoutLogin />}>
+              <Route index element={<TokenValidation />} />
+            </Route>
+            <Route path='/respuestas' element={<LayoutLogin />}>
+              <Route index element={<Answers />} />
+            </Route>
+
+
           </Routes>
         </BrowserRouter>
       </RolesProvider>
