@@ -26,7 +26,7 @@ export const formValidator = z.object({
         .coerce
         .date()
         .min(new Date(), {
-            message: "The date is invalid"
+            message: "The date must be greater than the current"
         }),        
     status: z
         .boolean()

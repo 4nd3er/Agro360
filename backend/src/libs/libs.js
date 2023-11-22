@@ -2,6 +2,7 @@ import mongoose from 'mongoose'
 import jwt from 'jsonwebtoken'
 import { nameMayusName } from './functions.js'
 import { SECRET_TOKEN } from '../config/config.js'
+import * as messages from './messages.js'
 ////
 export { sendEmailResetPassword, sendEmailFormCode } from './nodemailer.js'
 export * as messages from './messages.js'
@@ -25,7 +26,7 @@ export async function compObjectId(id, model, name) {
         if (!findModel) return result = { success: false, status: 404, msg: messages.notFound(mayusName) }
         return result
     } catch (error) {
-        errorResponse(res, error)
+        console.error(error)
     }
 }
 

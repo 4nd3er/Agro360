@@ -39,12 +39,12 @@ export const login = async (req, res) => {
 
 //* Register
 export const register = async (req, res) => {
-    //Permitir registro
-    const enabledRegister = true
-    if (!enabledRegister) return res.status(401).json({ message: ['You are not allowed to register'] })
-
     const { names, lastnames, email, password } = req.body
     try {
+        //Permitir registro
+        const enabledRegister = true
+        if (!enabledRegister) return res.status(401).json({ message: ['You are not allowed to register'] })
+
         //Validadion Usuario ya existe en base de datos
         const findUser = await Admin.findOne({ email })
         if (findUser) return res.status(400).json({ message: ['El correo ya esta en eso'] })
@@ -122,48 +122,57 @@ export const resetPassword = async (req, res) => {
 
 //* Logout
 export const logout = (req, res) => {
-    //Eliminar cookie
-    res.cookie("token", "", {
-        expires: new Date(0)
-    })
-    return res.sendStatus(200)
+    try {
+        //Eliminar cookie
+        res.cookie("token", "", {
+            expires: new Date(0)
+        })
+        return res.sendStatus(200)
+    } catch (error) {
+        errorResponse(res, error)
+    }
 }
-
 
 //* Profile
 export const profile = async (req, res) => {
     const { token } = req.cookies
+    try {
+        //Buscar Admin
+        const findUser = await Admin.findById(req.user.id).select("-password -__v")
+        if (!findUser) return res.status(404).json({ message: ["User not found"] })
 
-    //Buscar Admin
-    const findUser = await Admin.findById(req.user.id).select("-password -__v")
-    if (!findUser) return res.status(404).json({ message: ["User not found"] })
-
-    res.json({
-        session_token: token,
-        user: findUser
-    })
+        res.json({
+            session_token: token,
+            user: findUser
+        })
+    } catch (error) {
+        errorResponse(res, error)
+    }
 }
 
 //* Verify Token
 export const verifyToken = async (req, res) => {
     const { token } = req.cookies
 
-    //Comprobar existencia de token
-    if (!token) return res.status(401).json({ message: ["No autorizado"] });
+    try {//Comprobar existencia de token
+        if (!token) return res.status(401).json({ message: ["No autorizado"] });
 
-    //Verifica token
-    jwt.verify(token, process.env.SECRET_TOKEN, async (err, user) => {
-        if (err) return res.status(401).json({ message: ["No autorizado"] });
+        //Verifica token
+        jwt.verify(token, process.env.SECRET_TOKEN, async (err, user) => {
+            if (err) return res.status(401).json({ message: ["No autorizado"] });
 
-        //Buscar Admin
-        const findUser = await Admin.findById(user.id)
-        if (!findUser) return res.status(401).json({ message: ["No autorizado"] })
+            //Buscar Admin
+            const findUser = await Admin.findById(user.id)
+            if (!findUser) return res.status(401).json({ message: ["No autorizado"] })
 
-        return res.json({
-            id: findUser._id,
-            names: findUser.names,
-            email: findUser.email
-        });
-    })
+            return res.json({
+                id: findUser._id,
+                names: findUser.names,
+                email: findUser.email
+            });
+        })
+    } catch (error) {
+        errorResponse(res, error)
+    }
 }
 

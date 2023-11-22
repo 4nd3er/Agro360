@@ -18,8 +18,8 @@ const formsSchema = new mongoose.Schema({
     },
     end: {
         type: Date,
-        required: true,
-        default: Date.now()
+        required: false,
+        default: new Date()
     },
     status: {
         type: Boolean,

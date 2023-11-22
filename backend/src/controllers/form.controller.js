@@ -1,9 +1,8 @@
-import { compObjectId } from "../libs/libs.js"
-import { capitalizeString } from '../libs/functions.js'
 import { Forms, QuestionTypes, Responses, Topics } from "../models/models.js"
 import { createMethod, deleteMethod, getMethod, getOneMethod, updateMethod } from "../libs/methods.js"
+import { compObjectId, errorResponse } from "../libs/libs.js"
+import { capitalizeString, capitalizeWord, compDuplicate } from '../libs/functions.js'
 
-// *Forms
 export const forms = async (req, res) => {
     await getMethod(res, Forms, "Forms")
 }
@@ -15,67 +14,94 @@ export const getForm = async (req, res) => {
 
 // Obtener los formularios que han tenido una respuesta
 export const getFormsResponse = async (req, res) => {
-    const formsResponse = []
-    const forms = await Forms.find({})
-    for (const [index, form] of forms.entries()) {
-        const id = form._id
-        const findResponse = await Responses.findOne({ form: id })
-        if (findResponse) formsResponse.push(form)
+    try {
+        const formsResponse = []
+        const forms = await Forms.find({})
+        for (const [index, form] of forms.entries()) {
+            const id = form._id
+            const findResponse = await Responses.findOne({ form: id })
+            if (findResponse) formsResponse.push(form)
+        }
+        res.json(formsResponse)
+    } catch (error) {
+        errorResponse(res, error)
     }
-    res.json(formsResponse)
 }
 
 export const createForm = async (req, res) => {
     const { name, description, topic, end, status, questions } = req.body
-    const data = { name, description, topic, end, status, creator: req.admin.id, questions }
+    const data = { name, description, topic, end, status, creator: req.user.id, questions }
     const find = { name: name, topic: topic }
 
-    // //*Comprobar el id del topic
-    const compTopic = await compObjectId(topic, Topics, "Topic")
-    if (!compTopic.success) return res.status(compTopic.status).json({ message: [compTopic.msg] })
+    try {
+        //*Comprobar el id del topic
+        const compTopic = await compObjectId(topic, Topics, "Topic")
+        if (!compTopic.success) return res.status(compTopic.status).json({ message: [compTopic.msg] })
 
-    // *Validaciones a la lista de questions
-    // Comprobar duplicados
-    const questionNames = questions.map((question) => question.question)
-    if (compDuplicate(questionNames)) return res.status(400).json({ message: ["Existing duplicate questions"] })
+        //*Comprobar preguntas duplicadas
+        const questionNames = questions.map((question) => question.question)
+        if (compDuplicate(questionNames)) return res.status(400).json({ message: ["Exists duplicate questions"] })
 
-    //Comprobar ObjectId del type de question
-    for (const [index, question] of questions.entries()) {
-        const type = question.type
-        const compQuestionType = await compObjectId(type, QuestionTypes, `Question type [${index}]`)
-        if (!compQuestionType.success) {
-            res.status(compQuestionType.status).json({ message: [compQuestionType.msg] });
-            return;
+        // *Validaciones a la lista de questions
+        for (const [index, question] of questions.entries()) {
+            const type = question.type
+            //Capitalizar nombre de options
+            const options = question.options
+            for (const option in options.entries()) {
+                option["option"] = capitalizeWord(option.option)
+            }
+            //Capitalizar pregunta     
+            question["question"] = capitalizeWord(question.question)
+
+            const compQuestionType = await compObjectId(type, QuestionTypes, `Question type [${index}]`)
+            if (!compQuestionType.success) {
+                res.status(compQuestionType.status).json({ message: [compQuestionType.msg] });
+                return;
+            }
         }
+        await createMethod(data, find, res, Forms, "Form")
+    } catch (error) {
+        errorResponse(res, error)
     }
-    await createMethod(data, find, res, Forms, "Form")
 }
 
 export const updateForm = async (req, res) => {
     const { id } = req.params
     const { name, description, topic, end, status, questions } = req.body
-    const data = { name, description, topic, end, status, creator: req.admin.id, questions }
-    const find = { name }
+    const data = { name, description, topic, end, status, creator: req.user.id, questions }
+    const find = { name: name, topic: topic }
 
-    //*Comprobar el id del topic
-    const compTopic = await compObjectId(topic, Topics, "Topic")
-    if (!compTopic.success) return res.status(compTopic.status).json({ message: [compTopic.msg] })
+    try {
+        //*Comprobar el id del topic
+        const compTopic = await compObjectId(topic, Topics, "Topic")
+        if (!compTopic.success) return res.status(compTopic.status).json({ message: [compTopic.msg] })
 
-    // *Validaciones a la lista de questions
-    // Comprobar duplicados
-    const questionNames = questions.map((question) => question.question)
-    if (compDuplicate(questionNames)) return res.status(400).json({ message: ["Existing duplicate questions"] })
+        //*Comprobar preguntas duplicadas
+        const questionNames = questions.map((question) => question.question)
+        if (compDuplicate(questionNames)) return res.status(400).json({ message: ["Exists duplicate questions"] })
 
-    //Comprobar ObjectId del type de question
-    for (const [index, question] of questions.entries()) {
-        const type = question.type
-        const compQuestionType = await compObjectId(type, QuestionTypes, `Question type [${index}]`)
-        if (!compQuestionType.success) {
-            res.status(compQuestionType.status).json({ message: [compQuestionType.msg] });
-            return;
+        // *Validaciones a la lista de questions
+        for (const [index, question] of questions.entries()) {
+            const type = question.type
+            //Capitalizar nombre de options
+            const options = question.options
+            for (const option in options.entries()) {
+                option["option"] = capitalizeWord(option.option)
+            }
+            //Capitalizar pregunta     
+            question["question"] = capitalizeWord(question.question)
+
+            const compQuestionType = await compObjectId(type, QuestionTypes, `Question type [${index}]`)
+            if (!compQuestionType.success) {
+                res.status(compQuestionType.status).json({ message: [compQuestionType.msg] });
+                return;
+            }
         }
+        await updateMethod(data, id, find, res, Forms, "Form")
+
+    } catch (error) {
+        errorResponse(res, error)
     }
-    await updateMethod(data, id, find, res, Forms, "Form")
 }
 
 export const deleteForm = async (req, res) => {
