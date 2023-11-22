@@ -1,8 +1,8 @@
 import xlsx from 'xlsx'
-import compObjectId from '../libs/compObjectId.js'
-import { createMethod, deleteMethod, getMethod, getOneMethod, updateMethod, capitalizeString } from '../libs/methods.js'
 import { Courses, CoursesNames, CoursesCronogram, Topics, Users } from '../models/models.js'
-import { errorResponse, messages } from '../libs/libs.js'
+import { createMethod, deleteMethod, getMethod, getOneMethod, updateMethod, } from '../libs/methods.js'
+import { errorResponse, messages, compObjectId } from '../libs/libs.js'
+import { capitalizeString } from '../libs/functions.js'
 
 
 // *Courses Names
@@ -19,7 +19,7 @@ export const createCourseName = async (req, res) => {
     const { name } = req.body
     const data = { name }
     const find = { name }
-    await createMethod(data, find, res, CoursesNames, "Course name")
+    await createMethod(data, find, res, CoursesNames, "Course name", "capitalize")
 }
 
 export const updateCourseName = async (req, res) => {
@@ -27,7 +27,7 @@ export const updateCourseName = async (req, res) => {
     const { name } = req.body
     const data = { name }
     const find = { name }
-    await updateMethod(data, id, find, res, CoursesNames, "Course name")
+    await updateMethod(data, id, find, res, CoursesNames, "Course name", "capitalize")
 }
 
 export const deleteCourseName = async (req, res) => {

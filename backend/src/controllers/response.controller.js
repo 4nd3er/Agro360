@@ -1,7 +1,8 @@
-import { capitalizeWord, createMethod, getMethod, getOneMethod } from "../libs/methods.js"
-import { Courses, CoursesCronogram, Forms, Responses, Users } from "../models/models.js"
-import { compObjectId, createToken, errorResponse, generateCode, messages, sendEmailFormCode } from '../libs/libs.js'
 import bcrypt from 'bcrypt'
+import { createMethod, getMethod, getOneMethod } from "../libs/methods.js"
+import { Courses, CoursesCronogram, Forms, Responses, Users } from "../models/models.js"
+import { compObjectId, createToken, errorResponse, messages, sendEmailFormCode } from '../libs/libs.js'
+import { generateCode, capitalizeWord } from '../libs/functions.js'
 
 //* Comprobar existencia del formulario
 export const compForm = async (req, res, next) => {

@@ -1,4 +1,4 @@
-import compObjectId from '../libs/compObjectId.js'
+import { compObjectId } from '../libs/libs.js'
 import { getMethod, getOneMethod, createMethod, updateMethod } from '../libs/methods.js'
 import { Users, Roles, Courses } from '../models/models.js'
 

@@ -1,5 +1,6 @@
 import nodemailer from 'nodemailer'
 
+//* Funcion enviar correo para recuperacion de contraseña
 export function sendEmailResetPassword(res, data) {
 
   const { userEmail, token } = data
@@ -31,6 +32,7 @@ export function sendEmailResetPassword(res, data) {
   });
 }
 
+//* Funcion enviar correo para obtener codigo
 export function sendEmailFormCode(res, userEmail, code) {
 
   const transporter = nodemailer.createTransport({

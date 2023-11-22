@@ -1,6 +1,5 @@
 import { Forms, Roles, Topics } from "../models/models.js"
 import { createMethod, deleteMethod, getMethod, getOneMethod, getRelations, updateMethod } from "../libs/methods.js"
-import compObjectId from "../libs/compObjectId.js"
 
 export const topics = async (req, res) => {
     getMethod(res, Topics, "Topics")
