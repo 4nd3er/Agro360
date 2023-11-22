@@ -12,15 +12,12 @@ export const formValidator = z.object({
         .string({
             required_error: "Description is required"
         })
-        .min(15, {
-            message: "Description must be at least 15 characters"
+        .min(10, {
+            message: "Description must be at least 10 characters"
         }),
     topic: z
         .string({
             required_error: "Topic is required"
-        })
-        .min(24, {
-            message: "Topic must be at least 24 characters"
         }),
     end: z
         .coerce
