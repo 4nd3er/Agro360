@@ -10,3 +10,4 @@ export { default as Navbar } from './Navbar.jsx';
 export { default as Options } from './Options.jsx';
 export { default as PiesChart } from './PiesChart.jsx';
 export { default as Question } from './Question.jsx';
+export { default as Spinner } from './Spinner.jsx';

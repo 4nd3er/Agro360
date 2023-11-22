@@ -9,7 +9,6 @@ const Options = ({ option, index, questionIndex, question, handleOptionChange, d
                         type="text"
                         htmlFor={index + 1}
                         placeholder='Campo para respuesta abierta'
-                        value={option}
                         onChange={(e) => handleOptionChange(questionIndex, index, e.target.value, null)}
                         className="border-2 p-2 border-gray-400 resize-none rounded-lg w-full mb-3"
                         disabled

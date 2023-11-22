@@ -1,10 +1,9 @@
-import React from 'react';
 import '../question.css';
-import { useState, useEffect } from 'react';
-import { Options, BarsChart, PiesChart, CardForm } from '../components/Components';
-import { AddQuestionSvg, ImportQuestionSvg, DeleteQuestionSvg, ExcelSvg } from '../assets/Assets.jsx';
+import React, { useState, useEffect } from 'react';
+import { Spinner } from '../components/Components';
+import { ExcelSvg } from '../assets/Assets';
 import { useParams } from 'react-router-dom';
-import agro360Axios from '../config/agro360Axios.jsx';
+import agro360Axios from '../config/agro360Axios';
 
 const ResultQuest = () => {
     const { idQuest } = useParams();
@@ -12,65 +11,64 @@ const ResultQuest = () => {
     const [dataForm, setDataForm] = useState([]);
     const [cargando, setCargando] = useState(true);
     const [userSelect, setUserSelect] = useState('');
+    const [question, setQuestion] = useState(true);
 
     const [users, setUsers] = useState({});
-    const Users = [];
+    const listUsers = {};
+
+    const questionsIndividual = () => {
+        setQuestion(true);
+    };
+
+    const questionsGeneral = () => {
+        setQuestion(false);
+    };
 
     useEffect(() => {
         try {
             agro360Axios(`/responses/${idQuest}`).then((response) => {
                 setData(response.data);
-            })
+            });
             agro360Axios(`/forms/${idQuest}`).then((response) => {
                 setDataForm(response.data);
-            })
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    }, []);
+
+    useEffect(() => {
+        try {
+            agro360Axios('/users').then((result) => {
+                setUsers(result.data);
+            });
         } catch (error) {
             console.log(error);
         }
         setCargando(false);
-
-        let answers = [];
-        data.map((result) => {
-            result['answers'].map((question) => {
-                // if (question.question === question.question) {
-                //     answers.push(question['answer']);
-                // }
-                // console.log(question);
-            })
-            // console.log(answers);
-            // result['answers'] = answers;
-            // console.log(result['answers']);
-        })
-    }, []);
-
-    useEffect(() => {
-        agro360Axios('/users').then((result) => {
-            setUsers(result.data);
-        });
     }, [userSelect])
 
     for (let i = 0; i < users.length; i++) {
         const element = users[i];
-        const key = element._id;
-        const value = `${element.names} ${element.lastnames}`
-        const option = { [key]: value };
-        Users.push(option);
-    }
-
-    const userName = (idUser) => {
-        Users.filter((users) => {
-            console.log(users[idUser]);
-            return users[idUser];
-        })
+        if (element['rol'] === "655b1f6df9b6aad257662a58") {
+            const key = element._id;
+            const value = `${element.names} ${element.lastnames}`;
+            listUsers[key] = value;
+        }
     }
 
     const handleUserChange = (value) => {
         setUserSelect(value);
-        console.log(userSelect);
     };
 
+    const uniqueInstructors = new Set();
+    data.map((result) => {
+        result['answers'].map((value) => {
+            uniqueInstructors.add(value.instructor);
+        });
+    });
 
-    if (cargando) { return 'Cargando...' }
+    if (cargando) { return <Spinner /> };
     // Función para obtener el índice de una pregunta en base al ID
     return (
         <div>
@@ -83,39 +81,54 @@ const ResultQuest = () => {
                     <h2 key={dataForm._id}>{dataForm.description}</h2>
                 </div>
 
-                <div className='p-5 py-6 flex gap-5 shadow-lg justify-evenly rounded-md border-2'>
-                    <div className='text-h text-center'>
-                        <a href='#' className='mr-3'>General</a>
-                        <a href='#' className='mr-3'>Individual</a>
+                <div className='p-5 py-6 flex gap-5 shadow-lg justify-evenly rounded-md border-2 place-items-center'>
+                    <div className='text-h text-center flex gap-2'>
+                        <button
+                            className={`${question ? 'text-[#39A900] shadow-xl rounded-lg scale-110' : ''} mr-3 text-base p-2 scale-100 transition-all`}
+                            onClick={questionsIndividual}
+                        >
+                            Individual
+                        </button>
+                        <button
+                            className={`${!question ? 'text-[#39A900] shadow-xl rounded-lg scale-110' : ''} mr-3 text-base p-2 scale-100 transition-all`}
+                            onClick={questionsGeneral}
+                        >
+                            General
+                        </button>
                     </div>
                     <div className='text-h text-center'>
                         <select
                             value={userSelect}
                             onChange={(e) => handleUserChange(e.target.value)}
+                            className='p-2 rounded-lg border-2'
                         >
                             <option value="">Seleccione el usuario</option>
-                            {data.map((user) => (
-                                <option value={user.user}>{userName(user.user)}</option>
-                            ))}
+                            {
+                                [...uniqueInstructors].map((instructor) => (
+                                    <option key={instructor} value={instructor}>{listUsers[instructor]}</option>
+                                ))
+                            }
                         </select>
                     </div>
                 </div>
-                {data.filter((answer) => answer.user === userSelect).map((result) => (
+                {data.map((result) => (
                     <div key={result._id} className="flex-row">
-                        {result['answers'].map((answer) => (
+                        {result['answers'].filter((answer) => answer.instructor === userSelect).map((answer) => (
                             <div key={answer._id} className="response w-full mb-8">
                                 <div>
                                     <div className="text-wrapper-10">{answer.question}</div>
-                                    <div className="text-wrapper-9">{result.answers.length} respuestas</div>
+                                    {/* <div className="text-wrapper-9">{result.answers.length} respuestas</div> */}
                                 </div>
-                                <div className='mt-20 px-10 text-2xl'>
-                                    <div className="">{answer.answer}</div>
-                                </div>
+                                {
+                                    answer._id &&
+                                    <div className='mt-20 px-10 text-2xl'>
+                                        {answer.answer}
+                                    </div>
+                                }
                             </div>
                         ))}
                     </div>
                 ))}
-
                 {/* Contenedor de las respuestas en dos columnas
                 {data.map((resulted) => (
                     idQuest === resulted._id && (
@@ -127,14 +140,9 @@ const ResultQuest = () => {
                             ))}
                         </div>
                     )
-
                 ))} */}
-
             </section>
         </div>
-
-
-
     );
 }
 

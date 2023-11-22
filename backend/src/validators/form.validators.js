@@ -27,7 +27,7 @@ export const formValidator = z.object({
         .date()
         .min(new Date(), {
             message: "The date is invalid"
-        }),        
+        }),
     status: z
         .boolean()
         .default(false)
@@ -49,8 +49,8 @@ export const formValidator = z.object({
                 z.object({
                     option: z
                         .string({})
-                        .min(8, {
-                            message: "Question Option must be at least 8 characters"
+                        .min(2, {
+                            message: "Question Option must be at least 2 characters"
                         })
                         .nullish()
                 })

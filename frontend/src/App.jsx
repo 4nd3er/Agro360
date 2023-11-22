@@ -22,6 +22,7 @@ import {
   TokenValidation,
   Answers
 } from './pages/Pages';
+import Spinner from './components/Spinner';
 
 function App() {
   return (
