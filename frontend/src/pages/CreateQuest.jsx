@@ -106,7 +106,7 @@ const CreateQuest = () => {
             }
         }
         if (questionTypeValue[value] === 'text') {
-            currentQuestion[2][1] = [''];
+            currentQuestion[2][1] = [['adsadsads', '']];
             setOptionsAdded(() => !optionsAdded);
         }
         updatedQuestions[questionIndex] = currentQuestion;
@@ -181,8 +181,8 @@ const CreateQuest = () => {
                 questions.map((question) => {
                     questionsObject.push(arraytoObject(question));
                 })
-                agro360Axios.post('api/forms', {
-                    name: title, description: descrip, topic: '654481cd0223fc9db9532bf9', creator: '6558096819d178e8586c6244',
+                agro360Axios.post('/forms', {
+                    name: title, description: descrip, topic: '654481cd0223fc9db9532bf9', creator: '6558096819d178e8586c6244', end: '2023-11-30',
                     questions: questionsObject
                 }).then((response) => {
                     switch (response.data.response) {

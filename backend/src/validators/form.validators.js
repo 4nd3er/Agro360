@@ -49,8 +49,8 @@ export const formValidator = z.object({
                 z.object({
                     option: z
                         .string({})
-                        .min(8, {
-                            message: "Question Option must be at least 8 characters"
+                        .min(2, {
+                            message: "Question Option must be at least 2 characters"
                         })
                         .nullish()
                 })
