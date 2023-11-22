@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import '../css/Create.css'; 
+import '../css/Create.css';
+import Swal from 'sweetalert2';
+import agro360Axios from '../config/agro360Axios';
 
 const Create = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [topics, setTopics] = useState([]);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -23,12 +26,34 @@ const Create = () => {
     titulo: '',
     descripcion: '',
     opciones: '',
+    fecha: ''
   });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
   };
+
+  const manejarCambioFecha = (e) => {
+    const nuevaFecha = e.target.value;
+    setFormValues({ ...formValues, fecha: nuevaFecha});
+  };
+
+  useEffect(() => {
+    const getTopics = async () => {
+      try {
+        const { data } = await agro360Axios('/topics');
+        setTopics(data);
+      } catch (error) {
+        Swal.fire({
+          icon: 'error',
+          text: error,
+          timer: 2000
+        })
+      }
+    }
+    getTopics();
+  }, [])
 
   const handleSubmit = async (e) => {
     // e.preventDefault();
@@ -52,7 +77,7 @@ const Create = () => {
     // }
     // window.location.href = `crear/titulo=${formValues.titulo}&&descripcion=${formValues.descripcion}&&opciones=${formValues.opciones}`
   };
- 
+
   return (
     <div className='flex-container'>
       <div className='text-center'>
@@ -71,7 +96,7 @@ const Create = () => {
         <div className="modal" onClick={handleModalClick}>
           <div className="modal-form">
             <h2 className="modal-title">CREAR ENCUESTA</h2>
-            <form onSubmit={handleSubmit} action={`crear-formulario/crear/?titulo=${formValues.titulo}&&descripcion=${formValues.descripcion}&&opciones=${formValues.opciones}`}>
+            <form onSubmit={handleSubmit} action='crear-formulario/crear/'>
               <div className="input-container">
                 <label htmlFor="titulo">Titulo</label>
                 <input
@@ -111,9 +136,24 @@ const Create = () => {
                   className="input-select"
                 >
                   <option value="">Seleccione Temática</option>
-                  <option value="Pedagogía">Pedagogía</option>
-                  <option value="Actitudinal">Actitudinal</option>
+                  {topics.map((topic) => (
+                    <option value={topic._id}>{topic.name}</option>
+                  ))}
                 </select>
+              </div>
+
+              <div className="input-container">
+                <label htmlFor="fecha">Plazo maximo de responder</label>
+                <input
+                  id="fecha"
+                  name="fecha"
+                  type="date"
+                  value={formValues.fecha}
+                  min={new Date().toISOString().split('T')[0]}
+                  onChange={manejarCambioFecha}
+                  required
+                  className="input-select"
+                />
               </div>
 
               <div className="form-buttons">
