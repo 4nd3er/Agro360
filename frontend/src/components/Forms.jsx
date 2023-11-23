@@ -63,7 +63,6 @@ const Survey = ({ title, imageSrc, color, isActive }) => {
         backgroundColor: "white",
         fontSize: "10px",
         fontFamily: "Verdana, sans-serif",
-        color: "black",
         border: `2px solid ${color}`,
         color: isActive ? "black" : "gray",
         margin: "-5px 0 0 -90px",

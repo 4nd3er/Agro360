@@ -1,5 +1,6 @@
 import { useEffect, useState, createContext } from "react";
 import agro360Axios from "../config/agro360Axios";
+import Cookies from "js-cookie"
 
 // Create the role context
 const RolesContext = createContext()
@@ -15,8 +16,20 @@ const RolesProvider = ({ children }) => {
     useEffect(() => {
         const obtainRoles = async () => {
             try {
-                const { data } = await agro360Axios('/roles')
-                setRoles(data)
+            const token = Cookies.get('token')
+                console.log('Token de esta sesión: ', token)
+                if (token) {
+                    const { data } = await agro360Axios('/roles', {
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${token}`
+                        }
+                    })
+                    setRoles(data)
+                } else {
+                    console.error('No se pudo obtener el token de la sesión')
+                }
+
             } catch (error) {
                 console.log(error)
             }
@@ -28,10 +41,10 @@ const RolesProvider = ({ children }) => {
     const obtainRol = async id => {
         try {
             const { data } = await agro360Axios(`/roles/${id}`);
-            return(data)
+            return (data)
         } catch (error) {
             console.log(error);
-            return[]
+            return []
         }
     };
 
@@ -39,10 +52,10 @@ const RolesProvider = ({ children }) => {
     const obtainTopic = async idtopic => {
         try {
             const { data } = await agro360Axios(`/topics/${idtopic}`);
-            return(data)
+            return (data)
         } catch (error) {
             console.log(error);
-            return[]
+            return []
         }
     }
 
@@ -71,7 +84,15 @@ const RolesProvider = ({ children }) => {
     // Create topic
     const createTopic = async topic => {
         try {
-            const { data } = await agro360Axios.post('/topics', topic);
+            const token = Cookies.get('token')
+            if(!token) return;
+            const config = {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`
+                }
+            }
+            const { data } = await agro360Axios.post('/topics', topic, config);
             setModalTopicForm(false);
         } catch (error) {
             console.log("Error al crear la tematica");

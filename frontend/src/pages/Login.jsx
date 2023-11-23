@@ -8,7 +8,7 @@ const Login = () => {
     const {
         register,
         handleSubmit,
-        formState: { errors },
+        formState: { errors, isValid },
     } = useForm();
 
     const { signin, errors: loginErrors, isAuthenticated } = useAuth();
@@ -23,6 +23,7 @@ const Login = () => {
           navigate("/inicio");
         }
       }, [isAuthenticated]);
+
 
     return (
         <>
@@ -87,9 +88,9 @@ const Login = () => {
                             </div>
                             <input
                                 type="submit"
+                                disabled={!isValid}
                                 value="Iniciar Sesion"
-                                className='bg-green-600 w-full py-1 text-white uppercase font-bold rounded-xl
-                                hover: cursor-pointer hover:bg-green-700 transition-color'
+                                className={isValid ? 'bg-green-600 w-full py-3 text-white uppercase font-bold rounded-xl hover: cursor-pointer hover:bg-green-700 transition-color' : 'bg-gray-400 w-full py-3 text-white uppercase font-bold rounded-xl hover: cursor-pointer'}
                             />
                             <Link
                                 className='block my-5 text-slate-500 uppercase text-xs'
