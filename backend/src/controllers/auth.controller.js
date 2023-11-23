@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 import { Admin } from '../models/models.js'
 import { createToken, errorResponse, sendEmailResetPassword } from '../libs/libs.js'
+import { SECRET_TOKEN } from '../config/config.js'
 
 //*Login
 export const login = async (req, res) => {
@@ -16,9 +17,8 @@ export const login = async (req, res) => {
         if (!isPassword) return res.status(400).json({ message: ["Contraseña incorrecta"] })
 
         //Creacion del token y guardado en cookie
-        const token = await createToken({ id: findUser.id, expires: "30d" })
+        const token = await createToken({ id: findUser.id, username: `${findUser.names} ${findUser.lastnames}` })
         res.cookie("token", token, {
-            httpOnly: process.env.NODE_ENV !== "development",
             secure: true,
             sameSite: "none",
         });
@@ -55,12 +55,11 @@ export const register = async (req, res) => {
 
         //Creacion de token y guardado en cookie
         const token = await createToken({
-            id: userSaved._id, expires: "30d"
+            id: userSaved._id
         });
         res.cookie("token", token, {
-            httpOnly: process.env.NODE_ENV !== "development",
             secure: true,
-            sameSite: "none",
+            sameSite: "none"
         });
 
         res.json({
@@ -125,9 +124,11 @@ export const logout = (req, res) => {
     try {
         //Eliminar cookie
         res.cookie("token", "", {
-            expires: new Date(0)
-        })
-        return res.sendStatus(200)
+            httpOnly: true,
+            secure: true,
+            expires: new Date(0),
+        });
+        return res.sendStatus(200);
     } catch (error) {
         errorResponse(res, error)
     }
@@ -158,7 +159,7 @@ export const verifyToken = async (req, res) => {
         if (!token) return res.status(401).json({ message: ["No autorizado"] });
 
         //Verifica token
-        jwt.verify(token, process.env.SECRET_TOKEN, async (err, user) => {
+        jwt.verify(token, SECRET_TOKEN, async (err, user) => {
             if (err) return res.status(401).json({ message: ["No autorizado"] });
 
             //Buscar Admin

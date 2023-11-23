@@ -37,20 +37,11 @@ export function validObjectId(id) {
 }
 
 //*Crear Token
-export function createToken(data) {
-    const { id } = data
-    const create = new Promise((resolve, reject) => {
-        jwt.sign(
-            { id: id },
-            SECRET_TOKEN,
-            {
-                expiresIn: "30d"
-            },
-            (err, token) => {
-                if (err) reject(err);
-                resolve(token);
-            }
-        )
-    })
-    return create
+export function createToken(payload) {
+    return new Promise((resolve, reject) => {
+        jwt.sign(payload, SECRET_TOKEN, { expiresIn: "1d" }, (err, token) => {
+            if (err) reject(err);
+            resolve(token);
+        });
+    });
 }
