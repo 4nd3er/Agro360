@@ -4,7 +4,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
   position: relative;
  
 }
@@ -46,7 +45,8 @@
   .modal-form {
     background-color: #fff;
     padding: 30px;
-    max-width: 70rem; 
+    width: 25rem;
+    max-width: 25rem;
     margin: auto;
     border-radius: 0.5rem;
     box-shadow: 0 0 1rem rgba(83, 80, 80, 0.2);
@@ -78,6 +78,7 @@
     border: 1px solid #159c15; 
     border-radius: 0.25rem;
     transition: border 0.2s;
+    resize: none;
   }
   
   .input-container input:focus,
@@ -117,8 +118,8 @@
 .modal-title {
   font-weight: bold;
   margin: 20px 0;
-  font-size: 20px; 
-  color: #000000; 
+  font-size: 2rem; 
+  color: #39A900;
   text-align: center; 
   text-transform: uppercase; 
   letter-spacing: 1px; 
