@@ -10,6 +10,7 @@ export const validateTokenCookie = (req, res, next) => {
         req.user = user;
         next();
     })*/
+    req.user = { id: "655b94a4cab66d54948c1d0a" }
     next();
 }
 

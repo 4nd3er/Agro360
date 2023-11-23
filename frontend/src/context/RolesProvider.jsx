@@ -16,20 +16,8 @@ const RolesProvider = ({ children }) => {
     useEffect(() => {
         const obtainRoles = async () => {
             try {
-            const token = Cookies.get('token')
-                console.log('Token de esta sesión: ', token)
-                if (token) {
-                    const { data } = await agro360Axios('/roles', {
-                        headers: {
-                            "Content-Type": "application/json",
-                            Authorization: `Bearer ${token}`
-                        }
-                    })
+                    const { data } = await agro360Axios('/roles')
                     setRoles(data)
-                } else {
-                    console.error('No se pudo obtener el token de la sesión')
-                }
-
             } catch (error) {
                 console.log(error)
             }
@@ -84,15 +72,7 @@ const RolesProvider = ({ children }) => {
     // Create topic
     const createTopic = async topic => {
         try {
-            const token = Cookies.get('token')
-            if(!token) return;
-            const config = {
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${token}`
-                }
-            }
-            const { data } = await agro360Axios.post('/topics', topic, config);
+            const { data } = await agro360Axios.post('/topics', topic);
             setModalTopicForm(false);
         } catch (error) {
             console.log("Error al crear la tematica");
