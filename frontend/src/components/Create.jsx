@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import '../css/Create.css';
 import Swal from 'sweetalert2';
 import agro360Axios from '../config/agro360Axios';
+import Alert from './Alert';
 
 const Create = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [topics, setTopics] = useState([]);
+  const [alert, setAlert] = useState({});
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -36,7 +37,7 @@ const Create = () => {
 
   const manejarCambioFecha = (e) => {
     const nuevaFecha = e.target.value;
-    setFormValues({ ...formValues, fecha: nuevaFecha});
+    setFormValues({ ...formValues, fecha: nuevaFecha });
   };
 
   useEffect(() => {
@@ -56,7 +57,19 @@ const Create = () => {
   }, [])
 
   const handleSubmit = async (e) => {
-    // e.preventDefault();
+    e.preventDefault();
+
+    if ([formValues.titulo, formValues.descripcion, formValues.opciones, formValues.fecha].includes('')) {
+      setAlert({
+        msg: 'Todos los campos son obligatorios',
+        error: true
+      })
+      setTimeout(() => {
+        setAlert({})
+      }, 1500);
+      return;
+    }
+    document.form.submit();
 
     // try {
     //   const response = await fetch('/api/encuestas', {
@@ -78,6 +91,8 @@ const Create = () => {
     // window.location.href = `crear/titulo=${formValues.titulo}&&descripcion=${formValues.descripcion}&&opciones=${formValues.opciones}`
   };
 
+  const { msg } = alert;
+
   return (
     <div className='flex-container'>
       <div className='text-center'>
@@ -96,7 +111,8 @@ const Create = () => {
         <div className="modal" onClick={handleModalClick}>
           <div className="modal-form">
             <h2 className="modal-title">CREAR ENCUESTA</h2>
-            <form onSubmit={handleSubmit} action='crear-formulario/crear/'>
+            {msg && <Alert alert={alert} />}
+            <form onSubmit={handleSubmit} name="form" action='crear-formulario/crear/'>
               <div className="input-container">
                 <label htmlFor="titulo">Titulo</label>
                 <input
@@ -106,7 +122,6 @@ const Create = () => {
                   placeholder="Titulo"
                   value={formValues.titulo}
                   onChange={handleInputChange}
-                  required
                   className="input-text"
                 />
               </div>
@@ -120,7 +135,6 @@ const Create = () => {
                   value={formValues.descripcion}
                   onChange={handleInputChange}
                   rows="3"
-                  required
                   className="input-text"
                 />
               </div>
@@ -132,7 +146,6 @@ const Create = () => {
                   name="opciones"
                   value={formValues.opciones}
                   onChange={handleInputChange}
-                  required
                   className="input-select"
                 >
                   <option value="">Seleccione Temática</option>
@@ -151,7 +164,6 @@ const Create = () => {
                   value={formValues.fecha}
                   min={new Date().toISOString().split('T')[0]}
                   onChange={manejarCambioFecha}
-                  required
                   className="input-select"
                 />
               </div>
