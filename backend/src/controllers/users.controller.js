@@ -1,5 +1,5 @@
 import { Users, Roles, Courses } from '../models/models.js'
-import { compObjectId, errorResponse } from '../libs/libs.js'
+import { compObjectId, errorResponse, messages } from '../libs/libs.js'
 import { getMethod, getOneMethod, createMethod, updateMethod } from '../libs/methods.js'
 
 export const users = async (req, res) => {
@@ -14,7 +14,7 @@ export const getUser = async (req, res) => {
 export const createUser = async (req, res) => {
     const { names, lastnames, documentType, document, rol, email, course } = req.body
     const data = { names, lastnames, documentType, document, rol, email, course }
-    const find = { document: document, email: email }
+    const find = { $or: [{ document: document }, { email: email }] }
     try {
         const compRol = await compObjectId(rol, Roles, "Role")
         if (!compRol.success) return res.status(compRol.status).json({ message: [compRol.msg] })
@@ -32,7 +32,7 @@ export const updateUser = async (req, res) => {
     const { id } = req.params
     const { names, lastnames, documentType, document, rol, email, course } = req.body
     const data = { names, lastnames, documentType, document, rol, email, course }
-    const find = { document: document, email: email }
+    const find = { $or: [{ document: document }, { email: email }] }
     try {
         const compRol = await compObjectId(rol, Roles, "Role")
         if (!compRol.success) return res.status(compRol.status).json({ message: [compRol.msg] })

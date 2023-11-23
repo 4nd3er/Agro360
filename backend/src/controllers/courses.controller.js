@@ -4,8 +4,7 @@ import { createMethod, deleteMethod, getMethod, getOneMethod, updateMethod, } fr
 import { errorResponse, messages, compObjectId } from '../libs/libs.js'
 import { capitalizeString } from '../libs/functions.js'
 
-
-// *Courses Names
+//* Courses Names
 export const coursesNames = async (req, res) => {
     await getMethod(res, CoursesNames, "Courses names")
 }
@@ -35,8 +34,7 @@ export const deleteCourseName = async (req, res) => {
     await deleteMethod(id, res, CoursesNames, "Course name")
 }
 
-
-//*Courses
+//* Courses
 export const courses = async (req, res) => {
     await getMethod(res, Courses, "Courses")
 }
@@ -50,11 +48,13 @@ export const createCourse = async (req, res) => {
     const { name, type, number } = req.body
     const data = { name, type, number }
     const find = { number }
-
-    const compName = await compObjectId(name, CoursesNames, "Course Name")
-    if (!compName.success) return res.status(compName.status).json({ message: [compName.msg] })
-
-    await createMethod(data, find, res, Courses, "Course")
+    try {
+        const compName = await compObjectId(name, CoursesNames, "Course Name")
+        if (!compName.success) return res.status(compName.status).json({ message: [compName.msg] })
+        await createMethod(data, find, res, Courses, "Course")
+    } catch (error) {
+        errorResponse(res, error)
+    }
 }
 
 export const updateCourse = async (req, res) => {
@@ -62,18 +62,19 @@ export const updateCourse = async (req, res) => {
     const { name, type, number } = req.body
     const data = { name, type, number }
     const find = { number }
-
-    const compName = await compObjectId(name, CoursesNames, "Course Name")
-    if (!compName.success) return res.status(compName.status).json({ message: [compName.msg] })
-
-    await updateMethod(data, id, find, res, Courses, "Course")
+    try {
+        const compName = await compObjectId(name, CoursesNames, "Course Name")
+        if (!compName.success) return res.status(compName.status).json({ message: [compName.msg] })
+        await updateMethod(data, id, find, res, Courses, "Course")
+    } catch (error) {
+        errorResponse(res, error)
+    }
 }
 
 export const deleteCourse = async (req, res) => {
     const { id } = req.params
     await deleteMethod(id, res, Courses, "Course")
 }
-
 
 //* Cronogram Courses
 export const coursesCronogram = async (req, res) => {
@@ -109,8 +110,8 @@ export const createCourseCronogram = async (req, res) => {
             const course = values[0].toString()
             const start = parseDate(values[1])
             const end = parseDate(values[2])
-
             const instructor = capitalizeString(values[3])
+
             const stringInstructor = instructor.split(" ")
             let instructorNames = ""
             let instructorLastnames = ""
@@ -131,11 +132,9 @@ export const createCourseCronogram = async (req, res) => {
                 const findInstructor = await Users.findOne({ names: instructorNames, lastnames: instructorLastnames })
                 if (!findInstructor) return res.status(404).json({ message: [messages.notFound(`Instructor ${index}`)] })
                 const data = { course: findCourse._id, start: start, end: end, instructor: findInstructor._id }
-                console.log(data)
 
                 const findCronogram = await CoursesCronogram.findOne(data)
                 if (findCronogram) return res.status(400).json({ message: [messages.alreadyExists(`Cronogram ${index}`)] })
-
                 coursesCronogram.push(data)
             }
 
@@ -144,7 +143,7 @@ export const createCourseCronogram = async (req, res) => {
         }
         res.json({ message: ["OK"] })
         /*res.json({
-            response: "Course Cronogram importes successfully",
+            response: "Course Cronogram imported successfully",
             data: coursesCronogram
         })*/
     } catch (error) {
@@ -156,14 +155,15 @@ export const updateCourseCronogram = async (req, res) => {
     const { id } = req.params
     const { course, start, end, instructor } = req.body
     const data = { course, start, end, instructor }
-    const find = data
-
-    const compCourse = await compObjectId(course, Courses, "Course")
-    if (!compCourse.success) return res.status(compCourse.status).json({ message: [compCourse.msg] })
-    const compInstructor = await compObjectId(instructor, Courses, "Instructor")
-    if (!compInstructor.success) return res.status(compInstructor.status).json({ message: [compInstructor.msg] })
-
-    await updateMethod(data, id, find, res, CoursesCronogram, "Course Cronogram")
+    try {
+        const compCourse = await compObjectId(course, Courses, "Course")
+        if (!compCourse.success) return res.status(compCourse.status).json({ message: [compCourse.msg] })
+        const compInstructor = await compObjectId(instructor, Courses, "Instructor")
+        if (!compInstructor.success) return res.status(compInstructor.status).json({ message: [compInstructor.msg] })
+        await updateMethod(data, id, data, res, CoursesCronogram, "Course Cronogram")
+    } catch (error) {
+        errorResponse(res, error)
+    }
 }
 
 export const deleteCourseCronogram = async (req, res) => {

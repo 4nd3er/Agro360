@@ -43,7 +43,6 @@ const Survey = ({ title, imageSrc, color, isActive }) => {
         width: "130px",
         height: "160px",
         backgroundColor: color,
-        margin: "0 20px",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -56,7 +55,6 @@ const Survey = ({ title, imageSrc, color, isActive }) => {
 
 
     const activoinactivo = {
-        border: `2px solid gray`,
         borderRadius: "5px",
         width: "60px",
         height: "30px",

@@ -10,9 +10,11 @@ import { Formik, Field, Form, ErrorMessage, FieldArray } from 'formik';
 const CreateQuest = () => {
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
+    const [topics, setTopics] = useState([]);
     const [title, setTitle] = useState('');
     const [descrip, setDescrip] = useState('');
     const [topic, setTopic] = useState('');
+    const [date, setDate] = useState('');
     const [questions, setQuestions] = useState([[['question', ""], ['type', ""], ['options', ['']]]]);
     const [optionsAdded, setOptionsAdded] = useState(false);
     const [questionsType, setQuestionsType] = useState([]);
@@ -33,20 +35,26 @@ const CreateQuest = () => {
         const titleParam = searchParams.get('titulo');
         const descripParam = searchParams.get('descripcion');
         const topicParam = searchParams.get('opciones');
+        const fechaParam = searchParams.get('fecha');
+
         if (titleParam && descripParam && topicParam) {
             localStorage.setItem('title', titleParam);
             localStorage.setItem('descrip', descripParam);
             localStorage.setItem('topic', topicParam);
+            localStorage.setItem('date', fechaParam);
         }
-    }, [])
-
-    useEffect(() => {
         setTitle(localStorage.getItem('title'));
         setDescrip(localStorage.getItem('descrip'));
         setTopic(localStorage.getItem('topic'));
+        setDate(localStorage.getItem('date'));
+
         agro360Axios('forms/questions/questiontypes').then((response) => {
             setQuestionsType(response.data);
         });
+        agro360Axios('/topics').then((response) => {
+            setTopics(response.data);
+        });
+
     }, [])
 
     const addOption = (questionIndex) => {
@@ -125,7 +133,6 @@ const CreateQuest = () => {
         setQuestions(updatedQuestions);
     };
 
-
     let optionss = [];
     const arraytoObject = (array) => {
         var newObject = {};
@@ -182,7 +189,7 @@ const CreateQuest = () => {
                     questionsObject.push(arraytoObject(question));
                 })
                 agro360Axios.post('/forms', {
-                    name: title, description: descrip, topic: '654481cd0223fc9db9532bf9', creator: '6558096819d178e8586c6244', end: '2023-11-30',
+                    name: title, description: descrip, topic: '654481cd0223fc9db9532bf9', creator: '6558096819d178e8586c6244', end: date,
                     questions: questionsObject
                 }).then((response) => {
                     switch (response.data.response) {
@@ -236,7 +243,9 @@ const CreateQuest = () => {
                     <div className='p-2 py-4 text-center border-2 rounded-md flex flex-col gap-5 shadow-lg'>
                         <h1 className='text-4xl font-bold'>{title}</h1>
                         <h1 className='text-2xl'>{descrip}</h1>
-                        <h1 className='text-xl text-[#39A900]'>{topic}</h1>
+                        <h1 className='text-xl text-[#39A900]'>{
+                            topics.filter((i) => i._id === topic).map((topic) => topic.name)
+                        }</h1>
                     </div>
                     <div className='w-full flex flex-col justify-start mx-auto gap-10'>
                         {questions.map((question, questionIndex) => (

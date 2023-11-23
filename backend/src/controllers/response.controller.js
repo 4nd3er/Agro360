@@ -1,15 +1,20 @@
 import bcrypt from 'bcrypt'
-import { createMethod, getMethod, getOneMethod } from "../libs/methods.js"
 import { Courses, CoursesCronogram, Forms, Responses, Users } from "../models/models.js"
-import { compObjectId, createToken, errorResponse, messages, sendEmailFormCode } from '../libs/libs.js'
+import { createMethod, getMethod, getOneMethod } from "../libs/methods.js"
+import { compObjectId, errorResponse, messages, sendEmailFormCode } from '../libs/libs.js'
 import { generateCode, capitalizeWord } from '../libs/functions.js'
 
 //* Comprobar existencia del formulario
 export const compForm = async (req, res, next) => {
-    const { id } = req.params
-    const findForm = await compObjectId(id, Forms, "Form")
-    if (!findForm.success) return res.status(findForm.status).json({ message: [findForm.msg] })
-    next();
+    const { form } = req.params
+
+    try {
+        const findForm = await compObjectId(form, Forms, "Form")
+        if (!findForm.success) return res.status(findForm.status).json({ message: [findForm.msg] })
+        next();
+    } catch (error) {
+        errorResponse(res, error)
+    }
 }
 
 //* Comprobar la cookie y que el codigo este correcto para el acceso
@@ -24,7 +29,6 @@ export const compFormCookie = async (req, res, next) => {
         if (!sessionCode) return res.status(401).json({ message: ["Code not defined, get your code"] })
         if (!userCode) return res.status(401).json({ message: ["You have not entered any code"] })
         if (!await bcrypt.compare(userCode, sessionCode)) return res.status(401).json({ message: ["The code is incorrect"] })
-
         const findForm = await compObjectId(form, Forms, "Form")
         if (!findForm.success) return res.status(findForm.status).json({ message: [findForm.msg] })
         next()
@@ -35,21 +39,22 @@ export const compFormCookie = async (req, res, next) => {
 
 // *Dar y Comprobar codigo para acceso
 export const getCode = async (req, res) => {
+    const { form } = req.params
     const { email } = req.query
-    const { id } = req.params
 
     try {
         const user = await Users.findOne({ email })
         if (!user) return res.status(404).json({ message: ["User not found"] })
-        const findResponse = await Forms.findOne({ id: id, user: user._id })
+        //Comprobar si existe una respuesta
+        const findResponse = await Responses.findOne({ form: form, user: user._id })
         if (findResponse) return res.status(401).json({ message: ["You have already responded to this form"] })
         //Generar codigo aleatorio
         const code = generateCode(6);
-        const hashCode = await bcrypt.hash(code, 5)
+        const hashCode = await bcrypt.hash(code, 6)
         //Crear cookie
-        const data = { id: user._id.toString(), email: email, sessionCode: hashCode, userCode: "" }
+        const data = { id: user._id.toString(), email: email, form: form, sessionCode: hashCode, userCode: "" }
         res.cookie("user", data, { maxAge: 1800000, httpOnly: true })
-
+        //Enviar correo
         sendEmailFormCode(res, email, code)
     } catch (error) {
         errorResponse(res, error)
@@ -58,24 +63,24 @@ export const getCode = async (req, res) => {
 
 export const compCode = async (req, res) => {
     const user = req.cookies.user
-    const { id, email, sessionCode, userCode } = user
+    if (!user) return res.status(401).json({ message: ["Your code has expired"] })
+    const { id, email, form, sessionCode, userCode } = user
     const { code } = req.body
 
     try {
-        //Validar que la cookie exista y el codigo sea correcto
-        if (!user) return res.status(401).json({ message: ["Your code has expired"] })
+        //Validar que el codigo sea correcto        
         if (!await bcrypt.compare(code, sessionCode)) return res.status(401).json({ message: ["The code is incorrect"] })
 
         //Redefinir cookie
         user.userCode = code
         res.cookie("user", user, { maxAge: 1800000, httpOnly: true })
-
         const findUser = await Users.findById(id)
         res.json({
             response: "Code comprobate successfully",
             data: {
                 code: code,
                 user: `${findUser.names} ${findUser.lastnames}`,
+                form: form
             }
         })
     } catch (error) {
@@ -86,28 +91,39 @@ export const compCode = async (req, res) => {
 // *Recibir formulario segun los instructores del cronograma de mi ficha
 export const getFormtoResponse = async (req, res) => {
     const { form } = req.params
-    const user = req.cookies.user
-    const { id } = user
+    //const user = req.cookies.user
+    const id = "6558096819d178e8586c6244"
 
-    const findForm = await Forms.findById(form)
-    const findUser = await Users.findById(id)
-    const findCourse = await Courses.findById(findUser.course)
-    const findCronogram = await CoursesCronogram.find({ course: findCourse._id })
-    if (!findCronogram) return res.status(404).json({ message: [messages.notFound("Course Cronogram")] })
+    try {
+        const findForm = await Forms.findById(form)
+        const findUser = await Users.findById(id)
+        const findCourse = await Courses.findById(findUser.course)
+        const findCronogram = await CoursesCronogram.find({ course: findCourse._id })
+        if (!findCronogram) return res.status(404).json({ message: [messages.notFound("Course Cronogram")] })
 
-    const responseInstructors = []
-    for (const [index, cronogram] of findCronogram.entries()) {
-        const instructor = cronogram.instructor.toString()
-        const end = cronogram.end
-        if (end < new Date() && !responseInstructors.includes(instructor)) responseInstructors.push(instructor)
+        //Array con los id de los instructores a los cuales puedo responder
+        const idInstructors = []
+        for (const [index, cronogram] of findCronogram.entries()) {
+            const instructor = cronogram.instructor.toString()
+            const end = cronogram.end
+            if (end < new Date() && !idInstructors.includes(instructor)) idInstructors.push(instructor)
+        }
+        //Array de instructores
+        const responseInstructors = []
+        for (const instructor of idInstructors) {
+            const findInstructor = await Users.findById(instructor)
+            responseInstructors.push(findInstructor)
+        }
+        res.json({
+            instructors: responseInstructors,
+            form: findForm
+        })
+    } catch (error) {
+        errorResponse(res, error)
     }
-
-    res.json({
-        instructors: responseInstructors,
-        form: findForm
-    })
 }
 
+//!PENDIENTE
 export const createResponse = async (req, res) => {
     const { form } = req.params
     const user = req.cookies.user
@@ -133,6 +149,7 @@ export const createResponse = async (req, res) => {
     }
 }
 
+
 // *Show Responses
 export const responses = async (req, res) => {
     await getMethod(res, Responses, "Responses")
@@ -143,28 +160,36 @@ export const getResponse = async (req, res) => {
     await getOneMethod(id, res, Responses, "Response")
 }
 
-//Traer la response de un formulario segun su id
+//Traer las response de un formulario segun su id
 export const getResponseForm = async (req, res) => {
     const { form } = req.params
 
-    const findResponse = await Responses.find({ form: form })
-    if (!findResponse) return res.status(404).json({ message: [messages.notFound("Form Response")] })
-    res.json(findResponse)
+    try {
+        const findResponse = await Responses.find({ form: form })
+        if (!findResponse.length > 0) return res.status(404).json({ message: [messages.notFound("Form Response")] })
+        res.json(findResponse)
+    } catch (error) {
+        errorResponse(res, error)
+    }
 }
 
 //Traer las repuestas de una response segun el instructor
 export const getResponseInstructor = async (req, res) => {
     const { id, instructor } = req.params
 
-    const findForm = await Responses.findOne({ _id: id, "answers.instructor": instructor })
-    if (!findForm) return res.status(404).json({ message: [messages.notFound("Answers Instructor")] })
-    const answers = findForm.answers
+    try {
+        const findResponse = await Responses.findOne({ _id: id, "answers.instructor": instructor })
+        if (!findResponse) return res.status(404).json({ message: [messages.notFound("Answers Instructor")] })
+        const answers = findForm.answers
 
-    const answersInstructor = []
-    for (const answer of answers) {
-        const instructorId = answer.instructor.toString()
-        if (instructorId === instructor) answersInstructor.push(answer)
+        const answersInstructor = []
+        for (const answer of answers) {
+            const instructorId = answer.instructor.toString()
+            if (instructorId === instructor) answersInstructor.push(answer)
+        }
+
+        res.json(answersInstructor)
+    } catch (error) {
+        errorResponse(res, error)
     }
-
-    res.json(answersInstructor)
 }

@@ -110,7 +110,6 @@ export const deleteForm = async (req, res) => {
 }
 
 // *Question Types
-
 export const questionTypes = async (req, res) => {
     await getMethod(res, QuestionTypes, "Question types")
 }
@@ -122,7 +121,7 @@ export const getQuestionType = async (req, res) => {
 
 export const createQuestionType = async (req, res) => {
     const { name } = req.body
-    const data = { name, creator: req.admin.id }
+    const data = { name, creator: req.user.id }
     const find = { name: name }
     await createMethod(data, find, res, QuestionTypes, "Question type")
 }
@@ -130,7 +129,7 @@ export const createQuestionType = async (req, res) => {
 export const updateQuestionType = async (req, res) => {
     const { id } = req.params
     const { name } = req.body
-    const data = { name, creator: req.admin.id }
+    const data = { name, creator: req.user.id }
     const find = { name: name }
     await updateMethod(data, id, find, res, QuestionTypes, "Question Type")
 }
