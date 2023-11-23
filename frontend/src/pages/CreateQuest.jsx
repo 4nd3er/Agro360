@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { AddQuestionSvg, ImportQuestionSvg, DeleteQuestionSvg, ExcelSvg } from '../assets/Assets.jsx';
-import { Options, BarsChart, PiesChart } from '../components/Components';
+import { useLocation } from 'react-router-dom';
+import { AddQuestionSvg, ImportQuestionSvg, DeleteQuestionSvg } from '../assets/Assets.jsx';
+import { Options } from '../components/Components';
 import '../question.css';
 import Swal from 'sweetalert2';
 import agro360Axios from '../config/agro360Axios.jsx';
-import { Formik, Field, Form, ErrorMessage, FieldArray } from 'formik';
 
 const CreateQuest = () => {
     const location = useLocation();
@@ -15,12 +14,16 @@ const CreateQuest = () => {
     const [descrip, setDescrip] = useState('');
     const [topic, setTopic] = useState('');
     const [date, setDate] = useState('');
-    const [questions, setQuestions] = useState([[['question', ""], ['type', ""], ['options', ['']]]]);
+    const [questions, setQuestions] = useState(() => JSON.parse(localStorage.getItem('questions')) || [[['question', ""], ['type', ""], ['options', ['']]]]);
     const [optionsAdded, setOptionsAdded] = useState(false);
     const [questionsType, setQuestionsType] = useState([]);
     const [validationQuestionContent, setValidationQuestionContent] = useState(false);
     const [validationQuestionType, setValidationQuestionType] = useState(false);
     const [validationQuestionOption, setValidationQuestionOption] = useState(false);
+
+    useEffect(() => {
+        localStorage.setItem('questions', JSON.stringify(questions));
+    }, [questions]);
 
     const questionTypeValue = {
         '654058b803a2be5f286df7b8': 'text',
@@ -212,7 +215,8 @@ const CreateQuest = () => {
                                 title: 'Encuesta creada!',
                                 text: 'Se ha guardado la encuesta exitosamente',
                                 timer: 2000,
-                                showConfirmButton: false
+                                showConfirmButton: false,
+                                timerProgressBar: true,
                             });
                             setTimeout(() => {
                                 window.location.href = '/crear-formulario';

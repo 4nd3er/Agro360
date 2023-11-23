@@ -59,36 +59,40 @@ const Create = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const cleaned = () => {
+      setTimeout(() => {
+        setAlert({})
+      }, 1500);
+    }
+
     if ([formValues.titulo, formValues.descripcion, formValues.opciones, formValues.fecha].includes('')) {
       setAlert({
         msg: 'Todos los campos son obligatorios',
         error: true
       })
-      setTimeout(() => {
-        setAlert({})
-      }, 1500);
+      cleaned();
       return;
     }
+    if (formValues.descripcion.length < 16) {
+      setAlert({
+        msg: 'La descripcion debe ser mayor a 16 caracteres',
+        error: true
+      })
+      cleaned();
+      document.form.descripcion.focus();
+      return;
+    }
+    if (formValues.fecha < `${new Date().toISOString().split('T')[0]}T${new Date().toString().split(' ').splice(2, 3)[2]}`) {
+      setAlert({
+        msg: 'La hola asignada debe ser mayor a la recurrente',
+        error: true
+      })
+      cleaned();
+      document.form.fecha.focus();
+      return;
+    }
+    localStorage.removeItem('questions');
     document.form.submit();
-
-    // try {
-    //   const response = await fetch('/api/encuestas', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify(formValues),
-    //   });
-
-    //   if (response.status === 201) {
-    //     closeModal();
-    //   } else {
-    //     // Manejar el caso de error
-    //   }
-    // } catch (error) {
-    //   // Manejar el caso de error
-    // }
-    // window.location.href = `crear/titulo=${formValues.titulo}&&descripcion=${formValues.descripcion}&&opciones=${formValues.opciones}`
   };
 
   const { msg } = alert;
@@ -96,7 +100,7 @@ const Create = () => {
   return (
     <div className='flex-container'>
       <div className='text-center'>
-        <div className="image-label text-Bold">
+        <div className="image-label">
           CREAR ENCUESTA
         </div>
         <img
@@ -104,7 +108,7 @@ const Create = () => {
           alt="img"
           className="img-icon cursor-pointer"
           onClick={openModal}
-        />
+        />  
       </div>
 
       {isModalOpen && (
@@ -112,7 +116,7 @@ const Create = () => {
           <div className="modal-form">
             <h2 className="modal-title">CREAR ENCUESTA</h2>
             {msg && <Alert alert={alert} />}
-            <form onSubmit={handleSubmit} name="form" action='crear-formulario/crear/'>
+            <form onSubmit={handleSubmit} name="form" action='crear-formulario/crear/' noValidate>
               <div className="input-container">
                 <label htmlFor="titulo">Titulo</label>
                 <input
@@ -122,7 +126,6 @@ const Create = () => {
                   placeholder="Titulo"
                   value={formValues.titulo}
                   onChange={handleInputChange}
-                  className="input-text"
                 />
               </div>
 
@@ -135,7 +138,6 @@ const Create = () => {
                   value={formValues.descripcion}
                   onChange={handleInputChange}
                   rows="3"
-                  className="input-text"
                 />
               </div>
 
@@ -160,10 +162,10 @@ const Create = () => {
                 <input
                   id="fecha"
                   name="fecha"
-                  type="date"
+                  type="datetime-local"
                   value={formValues.fecha}
-                  min={new Date().toISOString().split('T')[0]}
                   onChange={manejarCambioFecha}
+                  min={`${new Date().toISOString().split(':')[0]}:${new Date().toISOString().split(':')[1]}`}
                   className="input-select"
                 />
               </div>
@@ -173,7 +175,6 @@ const Create = () => {
                   Cerrar
                 </button>
                 <button type="submit" className="button-accept">
-                  {/* <Link to='crear'>Aceptar</Link> */}
                   Aceptar
                 </button>
               </div>
