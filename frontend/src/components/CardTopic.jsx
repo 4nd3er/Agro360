@@ -1,13 +1,54 @@
-import React from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { formatDate } from '../helpers/formatDate'
+import useRoles from "../hooks/useRoles.jsx"
+import { useParams } from "react-router-dom";
+
 
 const CardTopic = ({ topic }) => {
     const { name, _id, createdAt } = topic
+    const [role, setRole] = useState() // Name role
+    const idrol = useParams() // role id
+
+    const { obtainRol } = useRoles() 
+
+    // Obtain role name
+    useEffect(() => {
+        const getRole = async () => {
+            const role = await obtainRol(idrol.id);
+            setRole(role.name)
+        };
+        getRole();
+    }, [])
+
+    // Define colors according to role
+    const topicCardColors = {
+        Aprendiz: "bg-color-aprendiz",
+        Instructor: "bg-color-instructor",
+        Directivo: "bg-color-directivo",
+    }
+
+    let cardColor; 
+
+    // assign color to the card according to role
+    switch (role) {
+        case "Aprendiz":
+            cardColor = topicCardColors.Aprendiz;
+            break;
+        case "Instructor":
+            cardColor = topicCardColors.Instructor;
+            break;
+        case "Directivo":
+            cardColor = topicCardColors.Directivo;
+            break;
+        default:
+            cardColor = "bg-gray-200"
+            break;
+    }
     return (
         <Link
             to={`encuestas/${_id}`}
-            className="bg-[#82def0]  rounded-lg p-5 border-2 border-[#4EA3F1] cursor-pointer hover:bg-[#61b3c4]">
+            className={`${cardColor} rounded-lg p-5 border-2 cursor-pointer transition duration-150 ease-in-out transform hover:scale-105 hover:shadow-lg`}>
             <p className=" text-white text-2xl text-center font-black uppercase">{name}</p>
             <p className='text-sm text-white text-bold'>Fecha creación: {formatDate(createdAt)}</p>
         </Link>

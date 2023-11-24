@@ -1,14 +1,11 @@
 import { useEffect, useState, createContext } from "react";
 import agro360Axios from "../config/agro360Axios";
-import Cookies from "js-cookie"
 
 // Create the role context
 const RolesContext = createContext()
 
 const RolesProvider = ({ children }) => {
     const [roles, setRoles] = useState([]) // Roles
-    const [role, setRole] = useState()
-    const [topic, setTopic] = useState({})
     const [modalTopicForm, setModalTopicForm] = useState(false)
     const [errors, setErrors] = useState([])
 
@@ -73,6 +70,7 @@ const RolesProvider = ({ children }) => {
     const createTopic = async topic => {
         try {
             const { data } = await agro360Axios.post('/topics', topic);
+
             setModalTopicForm(false);
         } catch (error) {
             console.log("Error al crear la tematica");
