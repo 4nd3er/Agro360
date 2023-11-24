@@ -1,13 +1,14 @@
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import Logo from '../img/logoAgro360.png';
-import Swal from 'sweetalert2'
-import { useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form';
+import useResponses from '../hooks/useResponses';
 
 const UserValidation = () => {
     const { register, handleSubmit, formState: {
         isValid
     } } = useForm() // settings useForm
+
+    const { sendCode } = useResponses();
 
     // When loading the page
     useEffect(() => {
@@ -20,7 +21,7 @@ const UserValidation = () => {
             return decodedEmail
         }
         const userEmail = obtainEmail()
-        console.log(userEmail)
+        sendCode(userEmail)
     }, [])
 
     // By submitting the form

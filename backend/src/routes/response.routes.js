@@ -6,7 +6,7 @@ import { compCode, compForm, compFormCookie, createResponse, getCode, getFormtoR
 const router = Router()
 
 // *Response
-router.route("/forms/v/:id")
+router.route("/forms/v/:form")
     .all(compForm)
     .get(validate(emailValidator, "query"), getCode)
     .post(compCode)

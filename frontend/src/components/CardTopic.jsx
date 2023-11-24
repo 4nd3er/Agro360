@@ -48,7 +48,7 @@ const CardTopic = ({ topic }) => {
     return (
         <Link
             to={`encuestas/${_id}`}
-            className={`${cardColor} rounded-lg p-5 border-2 cursor-pointer transition duration-150 ease-in-out transform hover:scale-105 hover:shadow-lg`}>
+            className={`${cardColor} rounded-lg p-5 cursor-pointer transition duration-150 ease-in-out transform hover:scale-105 hover:shadow-lg`}>
             <p className=" text-white text-2xl text-center font-black uppercase">{name}</p>
             <p className='text-sm text-white text-bold'>Fecha creación: {formatDate(createdAt)}</p>
         </Link>
