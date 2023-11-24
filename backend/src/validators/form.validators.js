@@ -59,7 +59,7 @@ export const formValidator = z.object({
 export const questionTypeValidator = z.object({
     name: z
         .string({
-            required_error: "Name  is required"
+            required_error: "Name is required"
         })
         .min(6, {
             message: "Name must be at least 6 characters"

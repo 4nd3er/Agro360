@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { AddQuestionSvg, ImportQuestionSvg, DeleteQuestionSvg, ExcelSvg } from '../assets/Assets.jsx';
-import { Options, BarsChart, PiesChart } from '../components/Components';
+import { useLocation } from 'react-router-dom';
+import { AddQuestionSvg, ImportQuestionSvg, DeleteQuestionSvg } from '../assets/Assets.jsx';
+import { Options } from '../components/Components';
 import '../question.css';
 import Swal from 'sweetalert2';
 import agro360Axios from '../config/agro360Axios.jsx';
-import { Formik, Field, Form, ErrorMessage, FieldArray } from 'formik';
 
 const CreateQuest = () => {
     const location = useLocation();
@@ -15,12 +14,16 @@ const CreateQuest = () => {
     const [descrip, setDescrip] = useState('');
     const [topic, setTopic] = useState('');
     const [date, setDate] = useState('');
-    const [questions, setQuestions] = useState([[['question', ""], ['type', ""], ['options', ['']]]]);
+    const [questions, setQuestions] = useState(() => JSON.parse(localStorage.getItem('questions')) || [[['question', ""], ['type', ""], ['options', ['']]]]);
     const [optionsAdded, setOptionsAdded] = useState(false);
     const [questionsType, setQuestionsType] = useState([]);
     const [validationQuestionContent, setValidationQuestionContent] = useState(false);
     const [validationQuestionType, setValidationQuestionType] = useState(false);
     const [validationQuestionOption, setValidationQuestionOption] = useState(false);
+
+    useEffect(() => {
+        localStorage.setItem('questions', JSON.stringify(questions));
+    }, [questions]);
 
     const questionTypeValue = {
         '654058b803a2be5f286df7b8': 'text',
@@ -37,11 +40,13 @@ const CreateQuest = () => {
         const topicParam = searchParams.get('opciones');
         const fechaParam = searchParams.get('fecha');
 
-        if (titleParam && descripParam && topicParam) {
+        if (titleParam && descripParam && topicParam && fechaParam) {
             localStorage.setItem('title', titleParam);
             localStorage.setItem('descrip', descripParam);
             localStorage.setItem('topic', topicParam);
             localStorage.setItem('date', fechaParam);
+        } else {
+            window.location.href = '/crear-formulario';
         }
         setTitle(localStorage.getItem('title'));
         setDescrip(localStorage.getItem('descrip'));
@@ -114,7 +119,7 @@ const CreateQuest = () => {
             }
         }
         if (questionTypeValue[value] === 'text') {
-            currentQuestion[2][1] = [['adsadsads', '']];
+            currentQuestion[2][1] = ['text'];
             setOptionsAdded(() => !optionsAdded);
         }
         updatedQuestions[questionIndex] = currentQuestion;
@@ -140,9 +145,20 @@ const CreateQuest = () => {
             newObject[array[i][0]] = array[i][1];
         }
 
+        let count = 0;
         for (let i of Object.keys(array[2][1])) {
             const key = `option`;
-            const value = array[2][1][i];
+            const array2 = ['', ''];
+            let value = '';
+            if (array[2][1][0].length == array2.length && array[2][1][0].every(function (v, i) { return v = '' === array2[i] })) {
+                value = array[2][1][0][count];
+                const optionObject = { [key]: value };
+                optionss.push(optionObject);
+                count++;
+                value = array[2][1][0][count];
+            } else {
+                value = array[2][1][i];
+            }
             const optionObject = { [key]: value };
             optionss.push(optionObject);
         }
@@ -189,7 +205,7 @@ const CreateQuest = () => {
                     questionsObject.push(arraytoObject(question));
                 })
                 agro360Axios.post('/forms', {
-                    name: title, description: descrip, topic: '654481cd0223fc9db9532bf9', creator: '6558096819d178e8586c6244', end: date,
+                    name: title, description: descrip, topic: topic, end: date,
                     questions: questionsObject
                 }).then((response) => {
                     switch (response.data.response) {
@@ -199,7 +215,8 @@ const CreateQuest = () => {
                                 title: 'Encuesta creada!',
                                 text: 'Se ha guardado la encuesta exitosamente',
                                 timer: 2000,
-                                showConfirmButton: false
+                                showConfirmButton: false,
+                                timerProgressBar: true,
                             });
                             setTimeout(() => {
                                 window.location.href = '/crear-formulario';
@@ -229,10 +246,6 @@ const CreateQuest = () => {
         }
     };
 
-    const handleBlur = () => {
-
-    };
-
     return (
         <aside>
             <section className='mt-5 mx-auto flex justify-center uppercase text-xl'>
@@ -259,7 +272,6 @@ const CreateQuest = () => {
                                         className='border-b-2 p-2 border-gray-400 w-3/6'
                                         value={question[0][1]}
                                         onChange={(e) => handleQuestionChange(e.target.value, questionIndex)}
-                                        onBlur={handleBlur}
                                     />
                                     <select
                                         className='px-4 shadow-[0_0_0_1px_rgba(0,0,0,0.5)] rounded-lg'

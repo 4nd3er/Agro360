@@ -62,6 +62,7 @@ const Login = () => {
                                     type="email"
                                     placeholder='Digite el Correo Electronico'
                                     className='w-full mt-3 p-3 border rounded-xl bg-gray-50'
+                                    value="ladigiococ@gmail.com"
                                 />
                                 {errors.email && <p className='text-red-600'>El correo electrónico es requerido</p>}
                             </div>
@@ -78,6 +79,7 @@ const Login = () => {
                                     type="password"
                                     placeholder='Digite la contraseña'
                                     className='w-full mt-3 p-3 border rounded-xl bg-gray-50'
+                                    value="12345678"
                                 />
                                 {errors.password && (<p className='text-red-600'>La contraseña es requerida</p>
                                 )}

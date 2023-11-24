@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         if (errors.length > 0) {
             const timer = setTimeout(() => {
-                setErrors([])
+                setErrors([]);
             }, 5000)
             return () => clearTimeout(timer)
         }
@@ -33,8 +33,8 @@ export const AuthProvider = ({ children }) => {
                 setIsAuthenticated(true);
             }
         } catch (error) {
-            console.log(error.response)
-            setErrors(error.response.data);
+            console.log(error.response.data.message)
+            setErrors(error.response.data.message);
         }
     };
 

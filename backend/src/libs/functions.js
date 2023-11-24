@@ -8,7 +8,7 @@ export function generateCode(digits) {
 
 //* Comprobar lista duplicada
 export function compDuplicate(list) {
-    return new Set(list).size < list.lenght
+    return new Set(list).size < list.length
 }
 
 //*Funcion para capitalizar una cadena

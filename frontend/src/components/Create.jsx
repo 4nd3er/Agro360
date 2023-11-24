@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import '../css/Create.css';
 import Swal from 'sweetalert2';
 import agro360Axios from '../config/agro360Axios';
+import Alert from './Alert';
 
 const Create = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [topics, setTopics] = useState([]);
+  const [alert, setAlert] = useState({});
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -36,7 +37,7 @@ const Create = () => {
 
   const manejarCambioFecha = (e) => {
     const nuevaFecha = e.target.value;
-    setFormValues({ ...formValues, fecha: nuevaFecha});
+    setFormValues({ ...formValues, fecha: nuevaFecha });
   };
 
   useEffect(() => {
@@ -56,32 +57,50 @@ const Create = () => {
   }, [])
 
   const handleSubmit = async (e) => {
-    // e.preventDefault();
+    e.preventDefault();
 
-    // try {
-    //   const response = await fetch('/api/encuestas', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify(formValues),
-    //   });
+    const cleaned = () => {
+      setTimeout(() => {
+        setAlert({})
+      }, 1500);
+    }
 
-    //   if (response.status === 201) {
-    //     closeModal();
-    //   } else {
-    //     // Manejar el caso de error
-    //   }
-    // } catch (error) {
-    //   // Manejar el caso de error
-    // }
-    // window.location.href = `crear/titulo=${formValues.titulo}&&descripcion=${formValues.descripcion}&&opciones=${formValues.opciones}`
+    if ([formValues.titulo, formValues.descripcion, formValues.opciones, formValues.fecha].includes('')) {
+      setAlert({
+        msg: 'Todos los campos son obligatorios',
+        error: true
+      })
+      cleaned();
+      return;
+    }
+    if (formValues.descripcion.length < 16) {
+      setAlert({
+        msg: 'La descripcion debe ser mayor a 16 caracteres',
+        error: true
+      })
+      cleaned();
+      document.form.descripcion.focus();
+      return;
+    }
+    if (formValues.fecha < `${new Date().toISOString().split('T')[0]}T${new Date().toString().split(' ').splice(2, 3)[2]}`) {
+      setAlert({
+        msg: 'La hola asignada debe ser mayor a la recurrente',
+        error: true
+      })
+      cleaned();
+      document.form.fecha.focus();
+      return;
+    }
+    localStorage.removeItem('questions');
+    document.form.submit();
   };
+
+  const { msg } = alert;
 
   return (
     <div className='flex-container'>
       <div className='text-center'>
-        <div className="image-label text-Bold">
+        <div className="image-label">
           CREAR ENCUESTA
         </div>
         <img
@@ -89,14 +108,15 @@ const Create = () => {
           alt="img"
           className="img-icon cursor-pointer"
           onClick={openModal}
-        />
+        />  
       </div>
 
       {isModalOpen && (
         <div className="modal" onClick={handleModalClick}>
           <div className="modal-form">
             <h2 className="modal-title">CREAR ENCUESTA</h2>
-            <form onSubmit={handleSubmit} action='crear-formulario/crear/'>
+            {msg && <Alert alert={alert} />}
+            <form onSubmit={handleSubmit} name="form" action='crear-formulario/crear/' noValidate>
               <div className="input-container">
                 <label htmlFor="titulo">Titulo</label>
                 <input
@@ -106,8 +126,6 @@ const Create = () => {
                   placeholder="Titulo"
                   value={formValues.titulo}
                   onChange={handleInputChange}
-                  required
-                  className="input-text"
                 />
               </div>
 
@@ -120,8 +138,6 @@ const Create = () => {
                   value={formValues.descripcion}
                   onChange={handleInputChange}
                   rows="3"
-                  required
-                  className="input-text"
                 />
               </div>
 
@@ -132,7 +148,6 @@ const Create = () => {
                   name="opciones"
                   value={formValues.opciones}
                   onChange={handleInputChange}
-                  required
                   className="input-select"
                 >
                   <option value="">Seleccione Temática</option>
@@ -147,11 +162,10 @@ const Create = () => {
                 <input
                   id="fecha"
                   name="fecha"
-                  type="date"
+                  type="datetime-local"
                   value={formValues.fecha}
-                  min={new Date().toISOString().split('T')[0]}
                   onChange={manejarCambioFecha}
-                  required
+                  min={`${new Date().toISOString().split(':')[0]}:${new Date().toISOString().split(':')[1]}`}
                   className="input-select"
                 />
               </div>
@@ -161,7 +175,6 @@ const Create = () => {
                   Cerrar
                 </button>
                 <button type="submit" className="button-accept">
-                  {/* <Link to='crear'>Aceptar</Link> */}
                   Aceptar
                 </button>
               </div>
