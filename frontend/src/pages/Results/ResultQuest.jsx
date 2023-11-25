@@ -15,6 +15,7 @@ const ResultQuest = () => {
     const [dataForm, setDataForm] = useState([]);
     const [userSelect, setUserSelect] = useState('');
     const [question, setQuestion] = useState(true);
+    const [responses, setResponses] = useState([]);
 
     const { users, loading } = useUsers();
     const listUsers = {};
@@ -41,7 +42,18 @@ const ResultQuest = () => {
             setDataForm(res);
         };
         form();
-    }, [])
+        const responsesFilter = [['', '', []]];
+        // const answers = [];
+        data.map((result) => {
+            result['answers'].filter((value) => value.instructor === userSelect).map((value, index) => {
+                responsesFilter[index][0] = value.instructor;
+                responsesFilter[index][1] = value.question;
+                responsesFilter[index][2].push(value.answer);
+                responsesFilter.push(['', '', []]);
+            });
+        });
+        setResponses(responsesFilter);
+    }, [userSelect]);
 
     for (let i = 0; i < users.length; i++) {
         const element = users[i];
@@ -106,24 +118,23 @@ const ResultQuest = () => {
                         </select>
                     </div>
                 </div>
-                {data.map((result) => (
-                    <div key={result._id} className="flex-row">
-                        {result['answers'].filter((answer) => answer.instructor === userSelect).map((answer) => (
-                            <div key={answer._id} className="response w-full mb-8">
-                                <div>
-                                    <div className="text-wrapper-10">{answer.question}</div>
-                                    {/* <div className="text-wrapper-9">{result.answers.length} respuestas</div> */}
-                                </div>
-                                {
-                                    answer._id &&
-                                    <div className='mt-20 px-10 text-2xl'>
-                                        {answer.answer}
-                                    </div>
-                                }
+                <div className="flex-row">
+                    {responses.filter((answers) => answers[2].length > 0).map((answers, index) => (
+                        <div key={index + 1} className="response w-full mb-8">
+                            <div>
+                                <div className="text-wrapper-10">{answers[1]}</div>
+                                <div className="text-wrapper-9">{answers[2].length} respuestas</div>
                             </div>
-                        ))}
-                    </div>
-                ))}
+                            <div className='mt-12 px-10 text-2xl flex flex-col gap-5 justify-center'>
+                                {answers[2].map((answer) => (
+                                    <div>
+                                        {answer}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
+                </div>
                 {/* Contenedor de las respuestas en dos columnas
                 {data.map((resulted) => (
                     idQuest === resulted._id && (
