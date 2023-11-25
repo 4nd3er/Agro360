@@ -1,7 +1,7 @@
 import React from 'react';
-import '../navbar.css';
 import Logo from '../img/logoAgro360.png';
 import Perfil from '../img/perfil.png';
+import '../layouts/css/navbar.css';
 
 const Navbar = () => {
     return (

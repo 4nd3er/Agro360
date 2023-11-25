@@ -85,7 +85,7 @@ export const forgetPassword = async (req, res) => {
         if (!finduser) return res.status(400).json({ message: ['User not found'] })
 
         //Creacion de token
-        const token = await createToken({ id: finduser.email, expires: "15m" })
+        const token = await createToken({ id: finduser.email })
 
         //Envio de correo con enlace
         sendEmailResetPassword(res, { userEmail: finduser.email, token: token })

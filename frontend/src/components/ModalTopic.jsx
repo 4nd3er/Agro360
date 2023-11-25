@@ -1,14 +1,14 @@
 import { Fragment, useState } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
-import useRoles from '../hooks/useRoles'
-import Swal from 'sweetalert2'
 import { useParams } from 'react-router-dom';
+import { Dialog, Transition } from '@headlessui/react'
+import Swal from 'sweetalert2'
+import { useRoles } from '../context/Context.js'
 
 const ModalTopic = () => {
   const [name, setName] = useState(''); // Name of topic or title
   const idrol = useParams() // id of rol
   // Extract the logic to open and close the modal and 
-  const { modalTopicForm, createTopic, handleModalTopic, errors} = useRoles()
+  const { modalTopicForm, createTopic, handleModalTopic, errors } = useRoles()
 
   // Submitting the form
   const handleSubmit = async e => {
@@ -78,7 +78,7 @@ const ModalTopic = () => {
               </div>
               <div className="sm:flex sm:items-start">
                 <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                    {/* {errors.map((error, i) => (
+                  {/* {errors.map((error, i) => (
                       <div className="bg-red-500 p-2 text-white my-5 rounded-md" key={i}>
                         {error}
                       </div>

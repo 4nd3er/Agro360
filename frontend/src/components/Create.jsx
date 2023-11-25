@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import '../css/Create.css';
 import Swal from 'sweetalert2';
-import agro360Axios from '../config/agro360Axios';
 import Alert from './Alert';
+import { useRoles } from '../context/Context.js';
 
 const Create = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [topics, setTopics] = useState([]);
+  const { topics } = useRoles();
   const [alert, setAlert] = useState({});
 
   const openModal = () => {
@@ -39,22 +39,6 @@ const Create = () => {
     const nuevaFecha = e.target.value;
     setFormValues({ ...formValues, fecha: nuevaFecha });
   };
-
-  useEffect(() => {
-    const getTopics = async () => {
-      try {
-        const { data } = await agro360Axios('/topics');
-        setTopics(data);
-      } catch (error) {
-        Swal.fire({
-          icon: 'error',
-          text: error,
-          timer: 2000
-        })
-      }
-    }
-    getTopics();
-  }, [])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -108,7 +92,7 @@ const Create = () => {
           alt="img"
           className="img-icon cursor-pointer"
           onClick={openModal}
-        />  
+        />
       </div>
 
       {isModalOpen && (

@@ -1,5 +1,5 @@
 import React from 'react';
-import '../navbar.css';
+import './css/navbar.css';
 import Logo from '../img/logoAgro360.png';
 import LogoBlanco from '../img/LogoBlanco.png';
 import { Outlet } from 'react-router-dom';

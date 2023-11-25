@@ -1,16 +1,27 @@
-export { default as ConfirmAccount } from './ConfirmAccount.jsx';
-export { default as CreateQuest } from './CreateQuest.jsx';
-export { default as ForgetPassword } from './ForgetPassword.jsx';
+//* Auth Pages
+export { default as Login } from './Auth/Login.jsx';
+export { default as Register } from './Auth/Register.jsx';
+export { default as ForgetPassword } from './Auth/ForgetPassword.jsx';
+export { default as NewPassword } from './Auth/NewPassword.jsx';
+export { default as ConfirmAccount } from './Auth/ConfirmAccount.jsx';
+
+//* Home Page
 export { default as Home } from './Home.jsx';
-export { default as Login } from './Login.jsx';
-export { default as NewPassword } from './NewPassword.jsx';
-export { default as Quest } from './Quest.jsx';
-export { default as Register } from './Register.jsx';
-export { default as Results } from './Results.jsx';
-export { default as ResultQuest } from './ResultQuest.jsx';
-export { default as Topics } from './Topics.jsx';
-export { default as TopicsForm } from './TopicsForm.jsx';
-export { default as UserValidation } from './UserValidation.jsx';
-export { default as TokenValidation } from './TokenValidation.jsx';
-export { default as Answers } from "./Answers.jsx";
+
+// *Form Pages
+export { default as Quest } from './Forms/Quest.jsx';
+export { default as CreateQuest } from './Forms/CreateQuest.jsx';
+
+//* Results Pages
+export { default as Results } from './Results/Results.jsx';
+export { default as ResultQuest } from './Results/ResultQuest.jsx';
+
+//* Topics Pages
+export { default as Topics } from './Topics/Topics.jsx';
+export { default as TopicsForm } from './Topics/TopicsForm.jsx';
+
+//* Responses Pages
+export { default as Answers } from "./Responses/Answers.jsx";
+export { default as UserValidation } from './Responses/UserValidation.jsx';
+export { default as TokenValidation } from './Responses/TokenValidation.jsx';
 
