@@ -53,6 +53,7 @@ export const AuthProvider = ({ children }) => {
         Cookies.remove('token');
         setUser(null);
         setIsAuthenticated(false);
+        window.location.href = '/'
     };
 
     useEffect(() => {
