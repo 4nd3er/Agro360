@@ -53,12 +53,12 @@ function App() {
                     <Route index element={<Results />} />
                     <Route path=':idQuest' element={<ResultQuest />} />
                   </Route>
-                  <Route path='/validacion-usuario' element={<LayoutLogin />}>
+                  <Route path='/forms/v/:idform' element={<LayoutLogin />}>
                     <Route index element={<UserValidation />} />
                   </Route>
-                  <Route path='/validacion-token' element={<LayoutLogin />}>
+                 <Route path='/forms/vt/:idform' element={<LayoutLogin />}>
                     <Route index element={<TokenValidation />} />
-                  </Route>
+                  </Route> 
                   <Route path='/respuestas' element={<LayoutLogin />}>
                     <Route index element={<Answers />} />
                   </Route>

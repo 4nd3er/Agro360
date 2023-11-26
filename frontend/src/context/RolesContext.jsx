@@ -111,7 +111,6 @@ export const RolesProvider = ({ children }) => {
                 topics,
                 modalTopicForm,
                 errors,
-                roles,
                 loading,
                 getRole,
                 getRoleTopics,

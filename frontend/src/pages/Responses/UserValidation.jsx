@@ -1,39 +1,32 @@
-import React from 'react';
-import Swal from 'sweetalert2'
-import { Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form'
 import Logo from '../../img/logoAgro360.png';
 import { useResponses } from '../../context/Context.js';
 
 const UserValidation = () => {
-    const { register, handleSubmit, formState: {
+    const { register, handleSubmit, getValues, reset, formState: {
         isValid
     } } = useForm() // settings useForm
 
-    const { sendCode } = useResponses();
-
-    // When loading the page
-    useEffect(() => {
-        const obtainEmail = () => {
-            // Get email parameter from URL  
-            const userEmail = new URLSearchParams(window.location.search).get('email');
-            // Decode URL
-            const decodedEmail = decodeURIComponent(userEmail);
-            // Return decoded email
-            return decodedEmail
-        }
-        const userEmail = obtainEmail()
-        sendCode(userEmail)
-    }, [])
+    const params = useParams()
+    const { sendCodeResponse, errors } = useResponses();
+    //const navigate = useNavigate()
 
     // By submitting the form
-    const onSubmit = async (data) => {
-        // Add email to URL
-        const queryParams = new URLSearchParams({
-            email: data.email
-        });
-        // Update the email parameter
-        window.location.search = queryParams;
+    const onSubmit = async () => {
+        try {
+            if (isValid) {
+                const { email } = getValues(); // Obtain email 
+                console.log(email)
+                const idForm = params.idform // Obtain id of form
+                console.log(idForm)
+                await sendCodeResponse(idForm, email) // send the id of the form and the user's e-mail address
+                //navigate(`/forms/vt/${params.idform}`) // Navegar a la pagina TokenValidation.jsx
+                reset() // Clean form
+            }
+        } catch (error) {
+            console.log("Error al enviar petición con el código" + error)
+        }
     };
 
     return (
@@ -50,6 +43,15 @@ const UserValidation = () => {
                                     <img src={Logo} alt="Logo360" className="rounded-lg w-20 h-30 md:ml-6" />
                                 </div>
                                 <div className='px-6 py-8'>
+                                    {errors.map((error, i) => (
+                                        <div className="bg-red-500 p-4 text-white my-5 rounded-md flex items-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 me-4">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                                            </svg>
+
+                                            <span>{error}</span>
+                                        </div>
+                                    ))}
                                     <label className="text-gray-700 font-bold text-lg">Correo Electrónico:</label>
                                     <input
                                         id='email'
