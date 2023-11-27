@@ -10,25 +10,26 @@ const UserValidation = () => {
 
     const params = useParams()
     const { sendCodeResponse, errors } = useResponses();
-    //const navigate = useNavigate()
-
+    const navigate = useNavigate()
+    let response;
     // By submitting the form
     const onSubmit = async () => {
         try {
             if (isValid) {
                 const { email } = getValues(); // Obtain email 
-                console.log(email)
                 const idForm = params.idform // Obtain id of form
-                console.log(idForm)
-                await sendCodeResponse(idForm, email) // send the id of the form and the user's e-mail address
-                //navigate(`/forms/vt/${params.idform}`) // Navegar a la pagina TokenValidation.jsx
+                response = await sendCodeResponse(idForm, email);
+                // Verify response
+                if (response.response.includes("successfully")) {
+                    //Navigate to validation screen
+                    navigate(`/forms/vt/${params.idform}`)
+                }
                 reset() // Clean form
             }
         } catch (error) {
-            console.log("Error al enviar petición con el código" + error)
+            console.log("Error al enviar petición con el código: \n", error)
         }
     };
-
     return (
         <>
             <div className="flex flex-col mx-auto w-full md:w-3/5">
@@ -69,7 +70,7 @@ const UserValidation = () => {
                                         type="submit"
                                         value="Enviar"
                                         disabled={!isValid}
-                                        className={isValid ? 'bg-color-sena w-full py-3 text-white uppercase font-bold rounded-full hover: cursor-pointer hover:bg-color-sena-hover transition-color ease-in-out' : 'bg-gray-300 w-full py-3 text-white uppercase font-bold rounded-full cursor-pointer'}
+                                        className={isValid ? 'bg-color-sena w-full py-3 text-white uppercase font-bold rounded-full hover: cursor-pointer hover:bg-color-sena-hover transition-colors duration-300 ease-in-out' : 'bg-gray-300 w-full py-3 text-white uppercase font-bold rounded-full cursor-pointer'}
                                     />
                                 </div>
                             </form>
