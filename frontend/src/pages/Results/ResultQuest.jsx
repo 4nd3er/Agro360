@@ -24,7 +24,6 @@ const ResultQuest = () => {
     const Clean = () => {
         setSelectedUser(null);
         setAnswersUser([]);
-
     }
 
     // Form
