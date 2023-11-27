@@ -1,1 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400&display=swap");
+
+.change-card{
+    transform: translateX(-200%);
+    transition: 1s ease;
+}
+
+/* RESULTS */
+.answers-height{
+    min-height: 55%;
+    max-height: 9rem;
+}

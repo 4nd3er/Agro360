@@ -1,82 +1,120 @@
-import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { Spinner } from '../../components/Components';
 import { ExcelSvg } from '../../assets/Assets';
 import { useParams } from 'react-router-dom';
 import '../../css/question.css';
 import { useResponses, useForms, useUsers } from '../../context/Context.js'
+import CardResult from '../../components/CardResult.jsx';
 
 const ResultQuest = () => {
-    const { idQuest } = useParams();
-    const { getReponse } = useResponses();
-    const { getForm } = useForms();
-
-    const [data, setData] = useState([]);
     const [dataForm, setDataForm] = useState([]);
-    const [userSelect, setUserSelect] = useState('');
-    const [question, setQuestion] = useState(true);
     const [responses, setResponses] = useState([]);
+    const [answers, setAnswers] = useState([]);
+    const [instructors, setInstructors] = useState([]);
+    const [users, setUsers] = useState([]); // 
+    const [selectedUser, setSelectedUser] = useState(null);
+    const [answersUser, setAnswersUser] = useState([]);
+    const [filter, setFilter] = useState(1);
+    const [loading, setLoading] = useState(true);
+    const { idQuest } = useParams();
+    const { getForm } = useForms();
+    const { getResponsesForm } = useResponses();
+    const { getUser } = useUsers();
 
-    const { users, loading } = useUsers();
-    const listUsers = {};
+    const Clean = () => {
+        setSelectedUser(null);
+        setAnswersUser([]);
 
-    const questionsIndividual = () => {
-        setQuestion(true);
-    };
-
-    const questionsGeneral = () => {
-        setQuestion(false);
-    };
-
-    useEffect(() => {
-        const response = async () => {
-            const res = await getReponse(idQuest);
-            setData(res);
-        };
-        response();
-    }, [])
-
-    useEffect(() => {
-        const form = async () => {
-            const res = await getForm(idQuest);
-            setDataForm(res);
-        };
-        form();
-        const responsesFilter = [['', '', []]];
-        // const answers = [];
-        data.map((result) => {
-            result['answers'].filter((value) => value.instructor === userSelect).map((value, index) => {
-                responsesFilter[index][0] = value.instructor;
-                responsesFilter[index][1] = value.question;
-                responsesFilter[index][2].push(value.answer);
-                responsesFilter.push(['', '', []]);
-            });
-        });
-        setResponses(responsesFilter);
-    }, [userSelect]);
-
-    for (let i = 0; i < users.length; i++) {
-        const element = users[i];
-        if (element['rol'] === "655b1f6df9b6aad257662a58") {
-            const key = element._id;
-            const value = `${element.names} ${element.lastnames}`;
-            listUsers[key] = value;
-        }
     }
 
-    const handleUserChange = (value) => {
-        setUserSelect(value);
-    };
+    // Form
+    useEffect(() => {
+        const getDataForm = async () => {
+            const res = await getForm(idQuest);
+            setDataForm(res);
+        }
+        getDataForm();
+    }, [])
 
-    const uniqueInstructors = new Set();
-    data.map((result) => {
-        result['answers'].map((value) => {
-            uniqueInstructors.add(value.instructor);
-        });
-    });
+    //Responses
+    useEffect(() => {
+        const getResponses = async () => {
+            const res = await getResponsesForm(idQuest);
+            setResponses(res);
+            setLoading(false);
+        }
+        getResponses()
+    }, [])
+
+    //Answers
+    useEffect(() => {
+        const generalAnswers = []
+        responses.forEach((response) => {
+            response.answers.forEach((answer) => {
+                const { question, instructor, answer: answerUser } = answer
+
+                const findInstructor = generalAnswers.find((generalAnswer) => generalAnswer.instructor == instructor)
+                if (!findInstructor) {
+                    generalAnswers.push({
+                        instructor: instructor,
+                        responses: []
+                    })
+                }
+
+                const findQuestion = generalAnswers.find((generalAnswer) => generalAnswer.instructor == instructor).responses.find((response) => response.question == question)
+                if (!findQuestion) {
+                    generalAnswers.find((generalAnswer) => generalAnswer.instructor == instructor).responses.push({
+                        question: question,
+                        answers: [answerUser]
+                    })
+                } else {
+                    findQuestion.answers.push(answerUser)
+                }
+
+            })
+        })
+        setAnswers(generalAnswers)
+    }, [responses])
+    console.log(answers)
+
+    //Instructors
+    useEffect(() => {
+        const getInstructors = async () => {
+            const instructorsList = await Promise.all(
+                answers.map(async (answer) => {
+                    const id = answer.instructor
+                    const instructor = await getUser(id)
+                    return instructor
+                }))
+            setInstructors(instructorsList)
+        }
+        getInstructors();
+    }, [answers])
+
+    //Users
+    useEffect(() => {
+        const getUsers = async () => {
+            const usersList = await Promise.all(
+                responses.map(async (response) => {
+                    const id = response.user
+                    const user = await getUser(id)
+                    return user
+                }))
+            setUsers(usersList)
+        }
+        getUsers();
+    }, [responses])
+
+    //Answers user
+    useEffect(() => {
+        if (selectedUser !== null) {
+            const answers = responses.filter((response) => response.user == selectedUser._id).map((response) => response.answers)
+            setAnswersUser(answers[0])
+        }
+    }, [selectedUser])
 
     if (loading) { return <Spinner /> };
-    // Función para obtener el índice de una pregunta en base al ID
+
     return (
         <div>
             <section className='flex flex-col justify-start mt-5 min-h-[70vh] w-3/2 mx-auto gap-10'>
@@ -91,49 +129,64 @@ const ResultQuest = () => {
                 <div className='p-5 py-6 flex gap-5 shadow-lg justify-evenly rounded-md border-2 place-items-center'>
                     <div className='text-h text-center flex gap-2'>
                         <button
-                            className={`${question ? 'text-[#39A900] shadow-xl rounded-lg scale-110' : ''} mr-3 text-base p-2 scale-100 transition-all`}
-                            onClick={questionsIndividual}
+                            className={`${filter == 2 ? 'text-[#39A900] shadow-xl rounded-lg scale-110' : ''} mr-3 text-base p-2 scale-100 transition-all`}
+                            onClick={() => setFilter(2)}
                         >
                             Individual
                         </button>
                         <button
-                            className={`${!question ? 'text-[#39A900] shadow-xl rounded-lg scale-110' : ''} mr-3 text-base p-2 scale-100 transition-all`}
-                            onClick={questionsGeneral}
+                            className={`${filter == 1 ? 'text-[#39A900] shadow-xl rounded-lg scale-110' : ''} mr-3 text-base p-2 scale-100 transition-all`}
+                            onClick={() => { Clean(); setFilter(1) }}
                         >
                             General
                         </button>
                     </div>
                     <div className='text-h text-center'>
                         <select
-                            value={userSelect}
-                            onChange={(e) => handleUserChange(e.target.value)}
-                            className='p-2 rounded-lg border-2'
-                        >
-                            <option value="">Seleccione el usuario</option>
-                            {
-                                [...uniqueInstructors].map((instructor) => (
-                                    <option key={instructor} value={instructor}>{listUsers[instructor]}</option>
-                                ))
-                            }
+                            className={filter == 2 ? 'p-2 rounded-lg border-2' : 'hidden'}
+                            onChange={(e) => {
+                                users.filter((user) => { if (user._id == e.target.value) setSelectedUser(user) })
+                            }}>
+                            <option defaultValue value="">Seleccione el usuario</option>
+                            {users.map((user) => {
+                                return (
+                                    <option key={user._id} value={user._id}>{`${user.names} ${user.lastnames}`}</option>
+                                )
+                            })}
                         </select>
                     </div>
                 </div>
                 <div className="flex-row">
-                    {responses.filter((answers) => answers[2].length > 0).map((answers, index) => (
-                        <div key={index + 1} className="response w-full mb-8">
-                            <div>
-                                <div className="text-wrapper-10">{answers[1]}</div>
-                                <div className="text-wrapper-9">{answers[2].length} respuestas</div>
-                            </div>
-                            <div className='mt-12 px-10 text-2xl flex flex-col gap-5 justify-center'>
-                                {answers[2].map((answer) => (
+                    {
+                        filter === 2 ? answersUser.map((answer) => {
+                            return (
+                                <div className="response w-full mb-8">
                                     <div>
-                                        {answer}
+                                        <div className="text-wrapper-10">{answer.question}</div>
+                                        <div className="text-wrapper-9">123 respuestas</div>
                                     </div>
-                                ))}
-                            </div>
-                        </div>
-                    ))}
+                                    <div className='mt-12 px-10 text-2xl flex flex-col gap-5 justify-center'>
+                                        {answer.answer}
+                                    </div>
+                                </div>
+                            )
+                        }) :
+                            answers.map((answer) => {
+                                const instructor = instructors.find(instructor => instructor._id === answer.instructor)
+                                const answersCount = answer.responses.map(response => response.answers.length)
+                                const totalAnswers = answersCount.reduce((total, suma) => total + suma, 0)
+                                const questions = answer.responses.map(response => response.question)
+
+                                return (
+                                    <CardResult
+                                        answer={answer}
+                                        instructor={instructor}
+                                        questions={questions}
+                                        totalAnswers={totalAnswers} />
+                                )
+                            })
+                    }
+
                 </div>
                 {/* Contenedor de las respuestas en dos columnas
                 {data.map((resulted) => (
