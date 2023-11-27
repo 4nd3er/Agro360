@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { ResponsesRequest, codeValidationResponseRequest, getCodeResponseRequest, getResponseRequest, getResponsesFormRequest } from "../api/responses";
+import { ResponsesRequest, getCodeResponseRequest, getResponseRequest, getResponsesFormRequest, verificateCodeResponseRequest } from "../api/responses";
 import { CleanErrors, ContextErrors } from "./Error";
 
 export const ResponsesContext = createContext();
@@ -53,22 +53,14 @@ export const ResponsesProvider = ({ children }) => {
 
     //* Create Response
 
-    const sendCodeResponse = async (id, email) => {
-        try {
-            const res = await getCodeResponseRequest(id, email);
-            return res.data;
-        } catch (error) {
-            ContextErrors(error, setErrors);
-        }
+    const getCodeResponse = async (id, email) => {
+        const res = await getCodeResponseRequest(id, email);
+        return res.data;
     }
 
-    const sendCodeValidation = async (id, code) => {
-        try {
-            const res = await codeValidationResponseRequest(id, code)
-            return res.data
-        } catch (error) {
-            console.log(error)
-        }
+    const verificateCodeResponse = async (id, code) => {
+        const res = await verificateCodeResponseRequest(id, code)
+        return res.data
     }
 
     return (
@@ -78,8 +70,8 @@ export const ResponsesProvider = ({ children }) => {
                 errors,
                 getReponse,
                 getResponsesForm,
-                sendCodeResponse,
-                sendCodeValidation
+                getCodeResponse,
+                verificateCodeResponse
             }}>
             {children}
         </ResponsesContext.Provider>

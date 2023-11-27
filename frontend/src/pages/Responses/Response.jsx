@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import { useForms, useRoles } from '../../context/Context.js'
+import { useParams } from 'react-router-dom';
 
-const Answers = () => {
+const Response = () => {
     // Estado para la imagen seleccionada en el carrusel
     const [selectedImage, setSelectedImage] = useState(null);
 
@@ -22,18 +24,18 @@ const Answers = () => {
 
     // Datos de las imágenes y nombres de instructores
     const images = [
-        { src: 'src/img/instructores/AnaLucia.jpg', name: 'Ana Lucía' },
-        { src: 'src/img/instructores/DiegoMarin.jpg', name: 'Diego Marín' },
-        { src: 'src/img/instructores/Daniel.jpg', name: 'Daniel' },
-        { src: 'src/img/instructores/MartaLucia.jpg', name: 'Marta Lucia' },
-        { src: 'src/img/instructores/mauricioahumada.jpg', name: 'Mauricio Ahumada' },
-        { src: 'src/img/instructores/MoisesVargas.jpg', name: 'Moises Vargas' },
-        { src: 'src/img/instructores/nose.jpg', name: 'Llanet Liliana' },
-        { src: 'src/img/instructores/EdwinDavid.jpg', name: 'Edwin David' },
-        { src: 'src/img/instructores/CristianFelipe.jpg', name: 'Cristian Felipe' },
-        { src: 'src/img/instructores/KarenElizabeth.jpg', name: 'Karen Elizabeth' },
-        { src: 'src/img/instructores/ManuelVicente.png', name: 'Manuel Vicente' },
-        
+        { src: 'http://localhost:5173/src/img/instructores/AnaLucia.jpg', name: 'Ana Lucía' },
+        { src: 'http://localhost:5173/src/img/instructores/DiegoMarin.jpg', name: 'Diego Marín' },
+        { src: 'http://localhost:5173/src/img/instructores/Daniel.jpg', name: 'Daniel' },
+        { src: 'http://localhost:5173/src/img/instructores/MartaLucia.jpg', name: 'Marta Lucia' },
+        { src: 'http://localhost:5173/src/img/instructores/mauricioahumada.jpg', name: 'Mauricio Ahumada' },
+        { src: 'http://localhost:5173/src/img/instructores/MoisesVargas.jpg', name: 'Moises Vargas' },
+        { src: 'http://localhost:5173/src/img/instructores/nose.jpg', name: 'Llanet Liliana' },
+        { src: 'http://localhost:5173/src/img/instructores/EdwinDavid.jpg', name: 'Edwin David' },
+        { src: 'http://localhost:5173/src/img/instructores/CristianFelipe.jpg', name: 'Cristian Felipe' },
+        { src: 'http://localhost:5173/src/img/instructores/KarenElizabeth.jpg', name: 'Karen Elizabeth' },
+        { src: 'http://localhost:5173/src/img/instructores/ManuelVicente.png', name: 'Manuel Vicente' },
+
     ];
     // Función para manejar la selección de la calificación
     const handleRatingSelect = (value) => {
@@ -46,13 +48,49 @@ const Answers = () => {
     };
 
     //Manejo de API
+    const { idform } = useParams();
+    const [form, setForm] = useState([]);
+    const [topic, setTopic] = useState([])
+    const [questions, setQuestions] = useState([])
+    const [actualQuestion, setActualQuestion] = useState(0)
+    const { getForm } = useForms();
+    const { getTopic } = useRoles();
+
+    useEffect(() => {
+        const form = async () => {
+            const res = await getForm(idform);
+            setForm(res);
+        }
+        form();
+    }, [getForm, idform])
+    console.log(form)
+
+    useEffect(() => {
+        const topic = async () => {
+            const res = await getTopic(form.topic)
+            setTopic(res)
+        }
+        if (form && form.topic) topic();
+    }, [form])
+    console.log(topic)
+
+    //Questions
+    useEffect(() => {
+        if (form && form.questions) {
+            const questions = form.questions.map(question => question.question)
+            console.log(questions)
+            setQuestions(questions)
+            setActualQuestion(0)
+            console.log(actualQuestion);
+        }
+    }, [form])
 
     return (
         <div className='container d-flex justify-content-center align-items-center vh-100'>
             <div className='p-4 text-center border rounded-md shadow-lg'>
-                <h1 className='text-4xl font-bold'>"Título de la Encuesta"</h1>
-                <h1 className='text-2xl'>Descripcion de la encuesta</h1>
-                <h1 className='text-xl text-green-600'>Tematica de la encuesta</h1>
+                <h1 className='text-4xl font-bold'>"{form.name}"</h1>
+                <h1 className='text-2xl'>{form.description}</h1>
+                <h1 className='text-xl text-green-600'>Tematica: {topic ? topic.name : null}</h1>
             </div>
 
             <div className='p-4 text-center mt-4 border rounded-md shadow-lg'>
@@ -66,6 +104,8 @@ const Answers = () => {
                                 goToNextImage();
                             }}
                         >
+
+
                             <img
                                 src={item.src}
                                 alt={`Image ${index + 1}`}
@@ -84,23 +124,26 @@ const Answers = () => {
 
             {selectedImage && (
                 <div className='p-4 text-center mt-4 border rounded-md shadow-lg'>
-                    <p>¿El instructor maneja material de apoyo para dar a entender los temas?</p>
+                    <p>{questions[actualQuestion]}</p>
                     <div className='flex items-center justify-center'>
                         {[1, 2, 3, 4, 5].map((value) => (
                             <div
                                 key={value}
                                 onClick={() => handleRatingSelect(value)}
                                 className={`cursor-pointer p-4 m-2 transition duration-300 border rounded-full ${rating === value ? 'bg-green-500' : 'hover:bg-green-400'
-                                }`}
+                                    }`}
                             >
                                 {value}
                             </div>
                         ))}
                     </div>
+                    {selectedImage && (<button className='btn btn-primary p-4 rounded-full hover:bg-green-400'
+                        onClick={() => { if (actualQuestion + 1 > questions.length - 1) { setActualQuestion(0) } else { setActualQuestion(actualQuestion + 1) } }}>Siguiente</button>
+                    )}
                 </div>
             )}
         </div>
     );
 };
 
-export default Answers;
+export default Response;

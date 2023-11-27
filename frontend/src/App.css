@@ -1,7 +1,17 @@
 @import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400&display=swap");
 
-.change-card{
+.hidden-card{
     transform: translateX(-200%);
+    transition: 1s ease;
+}
+
+.hidden-card-right{
+    transform: translateX(300%);
+    transition: 1s ease;
+}
+
+.show-card{
+    transform: translateX(41%);
     transition: 1s ease;
 }
 

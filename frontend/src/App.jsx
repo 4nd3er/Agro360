@@ -18,8 +18,7 @@ import {
   ConfirmAccount,
   ResultQuest,
   UserValidation,
-  TokenValidation,
-  Answers
+  Response
 } from './pages/Pages';
 import Spinner from './components/Spinner';
 
@@ -55,12 +54,9 @@ function App() {
                   </Route>
                   <Route path='/forms/v/:idform' element={<LayoutLogin />}>
                     <Route index element={<UserValidation />} />
-                  </Route>
-                 <Route path='/forms/vt/:idform' element={<LayoutLogin />}>
-                    <Route index element={<TokenValidation />} />
                   </Route> 
-                  <Route path='/respuestas' element={<LayoutLogin />}>
-                    <Route index element={<Answers />} />
+                  <Route path='/forms/r/:idform' element={<LayoutLogin />}>
+                    <Route index element={<Response />} />
                   </Route>
 
                 </Routes>

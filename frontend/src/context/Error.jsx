@@ -5,12 +5,12 @@ export function ContextErrors(error, setErrors) {
 }
 
 export function CleanErrors(errors, setErrors) {
-    // useEffect(() => {
-    //     if (errors.length > 0) {
-    //         const timer = setTimeout(() => {
-    //             setErrors([]);
-    //         }, 5000)
-    //         return () => clearTimeout(timer)
-    //     }
-    // }, [errors])
+    useEffect(() => {
+        if (errors.length > 0) {
+            const timer = setTimeout(() => {
+                setErrors([]);
+            }, 5000)
+            return () => clearTimeout(timer)
+        }
+    }, [errors])
 }
