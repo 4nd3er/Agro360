@@ -6,7 +6,7 @@ export function ContextErrors(error, setErrors) {
 
 export function CleanErrors(errors, setErrors) {
     useEffect(() => {
-        if (errors.length > 0) {
+        if (errors && errors.length > 0) {
             const timer = setTimeout(() => {
                 setErrors([]);
             }, 5000)

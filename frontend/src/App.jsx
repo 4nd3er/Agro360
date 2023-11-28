@@ -18,7 +18,8 @@ import {
   ConfirmAccount,
   ResultQuest,
   UserValidation,
-  Response
+  Response,
+  Users
 } from './pages/Pages';
 import Spinner from './components/Spinner';
 
@@ -54,9 +55,12 @@ function App() {
                   </Route>
                   <Route path='/forms/v/:idform' element={<LayoutLogin />}>
                     <Route index element={<UserValidation />} />
-                  </Route> 
+                  </Route>
                   <Route path='/forms/r/:idform' element={<LayoutLogin />}>
                     <Route index element={<Response />} />
+                  </Route>
+                  <Route path='/users' element={<LayoutLogin />}>
+                    <Route index element={<Users />} />
                   </Route>
 
                 </Routes>

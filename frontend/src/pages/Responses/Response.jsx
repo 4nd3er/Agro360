@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { useForms, useRoles } from '../../context/Context.js'
+import { useForms, useResponses, useRoles } from '../../context/Context.js'
 import { useParams } from 'react-router-dom';
+import Spinner from '../../components/Spinner.jsx';
 
 const Response = () => {
     // Estado para la imagen seleccionada en el carrusel
@@ -51,18 +52,23 @@ const Response = () => {
     const { idform } = useParams();
     const [form, setForm] = useState([]);
     const [topic, setTopic] = useState([])
+    const [instructors, setInstructors] = useState([])
     const [questions, setQuestions] = useState([])
+
+    const [actualInstructor, setActualInstructor] = useState()
     const [actualQuestion, setActualQuestion] = useState(0)
-    const { getForm } = useForms();
+
+    const { getFormtoResponse } = useResponses();
     const { getTopic } = useRoles();
 
     useEffect(() => {
-        const form = async () => {
-            const res = await getForm(idform);
-            setForm(res);
+        const getData = async () => {
+            const res = await getFormtoResponse(idform);
+            setInstructors(res.instructors)
+            setForm(res.form);
         }
-        form();
-    }, [getForm, idform])
+        getData();
+    }, [getFormtoResponse, idform])
     console.log(form)
 
     useEffect(() => {
@@ -72,60 +78,61 @@ const Response = () => {
         }
         if (form && form.topic) topic();
     }, [form])
-    console.log(topic)
 
     //Questions
     useEffect(() => {
         if (form && form.questions) {
-            const questions = form.questions.map(question => question.question)
-            console.log(questions)
+            const questions = form.questions.map(question => question)
             setQuestions(questions)
-            setActualQuestion(0)
-            console.log(actualQuestion);
         }
     }, [form])
+    console.log(questions[actualQuestion].question)
 
+    if (!form.name) return <Spinner />
     return (
         <div className='container d-flex justify-content-center align-items-center vh-100'>
             <div className='p-4 text-center border rounded-md shadow-lg'>
-                <h1 className='text-4xl font-bold'>"{form.name}"</h1>
+                <h1 className='text-4xl font-bold'>{form.name}</h1>
                 <h1 className='text-2xl'>{form.description}</h1>
                 <h1 className='text-xl text-green-600'>Tematica: {topic ? topic.name : null}</h1>
             </div>
 
             <div className='p-4 text-center mt-4 border rounded-md shadow-lg'>
                 <Slider {...settings}>
-                    {images.map((item, index) => (
-                        <div
-                            key={index}
-                            className={`image-container ${item.src !== selectedImage ? 'blur' : ''}`}
-                            onClick={() => {
-                                setSelectedImage(item.src);
-                                goToNextImage();
-                            }}
-                        >
+                    {instructors.map((instructor, index) => {
+                        const id = instructor._id
+                        const img = instructor.names.split(" ").join("")
+                        const names = `${instructor.names} ${instructor.lastnames}`
 
+                        return (
+                            <div
+                                key={index}
+                                className={`image-container ${id !== actualInstructor ? 'blur' : ''}`}
+                                onClick={() => {
+                                    setActualInstructor(id);
+                                }} >
 
-                            <img
-                                src={item.src}
-                                alt={`Image ${index + 1}`}
-                                style={{
-                                    width: '100%',
-                                    height: 'auto',
-                                    borderRadius: '8px',
-                                    border: '1px solid transparent',
-                                }}
-                            />
-                            <p className="image-name">{item.name}</p>
-                        </div>
-                    ))}
+                                <img
+                                    src="http://localhost:5173/src/img/Logo.png"
+                                    alt={names}
+                                    style={{
+                                        width: '100%',
+                                        height: 'auto',
+                                        borderRadius: '8px',
+                                        border: '1px solid transparent',
+                                    }}
+                                />
+                                <p className="image-name">{names}</p>
+                            </div>
+                        )
+                    })}
                 </Slider>
             </div>
 
-            {selectedImage && (
+            {actualInstructor && form.questions && questions && (
                 <div className='p-4 text-center mt-4 border rounded-md shadow-lg'>
-                    <p>{questions[actualQuestion]}</p>
-                    <div className='flex items-center justify-center'>
+                    <p>{questions[actualQuestion].question}</p>
+                    {/* <div className='flex items-center justify-center'>
                         {[1, 2, 3, 4, 5].map((value) => (
                             <div
                                 key={value}
@@ -136,8 +143,8 @@ const Response = () => {
                                 {value}
                             </div>
                         ))}
-                    </div>
-                    {selectedImage && (<button className='btn btn-primary p-4 rounded-full hover:bg-green-400'
+                    </div> */}
+                    {actualInstructor && (<button className='btn btn-primary p-4 rounded-full hover:bg-green-400'
                         onClick={() => { if (actualQuestion + 1 > questions.length - 1) { setActualQuestion(0) } else { setActualQuestion(actualQuestion + 1) } }}>Siguiente</button>
                     )}
                 </div>

@@ -16,7 +16,7 @@ export function capitalizeString(string) {
     const transformed = []
     for (const word of string.toString().split(" ")) {
         const capWord = word.charAt(0).toUpperCase() + word.toLowerCase().slice(1)
-        transformed.push(capWord)
+        if (capWord !== "") transformed.push(capWord)
     }
     return transformed.join(" ")
 }
@@ -53,4 +53,29 @@ export function capitalizeObject(data, find, capitalize) {
             }
         }
     }
+}
+
+//* Funcion para eliminar tildes
+export function deleteAccents(string) {
+    const accentsMap = {
+        'á': 'a',
+        'é': 'e',
+        'í': 'i',
+        'ó': 'o',
+        'ú': 'u',
+        'ü': 'u',
+        'à': 'a',
+        'è': 'e',
+        'ì': 'i',
+        'ò': 'o',
+        'ù': 'u',
+        'Á': 'A',
+        'É': 'E',
+        'Í': 'I',
+        'Ó': 'O',
+        'Ú': 'U',
+        'Ü': 'U',
+    };
+
+    return string.replace(/[áéíóúàèìòùüÁÉÍÓÚÜ]/g, (match) => accentsMap[match] || match);
 }

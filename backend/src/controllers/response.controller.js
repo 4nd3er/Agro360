@@ -91,8 +91,8 @@ export const compCode = async (req, res) => {
 // *Recibir formulario segun los instructores del cronograma de mi ficha
 export const getFormtoResponse = async (req, res) => {
     const { form } = req.params
-    //const user = req.cookies.user
-    const id = "6558096819d178e8586c6244"
+    const user = req.cookies.user
+    const { id } = user
 
     try {
         const findForm = await Forms.findById(form)
