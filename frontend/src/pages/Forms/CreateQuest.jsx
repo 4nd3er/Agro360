@@ -98,16 +98,18 @@ const CreateQuest = () => {
         const updatedQuestions = [...questions];
         const currentQuestion = updatedQuestions[questionIndex];
         currentQuestion[1][1] = value;
-        if (questionTypeValue[value] === 'Escala de Likert' || questionTypeValue[value] === 'Escala de Puntuación' || questionTypeValue[value] === 'Respuesta Abierta') {
+        if (questionTypeValue[value] === 'Escala de Likert') {
             currentQuestion[2][1] = ['scale'];
             setOptionsAdded(() => !optionsAdded);
         }
-        if (questionTypeValue[value] == 'Respuesta Abierta') {
+        else if (questionTypeValue[value] == 'Respuesta Abierta') {
             currentQuestion[2][1] = ['text'];
             setOptionsAdded(() => !optionsAdded);
         }
-        if (currentQuestion[2][1] == 'text' || currentQuestion[2][1] == 'scale') {
-            currentQuestion[2][1] = [''];
+        else {
+            if (currentQuestion[2][1] == 'text' || currentQuestion[2][1] == 'scale') {
+                currentQuestion[2][1] = [''];
+            }
         }
         updatedQuestions[questionIndex] = currentQuestion;
         setQuestions(updatedQuestions);
