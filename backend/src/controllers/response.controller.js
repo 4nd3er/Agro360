@@ -7,7 +7,6 @@ import { generateCode, capitalizeWord } from '../libs/functions.js'
 //* Comprobar existencia del formulario
 export const compForm = async (req, res, next) => {
     const { form } = req.params
-
     try {
         const findForm = await compObjectId(form, Forms, "Form")
         if (!findForm.success) return res.status(findForm.status).json({ message: [findForm.msg] })
@@ -21,13 +20,13 @@ export const compForm = async (req, res, next) => {
 export const compFormCookie = async (req, res, next) => {
     const { form } = req.params
     const user = req.cookies.user
-    if (!user) return res.status(401).json({ message: ["Code not found, you are not authorized"] })
+    if (!user) return res.status(400).json({ message: ["Code not found, you are not authorized"] })
     const { id, email, sessionCode, userCode } = user
 
     try {
         //Si no se ha definido un codigo
-        if (!sessionCode) return res.status(401).json({ message: ["Code not defined, get your code"] })
-        if (!userCode) return res.status(401).json({ message: ["You have not entered any code"] })
+        if (!sessionCode) return res.status(400).json({ message: ["Code not defined, get your code"] })
+        if (!userCode) return res.status(400).json({ message: ["You have not entered any code"] })
         if (!await bcrypt.compare(userCode, sessionCode)) return res.status(401).json({ message: ["The code is incorrect"] })
         const findForm = await compObjectId(form, Forms, "Form")
         if (!findForm.success) return res.status(findForm.status).json({ message: [findForm.msg] })
@@ -52,8 +51,12 @@ export const getCode = async (req, res) => {
         const code = generateCode(6);
         const hashCode = await bcrypt.hash(code, 6)
         //Crear cookie
-        const data = { id: user._id.toString(), email: email, form: form, sessionCode: hashCode, userCode: "" }
-        res.cookie("user", data, { maxAge: 1800000, httpOnly: true })
+        const data = { id: user._id.toString(), email: email, sessionCode: hashCode, userCode: "" }
+        res.cookie("user", data, {
+            maxAge: 3600000,
+            secure: true,
+            sameSite: "none",
+        })
         //Enviar correo
         sendEmailFormCode(res, email, code)
     } catch (error) {
@@ -63,24 +66,27 @@ export const getCode = async (req, res) => {
 
 export const compCode = async (req, res) => {
     const user = req.cookies.user
-    if (!user) return res.status(401).json({ message: ["Your code has expired"] })
-    const { id, email, form, sessionCode, userCode } = user
+    if (!user) return res.status(400).json({ message: ["Your code has expired"] })
+    const { id, email, sessionCode, userCode } = user
     const { code } = req.body
 
     try {
         //Validar que el codigo sea correcto        
-        if (!await bcrypt.compare(code, sessionCode)) return res.status(401).json({ message: ["The code is incorrect"] })
+        if (!await bcrypt.compare(code, sessionCode)) return res.status(400).json({ message: ["The code is incorrect"] })
 
         //Redefinir cookie
         user.userCode = code
-        res.cookie("user", user, { maxAge: 1800000, httpOnly: true })
+        res.cookie("user", user, {
+            maxAge: 3600000,
+            secure: true,
+            sameSite: "none",
+        })
         const findUser = await Users.findById(id)
         res.json({
             response: "Code comprobate successfully",
             data: {
                 code: code,
-                user: `${findUser.names} ${findUser.lastnames}`,
-                form: form
+                user: `${findUser.names} ${findUser.lastnames}`
             }
         })
     } catch (error) {
@@ -98,16 +104,10 @@ export const getFormtoResponse = async (req, res) => {
         const findForm = await Forms.findById(form)
         const findUser = await Users.findById(id)
         const findCourse = await Courses.findById(findUser.course)
-        const findCronogram = await CoursesCronogram.find({ course: findCourse._id })
+        const findCronogram = await CoursesCronogram.findOne({ course: findCourse._id })
         if (!findCronogram) return res.status(404).json({ message: [messages.notFound("Course Cronogram")] })
+        const idInstructors = findCronogram.instructors
 
-        //Array con los id de los instructores a los cuales puedo responder
-        const idInstructors = []
-        for (const [index, cronogram] of findCronogram.entries()) {
-            const instructor = cronogram.instructor.toString()
-            const end = cronogram.end
-            if (end < new Date() && !idInstructors.includes(instructor)) idInstructors.push(instructor)
-        }
         //Array de instructores
         const responseInstructors = []
         for (const instructor of idInstructors) {
@@ -142,7 +142,7 @@ export const createResponse = async (req, res) => {
             const findInstructor = await compObjectId(instructor, Users, "Instructor")
             if (!findInstructor.success) return res.status(findInstructor.success) - json({ message: [findInstructor.msg] })
         }
-        await createMethod(data, null, res, Responses, "Response")
+        await createMethod(data, data, res, Responses, "Response")
 
     } catch (error) {
         errorResponse(res, error)

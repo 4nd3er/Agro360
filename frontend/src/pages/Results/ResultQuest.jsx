@@ -74,7 +74,6 @@ const ResultQuest = () => {
         })
         setAnswers(generalAnswers)
     }, [responses])
-    console.log(answers)
 
     //Instructors
     useEffect(() => {

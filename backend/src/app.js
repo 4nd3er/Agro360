@@ -4,7 +4,7 @@ import cors from 'cors'
 import morgan from 'morgan'
 import cookieParser from 'cookie-parser'
 import { FRONTEND_URL } from './config/config.js'
-import { authRoutes, coursesRoutes, formsRoutes, responseRoutes, rolesRoutes, topicsRoutes, usersRoutes } from './routes/routes.js'
+import { authRoutes, chargeDataRoutes, coursesRoutes, formsRoutes, responseRoutes, rolesRoutes, topicsRoutes, usersRoutes } from './routes/routes.js'
 
 const app = express()
 
@@ -26,5 +26,6 @@ app.use("/api", rolesRoutes)
 app.use("/api", topicsRoutes)
 app.use("/api", formsRoutes)
 app.use("/api", responseRoutes)
+app.use("/api", chargeDataRoutes)
 
 export default app

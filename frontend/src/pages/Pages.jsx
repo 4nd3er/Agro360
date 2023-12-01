@@ -24,5 +24,8 @@ export { default as TopicsForm } from './Topics/TopicsForm.jsx';
 export { default as UserValidation } from './Responses/UserValidation.jsx';
 export { default as Response } from './Responses/Response.jsx';
 
-//* Usera Pages
+//* Users Pages
 export { default as Users } from './Users/Users.jsx';
+
+//* Courses Pages
+export { default as ChargeData } from './ChargeData/ChargeData.jsx'

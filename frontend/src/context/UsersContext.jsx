@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { CleanErrors, ContextErrors } from "./Error";
+import { ContextErrors } from "./Alerts";
 import { CoursesRequest, UsersRequest, createUserRequest, getCourseNameRequest, getCourseRequest, getUserRequest } from "../api/users";
 
 export const UsersContext = createContext();
@@ -15,7 +15,7 @@ export const UsersProvider = ({ children }) => {
     const [courses, setCourses] = useState([]);
     const [loading, setLoading] = useState(true);
     const [errors, setErrors] = useState([])
-    
+
 
     //* Users
 

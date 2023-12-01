@@ -16,7 +16,7 @@ const Navbar = () => {
 	};
 	return (
 		<>
-			<header className="navbar">
+			<header className="header">
 				<img className="logo" src={Logo} />
 				<button onClick={toggleDropdown}>
 					<img className="perfil" src={Perfil} />

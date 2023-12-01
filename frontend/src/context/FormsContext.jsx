@@ -1,6 +1,6 @@
 import { useContext, createContext, useEffect, useState } from "react";
 import { FormsRequest, QuestionTypesRequest, createFormRequest, createQuestionTypeRequest, deleteFormRequest, deleteQuestionTypeRequest, getFormRequest, getFormsResponsesRequest, getQuestionTypeRequest, updateFormRequest, updateQuestionTypeRequest } from "../api/forms";
-import { ContextErrors, CleanErrors } from "./Error";
+import { ContextErrors } from "./Alerts";
 
 export const FormsContext = createContext();
 
@@ -14,8 +14,6 @@ export const FormsProvider = ({ children }) => {
     const [forms, setForms] = useState([]) // Forms
     const [questionsType, setQuestionsType] = useState([]); //Question Types
     const [errors, setErrors] = useState([])
-
-    CleanErrors(errors, setErrors)
 
     //* FORMS
 
@@ -33,7 +31,7 @@ export const FormsProvider = ({ children }) => {
     }, [])
 
     // Get Form
-    const getForm = async id => {
+    const getForm = async (id) => {
         try {
             const res = await getFormRequest(id);
             return res.data

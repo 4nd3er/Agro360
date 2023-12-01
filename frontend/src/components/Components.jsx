@@ -12,3 +12,4 @@ export { default as PiesChart } from './PiesChart.jsx';
 export { default as Question } from './Question.jsx';
 export { default as Spinner } from './Spinner.jsx';
 export { default as FormAlert } from './FormAlert.jsx';
+export { default as Option } from './Option.jsx'

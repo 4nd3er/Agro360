@@ -1,3 +1,5 @@
+import xlsx from 'xlsx'
+
 //* Codigo aleatorio de 6 digitos
 export function generateCode(digits) {
     const min = 10 ** (digits - 1);
@@ -78,4 +80,10 @@ export function deleteAccents(string) {
     };
 
     return string.replace(/[áéíóúàèìòùüÁÉÍÓÚÜ]/g, (match) => accentsMap[match] || match);
+}
+
+//* Funcion para convertir el codigo de fecha a fecha de un xlsx
+export function parseDate(date) {
+    const convertDate = xlsx.SSF.parse_date_code(date)
+    return new Date(`${convertDate.y}-${convertDate.m}-${convertDate.d}`);
 }

@@ -6,7 +6,6 @@ function CardResult({ answer, instructor, questions, totalAnswers }) {
     const [actualQuestion, setActualQuestion] = useState('')
 
     const answersQuestion = answer.responses.filter((object) => object.question === actualQuestion).map((object) => object.answers).flat()
-    console.log(answersQuestion)
     return (
         <div className="response w-full mb-8" key={answer.instructor}>
 

@@ -4,6 +4,7 @@ import axios from "./axios.js";
 export const getCodeResponseRequest = async (id, email) => axios.get(`/forms/v/${id}?email=${email}`)
 export const verificateCodeResponseRequest = async (id, code) => axios.post(`/forms/v/${id}`, code)
 export const getFormtoResponseRequest = async (id) => axios.get(`/forms/r/${id}`)
+export const createResponseRequest = async (id, data) => axios.post(`/forms/r/${id}`, data)
 
 
 //* Responses
