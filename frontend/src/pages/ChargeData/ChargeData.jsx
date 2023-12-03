@@ -1,16 +1,16 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useChargeData } from '../../context/Context';
-import { FormAlert } from '../../components/Components'
-import '../../App.css'
+import { FormAlert, Spinner } from '../../components/Components'
+import '../../css/Bootstrap.css'
 
 function ChargeData() {
-    const { createCourses, createCronograms, createInstructors, errors, success } = useChargeData();
+    const { createCourses, createCronograms, createInstructors, errors, success, loading } = useChargeData();
     const { register: courses, handleSubmit: courseSubmit, formState: { isValid: validCourse } } = useForm();
     const { register: cronograms, handleSubmit: cronogramSubmit, formState: { isValid: validCronogram } } = useForm();
     const { register: instructors, handleSubmit: instructorSubmit, formState: { isValid: validInstructor } } = useForm();
 
-    const onSubmitCourse = courseSubmit(async (data) => {        
+    const onSubmitCourse = courseSubmit(async (data) => {
         const file = new FormData()
         for (let i = 0; i < data.courses.length; i++) {
             file.append('courses', data.courses[i])
@@ -33,7 +33,9 @@ function ChargeData() {
         }
         createInstructors(file)
     })
-    
+
+    if (loading) return <Spinner />
+
     return (
         <div className='w-full flex flex-col p-5 justify-center items-center gap-12'>
             <h1 className='text-3xl font-bold text-color-sena'>Cargar Datos</h1>

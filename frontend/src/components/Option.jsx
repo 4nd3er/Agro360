@@ -76,7 +76,7 @@ function Option({ dataQuestion, dataInstructor, setValid }) {
         <>
             {/* Respuesta abierta */}
             {type == '654058b803a2be5f286df7b8' && (
-                <div className='flex items-center'>
+                <div className='flex items-center w-full'>
                     <textarea
                         type="text"
                         placeholder='Campo para respuesta abierta'
@@ -88,11 +88,11 @@ function Option({ dataQuestion, dataInstructor, setValid }) {
             )}
             {/* Seleccion Unica */}
             {type == '6540651189e8593b88d3848e' && options && (
-                <div className='flex flex-row gap-5 items-center justify-center my-6'>
-                    {options.map((option) => {
+                <div className='flex flex-row gap-5 items-center justify-center'>
+                    {options.map((option, index) => {
                         return (
                             <div key={option._id} className="flex flex-col gap-1 items-center justify-center">
-                                <input id={option._id} name="option" value={option.option} onClick={(e) => handleChange(setRadio, e.target.value)} type="radio" className="w-5 h-5 text-blue-600  ring-offset-gray-800 bg-gray-700 border-gray-600" />
+                                <input id={option._id} name={`option${instructor}`} value={option.option} defaultChecked={radio === option.option} onClick={(e) => handleChange(setRadio, e.target.value)} type="radio" className="w-5 h-5 text-blue-600  ring-offset-gray-800 bg-gray-700 border-gray-600" />
                                 <label htmlFor={option._id}>
                                     {option.option}
                                 </label>

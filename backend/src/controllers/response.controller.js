@@ -20,14 +20,14 @@ export const compForm = async (req, res, next) => {
 export const compFormCookie = async (req, res, next) => {
     const { form } = req.params
     const user = req.cookies.user
-    if (!user) return res.status(400).json({ message: ["Code not found, you are not authorized"] })
+    if (!user) return res.status(403).json({ message: ["Code not found, you are not authorized"] })
     const { id, email, sessionCode, userCode } = user
 
     try {
         //Si no se ha definido un codigo
-        if (!sessionCode) return res.status(400).json({ message: ["Code not defined, get your code"] })
-        if (!userCode) return res.status(400).json({ message: ["You have not entered any code"] })
-        if (!await bcrypt.compare(userCode, sessionCode)) return res.status(401).json({ message: ["The code is incorrect"] })
+        if (!sessionCode) return res.status(403).json({ message: ["Code not defined, get your code"] })
+        if (!userCode) return res.status(403).json({ message: ["You have not entered any code"] })
+        if (!await bcrypt.compare(userCode, sessionCode)) return res.status(400).json({ message: ["The code is incorrect"] })
         const findForm = await compObjectId(form, Forms, "Form")
         if (!findForm.success) return res.status(findForm.status).json({ message: [findForm.msg] })
         next()
@@ -44,9 +44,11 @@ export const getCode = async (req, res) => {
     try {
         const user = await Users.findOne({ email })
         if (!user) return res.status(404).json({ message: ["User not found"] })
+        //Buscar ficha
+        if (!user.course) return res.status(400).json({ message: ["You do not have a course, you cannot respond to this form."] })
         //Comprobar si existe una respuesta
         const findResponse = await Responses.findOne({ form: form, user: user._id })
-        if (findResponse) return res.status(401).json({ message: ["You have already responded to this form"] })
+        if (findResponse) return res.status(400).json({ message: ["You have already responded to this form"] })
         //Generar codigo aleatorio
         const code = generateCode(6);
         const hashCode = await bcrypt.hash(code, 6)
@@ -66,7 +68,7 @@ export const getCode = async (req, res) => {
 
 export const compCode = async (req, res) => {
     const user = req.cookies.user
-    if (!user) return res.status(400).json({ message: ["Your code has expired"] })
+    if (!user) return res.status(403).json({ message: ["Your code has expired"] })
     const { id, email, sessionCode, userCode } = user
     const { code } = req.body
 
@@ -123,7 +125,7 @@ export const getFormtoResponse = async (req, res) => {
     }
 }
 
-//!PENDIENTE
+
 export const createResponse = async (req, res) => {
     const { form } = req.params
     const user = req.cookies.user
@@ -142,8 +144,13 @@ export const createResponse = async (req, res) => {
             const findInstructor = await compObjectId(instructor, Users, "Instructor")
             if (!findInstructor.success) return res.status(findInstructor.success) - json({ message: [findInstructor.msg] })
         }
-        await createMethod(data, data, res, Responses, "Response")
 
+        //Eliminar cookie
+        res.cookie("user", "", {
+            expires: new Date(0)
+        })
+        
+        await createMethod(data, data, res, Responses, "Response")    
     } catch (error) {
         errorResponse(res, error)
     }

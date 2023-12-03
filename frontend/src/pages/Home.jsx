@@ -22,7 +22,7 @@ const Home = () => {
                             FELIX MAGE
                         </span>
                     </p>
-                    <Link to='/charge-data' className='relative -right-60'>
+                    <Link to='charge-data' className='relative -right-60'>
                     <button className="btn text-white bg-color-sena hover:bg-color-sena-hover" type="button">Cargar Datos</button>
                     </Link>
                 </header>

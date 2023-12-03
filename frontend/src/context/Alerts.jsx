@@ -24,25 +24,26 @@ const error401 = () => {
 }
 
 //* Functions
-export function ContextErrors(error, setErrors, setSuccess) {
-    switch (error.response.status) {
-        case 400 || 404:
-            setErrors(error.response.data.message)
-            break;
-        case 401 || 403:
-            error401()
-            break;
-        case 500:
-            error500()
-            break;
-        default:
-            error500()
-            break;
+export function ContextErrors(error, setErrors, setSuccess, setLoading) {
+    if (error.response) {
+        switch (error.response.status) {
+            case 400 || 401 || 403 :
+                setErrors(error.response.data.message)
+                break;
+            case 404:
+                setErrors(error.response.data.message)
+                break;
+            case 500:
+                error500()
+                break;
+        }
+        if (setSuccess) setSuccess('')
+        if (setLoading) setLoading(false)
     }
-    if (setSuccess) setSuccess('')
 }
 
-export function ContextSuccess(res, setSuccess, setErrors) {
+export function ContextSuccess(res, setSuccess, setErrors, setLoading) {
     setSuccess(res.data)
     setErrors([])
+    if (setLoading) setLoading(false)
 }

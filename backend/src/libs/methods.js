@@ -28,7 +28,7 @@ export const getOneMethod = async (id, res, model, name) => {
 }
 
 //* Crear un documento
-export const createMethod = async (data, find, res, model, name, capitalize) => {
+export const createMethod = async (data, find, res, model, name, capitalize, noresponse) => {
     const [lowerName, mayusName] = nameMayusName(name)
     capitalizeObject(data, find, capitalize)
     try {
@@ -90,7 +90,6 @@ export const getRelations = async (id, find, res, model, name, searchModel, sear
         const findModel = await model.findById(id)
         if (!findModel) return res.status(404).json({ message: [messages.notFound(mayusName)] })
         const findSearchModel = await searchModel.find(find)
-        if (!findSearchModel.length > 0) return res.status(404).json({ message: [messages.notFound(searchName)] })
         res.json(findSearchModel)
     } catch (error) {
         errorResponse(res, error)

@@ -16,9 +16,9 @@ export function compDuplicate(list) {
 //*Funcion para capitalizar una cadena
 export function capitalizeString(string) {
     const transformed = []
-    for (const word of string.toString().split(" ")) {
+    for (const word of string.toString().split(" ").filter(text => text !== "")) {
         const capWord = word.charAt(0).toUpperCase() + word.toLowerCase().slice(1)
-        if (capWord !== "") transformed.push(capWord)
+        transformed.push(capWord)
     }
     return transformed.join(" ")
 }
@@ -39,6 +39,7 @@ export function nameMayusName(name) {
 
 //*Funcion para capitalizar un objeto dependiendo del parametro
 export function capitalizeObject(data, find, capitalize) {
+    console.log(data)
     if (capitalize == "capitalize") {
         for (const [key, value] of Object.entries(data)) {
             if (key === "names" || key === "name") {
@@ -86,4 +87,27 @@ export function deleteAccents(string) {
 export function parseDate(date) {
     const convertDate = xlsx.SSF.parse_date_code(date)
     return new Date(`${convertDate.y}-${convertDate.m}-${convertDate.d}`);
+}
+
+//*Funcion para extraer los nombres ya pellidos de una cadena
+export function getNamesLastnames(data) {
+    const string = data.toString().split(" ").filter(text => text !== "")
+
+    let instructorNames;
+    let instructorLastnames;
+    if (string.length > 4) {
+        instructorNames = string.slice(0, -2).join(" ")
+        instructorLastnames = string.splice(-2).join(" ")
+    } else if (string.length === 4) {
+        instructorNames = `${string[0]} ${string[1]}`
+        instructorLastnames = `${string[2]} ${string[3]}`
+    } else if (string.length === 3) {
+        instructorNames = `${string[0]}`
+        instructorLastnames = `${string[1]} ${string[2]}`
+    } else if (string.length === 2) {
+        instructorNames = `${string[0]}`
+        instructorLastnames = `${string[1]}`
+    }
+
+    return [capitalizeString(instructorNames), capitalizeString(instructorLastnames)]
 }

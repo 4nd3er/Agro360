@@ -13,33 +13,38 @@ export const useChargeData = () => {
 export const ChargeDataProvider = ({ children }) => {
     const [errors, setErrors] = useState([])
     const [success, setSuccess] = useState('');
+    const [loading, setLoading] = useState(false)
 
     const createCourses = async (data) => {
         try {
+            setLoading(true)
             const res = await createCoursesRequest(data) 
-            ContextSuccess(res, setSuccess, setErrors)
+            ContextSuccess(res, setSuccess, setErrors, setLoading)            
             return res.data
         } catch (error) {
-            ContextErrors(error, setErrors, setSuccess)
+            ContextErrors(error, setErrors, setSuccess, setLoading)
         }
     }
 
     const createCronograms = async (data) => {
         try {
+            setLoading(true)
             const res = await createCronogramsRequest(data)
-            ContextSuccess(res, setSuccess, setErrors)
+            ContextSuccess(res, setSuccess, setErrors, setLoading)
             return res.data
         } catch (error) {
-            ContextErrors(error, setErrors, setSuccess)
+            ContextErrors(error, setErrors, setSuccess, setLoading)
         }
     }
 
     const createInstructors = async (data) => {
         try {
+            setLoading(true)
             const res = await createInstructorsRequest(data)
-            ContextSuccess(res, setSuccess, setErrors)
+            ContextSuccess(res, setSuccess, setErrors, setLoading)
             return res.data
         } catch (error) {
+            ContextErrors(error, setErrors, setSuccess, setLoading)
         }
     }
 
@@ -48,6 +53,7 @@ export const ChargeDataProvider = ({ children }) => {
             value={{
                 errors,
                 success,
+                loading,
                 setErrors,
                 createCourses,
                 createCronograms,

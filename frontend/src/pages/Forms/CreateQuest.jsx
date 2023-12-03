@@ -178,7 +178,6 @@ const CreateQuest = () => {
                 questions.map((question) => {
                     questionsObject.push(arraytoObject(question));
                 })
-
                 createForm({
                     name: title, description: descrip, topic: topic, end: date,
                     questions: questionsObject

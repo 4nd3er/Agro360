@@ -34,6 +34,7 @@ function App() {
               <ChargeDataProvider>
                 <BrowserRouter>
                   <Routes>
+                    
                     <Route path='/' element={<LayoutLogin />}>
                       <Route index element={<Login />} />
                       <Route path='register' element={<Register />} />
@@ -46,6 +47,7 @@ function App() {
                       <Route index element={<Home />} />
                       <Route path='tematicas/:id' element={<Topics />} />
                       <Route path='tematicas/:id/encuestas/:idtopic' element={<TopicsForm />} />
+                      <Route path='charge-data' element={<ChargeData />} />
                     </Route>
                     <Route path='/crear-formulario' element={<AuthLayout />}>
                       <Route index element={<Quest />} />
@@ -64,18 +66,15 @@ function App() {
                     <Route path='/users' element={<LayoutLogin />}>
                       <Route index element={<Users />} />
                     </Route>
-                    <Route path='/charge-data' element={<AuthLayout />}>
-                      <Route index element={<ChargeData />} />
-                    </Route>
 
-                  </Routes>
-                </BrowserRouter>
-              </ChargeDataProvider>
-            </UsersProvider>
-          </ResponsesProvider>
-        </FormsProvider>
-      </RolesProvider>
-    </AuthProvider>
+                </Routes>
+              </BrowserRouter>
+            </ChargeDataProvider>
+          </UsersProvider>
+        </ResponsesProvider>
+      </FormsProvider>
+    </RolesProvider>
+    </AuthProvider >
   )
 }
 
