@@ -1,37 +1,20 @@
 import { Fragment, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import { Dialog, Transition } from '@headlessui/react'
+import { useForm } from 'react-hook-form'
 import Swal from 'sweetalert2'
 import { useRoles } from '../context/Context.js'
+import { FormAlert } from '../components/Components'
 
 const ModalTopic = () => {
-  const [name, setName] = useState(''); // Name of topic or title
-  const idrol = useParams() // id of rol
-  // Extract the logic to open and close the modal and 
-  const { modalTopicForm, createTopic, handleModalTopic, errors } = useRoles()
+  const { id } = useParams()
+  const { modalTopicForm, createTopic, handleModalTopic, errors, success } = useRoles()
+  const { register, handleSubmit, formState: { isValid } } = useForm();
 
-  // Submitting the form
-  const handleSubmit = async e => {
-    e.preventDefault();
-    if ([name].includes('')) {
-      Swal.fire({ // Empty field alert
-        icon: "warning",
-        title: "Alerta",
-        text: "Se nesecita un título para crear una temática",
-      });
-      return;
-    }
-    if (errors && errors.length > 0) { //Server message (validation) alert
-      const errorMessage = errors.join('\n');
-      Swal.fire({
-        icon: 'warning',
-        title: 'Alerta',
-        text: errorMessage,
-      });
-    }
-    await createTopic({ name, role: idrol.id }); // send the request to the server
-    setName(''); // Clean the modal
-  }
+  const onSubmit = handleSubmit(async (data) => {
+    const { name } = data
+    await createTopic({ name: name, role: id })
+  })
 
   return (
     <Transition.Root show={modalTopicForm} as={Fragment}>
@@ -78,38 +61,34 @@ const ModalTopic = () => {
               </div>
               <div className="sm:flex sm:items-start">
                 <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                  {/* {errors.map((error, i) => (
-                      <div className="bg-red-500 p-2 text-white my-5 rounded-md" key={i}>
-                        {error}
-                      </div>
-                    ))} */}
-                  <Dialog.Title as="h1" className="text-2xl text-center leading-6 font-bold text-color-sena">
+                  <Dialog.Title as="h1" className="text-2xl text-center leading-6 font-bold text-color-sena my-4">
                     Nueva Temática
                   </Dialog.Title>
 
+                  <FormAlert errors={errors} success={success} />
                   {/* inicio formulario crear temática */}
                   <form
-                    onSubmit={handleSubmit}
+                    onSubmit={onSubmit}
                     className='mt-8'>
-                    <div className="mb-5">
+                    <div className="mb-5 flex flex-col justify-start">
                       <label
                         htmlFor="topic"
-                        className="text-black font-bold text-base">
-                        Temática:
+                        className="text-black font-bold text-start">
+                        Nombre de la temática
                       </label>
                       <input
                         id='topic'
                         type="text"
                         placeholder='Título de la temática'
                         className="border w-full p-2 mt-2 placeholder-gray-400 rounded-lg"
-                        value={name}
-                        onChange={e => setName(e.target.value)}
+                        {...register('name', { required: true, minLength: 5 })}
                       />
                     </div>
                     <input
                       type="submit"
-                      className="bg-color-sena hover:bg-color-sena-hover w-full p-3 text-white text-lg font-bold cursor-pointer transition-colors rounded-xl"
-                      value="Crear temática" />
+                      className={`${isValid ? 'bg-color-sena hover:bg-color-sena-hover' : 'bg-gray-400 !cursor-default'} w-full p-3 text-white text-lg font-bold transition-colors rounded-xl`}
+                      value="Crear temática"
+                      disable={!isValid} />
                   </form>
                   {/* fin formulario crear tarea */}
                 </div>

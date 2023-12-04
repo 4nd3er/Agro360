@@ -11,17 +11,34 @@ const CreateQuest = () => {
     const searchParams = new URLSearchParams(location.search);
     const [title, setTitle] = useState('');
     const [descrip, setDescrip] = useState('');
+    const [topics, setTopics] = useState([]); //Topics 
     const [topic, setTopic] = useState('');
+    const [questionsType, setQuestionsType] = useState([]); //Question Types
     const [date, setDate] = useState('');
     const [questions, setQuestions] = useState(() => JSON.parse(localStorage.getItem('questions')) || [[['question', ""], ['type', ""], ['options', ['']]]]);
     const [optionsAdded, setOptionsAdded] = useState(false);
-    const { topics } = useRoles();
-    const { questionsType } = useForms();
-    const { createForm } = useForms();
+    const { getTopics } = useRoles();
+    const { createForm, getQuestionsType } = useForms();
     const [validationQuestionContent, setValidationQuestionContent] = useState(false);
     const [validationQuestionType, setValidationQuestionType] = useState(false);
     const [validationQuestionOption, setValidationQuestionOption] = useState(false);
     const questionTypeValue = {};
+
+    useEffect(() => {
+        const questionType = async () => {
+            const res = await getQuestionsType();
+            setQuestionsType(res)
+        }
+        questionType();
+    }, [])
+
+    useEffect(() => {
+        const Topics = async () => {
+            const res = await getTopics();
+            setTopics(res)
+        }
+        Topics();
+    })
 
     useEffect(() => {
         localStorage.setItem('questions', JSON.stringify(questions));
@@ -48,9 +65,12 @@ const CreateQuest = () => {
         setDate(localStorage.getItem('date'));
 
     }, [])
-    questionsType.map((questionType) => {
-        questionTypeValue[questionType._id] = questionType.name;
-    })
+
+    if (questionsType) {
+        questionsType.map((questionType) => {
+            questionTypeValue[questionType._id] = questionType.name;
+        })
+    }
 
     const addOption = (questionIndex) => {
         const updatedQuestions = [...questions];
@@ -253,9 +273,9 @@ const CreateQuest = () => {
                                         onChange={(e) => handleQuestionTypeChange(e.target.value, questionIndex)}
                                     >
                                         <option value="">Seleccione el tipo de pregunta</option>
-                                        {questionsType.map((questionType) => (
+                                        {questionsType ? questionsType.map((questionType) => (
                                             <option value={questionType._id}>{questionType.name}</option>
-                                        ))}
+                                        )) : null}
                                     </select>
                                     <div className='cursor-pointer my-auto' onClick={() => deleteQuestion(questionIndex)}>
                                         <img src={DeleteQuestionSvg} />

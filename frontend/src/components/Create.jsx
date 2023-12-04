@@ -6,8 +6,17 @@ import { useRoles } from '../context/Context.js';
 
 const Create = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { topics } = useRoles();
+  const { getTopics } = useRoles();
   const [alert, setAlert] = useState({});
+  const [topics, setTopics] = useState([]);
+
+  useEffect(() => {
+    const Topics = async () => {
+      const res = await getTopics();
+      setTopics(res)
+    }
+    Topics();
+  }, [])
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -136,7 +145,7 @@ const Create = () => {
                 >
                   <option value="">Seleccione Temática</option>
                   {topics.map((topic) => (
-                    <option value={topic._id}>{topic.name}</option>
+                    <option key={topic._id} value={topic._id}>{topic.name}</option>
                   ))}
                 </select>
               </div>

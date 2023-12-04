@@ -22,7 +22,6 @@ import {
   Users,
   ChargeData
 } from './pages/Pages';
-import Spinner from './components/Spinner';
 
 function App() {
   return (
@@ -34,7 +33,7 @@ function App() {
               <ChargeDataProvider>
                 <BrowserRouter>
                   <Routes>
-                    
+
                     <Route path='/' element={<LayoutLogin />}>
                       <Route index element={<Login />} />
                       <Route path='register' element={<Register />} />
@@ -43,19 +42,21 @@ function App() {
                       <Route path='confirm/:id' element={<ConfirmAccount />} />
                     </Route>
 
-                    <Route path='/inicio' element={<AuthLayout />}>
-                      <Route index element={<Home />} />
-                      <Route path='tematicas/:id' element={<Topics />} />
-                      <Route path='tematicas/:id/encuestas/:idtopic' element={<TopicsForm />} />
-                      <Route path='charge-data' element={<ChargeData />} />
-                    </Route>
-                    <Route path='/crear-formulario' element={<AuthLayout />}>
-                      <Route index element={<Quest />} />
-                      <Route path='crear' element={<CreateQuest />} />
-                    </Route>
-                    <Route path='/resultados' element={<AuthLayout />}>
-                      <Route index element={<Results />} />
-                      <Route path=':idQuest' element={<ResultQuest />} />
+                    <Route element={<ProtectedRoute />}>
+                      <Route path='/inicio' element={<AuthLayout />}>
+                        <Route index element={<Home />} />
+                        <Route path='tematicas/:id' element={<Topics />} />
+                        <Route path='tematicas/:id/encuestas/:idtopic' element={<TopicsForm />} />
+                        <Route path='charge-data' element={<ChargeData />} />
+                      </Route>
+                      <Route path='/crear-formulario' element={<AuthLayout />}>
+                        <Route index element={<Quest />} />
+                        <Route path='crear' element={<CreateQuest />} />
+                      </Route>
+                      <Route path='/resultados' element={<AuthLayout />}>
+                        <Route index element={<Results />} />
+                        <Route path=':idQuest' element={<ResultQuest />} />
+                      </Route>
                     </Route>
                     <Route path='/forms/v/:form' element={<LayoutLogin />}>
                       <Route index element={<UserValidation />} />
@@ -67,13 +68,13 @@ function App() {
                       <Route index element={<Users />} />
                     </Route>
 
-                </Routes>
-              </BrowserRouter>
-            </ChargeDataProvider>
-          </UsersProvider>
-        </ResponsesProvider>
-      </FormsProvider>
-    </RolesProvider>
+                  </Routes>
+                </BrowserRouter>
+              </ChargeDataProvider>
+            </UsersProvider>
+          </ResponsesProvider>
+        </FormsProvider>
+      </RolesProvider>
     </AuthProvider >
   )
 }

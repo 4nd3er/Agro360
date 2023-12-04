@@ -4,10 +4,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Work Sans", sans-serif;
 }
-
-
 
 .navigation {
   position: fixed;
@@ -26,17 +23,27 @@
 
 
 .navigation.close {
-  width: 2.5rem;
+  width: 4rem;
+  height: 4rem;
+  transform: translateX(-3rem);
+  overflow: hidden;
+}
+
+.navigation.close:hover{
+  transform: translateX(-0.5rem);
 }
 
 .navigation.close ul {
   opacity: 0;
+  transform: translateX(-7rem);
 }
 
-.navigation.close .menuToggle {
-  left: -10px;
-  border: 0;
+.navigation.close .menuArrow {
+  position: relative;
+  right: -0.6rem;
+  cursor: pointer;
 }
+
 
 .navigation .menuToggle {
   position: absolute;
@@ -78,7 +85,7 @@
   display: flex;
   flex-direction: column;
   margin-top: 3rem;
-  gap: 5rem;
+  gap: 4rem;
   width: 100%;
   transition: .3s all;
 }
@@ -179,6 +186,7 @@
 
 .navigation.close .back {
   opacity: 0;
+  transform: translateX(-7rem);
 }
 
 .navigation.close .menuToggle::before {

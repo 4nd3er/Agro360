@@ -22,17 +22,14 @@ export const ResponsesProvider = ({ children }) => {
 
     //* Responses
     // Responses
-    useEffect(() => {
-        const getResponses = async () => {
-            try {
-                const res = await ResponsesRequest();
-                setResponses(res.data);
-            } catch (error) {
-                console.error(error)
-            }
+    const getResponses = async () => {
+        try {
+            const res = await ResponsesRequest();
+            setResponses(res.data);
+        } catch (error) {
+            console.error(error)
         }
-        getResponses();
-    }, [])
+    }
 
     // Get Response
     const getReponse = async (id) => {
@@ -122,6 +119,7 @@ export const ResponsesProvider = ({ children }) => {
                 existsForm,
                 user,
                 loading,
+                getResponses,
                 getReponse,
                 getResponsesForm,
                 compFormResponse,

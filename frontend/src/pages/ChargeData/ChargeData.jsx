@@ -2,7 +2,6 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useChargeData } from '../../context/Context';
 import { FormAlert, Spinner } from '../../components/Components'
-import '../../css/Bootstrap.css'
 
 function ChargeData() {
     const { createCourses, createCronograms, createInstructors, errors, success, loading } = useChargeData();

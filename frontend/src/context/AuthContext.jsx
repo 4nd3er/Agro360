@@ -1,6 +1,8 @@
 import { createContext, useState, useContext, useEffect } from 'react'
-import { loginRequest, registerRequest, verifyTokenRequest } from '../api/auth.js'
+import { loginRequest, registerRequest, verifyTokenRequest, logoutRequest } from '../api/auth.js'
 import Cookies from 'js-cookie'
+import { ContextErrors } from './Alerts.jsx';
+import { useNavigate } from 'react-router-dom';
 
 export const AuthContext = createContext()
 
@@ -16,15 +18,6 @@ export const AuthProvider = ({ children }) => {
     const [errors, setErrors] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        if (errors.length > 0) {
-            const timer = setTimeout(() => {
-                setErrors([]);
-            }, 5000)
-            return () => clearTimeout(timer)
-        }
-    }, [errors])
-
     const signup = async (user) => {
         try {
             const res = await registerRequest(user);
@@ -33,7 +26,7 @@ export const AuthProvider = ({ children }) => {
                 setIsAuthenticated(true);
             }
         } catch (error) {
-            setErrors(error.response.data.message);
+            ContextErrors(errors, setErrors)
         }
     };
 
@@ -43,15 +36,19 @@ export const AuthProvider = ({ children }) => {
             setUser(res.data)
             setIsAuthenticated(true)
         } catch (error) {
-            setErrors(error.response.data.message)
+            ContextErrors(errors, setErrors)
         }
     }
 
-    const logout = () => {
-        Cookies.remove('token');
-        setUser(null);
-        setIsAuthenticated(false);
-        window.location.href = '/'
+    const logout = async () => {
+        try {
+            const res = await logoutRequest();
+            setUser(null)
+            setIsAuthenticated(false)
+            window.location.href = '/';
+        } catch (error) {
+            ContextErrors(errors, setErrors)
+        }
     };
 
     useEffect(() => {

@@ -20,18 +20,15 @@ export const UsersProvider = ({ children }) => {
     //* Users
 
     // Get Users
-    useEffect(() => {
-        const getUsers = async () => {
-            try {
-                const res = await UsersRequest();;
-                setUsers(res.data);
-                setLoading(false)
-            } catch (error) {
-                ContextErrors(error, setErrors)
-            }
+    const getUsers = async () => {
+        try {
+            const res = await UsersRequest();;
+            setUsers(res.data);
+            setLoading(false)
+        } catch (error) {
+            ContextErrors(error, setErrors)
         }
-        getUsers();
-    }, [])
+    }
 
     //Get User
     const getUser = async (id) => {
@@ -55,17 +52,14 @@ export const UsersProvider = ({ children }) => {
 
     //* Courses
 
-    useEffect(() => {
-        const getCourses = async () => {
-            try {
-                const res = await CoursesRequest();
-                setCourses(res.data);
-            } catch (error) {
-                ContextErrors(error, setErrors)
-            }
+    const getCourses = async () => {
+        try {
+            const res = await CoursesRequest();
+            setCourses(res.data);
+        } catch (error) {
+            ContextErrors(error, setErrors)
         }
-        getCourses();
-    }, [])
+    }
 
     const getCourse = async (id) => {
         try {
@@ -92,6 +86,8 @@ export const UsersProvider = ({ children }) => {
             courses,
             loading,
             errors,
+            getUsers,
+            getCourses,
             getUser,
             createUser,
             getCourse,

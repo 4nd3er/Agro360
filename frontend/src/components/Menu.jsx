@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import '../layouts/css/menu.css';
 
 const Menu = () => {
-
     const [close, setClose] = useState(false);
 
     const handleClose = () => {
@@ -21,10 +20,12 @@ const Menu = () => {
     return (
         <>
             <div className={`navigation ${close ? 'close' : ''}`}>
-                <div
-                    className="menuToggle"
-                    onClick={handleClose}
-                ></div>
+                <div className={close ? 'menuArrow' : 'menuToggle'} onClick={handleClose}>
+                    {close ? <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-badge-right" width="100%" viewBox="0 0 24 24" stroke-width="1.5" stroke="#39a900" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M13 7h-6l4 5l-4 5h6l4 -5z" />
+                    </svg> : null}
+                </div>
                 <ul>
                     <li className={`list ${pathName === "inicio" || pathName === "tematicas" ? "active" : ''}`} style={{ "--clr": "#39A900" }}>
                         <Link to="/inicio">
@@ -35,7 +36,7 @@ const Menu = () => {
                         </Link>
                     </li>
                     <li className={`list ${pathName === "crear-formulario" ? "active" : ''}`} style={{ "--clr": "#00324D" }}>
-                        <Link  to="/crear-formulario">
+                        <Link to="/crear-formulario">
                             <span className="icon">
                                 <ion-icon name="clipboard-outline"></ion-icon>
                                 <span className="text">Crear Formulario</span>

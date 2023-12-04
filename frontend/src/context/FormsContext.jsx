@@ -11,24 +11,19 @@ export const useForms = () => {
 }
 
 export const FormsProvider = ({ children }) => {
-    const [forms, setForms] = useState([]) // Forms
-    const [questionsType, setQuestionsType] = useState([]); //Question Types
     const [errors, setErrors] = useState([])
 
     //* FORMS
 
     // Forms
-    useEffect(() => {
-        const getForms = async () => {
-            try {
-                const res = await FormsRequest();
-                setForms(res.data)
-            } catch (error) {
-                ContextErrors(error, setErrors)
-            }
+    const getForms = async () => {
+        try {
+            const res = await FormsRequest();
+            return res.data
+        } catch (error) {
+            ContextErrors(error, setErrors)
         }
-        getForms();
-    }, [])
+    }
 
     // Get Form
     const getForm = async (id) => {
@@ -84,17 +79,14 @@ export const FormsProvider = ({ children }) => {
     //* Question Types
 
     // Question Types
-    useEffect(() => {
-        const getQuestionsType = async () => {
-            try {
-                const res = await QuestionTypesRequest();
-                setQuestionsType(res.data)
-            } catch (error) {
-                ContextErrors(error, setErrors)
-            }
+    const getQuestionsType = async () => {
+        try {
+            const res = await QuestionTypesRequest();
+            return res.data
+        } catch (error) {
+            ContextErrors(error, setErrors)
         }
-        getQuestionsType();
-    }, [])
+    }
 
     // Get Question Type
     const getQuestionType = async id => {
@@ -139,8 +131,8 @@ export const FormsProvider = ({ children }) => {
     return (
         <FormsContext.Provider
             value={{
-                forms,
-                questionsType,
+                getQuestionsType,
+                getForms,
                 FormsResponses,
                 getForm,
                 createForm,

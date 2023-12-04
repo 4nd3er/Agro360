@@ -20,7 +20,7 @@ const Topics = () => {
             setLoading(false)
         }
         getTopics();
-    }, [params.id])
+    }, [])
 
     // Get Role
     useEffect(() => {

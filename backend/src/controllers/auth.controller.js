@@ -126,7 +126,8 @@ export const logout = (req, res) => {
         res.cookie("token", "", {
             httpOnly: true,
             secure: true,
-            expires: new Date(0),
+            sameSite: "none",
+            expires: new Date(0)
         });
         return res.sendStatus(200);
     } catch (error) {
@@ -168,7 +169,7 @@ export const verifyToken = async (req, res) => {
 
             return res.json({
                 id: findUser._id,
-                names: findUser.names,
+                user: `${findUser.names} ${findUser.lastnames}`,
                 email: findUser.email
             });
         })

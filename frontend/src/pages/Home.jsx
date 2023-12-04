@@ -1,29 +1,40 @@
 import { useEffect, useState } from 'react'
 import CardRol from '../components/CardRol'
-import { useRoles } from '../context/Context.js'
+import { useAuth, useRoles } from '../context/Context.js'
 import { Spinner } from '../components/Components'
 import '../App.css'
 import { Link } from 'react-router-dom'
 
 const Home = () => {
-    const { roles, loading } = useRoles();
+    const { getRoles, loading } = useRoles();
+    const { user } = useAuth();
+    const [roles, setRoles] = useState([])
 
+    useEffect(() => {
+        const Roles = async () => {
+            const res = await getRoles();
+            setRoles(res)
+        }
+        Roles();
+    }, [])
 
+    if (!user) return <Spinner/>
+    
     return (
         <div className='min-h-[80vh]'>
             <div className="w-[950px] mx-auto">
-                <header className='mt-10 mb-20 flex flex-row items-center justify-center'>
+                <header className='mt-14 mb-20 flex flex-row items-center justify-center'>
                     <p className="text-center">
-                        <span className="font-bold text-black text-5xl font-work-sans">
-                            BIENVENIDOS
+                        <span className="font-semibold text-color-sena text-7xl italic">
+                            Bienvenido
                             <br />
                         </span>
-                        <span className="font-bold text-[#39a900] text-4xl">
-                            FELIX MAGE
+                        <span className="text-black text-2xl">
+                            {user ? user.user : null}
                         </span>
                     </p>
                     <Link to='charge-data' className='relative -right-60'>
-                    <button className="btn text-white bg-color-sena hover:bg-color-sena-hover" type="button">Cargar Datos</button>
+                        <button className="btn text-white bg-color-sena hover:bg-color-sena-hover" type="button">Cargar Datos</button>
                     </Link>
                 </header>
                 <main className="grid grid-cols-3 gap-4">

@@ -22,7 +22,7 @@ const Results = () => {
     }, [])
 
     return (
-        <div className='flex flex-col min-h-[80vh] '>
+        <div className='flex flex-col min-h-[80vh] mt-12'>
             <div className='flex flex-row h-2'> {/* Agrega la clase flex-row */}
                 {cargando ? <Spinner /> : 
                 forms.length ? (

@@ -1,7 +1,7 @@
-import { useEffect, useState, createContext, useContext } from "react";
+import { useState, createContext, useContext } from "react";
 import { RolesRequest, getRoleRequest, getRoleTopicsRequest } from "../api/roles";
 import { TopicsRequest, createTopicRequest, getTopicFormsRequest, getTopicRequest } from "../api/topics";
-import { ContextErrors } from "./Alerts";
+import { ContextErrors, ContextSuccess } from "./Alerts";
 
 // Create the role context
 export const RolesContext = createContext()
@@ -13,25 +13,21 @@ export const useRoles = () => {
 }
 
 export const RolesProvider = ({ children }) => {
-    const [roles, setRoles] = useState([]) // Roles
-    const [topics, setTopics] = useState([]) // Topics
     const [modalTopicForm, setModalTopicForm] = useState(false)
     const [loading, setLoading] = useState(true)
     const [errors, setErrors] = useState([])
+    const [success, setSuccess] = useState('')
 
     // Roles
-    useEffect(() => {
-        const getRoles = async () => {
-            try {
-                const res = await RolesRequest();
-                setRoles(res.data)
-                setLoading(false)
-            } catch (error) {
-                ContextErrors(error, setErrors)
-            }
+    const getRoles = async () => {
+        try {
+            const res = await RolesRequest();
+            setLoading(false)
+            return res.data
+        } catch (error) {
+            ContextErrors(error, setErrors)
         }
-        getRoles();
-    }, [])
+    }
 
     // Get Role
     const getRole = async id => {
@@ -54,18 +50,15 @@ export const RolesProvider = ({ children }) => {
     };
 
     // Topics
-    useEffect(() => {
-        const getTopics = async () => {
-            try {
-                const res = await TopicsRequest();
-                setTopics(res.data)
-                setLoading(false)
-            } catch (error) {
-                ContextErrors(error, setErrors)
-            }
+    const getTopics = async () => {
+        try {
+            const res = await TopicsRequest();
+            setLoading(false)
+            return res.data
+        } catch (error) {
+            ContextErrors(error, setErrors)
         }
-        getTopics();
-    }, [])
+    }
 
     // Get Topic
     const getTopic = async idtopic => {
@@ -91,9 +84,10 @@ export const RolesProvider = ({ children }) => {
     const createTopic = async topic => {
         try {
             const res = await createTopicRequest(topic);
+            ContextSuccess(res, setSuccess, setErrors)
             return res.data
         } catch (error) {
-            ContextErrors(error, setErrors)
+            ContextErrors(error, setErrors, setSuccess)
         }
     };
 
@@ -105,13 +99,14 @@ export const RolesProvider = ({ children }) => {
     return (
         <RolesContext.Provider
             value={{
-                roles,
-                topics,
-                modalTopicForm,
                 errors,
+                success,
                 loading,
+                modalTopicForm,
+                getRoles,
                 getRole,
                 getRoleTopics,
+                getTopics,
                 getTopic,
                 getTopicForms,
                 createTopic,
