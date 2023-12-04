@@ -80,10 +80,11 @@ export const RolesProvider = ({ children }) => {
         }
     }
 
-    // Create topic
+    // Create topic 
     const createTopic = async topic => {
         try {
             const res = await createTopicRequest(topic);
+            setModalTopicForm(false)
             ContextSuccess(res, setSuccess, setErrors)
             return res.data
         } catch (error) {
