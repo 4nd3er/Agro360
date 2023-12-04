@@ -6,21 +6,11 @@ const courseCronogramSchema = new mongoose.Schema({
         ref: 'Courses',
         required: true
     },
-    start: {
-        type: Date,
-        required: true,
-        default: Date.now()
-    },
-    end: {
-        type: Date,
-        required: true,
-        default: Date.now()
-    },
-    instructor:{
+    instructors: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Users',
         required: true
-    }
+    }]
 }, { timestamps: true })
 
 export default mongoose.model("CoursesCronogram", courseCronogramSchema)

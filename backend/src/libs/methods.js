@@ -1,12 +1,13 @@
 import { messages, errorResponse, validObjectId } from './libs.js'
 import { nameMayusName, capitalizeObject } from './functions.js'
+import xlsx from 'xlsx'
 
 //* Obtener todos los documentos de una coleccion
 export const getMethod = async (res, model, name) => {
     const [lowerName, mayusName] = nameMayusName(name)
     try {
         const findModel = await model.find({})
-        if (!findModel.length > 0) return res.status(404).json({ message: [messages.notFound(mayusName)] })
+        //if (!findModel.length > 0) return res.status(404).json({ message: [messages.notFound(mayusName)] })
         res.json(findModel)
     } catch (error) {
         errorResponse(res, error)
@@ -27,7 +28,7 @@ export const getOneMethod = async (id, res, model, name) => {
 }
 
 //* Crear un documento
-export const createMethod = async (data, find, res, model, name, capitalize) => {
+export const createMethod = async (data, find, res, model, name, capitalize, noresponse) => {
     const [lowerName, mayusName] = nameMayusName(name)
     capitalizeObject(data, find, capitalize)
     try {
@@ -89,8 +90,31 @@ export const getRelations = async (id, find, res, model, name, searchModel, sear
         const findModel = await model.findById(id)
         if (!findModel) return res.status(404).json({ message: [messages.notFound(mayusName)] })
         const findSearchModel = await searchModel.find(find)
-        if (!findSearchModel.length > 0) return res.status(404).json({ message: [messages.notFound(searchName)] })
         res.json(findSearchModel)
+    } catch (error) {
+        errorResponse(res, error)
+    }
+}
+
+//*Obtener y validar datos de un archivo xlsx
+export const getDataXlsx = (res, files) => {
+    try {
+        const filesData = []
+        if (!files) return res.status(400).json({ message: ["Los archivos son requeridos"] })
+        let invalidFormat = false
+        for (const file of files) {
+            const compArchive = file.originalname
+            const format = compArchive.split(".")
+            if (format[format.length - 1] !== 'xlsx' && format[format.length - 1] !== 'xls') invalidFormat = true
+
+            const archive = xlsx.read(file.buffer, { type: 'buffer' })
+            const sheet = archive.SheetNames[0]
+            const data = xlsx.utils.sheet_to_json(archive.Sheets[sheet])
+            filesData.push(data)
+        }
+        if (invalidFormat) return res.status(400).json({ message: ["Los archivos deben tener el formato XLSX o XLS"] })
+
+        return filesData
     } catch (error) {
         errorResponse(res, error)
     }

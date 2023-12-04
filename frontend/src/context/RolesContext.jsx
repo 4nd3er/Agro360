@@ -1,7 +1,7 @@
 import { useEffect, useState, createContext, useContext } from "react";
 import { RolesRequest, getRoleRequest, getRoleTopicsRequest } from "../api/roles";
 import { TopicsRequest, createTopicRequest, getTopicFormsRequest, getTopicRequest } from "../api/topics";
-import { CleanErrors, ContextErrors } from "./Error";
+import { ContextErrors } from "./Alerts";
 
 // Create the role context
 export const RolesContext = createContext()
@@ -18,8 +18,6 @@ export const RolesProvider = ({ children }) => {
     const [modalTopicForm, setModalTopicForm] = useState(false)
     const [loading, setLoading] = useState(true)
     const [errors, setErrors] = useState([])
-
-    CleanErrors(errors, setErrors)
 
     // Roles
     useEffect(() => {

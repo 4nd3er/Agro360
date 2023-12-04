@@ -1,7 +1,7 @@
 const Options = ({ option, index, questionIndex, question, handleOptionChange, deleteOption, questionTypeValue, validationQuestionOption }) => {
     return (
         <>
-            {questionTypeValue[question[1][1]] === 'text' && (
+            {questionTypeValue[question[1][1]] == 'Respuesta Abierta' && (
                 <div className='flex items-center'>
                     <textarea
                         id={index + 1}
@@ -9,13 +9,13 @@ const Options = ({ option, index, questionIndex, question, handleOptionChange, d
                         type="text"
                         htmlFor={index + 1}
                         placeholder='Campo para respuesta abierta'
-                        onChange={(e) => handleOptionChange(questionIndex, index, e.target.value, null)}
+                        onChange={(e) => handleOptionChange(questionIndex, index, e.target.value)}
                         className="border-2 p-2 border-gray-400 resize-none rounded-lg w-full mb-3"
                         disabled
                     />
                 </div>
             )}
-            {questionTypeValue[question[1][1]] === 'radio' && (
+            {questionTypeValue[question[1][1]] == 'Selección Única' && (
                 <div className='flex items-center'>
                     <input disabled type="radio" name="default-radio" className="w-5 h-5 text-blue-600 focus:ring-blue-500 ring-offset-gray-800 bg-gray-700 border-gray-600" />
                     <input
@@ -25,7 +25,7 @@ const Options = ({ option, index, questionIndex, question, handleOptionChange, d
                         htmlFor={index + 1}
                         placeholder={`Opción ${index + 1}`}
                         value={option}
-                        onChange={(e) => handleOptionChange(questionIndex, index, e.target.value, null)}
+                        onChange={(e) => handleOptionChange(questionIndex, index, e.target.value)}
                         className="ml-2 text-lg font-medium text-gray-900 focus:border-b-2 p-2 border-gray-400"
                     />
                     {question[2].length > 1 && (
@@ -41,7 +41,7 @@ const Options = ({ option, index, questionIndex, question, handleOptionChange, d
                     </div>
                 </div>
             )}
-            {questionTypeValue[question[1][1]] === 'checkbox' && (
+            {questionTypeValue[question[1][1]] == 'Selección Múltiple' && (
                 <div className='flex items-center'>
                     <div className=''>
                         <input disabled type="checkbox" className=" rounded w-5 h-5 text-blue-600 focus:ring-blue-500 ring-offset-gray-800 bg-gray-700 border-gray-600" />
@@ -52,7 +52,7 @@ const Options = ({ option, index, questionIndex, question, handleOptionChange, d
                             htmlFor={option + index}
                             placeholder={`Opción ${index + 1}`}
                             value={option}
-                            onChange={(e) => handleOptionChange(questionIndex, index, e.target.value, null)}
+                            onChange={(e) => handleOptionChange(questionIndex, index, e.target.value)}
                             className="ml-2 text-lg font-medium text-gray-900 focus:border-b-2 p-2 border-gray-400"
                         />
                     </div>
@@ -69,9 +69,9 @@ const Options = ({ option, index, questionIndex, question, handleOptionChange, d
                     </div>
                 </div>
             )}
-            {questionTypeValue[question[1][1]] === 'scaleRikert' && (
+            {questionTypeValue[question[1][1]] == 'Escala de Likert' && (
                 <div className='py-4'>
-                    <div className='flex justify-around'>
+                    {/* <div className='flex justify-around'>
                         {option.map((content, indexContent) => (
                             <>
                                 <input
@@ -86,9 +86,9 @@ const Options = ({ option, index, questionIndex, question, handleOptionChange, d
                                 </div>
                             </>
                         ))}
-                    </div>
-                    <ul className="flex justify-center gap-10 mb-4">
-                        <li>
+                    </div> */}
+                    <ul className="flex justify-center gap-16 mb-4">
+                        <li className="flex flex-col text-center">
                             <input disabled type="radio" id="opcion1" name="escala" value="1" className="hidden peer" />
                             <label
                                 htmlFor="opcion1"
@@ -96,8 +96,11 @@ const Options = ({ option, index, questionIndex, question, handleOptionChange, d
                             >
                                 1
                             </label>
+                            <label className="text-xs mt-1">
+                                Nunca
+                            </label>
                         </li>
-                        <li>
+                        <li className="flex flex-col text-center">
                             <input disabled type="radio" id="opcion2" name="escala" value="2" className="hidden peer" />
                             <label
                                 htmlFor="opcion2"
@@ -105,8 +108,11 @@ const Options = ({ option, index, questionIndex, question, handleOptionChange, d
                             >
                                 2
                             </label>
+                            <label className="text-xs mt-1">
+                                Casi nunca
+                            </label>
                         </li>
-                        <li>
+                        <li className="flex flex-col text-center">
                             <input disabled type="radio" id="opcion3" name="escala" value="3" className="hidden peer" />
                             <label
                                 htmlFor="opcion3"
@@ -114,8 +120,11 @@ const Options = ({ option, index, questionIndex, question, handleOptionChange, d
                             >
                                 3
                             </label>
+                            <label className="text-xs mt-1">
+                                A veces
+                            </label>
                         </li>
-                        <li>
+                        <li className="flex flex-col text-center">
                             <input disabled type="radio" id="opcion4" name="escala" value="4" className="hidden peer" />
                             <label
                                 htmlFor="opcion4"
@@ -123,8 +132,11 @@ const Options = ({ option, index, questionIndex, question, handleOptionChange, d
                             >
                                 4
                             </label>
+                            <label className="text-xs mt-1">
+                                Casi siempre
+                            </label>
                         </li>
-                        <li>
+                        <li className="flex flex-col text-center">
                             <input disabled type="radio" id="opcion5" name="escala" value="5" className="hidden peer" />
                             <label
                                 htmlFor="opcion5"
@@ -132,13 +144,16 @@ const Options = ({ option, index, questionIndex, question, handleOptionChange, d
                             >
                                 5
                             </label>
+                            <label className="text-xs mt-1">
+                                Siempre
+                            </label>
                         </li>
                     </ul>
                 </div>
             )}
-            {questionTypeValue[question[1][1]] === 'scaleRating' && (
+            {questionTypeValue[question[1][1]] == 'Escala de Puntuación' && (
                 <div className='py-4'>
-                    <div className='flex justify-between'>
+                    {/* <div className='flex justify-between'>
                         {option.map((content, indexContent) => (
                             <>
                                 <input
@@ -153,6 +168,20 @@ const Options = ({ option, index, questionIndex, question, handleOptionChange, d
                                 </div>
                             </>
                         ))}
+                    </div> */}
+                    <div className='flex flex-col justify-around place-items-center'>
+                        <>
+                            <div className='px-10 text-red-500 flex justify-around select-none mb-3'>
+                                <span className={`${option === '' && validationQuestionOption ? 'opacity-100' : 'opacity-0'} transition-[.1s_all] text-xs`}>Las opción no debe ser vacia</span>
+                            </div>
+                            <input
+                                type="text"
+                                value={option}
+                                placeholder='ej: Donde 1 es ... y 10 es ...'
+                                className={`mb-6 text-lg font-mediumrounded p-2 w-1/2 text-gray-400 text-center mx-auto`}
+                                onChange={(e) => handleOptionChange(questionIndex, index, e.target.value)}
+                            />
+                        </>
                     </div>
                     <ul className="flex justify-center gap-10 mb-4">
                         <li>
@@ -248,7 +277,7 @@ const Options = ({ option, index, questionIndex, question, handleOptionChange, d
                     </ul>
                 </div>
             )}
-            {questionTypeValue[question[1][1]] === 'scaleSemantic' && (
+            {questionTypeValue[question[1][1]] == 'Escala Semántica' && (
                 <div className='flex items-center'>
                     <ul className='flex justify-center gap-10 mb-4'>
                         <li
@@ -259,7 +288,7 @@ const Options = ({ option, index, questionIndex, question, handleOptionChange, d
                                 value={option}
                                 htmlFor={option + index}
                                 className="text-center p-2 text-gray-800 rounded-lg cursor-pointer bg-gray-200 peer-checked:border-[#39A900] peer-checked:text-[#39A900] peer-checked:bg-white select-none me-4"
-                                onChange={(e) => handleOptionChange(questionIndex, index, e.target.value, null)}
+                                onChange={(e) => handleOptionChange(questionIndex, index, e.target.value)}
                             />
                         </li>
                     </ul>

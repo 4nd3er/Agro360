@@ -21,7 +21,11 @@ export { default as Topics } from './Topics/Topics.jsx';
 export { default as TopicsForm } from './Topics/TopicsForm.jsx';
 
 //* Responses Pages
-export { default as Answers } from "./Responses/Answers.jsx";
 export { default as UserValidation } from './Responses/UserValidation.jsx';
-export { default as TokenValidation } from './Responses/TokenValidation.jsx';
+export { default as Response } from './Responses/Response.jsx';
 
+//* Users Pages
+export { default as Users } from './Users/Users.jsx';
+
+//* Courses Pages
+export { default as ChargeData } from './ChargeData/ChargeData.jsx'

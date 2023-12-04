@@ -5,20 +5,14 @@ export const coursesCronogramValidator = z.object({
         .string({
             required_error: "Course is required"
         }),
-    start: z
-        .coerce
-        .date({
-            required_error: "Start is required"
-        }),
-    end: z
-        .coerce
-        .date({
-            required_error: "End is required"
-        }),
-    instructor: z
-        .string({
-            required_error: "Instructor is required"
+    instructors: z.array(
+        z.object({
+            instructor: z
+                .string({
+                    required_error: "Instructor is required"
+                })
         })
+    )
 })
 
 export const coursesNamesValidator = z.object({

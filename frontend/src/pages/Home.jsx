@@ -3,6 +3,7 @@ import CardRol from '../components/CardRol'
 import { useRoles } from '../context/Context.js'
 import { Spinner } from '../components/Components'
 import '../App.css'
+import { Link } from 'react-router-dom'
 
 const Home = () => {
     const { roles, loading } = useRoles();
@@ -11,7 +12,7 @@ const Home = () => {
     return (
         <div className='min-h-[80vh]'>
             <div className="w-[950px] mx-auto">
-                <header className='mt-10 mb-20'>
+                <header className='mt-10 mb-20 flex flex-row items-center justify-center'>
                     <p className="text-center">
                         <span className="font-bold text-black text-5xl font-work-sans">
                             BIENVENIDOS
@@ -21,6 +22,9 @@ const Home = () => {
                             FELIX MAGE
                         </span>
                     </p>
+                    <Link to='charge-data' className='relative -right-60'>
+                    <button className="btn text-white bg-color-sena hover:bg-color-sena-hover" type="button">Cargar Datos</button>
+                    </Link>
                 </header>
                 <main className="grid grid-cols-3 gap-4">
                     {/* Iterate roles */}

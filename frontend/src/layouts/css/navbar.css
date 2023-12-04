@@ -4,7 +4,7 @@
     box-sizing: border-box;
 }
 
-.navbar {
+.header {
     background-color: #39A900;
     padding-inline: 1rem;
     width: 100%;
@@ -14,17 +14,17 @@
     align-items: center;
 }
 
-.navbar .logo {
+.header .logo {
     height: 8rem;
     width: 12rem;
 }
 
-.navbar .perfil {
+.header .perfil {
     height: 4rem;
     width: 4rem;
 }
 
-.navbar .logoSena {
+.header .logoSena {
     height: 5rem;
     width: 5rem;
 }

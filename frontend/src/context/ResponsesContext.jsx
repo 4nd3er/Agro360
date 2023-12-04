@@ -1,6 +1,8 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { ResponsesRequest, codeValidationResponseRequest, getCodeResponseRequest } from "../api/responses";
-import { CleanErrors, ContextErrors } from "./Error";
+import { ResponsesRequest, createResponseRequest, getCodeResponseRequest, getFormtoResponseRequest, getResponseRequest, getResponsesFormRequest, verificateCodeResponseRequest } from "../api/responses";
+import { ContextErrors, ContextSuccess } from "./Alerts";
+import { getFormRequest } from "../api/forms";
+import Cookies from 'js-cookie'
 
 export const ResponsesContext = createContext();
 
@@ -11,13 +13,14 @@ export const useResponses = () => {
 }
 
 export const ResponsesProvider = ({ children }) => {
-    const [responses, setResponses] = useState([]);
     const [errors, setErrors] = useState([]);
-
-    CleanErrors(errors, setErrors);
+    const [success, setSuccess] = useState('');
+    const [responses, setResponses] = useState([]);
+    const [existsForm, setExistsForm] = useState(false);
+    const [user, setUser] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     //* Responses
-
     // Responses
     useEffect(() => {
         const getResponses = async () => {
@@ -25,7 +28,7 @@ export const ResponsesProvider = ({ children }) => {
                 const res = await ResponsesRequest();
                 setResponses(res.data);
             } catch (error) {
-                ContextErrors(error, setErrors);
+                console.error(error)
             }
         }
         getResponses();
@@ -34,31 +37,80 @@ export const ResponsesProvider = ({ children }) => {
     // Get Response
     const getReponse = async (id) => {
         try {
-            const res = await ResponsesRequest(id);
+            const res = await getResponseRequest(id);
             return res.data;
         } catch (error) {
-            ContextErrors(error, setErrors);
+            console.error(error)
+        }
+    }
+
+    // Get Responses Form
+    const getResponsesForm = async (id) => {
+        try {
+            const res = await getResponsesFormRequest(id);
+            return res.data;
+        } catch (error) {
+            console.error(error)
         }
     }
 
     //* Create Response
 
-    const sendCodeResponse = async (id, email) => {
+    //ValidateCookie
+    useEffect(() => {
+        const checkUser = async () => {
+            const cookies = Cookies.get();
+            if (!cookies.user) {
+                setUser(false)
+                setTimeout(() => {
+                    setLoading(false)
+                }, 3000)
+                return;
+            }
+            const userObject = JSON.parse(cookies.user.substring(2));
+            setUser(userObject)
+            setLoading(false)
+        }
+        checkUser();
+    }, [])
+
+
+    //CompForm
+    const compFormResponse = async (id) => {
         try {
-            const res = await getCodeResponseRequest(id, email);
-            return res.data;
+            const res = await getFormRequest(id)
+            if (res.status == 200) setExistsForm(true)
         } catch (error) {
-            ContextErrors(error, setErrors);
+            ContextErrors(error, setErrors)
+        }
+    }
+    // Get Code Response
+    const getCodeResponse = async (id, email) => {
+        const res = await getCodeResponseRequest(id, email);
+        return res;
+    }
+
+    // Verificate Code Response
+    const verificateCodeResponse = async (id, code) => {
+        const res = await verificateCodeResponseRequest(id, code)
+        if (res.status == 200) setUser(true)
+        return res
+    }
+
+    // Get Form to Response
+    const getFormtoResponse = async (id) => {
+        try {
+            const res = await getFormtoResponseRequest(id)
+            return res.data
+        } catch (error) {
+            console.error(error)
         }
     }
 
-    const sendCodeValidation = async (id, code) => {
-        try {
-            const res = await codeValidationResponseRequest(id, code)
-            return res.data
-        } catch (error) {
-            console.log(error)
-        }
+    //Create Response
+    const createResponse = async (id, data) => {
+        const res = await createResponseRequest(id, data)
+        return res
     }
 
     return (
@@ -66,9 +118,17 @@ export const ResponsesProvider = ({ children }) => {
             value={{
                 responses,
                 errors,
+                success,
+                existsForm,
+                user,
+                loading,
                 getReponse,
-                sendCodeResponse,
-                sendCodeValidation
+                getResponsesForm,
+                compFormResponse,
+                getCodeResponse,
+                verificateCodeResponse,
+                getFormtoResponse,
+                createResponse
             }}>
             {children}
         </ResponsesContext.Provider>

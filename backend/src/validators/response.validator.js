@@ -17,7 +17,7 @@ export const responseValidator = z.object({
                 .string({
                     required_error: "Question is required"
                 })
-                .min(10, {
+                .min(5, {
                     message: "Question must be last at 10 characters"
                 }),
             instructor: z
@@ -28,7 +28,7 @@ export const responseValidator = z.object({
                 .string({
                     required_error: "Answer is required"
                 })
-                .min(2, {
+                .min(1, {
                     message: "Answer must be last at 2 characters"
                 })
         })

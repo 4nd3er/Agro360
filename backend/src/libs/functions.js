@@ -1,3 +1,5 @@
+import xlsx from 'xlsx'
+
 //* Codigo aleatorio de 6 digitos
 export function generateCode(digits) {
     const min = 10 ** (digits - 1);
@@ -14,7 +16,7 @@ export function compDuplicate(list) {
 //*Funcion para capitalizar una cadena
 export function capitalizeString(string) {
     const transformed = []
-    for (const word of string.toString().split(" ")) {
+    for (const word of string.toString().split(" ").filter(text => text !== "")) {
         const capWord = word.charAt(0).toUpperCase() + word.toLowerCase().slice(1)
         transformed.push(capWord)
     }
@@ -37,6 +39,7 @@ export function nameMayusName(name) {
 
 //*Funcion para capitalizar un objeto dependiendo del parametro
 export function capitalizeObject(data, find, capitalize) {
+    console.log(data)
     if (capitalize == "capitalize") {
         for (const [key, value] of Object.entries(data)) {
             if (key === "names" || key === "name") {
@@ -53,4 +56,58 @@ export function capitalizeObject(data, find, capitalize) {
             }
         }
     }
+}
+
+//* Funcion para eliminar tildes
+export function deleteAccents(string) {
+    const accentsMap = {
+        'á': 'a',
+        'é': 'e',
+        'í': 'i',
+        'ó': 'o',
+        'ú': 'u',
+        'ü': 'u',
+        'à': 'a',
+        'è': 'e',
+        'ì': 'i',
+        'ò': 'o',
+        'ù': 'u',
+        'Á': 'A',
+        'É': 'E',
+        'Í': 'I',
+        'Ó': 'O',
+        'Ú': 'U',
+        'Ü': 'U',
+    };
+
+    return string.replace(/[áéíóúàèìòùüÁÉÍÓÚÜ]/g, (match) => accentsMap[match] || match);
+}
+
+//* Funcion para convertir el codigo de fecha a fecha de un xlsx
+export function parseDate(date) {
+    const convertDate = xlsx.SSF.parse_date_code(date)
+    return new Date(`${convertDate.y}-${convertDate.m}-${convertDate.d}`);
+}
+
+//*Funcion para extraer los nombres ya pellidos de una cadena
+export function getNamesLastnames(data) {
+    const string = data.toString().split(" ").filter(text => text !== "")
+
+    let instructorNames;
+    let instructorLastnames;
+    if (string.length > 4) {
+        instructorNames = string.slice(0, -2).join(" ")
+        instructorLastnames = string.splice(-2).join(" ")
+    } else if (string.length === 4) {
+        instructorNames = `${string[0]} ${string[1]}`
+        instructorLastnames = `${string[2]} ${string[3]}`
+    } else if (string.length === 3) {
+        instructorNames = `${string[0]}`
+        instructorLastnames = `${string[1]} ${string[2]}`
+    } else if (string.length === 2) {
+        instructorNames = `${string[0]}`
+        instructorLastnames = `${string[1]}`
+    }
+
+    return [capitalizeString(instructorNames), capitalizeString(instructorLastnames)]
 }

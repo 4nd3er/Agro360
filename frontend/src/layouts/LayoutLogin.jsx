@@ -7,7 +7,7 @@ import { Outlet } from 'react-router-dom';
 const LayoutLogin = () => {
     return (
         <>
-            <header className="navbar flex justify-center">
+            <header className="header flex justify-center">
                 <img className="logoSena" src={LogoBlanco} />
             </header>
 

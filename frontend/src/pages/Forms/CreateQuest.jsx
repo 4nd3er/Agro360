@@ -21,19 +21,12 @@ const CreateQuest = () => {
     const [validationQuestionContent, setValidationQuestionContent] = useState(false);
     const [validationQuestionType, setValidationQuestionType] = useState(false);
     const [validationQuestionOption, setValidationQuestionOption] = useState(false);
+    const questionTypeValue = {};
 
     useEffect(() => {
         localStorage.setItem('questions', JSON.stringify(questions));
     }, [questions]);
 
-    const questionTypeValue = {
-        '654058b803a2be5f286df7b8': 'text',
-        '6540651189e8593b88d3848e': 'radio',
-        '6556dd95fe823a88d48fafc3': 'checkbox',
-        '6556ddbbfe823a88d48fafc4': 'scaleRikert',
-        '6556de54fe823a88d48fafc5': 'scaleRating',
-        '6556de7afe823a88d48fafc6': 'scaleSemantic'
-    }
 
     useEffect(() => {
         const titleParam = searchParams.get('titulo');
@@ -55,6 +48,9 @@ const CreateQuest = () => {
         setDate(localStorage.getItem('date'));
 
     }, [])
+    questionsType.map((questionType) => {
+        questionTypeValue[questionType._id] = questionType.name;
+    })
 
     const addOption = (questionIndex) => {
         const updatedQuestions = [...questions];
@@ -102,32 +98,27 @@ const CreateQuest = () => {
         const updatedQuestions = [...questions];
         const currentQuestion = updatedQuestions[questionIndex];
         currentQuestion[1][1] = value;
-        if (questionTypeValue[value] === 'scaleRikert' || questionTypeValue[value] === 'scaleRating') {
-            currentQuestion[2][1] = [['', '']];
+        if (questionTypeValue[value] === 'Escala de Likert') {
+            currentQuestion[2][1] = ['scale'];
             setOptionsAdded(() => !optionsAdded);
         }
-        if (questionTypeValue[currentQuestion[1][1]] === 'text' || questionTypeValue[currentQuestion[1][1]] === 'radio' || questionTypeValue[currentQuestion[1][1]] === 'checkbox' || questionTypeValue[currentQuestion[1][1]] === 'scaleSemantic') {
-            const array2 = ['', ''];
-            if (currentQuestion[2][1][0].length == array2.length && currentQuestion[2][1][0].every(function (v, i) { return v = '' === array2[i] })) {
-                currentQuestion[2][1] = [''];
-            }
-        }
-        if (questionTypeValue[value] === 'text') {
+        else if (questionTypeValue[value] == 'Respuesta Abierta') {
             currentQuestion[2][1] = ['text'];
             setOptionsAdded(() => !optionsAdded);
+        }
+        else {
+            if (currentQuestion[2][1] == 'text' || currentQuestion[2][1] == 'scale') {
+                currentQuestion[2][1] = [''];
+            }
         }
         updatedQuestions[questionIndex] = currentQuestion;
         setQuestions(updatedQuestions);
     };
 
-    const handleOptionChange = (questionIndex, optionIndex, value, indexContent) => {
+    const handleOptionChange = (questionIndex, optionIndex, value) => {
         const updatedQuestions = [...questions];
         const currentQuestion = updatedQuestions[questionIndex];
-        if (questionTypeValue[currentQuestion[1][1]] === 'scaleRikert' || questionTypeValue[currentQuestion[1][1]] === 'scaleRating') {
-            currentQuestion[2][1][optionIndex][indexContent] = value;
-        } else {
-            currentQuestion[2][1][optionIndex] = value;
-        }
+        currentQuestion[2][1][optionIndex] = value;
         updatedQuestions[questionIndex] = currentQuestion;
         setQuestions(updatedQuestions);
     };
@@ -139,20 +130,9 @@ const CreateQuest = () => {
             newObject[array[i][0]] = array[i][1];
         }
 
-        let count = 0;
         for (let i of Object.keys(array[2][1])) {
             const key = `option`;
-            const array2 = ['', ''];
-            let value = '';
-            if (array[2][1][0].length == array2.length && array[2][1][0].every(function (v, i) { return v = '' === array2[i] })) {
-                value = array[2][1][0][count];
-                const optionObject = { [key]: value };
-                optionss.push(optionObject);
-                count++;
-                value = array[2][1][0][count];
-            } else {
-                value = array[2][1][i];
-            }
+            let value = array[2][1][i];
             const optionObject = { [key]: value };
             optionss.push(optionObject);
         }
@@ -183,7 +163,7 @@ const CreateQuest = () => {
                 isTypeValid = true;
             }
             question[2][1].forEach((option) => {
-                if (option.length < 2 || option[0] == '' || option[1] == '') {
+                if (option.length == '' || option.length < 2) {
                     setValidationQuestionOption(true);
                     isOptionValid = false;
                 } else {
@@ -198,7 +178,6 @@ const CreateQuest = () => {
                 questions.map((question) => {
                     questionsObject.push(arraytoObject(question));
                 })
-
                 createForm({
                     name: title, description: descrip, topic: topic, end: date,
                     questions: questionsObject
@@ -301,8 +280,9 @@ const CreateQuest = () => {
                                             validationQuestionOption={validationQuestionOption}
                                         />
                                     ))}
-                                    {question[1][1] && (questionTypeValue[question[1][1]] !== 'scaleRikert' && questionTypeValue[question[1][1]] !== 'scaleRating' && questionTypeValue[question[1][1]] !== 'text') && (
-                                        <div className='flex justify-end mb-5 cursor-pointer'>
+                                    {question[1][1] && (questionTypeValue[question[1][1]] !== 'Escala de Likert' && questionTypeValue[question[1][1]] !== 'Escala de Puntuación' && questionTypeValue[question[1][1]] !== 'Respuesta Abierta') && (
+                                        <div className='flex justify-between my-5 cursor-pointer place-items-center'>
+                                            <span className={`${question[2][1].length < 3 && validationQuestionOption ? 'opacity-100' : 'opacity-0'} transition-[.1s_all] text-red-500`}>Las pregunta debe contener al menos tres opciones</span>
                                             <div onClick={() => addOption(questionIndex)} className="border-2 p-2 rounded left-1 top-0 cursor-pointer">Agregar Opción</div>
                                         </div>
                                     )}
