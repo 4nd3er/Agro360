@@ -15,7 +15,6 @@ export const useResponses = () => {
 export const ResponsesProvider = ({ children }) => {
     const [errors, setErrors] = useState([]);
     const [success, setSuccess] = useState('');
-    const [responses, setResponses] = useState([]);
     const [existsForm, setExistsForm] = useState(false);
     const [user, setUser] = useState(false);
     const [loading, setLoading] = useState(true);
@@ -25,9 +24,9 @@ export const ResponsesProvider = ({ children }) => {
     const getResponses = async () => {
         try {
             const res = await ResponsesRequest();
-            setResponses(res.data);
+            return res.data;
         } catch (error) {
-            console.error(error)
+            ContextErrors(error, setErrors)
         }
     }
 
@@ -37,7 +36,7 @@ export const ResponsesProvider = ({ children }) => {
             const res = await getResponseRequest(id);
             return res.data;
         } catch (error) {
-            console.error(error)
+            ContextErrors(error, setErrors)
         }
     }
 
@@ -47,7 +46,7 @@ export const ResponsesProvider = ({ children }) => {
             const res = await getResponsesFormRequest(id);
             return res.data;
         } catch (error) {
-            console.error(error)
+            ContextErrors(error, setErrors)
         }
     }
 
@@ -91,7 +90,7 @@ export const ResponsesProvider = ({ children }) => {
     const verificateCodeResponse = async (id, code) => {
         const res = await verificateCodeResponseRequest(id, code)
         if (res.status == 200) setUser(true)
-        return res
+        return res.data
     }
 
     // Get Form to Response
@@ -100,7 +99,7 @@ export const ResponsesProvider = ({ children }) => {
             const res = await getFormtoResponseRequest(id)
             return res.data
         } catch (error) {
-            console.error(error)
+            ContextErrors(error, setErrors)
         }
     }
 
@@ -113,7 +112,6 @@ export const ResponsesProvider = ({ children }) => {
     return (
         <ResponsesContext.Provider
             value={{
-                responses,
                 errors,
                 success,
                 existsForm,

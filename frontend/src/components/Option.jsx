@@ -16,10 +16,10 @@ function Option({ dataQuestion, dataInstructor, setValid }) {
     const instructor = dataInstructor.document
 
     //Al cargar el componente, se verifica si hay una respuesta guardada en el localStorage
-    useEffect(() => {
+    useEffect(() => {        
         const local = localStorage.getItem(`instructor: ${instructor}, question: ${question}`)
         if (local === null) {
-            let answer = null
+            let answer;
             switch (type) {
                 case '654058b803a2be5f286df7b8': //Respuesta abierta
                     answer = openres

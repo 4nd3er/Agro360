@@ -10,12 +10,15 @@ router.route("/topics")
     .get(topics)
     .post(validate(topicsValidator), createTopic)
 
+router.get("/topics/:id", getTopic)
+
 router.route("/topics/:id")
     .all(validateTokenCookie)
-    .get(getTopic)
     .put(validate(topicsValidator), updateTopic)
     .delete(deleteTopic)
 
-router.get("/topics/:id/forms", getTopicForms)
+router.route("/topics/:id/forms")
+    .all(validateTokenCookie)
+    .get(getTopicForms)
 
 export default router

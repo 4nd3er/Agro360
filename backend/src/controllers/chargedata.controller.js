@@ -87,7 +87,15 @@ export const createCronograms = async (req, res) => {
                     }
                 }
             }
-            console.log(cronograms)
+            for (const cronogram of cronograms) {
+                const findCronogram = await CoursesCronogram.findOne({ course: cronogram.course })
+                if (findCronogram) {
+                    await CoursesCronogram.findOneAndUpdate({ course: cronogram.course }, cronogram)
+                } else {
+                    const newCronogram = new CoursesCronogram(cronogram)
+                    const saveCronogram = await newCronogram.save()
+                }
+            }
         }
 
         res.json({

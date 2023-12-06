@@ -27,9 +27,10 @@ router.route("/forms/responses")
     .all(validateTokenCookie)
     .get(getFormsResponse)
 
+router.get("/forms/:id", getForm)
+
 router.route("/forms/:id")
     .all(validateTokenCookie)
-    .get(getForm)
     .put(validate(formValidator), updateForm)
     .delete(deleteForm)
 

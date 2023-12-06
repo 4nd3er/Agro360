@@ -6,6 +6,7 @@ import { FormAlert, Spinner } from '../../components/Components.jsx';
 import Logo from '../../img/logoAgro360.png';
 import '../../App.css'
 import Swal from 'sweetalert2';
+import { set } from 'mongoose';
 
 const UserValidation = () => {
     const { register: email, handleSubmit: emailSubmit, getValues: getEmail, reset: resetEmail, formState: { isValid: validEmail } } = useForm()
@@ -99,7 +100,7 @@ const UserValidation = () => {
                                 <p className="mt-4 mb-6 text-gray-600 text-center text-sm font-bold">
                                     Digita tu correo electrónico para que te enviemos un código de verificación y puedas responder la encuesta
                                 </p>
-                                <p onClick={() => setShowVerifyCard(true)}
+                                <p onClick={() => {setShowVerifyCard(true); setErrorsEmail([])}}
                                     className='my-3 text-green-500 text-xs hover:text-green-700 cursor-pointer text-end'>
                                     Tengo un codigo -&gt;
                                 </p>
@@ -138,7 +139,7 @@ const UserValidation = () => {
                                 <p className="mt-4 mb-6 text-gray-600 text-center text-sm font-bold">
                                     Digita el codigo que llego a tu correo
                                 </p>
-                                <p onClick={() => setShowVerifyCard(false)}
+                                <p onClick={() => {setShowVerifyCard(false); setErrorsCode([])}}
                                     className='my-3 text-green-500 text-xs hover:text-green-700 cursor-pointer text-start'>
                                     &lt;- Obtener un codigo
                                 </p>

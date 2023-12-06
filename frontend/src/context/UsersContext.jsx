@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { ContextErrors } from "./Alerts";
+import { ContextErrors, ContextSuccess } from "./Alerts";
 import { CoursesRequest, UsersRequest, createUserRequest, getCourseNameRequest, getCourseRequest, getUserRequest } from "../api/users";
 
 export const UsersContext = createContext();
@@ -11,10 +11,9 @@ export const useUsers = () => {
 }
 
 export const UsersProvider = ({ children }) => {
-    const [users, setUsers] = useState([]);
-    const [courses, setCourses] = useState([]);
     const [loading, setLoading] = useState(true);
     const [errors, setErrors] = useState([])
+    const [success, setSuccess] = useState('')
 
 
     //* Users
@@ -23,8 +22,8 @@ export const UsersProvider = ({ children }) => {
     const getUsers = async () => {
         try {
             const res = await UsersRequest();;
-            setUsers(res.data);
             setLoading(false)
+            return res.data
         } catch (error) {
             ContextErrors(error, setErrors)
         }
@@ -44,9 +43,10 @@ export const UsersProvider = ({ children }) => {
     const createUser = async (data) => {
         try {
             const res = await createUserRequest(data);
+            ContextSuccess(res, setSuccess, setErrors)
             return res.data;
         } catch (error) {
-            ContextErrors(error, setErrors)
+            ContextErrors(error, setErrors, setSuccess)
         }
     }
 
@@ -55,7 +55,7 @@ export const UsersProvider = ({ children }) => {
     const getCourses = async () => {
         try {
             const res = await CoursesRequest();
-            setCourses(res.data);
+            return res.data
         } catch (error) {
             ContextErrors(error, setErrors)
         }
@@ -82,10 +82,9 @@ export const UsersProvider = ({ children }) => {
 
     return (
         <UsersContext.Provider value={{
-            users,
-            courses,
             loading,
             errors,
+            success,
             getUsers,
             getCourses,
             getUser,

@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import Spinner from '../../components/Spinner.jsx';
 import { Option } from '../../components/Components.jsx'
 import Swal from 'sweetalert2';
+import { set } from 'mongoose';
 
 const Response = () => {
     const { idform } = useParams();
@@ -21,10 +22,10 @@ const Response = () => {
     const [actualInstructor, setActualInstructor] = useState()
     const [actualIndex, setActualIndex] = useState(0)
     const [actualQuestion, setActualQuestion] = useState([])
-    const [next, setNext] = useState(false)
 
     const [validationStates, setValidationStates] = useState([]);
     const [allOptionsValid, setAllOptionsValid] = useState(false);
+    const [validQuestions, setValidQuestions] = useState([])
 
     const { getFormtoResponse, user, loading: loadingComp, createResponse } = useResponses();
     const { getTopic } = useRoles();
@@ -36,16 +37,21 @@ const Response = () => {
     useEffect(() => {
         const getData = async () => {
             const res = await getFormtoResponse(idform);
-            setInstructors(res.instructors)
-            setActualInstructor(res.instructors[0])
-            setForm(res.form);
+            if (res) {
+                setInstructors(res.instructors)
+                setActualInstructor(res.instructors[0])
+                setForm(res.form);
+            }
         }
         getData();
     }, [])
 
-    //Si se cargan los datos
+    //Get Questions
     useEffect(() => {
         if (form.name && form.questions) {
+            const questions = form.questions.map(question => question)
+            setQuestions(questions)
+            setActualQuestion(questions[actualIndex])
             setLoading(false)
         }
     }, [form])
@@ -59,15 +65,6 @@ const Response = () => {
         if (form && form.topic) topic();
     }, [form])
 
-    //Questions
-    useEffect(() => {
-        if (form && form.questions) {
-            const questions = form.questions.map(question => question)
-            setQuestions(questions)
-            setActualQuestion(questions[actualIndex])
-        }
-    }, [form])
-
     //* FUNCTIONS
 
     //Al hacer click en un instructor
@@ -75,31 +72,86 @@ const Response = () => {
         setActualInstructor(instructor)
     }
 
-    //Comprobar si los campos no estan vacios
-    const setValid = (isValid, index) => {
+    //Al cambiar de index, cambiar de pregunta
+    useEffect(() => {
+        setActualQuestion(questions[actualIndex]);
+        setActualInstructor(instructors[0]);
+    }, [actualIndex]);
+
+    //Comprobar si los campos son validos
+    const setValid = (isValid, instructor) => {
         setValidationStates((prevStates) => {
             const newStates = [...prevStates];
-            newStates[index] = isValid;
+            const find = newStates.find((state) => state.instructor === instructor._id && state.question === questions[actualIndex].question)
+            if (find) find.state = isValid
+            else newStates.push({ instructor: instructor._id, question: questions[actualIndex].question, state: isValid })
             return newStates;
         });
     };
 
+    //Comprobar si todas las preguntas son validas
     useEffect(() => {
-        const allValid = validationStates.every((state) => state);
+        const allValid = validationStates.every((state) => state.state);
         setAllOptionsValid(allValid);
     }, [validationStates])
 
-    //Al cambiar de index, cambiar de pregunta
+    //Guardar en un estado si todas las preguntas del questions actual son validas
     useEffect(() => {
-        setActualQuestion(questions[actualIndex])
-    }, [actualIndex])
+        if (questions.length > 0) {
+            const findQuestionValid = validQuestions.find((question) => question.question === questions[actualIndex].question)
+            if (allOptionsValid) {
+                if (findQuestionValid) findQuestionValid.state = true
+                else (setValidQuestions([...validQuestions, { question: questions[actualIndex].question, state: true }]))
+            } else {
+                if (findQuestionValid) findQuestionValid.state = false
+                else (setValidQuestions([...validQuestions, { question: questions[actualIndex].question, state: false }]))
+            }
+        }
+    }, [allOptionsValid])
 
     //Al dar click en siguiente
-    useEffect(() => {
-        if (next && allOptionsValid) {
+    const Next = () => {
+        let state;
+        const findValid = validQuestions.find((question) => question.question === questions[actualIndex + 1].question)
+        if (findValid && findValid.state === true) state = true
+        else (state = false)
+        setValidationStates((prevStates) => {
+            // Crear un nuevo array solo con la pregunta actual
+            const newStates = instructors.map((instructor) => ({
+                instructor: instructor._id,
+                question: questions[actualIndex + 1].question,
+                state: state,
+            }));
+            return newStates;
+        });
+        if (allOptionsValid) {
             setActualIndex(actualIndex + 1)
-            setActualInstructor(instructors[0])
-        } else if (next && !allOptionsValid) {
+        } else {
+            Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+            }).fire({
+                icon: 'error',
+                title: 'Debes responder las preguntas a cada instructor.',
+            })
+        }
+    }
+
+    //Al dar click en atras
+    const Back = () => {
+        setActualIndex(actualIndex - 1)
+        setValidationStates(validationStates.map((obj) => ({ ...obj, state: true })))
+    }
+
+    const response = {
+        answers: []
+    }
+
+    const saveForm = () => {
+        if (!allOptionsValid) {
             Swal.mixin({
                 toast: true,
                 position: 'top-end',
@@ -110,31 +162,17 @@ const Response = () => {
                 icon: 'error',
                 title: 'Debes responder a cada instructor',
             })
-        }
-        setNext(false)
-    }, [next])
-
-    //Al dar click en atras
-    const Back = () => {
-        setActualIndex(actualIndex - 1)
-    }
-
-    const response = {
-        answers: []
-    }
-
-    const saveForm = () => {
-        for (const instructor of instructors) {
-            for (const question of questions) {
-                const data = {
-                    question: question.question,
-                    instructor: instructor._id,
-                    answer: localStorage.getItem(`instructor: ${instructor.document}, question: ${question.question}`)
+        } else {
+            for (const instructor of instructors) {
+                for (const question of questions) {
+                    const data = {
+                        question: question.question,
+                        instructor: instructor._id,
+                        answer: localStorage.getItem(`instructor: ${instructor.document}, question: ${question.question}`)
+                    }
+                    response.answers.push(data)
                 }
-                response.answers.push(data)
             }
-        }
-        if (!next) {
             Swal.fire({
                 title: 'Enviar Formulario',
                 text: "¿Estas Seguro? No podras cambiar tus respuestas despues de enviarlas",
@@ -184,7 +222,7 @@ const Response = () => {
         dots: false,
         infinite: true,
         speed: 500,
-        slidesToShow: 5,
+        slidesToShow: 3,
         slidesToScroll: 1,
         centerMode: true,
     };
@@ -199,8 +237,9 @@ const Response = () => {
             timerProgressBar: true,
         }).fire({
             icon: 'warning',
-            title: 'No estas autorizado para responder este formulario, sera redirigido...',
+            title: 'No estas autorizado para responder este formulario, seras redirigido...',
         })
+        localStorage.clear();
         setTimeout(() => {
             navigate(`/forms/v/${idform}`)
         }, 6000)
@@ -218,11 +257,11 @@ const Response = () => {
             </div>
             <div className='p-4 text-center mt-4 border rounded-md shadow-lg'>
                 <Slider {...settings}>
-                    {instructors.map((instructor, index) => {
+                    {instructors ? instructors.map((instructor, index) => {
                         const id = instructor._id
                         const names = `${instructor.names} ${instructor.lastnames}`
                         return (
-                            <div key={index} className={`image-container ${instructor !== actualInstructor ? 'blur' : ''}`} onClick={() => changeInstructor(instructor)} >
+                            <div key={id} className={`image-container ${instructor !== actualInstructor ? 'blur' : ''}`} onClick={() => changeInstructor(instructor)} >
                                 <img src="http://localhost:5173/src/img/Logo.png" alt={names}
                                     style={{
                                         width: '100%',
@@ -233,21 +272,22 @@ const Response = () => {
                                 <p className="image-name">{names}</p>
                             </div>
                         )
-                    })}
+                    }) : null}
                 </Slider>
             </div>
             {instructors.map((instructor, index) => {
                 return (
                     <div key={instructor._id} className={`${actualInstructor && actualInstructor._id !== instructor._id || !actualInstructor ? 'hidden' : ''} p-8 flex flex-col justify-center items-center gap-8 mt-4 border rounded-md shadow-lg`}>
                         <p className='text-2xl'>{actualQuestion.question}</p>
-                        <Option key={instructor._id} dataQuestion={actualQuestion} dataInstructor={instructor} setValid={(isValid) => setValid(isValid, index)} />
+                        <Option key={instructor._id} dataQuestion={actualQuestion} dataInstructor={instructor} setValid={(isValid) => setValid(isValid, instructor)} />
                     </div>
                 )
             })}
             <div className='flex flex-row w-full mt-5 justify-end'>
                 {actualInstructor && actualIndex + 1 < questions.length && (
                     <button className={`${allOptionsValid ? 'bg-green-400 hover:bg-green-600' : 'bg-gray-500'} btn bottom-10 p-4 rounded-md text-white`}
-                        onClick={() => setNext(true)}>
+                        disable={!allOptionsValid}
+                        onClick={Next}>
                         Siguiente
                     </button>
                 )}

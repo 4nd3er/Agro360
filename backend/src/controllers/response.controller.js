@@ -46,6 +46,8 @@ export const getCode = async (req, res) => {
         if (!user) return res.status(404).json({ message: ["User not found"] })
         //Buscar ficha
         if (!user.course) return res.status(400).json({ message: ["You do not have a course, you cannot respond to this form."] })
+        const findCronogram = await CoursesCronogram.findOne({ course: user.course })
+        if (!findCronogram) return res.status(400).json({ message: ["You cannot respond to this form"] })
         //Comprobar si existe una respuesta
         const findResponse = await Responses.findOne({ form: form, user: user._id })
         if (findResponse) return res.status(400).json({ message: ["You have already responded to this form"] })
@@ -107,7 +109,6 @@ export const getFormtoResponse = async (req, res) => {
         const findUser = await Users.findById(id)
         const findCourse = await Courses.findById(findUser.course)
         const findCronogram = await CoursesCronogram.findOne({ course: findCourse._id })
-        if (!findCronogram) return res.status(404).json({ message: [messages.notFound("Course Cronogram")] })
         const idInstructors = findCronogram.instructors
 
         //Array de instructores
@@ -149,8 +150,8 @@ export const createResponse = async (req, res) => {
         res.cookie("user", "", {
             expires: new Date(0)
         })
-        
-        await createMethod(data, data, res, Responses, "Response")    
+
+        await createMethod(data, data, res, Responses, "Response")
     } catch (error) {
         errorResponse(res, error)
     }

@@ -6,20 +6,27 @@ import { FormAlert, Spinner } from '../../components/Components';
 function Users() {
 
     const { register, handleSubmit, formState: { isValid }, reset } = useForm();
-    const { courses, getCourseName, createUser, errors, setErrors } = useUsers();
+    const { getCourses, getCourseName, createUser, errors, success } = useUsers();
+    const [courses, setCourses] = useState([]);
     const [dataCourses, setDataCourses] = useState([]);
     const [loading, setLoading] = useState(true)
-    const [success, setSuccess] = useState(false)
 
+    //Enviar datos
     const onSubmit = handleSubmit(async (data) => {
         const create = await createUser(data);
-        if (create) {
-            setErrors([])
-            setSuccess(create)
-            reset();
-        }
+        if (create) reset();
     })
 
+    //Obtener cursos
+    useEffect(() => {
+        const Courses = async () => {
+            const res = await getCourses();
+            setCourses(res)
+        }
+        Courses();
+    }, [])
+
+    //Obtener nombres de los cursos
     useEffect(() => {
         const getDataCourses = courses.forEach(async (course) => {
             const res = await getCourseName(course.name);
@@ -126,15 +133,14 @@ function Users() {
                         </select>
                     </div>
                 </div>
-                <div className='form-group flex flex-row gap-6'>
+                <div className='hidden form-group'>
                     <div className='col w-full'>
                         <label htmlFor="rol">Rol</label>
                         <select
                             className='w-full m-1 p-2 border rounded-xl bg-gray-50'
                             id="rol"
                             {...register("rol")}
-                            value="6558e534c44fb9ddd8295320"
-                            disabled>
+                            value="6558e534c44fb9ddd8295320">
                             <option value="">Selecciona tu rol</option>
                             <option value="6558e534c44fb9ddd8295320">Aprendiz</option>
                             <option value="655b1f6df9b6aad257662a58">Instructor</option>
