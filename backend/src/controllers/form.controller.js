@@ -30,7 +30,7 @@ export const getFormsResponse = async (req, res) => {
 
 export const createForm = async (req, res) => {
     const { name, description, topic, end, status, questions } = req.body
-    const data = { name, description, topic, end, status, creator: req.user.id, questions }
+    let data = { name, description, topic, end, status, creator: req.user.id, questions }
     const find = { name: name, topic: topic }
 
     try {
@@ -42,23 +42,23 @@ export const createForm = async (req, res) => {
         const questionNames = questions.map((question) => question.question)
         if (compDuplicate(questionNames)) return res.status(400).json({ message: ["Exists duplicate questions"] })
 
-        // *Validaciones a la lista de questions
-        for (const [index, question] of questions.entries()) {
-            const type = question.type
-            //Capitalizar nombre de options
-            const options = question.options
-            for (const option in options.entries()) {
-                option["option"] = capitalizeWord(option.option)
-            }
-            //Capitalizar pregunta     
-            question["question"] = capitalizeWord(question.question)
-
+        // *Validar tipo de pregunta
+        for (const [index, { type }] of questions.entries()) {
             const compQuestionType = await compObjectId(type, QuestionTypes, `Question type [${index}]`)
             if (!compQuestionType.success) {
                 res.status(compQuestionType.status).json({ message: [compQuestionType.msg] });
                 return;
             }
         }
+
+        //* Capitalizar Questions y Options
+        const newQuestions = questions.map(({ question, type, options }) => ({
+            question: capitalizeString(question),
+            type,
+            options: options.map(({ option }) => ({ option: capitalizeString(option) }))
+        }))
+        data.questions = newQuestions
+
         await createMethod(data, find, res, Forms, "Form")
     } catch (error) {
         errorResponse(res, error)
@@ -80,25 +80,24 @@ export const updateForm = async (req, res) => {
         const questionNames = questions.map((question) => question.question)
         if (compDuplicate(questionNames)) return res.status(400).json({ message: ["Exists duplicate questions"] })
 
-        // *Validaciones a la lista de questions
-        for (const [index, question] of questions.entries()) {
-            const type = question.type
-            //Capitalizar nombre de options
-            const options = question.options
-            for (const option in options.entries()) {
-                option["option"] = capitalizeWord(option.option)
-            }
-            //Capitalizar pregunta     
-            question["question"] = capitalizeWord(question.question)
-
+        // *Validar tipo de pregunta
+        for (const [index, { type }] of questions.entries()) {
             const compQuestionType = await compObjectId(type, QuestionTypes, `Question type [${index}]`)
             if (!compQuestionType.success) {
                 res.status(compQuestionType.status).json({ message: [compQuestionType.msg] });
                 return;
             }
         }
-        await updateMethod(data, id, find, res, Forms, "Form")
 
+        //* Capitalizar Questions y Options
+        const newQuestions = questions.map(({ question, type, options }) => ({
+            question: capitalizeString(question),
+            type,
+            options: options.map(({ option }) => ({ option: capitalizeString(option) }))
+        }))
+        data.questions = newQuestions
+
+        await updateMethod(data, id, find, res, Forms, "Form")
     } catch (error) {
         errorResponse(res, error)
     }

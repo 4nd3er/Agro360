@@ -39,7 +39,6 @@ export function nameMayusName(name) {
 
 //*Funcion para capitalizar un objeto dependiendo del parametro
 export function capitalizeObject(data, find, capitalize) {
-    console.log(data)
     if (capitalize == "capitalize") {
         for (const [key, value] of Object.entries(data)) {
             if (key === "names" || key === "name") {

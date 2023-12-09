@@ -28,7 +28,7 @@ export const getOneMethod = async (id, res, model, name) => {
 }
 
 //* Crear un documento
-export const createMethod = async (data, find, res, model, name, capitalize, noresponse) => {
+export const createMethod = async (data, find, res, model, name, capitalize) => {
     const [lowerName, mayusName] = nameMayusName(name)
     capitalizeObject(data, find, capitalize)
     try {
