@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from 'react'
 import { ContextErrors, ContextSuccess } from './Alerts'
-import { createCoursesRequest, createCronogramsRequest, createInstructorsRequest } from '../api/chargeData'
+import { createCoursesRequest, createCronogramsRequest, createInstructorsRequest, createUsersRequest } from '../api/chargeData'
 
 export const ChargeDataContext = createContext()
 
@@ -18,8 +18,8 @@ export const ChargeDataProvider = ({ children }) => {
     const createCourses = async (data) => {
         try {
             setLoading(true)
-            const res = await createCoursesRequest(data) 
-            ContextSuccess(res, setSuccess, setErrors, setLoading)            
+            const res = await createCoursesRequest(data)
+            ContextSuccess(res, setSuccess, setErrors, setLoading)
             return res.data
         } catch (error) {
             ContextErrors(error, setErrors, setSuccess, setLoading)
@@ -48,6 +48,17 @@ export const ChargeDataProvider = ({ children }) => {
         }
     }
 
+    const createUsers = async (data) => {
+        try {
+            setLoading(true)
+            const res = await createUsersRequest(data)
+            ContextSuccess(res, setSuccess, setErrors, setLoading)
+            return res.data
+        } catch (error) {
+            ContextErrors(error, setErrors, setSuccess, setLoading)
+        }
+    }
+
     return (
         <ChargeDataContext.Provider
             value={{
@@ -57,7 +68,8 @@ export const ChargeDataProvider = ({ children }) => {
                 setErrors,
                 createCourses,
                 createCronograms,
-                createInstructors
+                createInstructors,
+                createUsers
             }}>
             {children}
         </ChargeDataContext.Provider>

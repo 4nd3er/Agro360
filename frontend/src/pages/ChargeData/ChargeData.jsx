@@ -2,12 +2,14 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useChargeData } from '../../context/Context';
 import { FormAlert, Spinner } from '../../components/Components'
+import { formatDate } from '../../helpers/formatDate';
 
 function ChargeData() {
-    const { createCourses, createCronograms, createInstructors, errors, success, loading } = useChargeData();
+    const { createCourses, createCronograms, createInstructors, createUsers, errors, success, loading } = useChargeData();
     const { register: courses, handleSubmit: courseSubmit, formState: { isValid: validCourse } } = useForm();
     const { register: cronograms, handleSubmit: cronogramSubmit, formState: { isValid: validCronogram } } = useForm();
     const { register: instructors, handleSubmit: instructorSubmit, formState: { isValid: validInstructor } } = useForm();
+    const { register: users, handleSubmit: usersSubmit, formState: { isValid: validUsers } } = useForm();
 
     const onSubmitCourse = courseSubmit(async (data) => {
         const file = new FormData()
@@ -31,6 +33,14 @@ function ChargeData() {
             file.append('instructors', data.instructors[i])
         }
         createInstructors(file)
+    })
+
+    const onSubmitUsers = usersSubmit(async (data) => {
+        const file = new FormData()
+        for (let i = 0; i < data.users.length; i++) {
+            file.append('users', data.users[i])
+        }
+        createUsers(file)
     })
 
     if (loading) return <Spinner />
@@ -67,6 +77,16 @@ function ChargeData() {
                             required: true
                         })} />
                     <input name="" id="" className={`${validInstructor ? 'bg-color-sena hover:bg-color-sena-hover' : 'bg-black'} btn text-white`} type="submit" disabled={!validInstructor} value="Enviar" />
+                </div>
+            </form>
+            <form className='w-1/2' encType='multipart/form-data' onSubmit={onSubmitUsers}>
+                <label className="form-label">Usuarios</label>
+                <div className="flex flex-row gap-1">
+                    <input type="file" name="users" className="form-control focus:border-color-sena" id="" placeholder="Selecciona un archivo" accept='.xlsx, .xls' multiple
+                        {...users("users", {
+                            required: true
+                        })} />
+                    <input name="" id="" className={`${validUsers ? 'bg-color-sena hover:bg-color-sena-hover' : 'bg-black'} btn text-white`} type="submit" disabled={!validUsers} value="Enviar" />
                 </div>
             </form>
         </div>

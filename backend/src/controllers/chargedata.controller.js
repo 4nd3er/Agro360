@@ -145,3 +145,45 @@ export const createInstructors = async (req, res) => {
         errorResponse(res, error)
     }
 }
+
+export const createUsers = async (req, res) => {
+    const files = req.files
+    try {
+        const dataFiles = getDataXlsx(res, files)
+        for (const file of dataFiles) {
+            const users = []
+            for (const [index, user] of file.entries()) {
+                const values = Object.values(user)
+                console.log(values)
+                const names = values[0]
+                const lastnames = values[1]
+                const docType = values[2]
+                const doc = values[3]
+                const email = values[4]
+                const course = values[5]
+
+                const findCourse = await Courses.findOne({ number: course })
+                if (!findCourse) return res.status(400).json({ message: [messages.notFound(`Course index ${index + 1}`)] })
+                const findUser = await Users.findOne({ document: doc.toString() })
+                const data = {
+                    names: capitalizeString(names),
+                    lastnames: capitalizeString(lastnames),
+                    documentType: docType.toString(),
+                    document: doc.toString(),
+                    rol: "6558e534c44fb9ddd8295320",
+                    email: email.toString(),
+                    course: findCourse._id
+                }
+                if (findUser) await Users.findOneAndUpdate({ document: data.document }, data)
+                else users.push(data)
+            }
+            await Users.create(users)
+        }
+        res.json({
+            response: "Usuarios importados satisfactoriamente",
+            data: dataFiles
+        })
+    } catch (error) {
+        errorResponse(res, error)
+    }
+}
