@@ -38,7 +38,7 @@ const CreateQuest = () => {
             setTopics(res)
         }
         Topics();
-    })
+    }, [])
 
     useEffect(() => {
         localStorage.setItem('questions', JSON.stringify(questions));

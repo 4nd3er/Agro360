@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { validate, validateTokenCookie } from '../middlewares/middlewares.js'
 import { formValidator, questionTypeValidator } from '../validators/form.validators.js';
-import { createForm, createQuestionType, deleteForm, deleteQuestionType, forms, getForm, getFormsResponse, getQuestionType, questionTypes, updateForm, updateQuestionType } from '../controllers/form.controller.js'
+import { createForm, createQuestionType, deleteForm, deleteQuestionType, forms, getForm, getFormReport, getFormsResponse, getQuestionType, questionTypes, updateForm, updateQuestionType } from '../controllers/form.controller.js'
 
 const router = Router()
 
@@ -34,6 +34,6 @@ router.route("/forms/:id")
     .put(validate(formValidator), updateForm)
     .delete(deleteForm)
 
-
+router.get("/forms/:id/report", validateTokenCookie, getFormReport)
 
 export default router

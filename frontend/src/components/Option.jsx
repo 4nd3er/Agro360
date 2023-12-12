@@ -16,55 +16,32 @@ function Option({ dataQuestion, dataInstructor, setValid }) {
     const instructor = dataInstructor.document
 
     //Al cargar el componente, se verifica si hay una respuesta guardada en el localStorage
-    useEffect(() => {        
+    useEffect(() => {
         const local = localStorage.getItem(`instructor: ${instructor}, question: ${question}`)
-        if (local === null) {
-            let answer;
-            switch (type) {
-                case '654058b803a2be5f286df7b8': //Respuesta abierta
-                    answer = openres
-                    break;
-                case '6540651189e8593b88d3848e': //Seleccion Unica
-                    answer = radio
-                    break;
-                case '6556dd95fe823a88d48fafc3': //Seleccion Multiple
-                    answer = checkbox
-                    break;
-                case '6556ddbbfe823a88d48fafc4': //Escala de Likert
-                    answer = likert
-                    break;
-                case '6556de54fe823a88d48fafc5': //Escala de Puntuación
-                    answer = pointScale
-                    break;
-            }
-            localStorage.setItem(`instructor: ${instructor}, question: ${question}`, answer)
-            if (answer.length > 0) setValid(true)
-        } else {
-            switch (type) {
-                case '654058b803a2be5f286df7b8': //Respuesta abierta
-                    setOpenres(local)
-                    if (openres === '') return setValid(false)
-                    setValid(true)
-                    break;
-                case '6540651189e8593b88d3848e': //Seleccion Unica
-                    setRadio(local)
-                    if (radio === '') return setValid(false)
-                    setValid(true)
-                    break;
-                case '6556dd95fe823a88d48fafc3': //Seleccion Multiple
-                    setCheckbox(local)
-                    break;
-                case '6556ddbbfe823a88d48fafc4': //Escala de Likert
-                    setLikert(local)
-                    if (likert === '') return setValid(false)
-                    setValid(true)
-                    break;
-                case '6556de54fe823a88d48fafc5': //Escala de Puntuación
-                    setPointScale(local)
-                    break;
-            }
+        switch (type) {
+            case '654058b803a2be5f286df7b8': //Respuesta abierta
+                setOpenres(local)
+                if (!openres || openres === '') return setValid(false)
+                setValid(true)
+                break;
+            case '6540651189e8593b88d3848e': //Seleccion Unica
+                setRadio(local)
+                if (!radio || radio === '') return setValid(false)
+                setValid(true)
+                break;
+            case '6556dd95fe823a88d48fafc3': //Seleccion Multiple
+                setCheckbox(local)
+                break;
+            case '6556ddbbfe823a88d48fafc4': //Escala de Likert
+                setLikert(local)
+                if (!likert || likert === '') return setValid(false)
+                setValid(true)
+                break;
+            case '6556de54fe823a88d48fafc5': //Escala de Puntuación
+                setPointScale(local)
+                break;
         }
-    }, [openres, likert, radio, checkbox, pointScale])
+    }, [question, openres, likert, radio, checkbox, pointScale])
 
     //Al cambiar de respuesta, se guarda en el localStorage
     const handleChange = (set, value) => {

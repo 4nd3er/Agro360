@@ -1,7 +1,8 @@
-import { Forms, QuestionTypes, Responses, Topics } from "../models/models.js"
+import { Forms, QuestionTypes, Responses, Topics, Users } from "../models/models.js"
 import { createMethod, deleteMethod, getMethod, getOneMethod, updateMethod } from "../libs/methods.js"
-import { compObjectId, errorResponse } from "../libs/libs.js"
+import { compObjectId, errorResponse, messages } from "../libs/libs.js"
 import { capitalizeString, capitalizeWord, compDuplicate } from '../libs/functions.js'
+import exceljs from 'exceljs'
 
 export const forms = async (req, res) => {
     await getMethod(res, Forms, "Forms")
@@ -106,6 +107,158 @@ export const updateForm = async (req, res) => {
 export const deleteForm = async (req, res) => {
     const { id } = req.params
     await deleteMethod(id, res, Forms, "Form")
+}
+
+//* Reporte en excel de resultados
+export const getFormReport = async (req, res) => {
+    const { id } = req.params
+
+    try {
+        const findForm = await Forms.findById(id)
+        if (!findForm) return res.status(404).json({ message: [messages.notFound("Form")] })
+        const findResponses = await Responses.find({ form: id })
+        if (!findResponses) return res.status(404).json({ message: [messages.notFound("Responses")] })
+
+        const responses = []
+
+        //Extraer respuestas y puntaje
+        for (const response of findResponses) {
+            for (const { question, instructor: instructorId, answer } of response.answers) {
+                let points = 0;
+                if (answer.length <= 2) points = parseInt(answer)
+                const instructor = instructorId.toString()
+
+                //
+                const findInstructor = responses.find(object => object.instructor === instructor)
+                if (!findInstructor) {
+                    responses.push({
+                        instructor: instructor,
+                        responses: [
+                            {
+                                question: question,
+                                answers: [answer],
+                                points: points,
+                            }
+                        ],
+                        prom: 0,
+                    })
+                    continue;
+                }
+                //
+                const findQuestion = findInstructor.responses.find(object => object.question === question)
+                if (!findQuestion) {
+                    findInstructor.responses.push({
+                        question: question,
+                        answers: [answer],
+                        points: points,
+                    })
+                    continue;
+                }
+                findQuestion.answers.push(answer)
+                findQuestion.points += points
+            }
+        }
+
+        //Extraer promedio
+        for (const response of responses) {
+            const points = response.responses.map(object => object.points)
+            const total = points.reduce((total, num) => total + num, 0)
+            const percents = []
+            for (const object of response.responses) {
+                const aprobation = object.points / (object.answers.length * 10)
+                object.aprobation = aprobation
+                percents.push(aprobation)
+            }
+            response.prom = percents.reduce((total, num) => total + num, 0) / percents.length
+        }
+
+        //*XLSX
+
+        //Libro
+        const workbook = new exceljs.Workbook();
+
+        //Hoja de calculo
+        for (const response of responses) {
+            const questions = response.responses.map(object => object.question)
+            const instructor = await Users.findById(response.instructor)
+            const instructorNames = `${instructor.names} ${instructor.lastnames}`
+
+            //Crear Hoja
+            const sheet = workbook.addWorksheet(instructorNames)
+            // Combinar celdas para el texto grande en la primera fila
+            sheet.mergeCells('A1:C1');
+            const titleRow = sheet.getRow(1);
+            titleRow.getCell(1).value = `Reporte de Resultados - ${instructorNames}`;
+            titleRow.getCell(1).font = { size: 16, bold: true, color: { argb: '000000' } }; // Tamaño grande y negrita
+            titleRow.getCell(1).fill = {
+                type: 'pattern',
+                pattern: 'solid',
+                fgColor: { argb: 'F79646' } // Fondo azul
+            };
+            // Añadir encabezados con fondo de color
+            const headerRow = sheet.addRow(["Pregunta", "Puntaje", "Aprobacion"]);
+            headerRow.eachCell({ includeEmpty: true }, function (cell) {
+                cell.fill = {
+                    type: 'pattern',
+                    pattern: 'solid',
+                    fgColor: { argb: '92D050' } // Color de fondo amarillo
+                };
+                cell.alignment = { vertical: 'middle', horizontal: 'center' }
+                cell.font = { bold: true }
+            });
+            //Datos json a excel
+            response.responses.forEach(object => {
+                const row = sheet.addRow([object.question, object.points, object.aprobation])
+                row.getCell(3).numFmt = '0%'
+            })
+            //Ultima fila
+            const lastRow = sheet.lastRow
+            const rowIndexToInsert = lastRow.number + 2;
+            sheet.mergeCells(`B${rowIndexToInsert}:C${rowIndexToInsert}`)
+            sheet.getCell(`B${rowIndexToInsert}`).value = "Promedio"
+            sheet.getCell(`B${rowIndexToInsert}`).fill = {
+                type: 'pattern',
+                pattern: 'solid',
+                fgColor: { argb: '92D050' }
+            }
+            sheet.getCell(`B${rowIndexToInsert}`).alignment = { vertical: 'middle', horizontal: 'center' }
+            sheet.getCell(`B${rowIndexToInsert}`).font = { bold: true }
+            sheet.mergeCells(`B${rowIndexToInsert + 1}:C${rowIndexToInsert + 1}`)
+            sheet.getCell(`B${rowIndexToInsert + 1}`).value = response.prom
+            sheet.getCell(`B${rowIndexToInsert + 1}`).numFmt = '0%'
+
+            // Centrar las celdas en las columnas B y C
+            sheet.eachRow({ includeEmpty: true }, function (row, rowNumber) {
+                row.getCell(2).alignment = { vertical: 'middle', horizontal: 'center' }; // Columna B
+                row.getCell(3).alignment = { vertical: 'middle', horizontal: 'center' }; // Columna C
+            });
+            //Ancho de columnas
+            sheet.getColumn(1).width = 100
+            sheet.getColumn(2).width = 14
+            sheet.getColumn(3).width = 14
+            // Aplicar bordes a todas las celdas
+            sheet.eachRow({ includeEmpty: false }, function (row) {
+                row.eachCell({ includeEmpty: false }, function (cell) {
+                    cell.border = {
+                        top: { style: 'thin' },
+                        left: { style: 'thin' },
+                        bottom: { style: 'thin' },
+                        right: { style: 'thin' }
+                    };
+                });
+            });
+        }
+
+        const file = `Reporte de resultados Encuesta: ${id}.xlsx`;
+        //Crear el archivo
+        workbook.xlsx.writeFile(file)
+        // Enviar el archivo como respuesta a la solicitud GET
+        res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        res.setHeader('Content-Disposition', `attachment; filename=${file}`);
+        workbook.xlsx.write(res).then(() => res.end())
+    } catch (error) {
+        errorResponse(res, error)
+    }
 }
 
 // *Question Types

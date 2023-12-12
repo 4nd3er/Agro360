@@ -6,13 +6,11 @@ import { users, getUser, createUser, updateUser } from '../controllers/users.con
 const router = Router()
 
 router.route("/users")
-    .all(validateTokenCookie)
-    .get(users)
+    .get(validateTokenCookie, users)
     .post(validate(usersValidator), createUser)
 
 router.route("/users/:id")
-    .all(validateTokenCookie)
-    .get(getUser)
+    .get(validateTokenCookie, getUser)
     .put(validate(usersValidator), updateUser)
 
 export default router

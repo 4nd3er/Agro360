@@ -1,6 +1,7 @@
 import { useContext, createContext, useEffect, useState } from "react";
-import { FormsRequest, QuestionTypesRequest, createFormRequest, createQuestionTypeRequest, deleteFormRequest, deleteQuestionTypeRequest, getFormRequest, getFormsResponsesRequest, getQuestionTypeRequest, updateFormRequest, updateQuestionTypeRequest } from "../api/forms";
+import { FormsRequest, QuestionTypesRequest, createFormRequest, createQuestionTypeRequest, deleteFormRequest, deleteQuestionTypeRequest, getFormReportRequest, getFormRequest, getFormsResponsesRequest, getQuestionTypeRequest, updateFormRequest, updateQuestionTypeRequest } from "../api/forms";
 import { ContextErrors } from "./Alerts";
+import { saveAs } from 'file-saver';
 
 export const FormsContext = createContext();
 
@@ -75,6 +76,16 @@ export const FormsProvider = ({ children }) => {
         }
     };
 
+    const getFormReport = async id => {
+        try {
+            const res = await getFormReportRequest(id);
+            const blob = new Blob([res.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'})
+            saveAs(blob, `Reporte de Encuesta ${id}.xlsx`)
+        } catch (error) {
+            ContextErrors(error, setErrors)
+        }
+    }
+
 
     //* Question Types
 
@@ -138,6 +149,7 @@ export const FormsProvider = ({ children }) => {
                 createForm,
                 updateForm,
                 deleteForm,
+                getFormReport,
                 getQuestionType,
                 createQuestionType,
                 updateQuestionType,

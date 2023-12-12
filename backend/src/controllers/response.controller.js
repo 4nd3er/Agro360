@@ -137,8 +137,6 @@ export const createResponse = async (req, res) => {
         for (const [index, answer] of answers.entries()) {
             const question = answer.question
             const instructor = answer.instructor
-            const response = answer.answer
-            answer.answer = capitalizeWord(response)
 
             const findQuestion = await Forms.findOne({ _id: form, "questions.question": question })
             if (!findQuestion) return res.status(400).json({ message: [messages.notFound(`Question ${index} for this form`)] })
@@ -188,7 +186,7 @@ export const getResponseInstructor = async (req, res) => {
     try {
         const findResponse = await Responses.findOne({ _id: id, "answers.instructor": instructor })
         if (!findResponse) return res.status(404).json({ message: [messages.notFound("Answers Instructor")] })
-        const answers = findForm.answers
+        const answers = findResponse.answers
 
         const answersInstructor = []
         for (const answer of answers) {

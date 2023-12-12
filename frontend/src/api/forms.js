@@ -14,3 +14,6 @@ export const getFormsResponsesRequest = async () => axios.get("/forms/responses"
 export const createFormRequest = async (data) => axios.post(`/forms`, data)
 export const updateFormRequest = async (id, data) => axios.put(`/forms/${id}`, data)
 export const deleteFormRequest = async (id) => axios.delete(`/forms/${id}`)
+export const getFormReportRequest = async (id) => axios.get(`/forms/${id}/report`, {
+    responseType: 'arraybuffer'
+})

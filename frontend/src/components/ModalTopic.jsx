@@ -14,6 +14,7 @@ const ModalTopic = () => {
   const onSubmit = handleSubmit(async (data) => {
     const { name } = data
     await createTopic({ name: name, role: id })
+    window.location.reload()
   })
 
   return (

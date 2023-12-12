@@ -28,12 +28,14 @@ function Users() {
 
     //Obtener nombres de los cursos
     useEffect(() => {
-        const getDataCourses = courses.forEach(async (course) => {
-            const res = await getCourseName(course.name);
-            setDataCourses((dataCourses) => [...dataCourses, res])
-        })
-
-        Promise.all([courses, getDataCourses]).then(() => setLoading(false))
+        const getDataCourses = async () => {
+            courses.forEach(async (course) => {
+                const res = await getCourseName(course.name);
+                setDataCourses((dataCourses) => [...dataCourses, res])
+            })
+        }
+        getDataCourses();
+        setLoading(false)
     }, [courses])
 
     if (loading) return <Spinner />
@@ -124,12 +126,12 @@ function Users() {
                                 required: true
                             })}>
                             <option value="">Selecciona tu ficha</option>
-                            {courses.map((course) => {
+                            {courses ? courses.map((course) => {
                                 const courseName = dataCourses.find((dataCourse) => dataCourse._id === course.name)
                                 return (
                                     <option key={course._id} value={course._id}>{course.number}: {courseName ? courseName.name : null}</option>
                                 )
-                            })}
+                            }) : null}
                         </select>
                     </div>
                 </div>

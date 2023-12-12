@@ -17,7 +17,7 @@ const ResultQuest = () => {
     const [filter, setFilter] = useState(1);
     const [loading, setLoading] = useState(true);
     const { idQuest } = useParams();
-    const { getForm } = useForms();
+    const { getForm, getFormReport } = useForms();
     const { getResponsesForm } = useResponses();
     const { getUser } = useUsers();
 
@@ -111,6 +111,11 @@ const ResultQuest = () => {
         }
     }, [selectedUser])
 
+    //Generate report
+    const generateReport = () => {
+        getFormReport(idQuest)
+    }
+
     if (loading) { return <Spinner /> };
 
     return (
@@ -119,7 +124,7 @@ const ResultQuest = () => {
                 <div className='p-5 py-6 flex flex-col gap-5 shadow-lg rounded-md border-2'>
                     <div className='flex flex-row items-center justify-between'>
                         <h1 key={dataForm._id} className='text-4xl'>{dataForm.name}</h1>
-                        <img src={ExcelSvg} alt="Descripción de la imagen" className="w-12 py-2 h-auto" />
+                        <img onClick={generateReport} src={ExcelSvg} alt="Descripción de la imagen" className="w-12 py-2 h-auto cursor-pointer" />
                     </div>
                     <h2 key={dataForm._id}>{dataForm.description}</h2>
                 </div>
