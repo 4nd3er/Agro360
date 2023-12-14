@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Spinner } from '../../components/Components';
 import Survey from '../../components/Survey';
 import { useForms } from '../../context/Context.js';
+import imgEncuesta from '@/img/encuesta.png';
 
 const Results = () => {
     const { FormsResponses } = useForms();
@@ -31,7 +32,7 @@ const Results = () => {
                             id={quest._id}
                             key={quest._id}
                             title={quest.name}
-                            imageSrc="src/img/encuesta.png"
+                            imageSrc={imgEncuesta}
                             isActive={true}
                         />
                     ))

@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form'
 import { useResponses } from '../../context/Context.js';
 import { FormAlert, Spinner } from '../../components/Components.jsx';
-import Logo from '../../img/logoAgro360.png';
+import Logo from '@/img/logoAgro360.png';
 import '../../App.css'
 import Swal from 'sweetalert2';
 import { set } from 'mongoose';

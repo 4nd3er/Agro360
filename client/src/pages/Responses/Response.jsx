@@ -9,6 +9,7 @@ import Spinner from '../../components/Spinner.jsx';
 import { Option } from '../../components/Components.jsx'
 import Swal from 'sweetalert2';
 import { set } from 'mongoose';
+import userImg from '@/img/perfil.png'
 
 const Response = () => {
     const { idform } = useParams();
@@ -262,7 +263,7 @@ const Response = () => {
                         const names = `${instructor.names} ${instructor.lastnames}`
                         return (
                             <div key={id} className={`image-container ${instructor !== actualInstructor ? 'blur' : ''}`} onClick={() => changeInstructor(instructor)} >
-                                <img src="http://localhost:5173/src/img/Logo.png" alt={names}
+                                <img src={userImg} alt={names}
                                     style={{
                                         width: '100%',
                                         height: 'auto',
