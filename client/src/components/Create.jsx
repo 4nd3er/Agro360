@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import '../css/Create.css';
 import Alert from './Alert';
 import { useRoles } from '../context/Context.js';
+import Icon from '@/img/icon.png'
 
 const Create = () => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -96,7 +97,7 @@ const Create = () => {
 					CREAR ENCUESTA
 				</div>
 				<img
-					src="src/img/Icon.png"
+					src={Icon}
 					alt="img"
 					className="img-icon cursor-pointer hover:scale-110 transition"
 					onClick={openModal}

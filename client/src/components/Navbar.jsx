@@ -1,5 +1,5 @@
-import Logo from '../img/LogoAgro360Blanco.png';
-import Perfil from '../img/perfil.png';
+import Logo from '@/img/LogoAgro360Blanco.png';
+import Perfil from '@/img/perfil.png';
 import '../layouts/css/navbar.css';
 import { useAuth } from '../context/AuthContext';
 import { Menu, Transition } from '@headlessui/react'
