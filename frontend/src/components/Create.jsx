@@ -98,7 +98,7 @@ const Create = () => {
 				<img
 					src="src/img/Icon.png"
 					alt="img"
-					className="img-icon cursor-pointer"
+					className="img-icon cursor-pointer hover:scale-110 transition"
 					onClick={openModal}
 				/>
 			</div>

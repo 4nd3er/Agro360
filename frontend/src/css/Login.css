@@ -1,0 +1,48 @@
+.typing {
+    color: var(--colorsec3);
+    font-weight: 500;
+    width: 10ch;
+    border-right: 3px solid;
+    white-space: nowrap;
+    font-family: monospace;
+    overflow: hidden;
+
+    animation: teclear 1s steps(8), efecto .5s step-end infinite alternate, tipografia 2s step-end infinite 1s;
+    /* animation: teclear 1s steps(7); */
+    /* * el primer tiempo es lo que dura la animacion, y el segundo el delay que tiene, en este caso, en la animacion "tipografia" */
+    /* ? animation-delay: 0s, 0s, 1s; se puede de esta manera pero mejor es cuando se pone en la misma animacion */
+}
+
+@keyframes teclear {
+    from {
+        width: 0
+    }
+}
+
+@keyframes tipografia {
+    0% {
+        font-family: monospace;
+    }
+
+    25% {
+        font-family: Courier;
+    }
+
+    50% {
+        font-family: sans-serif;
+    }
+
+    75% {
+        font-family: Calibri;
+    }
+
+    100% {
+        font-family: 'Work Sans', sans-serif;
+    }
+}
+
+@keyframes efecto {
+    50% {
+        border-color: transparent;
+    }
+}
