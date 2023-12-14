@@ -8,7 +8,6 @@ import { useNavigate } from 'react-router-dom';
 import Spinner from '../../components/Spinner.jsx';
 import { Option } from '../../components/Components.jsx'
 import Swal from 'sweetalert2';
-import { set } from 'mongoose';
 import { userImg } from '../../assets/Assets.jsx'
 
 const Response = () => {
