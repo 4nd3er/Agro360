@@ -17,7 +17,7 @@ app.use(cors({
     credentials: true,
     origin: FRONTEND_URL,
 }));
-console.log(process.env.PORT)
+
 //* Routes
 app.use("/api", authRoutes)
 app.use("/api", usersRoutes)
