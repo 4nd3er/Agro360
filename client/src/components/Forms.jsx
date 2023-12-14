@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import encuestaImg from '@/img/encuesta.png';
+import { imgEncuesta } from '../assets/Assets';
 
 
 const Survey = ({ title, imageSrc, color, isActive }) => {
@@ -94,11 +94,11 @@ const Survey = ({ title, imageSrc, color, isActive }) => {
 
 const SurveyList = () => {
     const surveys = [
-        { title: "Encuesta pedagógica", imageSrc: {encuestaImg}, color: "#82DEF0", isActive: true },
-        { title: "Encuesta de actitudinal", imageSrc: {encuestaImg}, color: "#2EA84A", isActive: false },
-        { title: "Encuesta de calidad", imageSrc: {encuestaImg}, color: "#CB7766", isActive: true },
-        { title: "Encuesta de satisfacción", imageSrc: {encuestaImg}, color: "#2EA84A", isActive: false },
-        { title: "Encuesta pedagógica", imageSrc: {encuestaImg}, color: "#82DEF0", isActive: true },
+        { title: "Encuesta pedagógica", imageSrc: { imgEncuesta }, color: "#82DEF0", isActive: true },
+        { title: "Encuesta de actitudinal", imageSrc: { imgEncuesta }, color: "#2EA84A", isActive: false },
+        { title: "Encuesta de calidad", imageSrc: { imgEncuesta }, color: "#CB7766", isActive: true },
+        { title: "Encuesta de satisfacción", imageSrc: { imgEncuesta }, color: "#2EA84A", isActive: false },
+        { title: "Encuesta pedagógica", imageSrc: { imgEncuesta }, color: "#82DEF0", isActive: true },
     ];
     const titleStyle = {
         fontSize: "24px",

@@ -1,5 +1,4 @@
-import Logo from '@/img/LogoAgro360Blanco.png';
-import Perfil from '@/img/perfil.png';
+import { LogoBlanco } from '../assets/Assets';
 import '../layouts/css/navbar.css';
 import { useAuth } from '../context/AuthContext';
 import { Menu, Transition } from '@headlessui/react'
@@ -16,7 +15,7 @@ const Navbar = () => {
 	return (
 		<>
 			<header className="header">
-				<img className="logo" src={Logo} />
+				<img className="logo" src={LogoBlanco} />
 				<Menu as="div" className="user">
 					<Menu.Button onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
 						<svg xmlns="http://www.w3.org/2000/svg" className="perfil icon icon-tabler icon-tabler-user-circle" width="44" height="44" viewBox="0 0 24 24" strokeWidth="1.5" stroke={`${isHovered ? '#c1ff95' : '#ffffff'}`} fill="none" strokeLinecap="round" strokeLinejoin="round">
