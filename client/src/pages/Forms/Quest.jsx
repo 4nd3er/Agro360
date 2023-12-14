@@ -2,7 +2,7 @@ import React from 'react'
 import Survey from '../../components/Survey';
 import Create from '../../components/Create';
 import { Link } from 'react-router-dom';
-import encuestaImg from '@/img/encuesta.png';
+import { imgEncuesta } from '../../assets/Assets';
 
 const Quest = () => {
 	return (
@@ -29,7 +29,7 @@ const Quest = () => {
 				<h1>ENCUESTAS RECIENTES</h1>
 				<Survey
 					title="Encuesta pedagógica"
-					imageSrc={encuestaImg}
+					imageSrc={imgEncuesta}
 					isActive={true}
 				/>
 			</div>
