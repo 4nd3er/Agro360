@@ -9,7 +9,7 @@ import { authRoutes, chargeDataRoutes, coursesRoutes, formsRoutes, responseRoute
 const app = express()
 
 //* Dependencies
-dotenv.config({ path: "./src/.env" });
+dotenv.config({ path: "./.env" })
 app.use(express.json())
 app.use(cookieParser())
 app.use(morgan("dev"))
@@ -17,7 +17,7 @@ app.use(cors({
     credentials: true,
     origin: FRONTEND_URL,
 }));
-
+console.log(process.env.PORT)
 //* Routes
 app.use("/api", authRoutes)
 app.use("/api", usersRoutes)
