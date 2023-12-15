@@ -70,9 +70,7 @@ export const AuthProvider = ({ children }) => {
                 setLoading(false);
             }
         };
-        setTimeout(() => {
-            checkLogin();
-        }, 2000)
+        checkLogin();
     }, []);
 
     return (
