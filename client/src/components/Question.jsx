@@ -1,5 +1,5 @@
 import React from 'react'
-import addQuestionSvg from '../assets/Add.svg';
+import { AddQuestionSvg } from '../assets/Assets';
 
 const Question = () => {
     const [questionType, setQuestionType] = useState('');
@@ -35,7 +35,7 @@ const Question = () => {
                     <Link
                         onClick={addQuestion}
                     >
-                        <img className='max-w-8' src={addQuestionSvg} />
+                        <img className='max-w-8' src={AddQuestionSvg} />
                     </Link>
                     <Link>
                         <img className='max-w-10' src={importQuestionSvg} />

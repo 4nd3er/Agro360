@@ -6,7 +6,6 @@ import { FormAlert, Spinner } from '../../components/Components.jsx';
 import { Logo } from '../../assets/Assets.jsx';
 import '../../App.css'
 import Swal from 'sweetalert2';
-import { set } from 'mongoose';
 
 const UserValidation = () => {
     const { register: email, handleSubmit: emailSubmit, getValues: getEmail, reset: resetEmail, formState: { isValid: validEmail } } = useForm()
