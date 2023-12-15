@@ -33,7 +33,6 @@ function App() {
               <ChargeDataProvider>
                 <BrowserRouter>
                   <Routes>
-
                     <Route path='/' element={<LayoutLogin />}>
                       <Route index element={<Login />} />
                       <Route path='register' element={<Register />} />
@@ -58,6 +57,7 @@ function App() {
                         <Route path=':idQuest' element={<ResultQuest />} />
                       </Route>
                     </Route>
+                    
                     <Route path='/forms/v/:form' element={<LayoutLogin />}>
                       <Route index element={<UserValidation />} />
                     </Route>
