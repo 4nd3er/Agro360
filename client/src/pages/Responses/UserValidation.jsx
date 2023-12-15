@@ -60,9 +60,19 @@ const UserValidation = () => {
 
     useEffect(() => {
         if (errorsEmail.length === 0 && emailSend) {
-            setShowVerifyCard(true)
+            changeCard()
         }
     }, [errorsEmail])
+
+    const changeCard = () =>{
+        setShowVerifyCard(!showVerifyCard)
+        setErrorsCode([])
+        if (showVerifyCard) {
+            setTimeout(()=>{
+                document.querySelector(".code-card").classList.toggle("hidden")
+            }, 2000)
+        }
+    }
 
     if (loading) return <Spinner />
 
@@ -95,7 +105,7 @@ const UserValidation = () => {
                             <p className="mt-4 mb-6 text-gray-600 text-center text-sm font-bold text|">
                                 Digita tu correo electrónico para que te enviemos un código de verificación y puedas responder la encuesta
                             </p>
-                            <p onClick={() => { setShowVerifyCard(true); setErrorsEmail([]) }}
+                            <p onClick={changeCard}
                                 className='my-3 text-green-500 text-xs hover:text-green-700 cursor-pointer text-end'>
                                 Tengo un codigo -&gt;
                             </p>
@@ -110,7 +120,7 @@ const UserValidation = () => {
                     </form>
                 </div>
                 {/* Verify code */}
-                <div className={`${showVerifyCard ? 'show-card' : 'hidden-card-right'} max-w-md absolute `}>
+                <div className={`${showVerifyCard ? 'show-card' : 'hidden-card-right'} max-w-md absolute code-card `}>
                     <form onSubmit={onSubmitCode} className="bg-white shadow-xl rounded-xl border border-gray-300">
                         <div className="flex justify-center md:justify-center">
                             <img src={Logo} alt="Logo360" className="rounded-lg w-20 h-30 md:ml-6" />
@@ -131,7 +141,7 @@ const UserValidation = () => {
                             <p className="mt-4 mb-6 text-gray-600 text-center text-sm font-bold">
                                 Digita el codigo que llego a tu correo
                             </p>
-                            <p onClick={() => { setShowVerifyCard(false); setErrorsCode([]) }}
+                            <p onClick={changeCard}
                                 className='my-3 text-green-500 text-xs hover:text-green-700 cursor-pointer text-start'>
                                 &lt;- Obtener un codigo
                             </p>
