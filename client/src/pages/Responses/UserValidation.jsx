@@ -69,7 +69,7 @@ const UserValidation = () => {
         setErrorsCode([])
         if (showVerifyCard) {
             setTimeout(()=>{
-                document.querySelector(".code-card").classList.toggle("hidden")
+                document.querySelector(".code-card").classList.add("hidden")
             }, 2000)
         }
     }
@@ -120,7 +120,7 @@ const UserValidation = () => {
                     </form>
                 </div>
                 {/* Verify code */}
-                <div className={`${showVerifyCard ? 'show-card' : 'hidden-card-right'} max-w-md absolute code-card `}>
+                <div className={`${showVerifyCard ? 'show-card' : 'hidden-card-right hidden'} max-w-md absolute code-card `}>
                     <form onSubmit={onSubmitCode} className="bg-white shadow-xl rounded-xl border border-gray-300">
                         <div className="flex justify-center md:justify-center">
                             <img src={Logo} alt="Logo360" className="rounded-lg w-20 h-30 md:ml-6" />
