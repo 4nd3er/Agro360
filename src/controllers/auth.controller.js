@@ -57,6 +57,7 @@ export const register = async (req, res) => {
             id: userSaved._id
         });
         res.cookie("token", token, {
+            httpOnly: true,
             secure: true,
             sameSite: "none"
         });
