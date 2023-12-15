@@ -2,7 +2,6 @@ import { errorResponse, messages } from '../libs/libs.js'
 import { parseDate, capitalizeString, deleteAccents, getNamesLastnames } from '../libs/functions.js'
 import { getDataXlsx } from '../libs/methods.js'
 import { Users, Courses, CoursesCronogram, CoursesNames } from '../models/models.js'
-import xlsx from 'xlsx'
 
 export const createCourses = async (req, res) => {
     const files = req.files
@@ -72,29 +71,29 @@ export const createCronograms = async (req, res) => {
                 const cronogramYear = end.toString().split(" ")[3]
                 const actualYear = new Date().getFullYear().toString()
 
-                const [instructorNames, instructorLastnames] = getNamesLastnames(instructor)
-                if (instructor.length > 6 && cronogramYear === actualYear && end < new Date()) {
+                if (instructor.length > 10 && instructor !== 'Sin Programar' && cronogramYear === actualYear && end < new Date()) {
+                    const [instructorNames, instructorLastnames] = getNamesLastnames(instructor)
                     const findCourse = await Courses.findOne({ number: course })
                     if (!findCourse) return res.status(404).json({ message: [messages.notFound(`Course ${index} index ${index + 2}`)] })
                     const findInstructor = await Users.findOne({ names: instructorNames, lastnames: instructorLastnames })
                     if (!findInstructor) return res.status(404).json({ message: [messages.notFound(`Instructor ${instructor} index ${index + 2}`)] })
 
                     const findCronogram = cronograms.find(cronogram => cronogram.course === findCourse._id.toString())
-                    if (findCronogram) {
-                        if (!findCronogram.instructors.includes(findInstructor._id.toString())) findCronogram.instructors.push(findInstructor._id.toString())
-                    } else {
+                    if (!findCronogram) {
                         cronograms.push({ course: findCourse._id.toString(), instructors: [findInstructor._id.toString()] })
+                        continue;
                     }
+                    if (!findCronogram.instructors.includes(findInstructor._id.toString())) findCronogram.instructors.push(findInstructor._id.toString())
                 }
             }
             for (const cronogram of cronograms) {
                 const findCronogram = await CoursesCronogram.findOne({ course: cronogram.course })
                 if (findCronogram) {
                     await CoursesCronogram.findOneAndUpdate({ course: cronogram.course }, cronogram)
-                } else {
-                    const newCronogram = new CoursesCronogram(cronogram)
-                    const saveCronogram = await newCronogram.save()
+                    continue;
                 }
+                const newCronogram = new CoursesCronogram(cronogram)
+                const saveCronogram = await newCronogram.save()
             }
         }
 

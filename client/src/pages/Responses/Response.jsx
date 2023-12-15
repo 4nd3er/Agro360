@@ -250,26 +250,20 @@ const Response = () => {
     return (
         <div className='w-full flex flex-col p-10'>
             <div className='flex flex-col gap-5 p-8 text-center border rounded-md shadow-lg'>
-                <h1 className='text-4xl font-bold text-color-sena'>{form.name}</h1>
-                <h1 className='text-2xl'>{form.description}</h1>
-                <h1 className='text-xl text-green-600'>Tematica: <span className='font-bold'>{topic ? topic.name : null}</span></h1>
+                <h1 className='text-2xl sm:text-4xl font-bold text-color-sena'>{form.name}</h1>
+                <h1 className='text-xl sm:text-2xl'>{form.description}</h1>
+                <h1 className='text-lg sm:text-xl text-green-600'>Tematica: <span className='font-bold text-lg sm:text-xl'>{topic ? topic.name : null}</span></h1>
 
             </div>
-            <div className='p-4 text-center mt-4 border rounded-md shadow-lg'>
+            <div className='p-4 mt-4 border rounded-md shadow-lg'>
                 <Slider {...settings}>
                     {instructors ? instructors.map((instructor, index) => {
                         const id = instructor._id
                         const names = `${instructor.names} ${instructor.lastnames}`
                         return (
-                            <div key={id} className={`image-container flex flex-col justify-center items-center ${instructor !== actualInstructor ? 'blur' : ''}`} onClick={() => changeInstructor(instructor)} >
-                                <img src={userImg} alt={names}
-                                    style={{
-                                        width: '70%',
-                                        height: 'auto',
-                                        borderRadius: '8px',
-                                        border: '1px solid transparent',
-                                    }} />
-                                <p className="image-name">{names}</p>
+                            <div key={id} className={`image-container !flex flex-col justify-center items-center ${instructor !== actualInstructor ? 'blur' : ''}`} onClick={() => changeInstructor(instructor)} >
+                                <img src={userImg} alt={names} className='rounded-s-lg h-auto w-full sm:w-2/3 border-solid border-2 border-transparent' />
+                                <p className="image-name text-md sm:text-lg md:text-xl sm:w-28 md:w-40 text-center mt-4 overflow-hidden text-ellipsis whitespace-nowrap w-20">{names}</p>
                             </div>
                         )
                     }) : null}
@@ -277,38 +271,32 @@ const Response = () => {
             </div>
             {instructors.map((instructor, index) => {
                 return (
-                    <div key={instructor._id} className={`${actualInstructor && actualInstructor._id !== instructor._id || !actualInstructor ? 'hidden' : ''} p-8 flex flex-col justify-center items-center gap-8 mt-4 border rounded-md shadow-lg`}>
-                        <p className='text-2xl'>{actualQuestion.question}</p>
+                    <div key={instructor._id} className={`${actualInstructor && actualInstructor._id !== instructor._id || !actualInstructor ? 'hidden' : ''} p-8 flex flex-col md:items-center gap-8 mt-4 border rounded-md shadow-lg`}>
+                        <p className='text-center text-lg md:text-xl lg:text-2xl'>{actualQuestion.question}</p>
                         <Option key={instructor._id} dataQuestion={actualQuestion} dataInstructor={instructor} setValid={(isValid) => setValid(isValid, instructor)} />
                     </div>
                 )
             })}
-            <div className='flex flex-row w-full mt-5 justify-end'>
+            <div className={`${actualIndex > 0 ? 'justify-between' : 'justify-end'} flex flex-row w-full mt-5 `}>
+                {actualIndex > 0 && (
+                    <button className={`bg-green-400 hover:bg-green-600 btn p-4 rounded-md text-white`}
+                        onClick={Back}>
+                        Atras
+                    </button>
+                )}
                 {actualInstructor && actualIndex + 1 < questions.length && (
                     <button className={`${allOptionsValid ? 'bg-green-400 hover:bg-green-600' : 'bg-gray-500'} btn bottom-10 p-4 rounded-md text-white`}
                         disable={!allOptionsValid}
                         onClick={Next}>
                         Siguiente
                     </button>
-                )}
-            </div>
-
-            <div className='flex flex-row w-full mt-5 justify-between'>
-                {actualInstructor && actualIndex > 0 && (
-                    <button className={`bg-green-400 hover:bg-green-600 btn p-4 rounded-md text-white`}
-                        onClick={Back}>
-                        Atras
-                    </button>
-                )}
-
-                {actualInstructor && actualIndex + 1 > questions.length - 1 && (
+                ) || actualInstructor && actualIndex + 1 > questions.length - 1 && (
                     <button className={`${allOptionsValid ? 'bg-green-400 hover:bg-green-600' : 'bg-gray-500'} btn p-4 rounded-md text-white`}
                         onClick={saveForm}>
                         Guardar
                     </button>
                 )}
             </div>
-
         </div>
     );
 };

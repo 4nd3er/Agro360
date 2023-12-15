@@ -96,8 +96,8 @@ function Option({ dataQuestion, dataInstructor, setValid }) {
             )}
             {/* Escala de Likert */}
             {type == '6556ddbbfe823a88d48fafc4' && (
-                <div className='py-4'>
-                    <ul className="flex justify-center gap-16 mb-4">
+                <div className='py-4 overflow-auto max-w-max'>
+                    <ul className="flex gap-16 mb-4">
                         <li className='flex flex-col text-center' onClick={() => handleChange(setLikert, '1')}>
                             <input disabled type="radio" id="opcion1" name="escala" value="1" className="hidden peer" />
                             <label

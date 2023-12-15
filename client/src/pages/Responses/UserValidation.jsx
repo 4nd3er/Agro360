@@ -74,83 +74,75 @@ const UserValidation = () => {
 
     return (
         <>
-            <div className="flex flex-col mx-auto w-full md:w-3/5 overflow-x-hidden">
-                <div className="flex flex-row md:flex-row">
-                    <div className={`${showVerifyCard ? 'max-w-md mx-auto hidden-card' : 'max-w-md mx-auto duration-1000'}`}>
-                        <form
-                            onSubmit={onSubmitEmail}
-                            className="bg-white shadow-xl rounded-xl mx-5 mt-16 border border-gray-300"
-                        >
-                            <div className="flex justify-center md:justify-center">
-                                <img src={Logo} alt="Logo360" className="rounded-lg w-20 h-30 md:ml-6" />
-                            </div>
-                            <div className='px-6 py-8'>
-                                <FormAlert errors={errorsEmail} />
-                                <label className="text-gray-700 font-bold text-lg">Correo Electrónico:</label>
-                                <input
-                                    id='email'
-                                    type="email"
-                                    {...email("email", {
-                                        required: true
-                                    })}
-                                    className="w-full border rounded-lg bg-gray-50 p-3 mt-4"
-                                    placeholder="Digita tú correo electrónico"
-                                />
-                                <p className="mt-4 mb-6 text-gray-600 text-center text-sm font-bold">
-                                    Digita tu correo electrónico para que te enviemos un código de verificación y puedas responder la encuesta
-                                </p>
-                                <p onClick={() => { setShowVerifyCard(true); setErrorsEmail([]) }}
-                                    className='my-3 text-green-500 text-xs hover:text-green-700 cursor-pointer text-end'>
-                                    Tengo un codigo -&gt;
-                                </p>
-                                <input
-                                    type="submit"
-                                    value="Enviar"
-                                    onClick={() => setEmailSend(true)}
-                                    disabled={!validEmail}
-                                    className={validEmail ? 'bg-color-sena w-full py-3 text-white uppercase font-bold rounded-full hover: cursor-pointer hover:bg-color-sena-hover transition-colors duration-300 ease-in-out' : 'bg-gray-300 w-full py-3 text-white uppercase font-bold rounded-full cursor-pointer'}
-                                />
-                            </div>
-                        </form>
-                    </div>
-                    {/* Verify code */}
-                    <div className={`${showVerifyCard ? 'max-w-md mx-auto fixed show-card' : 'max-w-md mx-auto fixed hidden-card-right'}`}>
-                        <form
-                            onSubmit={onSubmitCode}
-                            className="bg-white shadow-xl rounded-xl mx-5 mt-16 border border-gray-300"
-                        >
-                            <div className="flex justify-center md:justify-center">
-                                <img src={Logo} alt="Logo360" className="rounded-lg w-20 h-30 md:ml-6" />
-                            </div>
-                            <div className='px-6 py-8'>
-                                <FormAlert errors={errorsCode} success={successCode} />
-                                <label className="text-gray-700 font-bold text-lg">Digita tu codigo:</label>
-                                <input
-                                    id='code'
-                                    type="text"
-                                    {...code("code", {
-                                        required: true,
-                                        minLength: 6
-                                    })}
-                                    className="w-full border rounded-lg bg-gray-50 p-3 mt-4"
-                                    placeholder="Digita tú codigo"
-                                />
-                                <p className="mt-4 mb-6 text-gray-600 text-center text-sm font-bold">
-                                    Digita el codigo que llego a tu correo
-                                </p>
-                                <p onClick={() => { setShowVerifyCard(false); setErrorsCode([]) }}
-                                    className='my-3 text-green-500 text-xs hover:text-green-700 cursor-pointer text-start'>
-                                    &lt;- Obtener un codigo
-                                </p>
-                                <input
-                                    type="submit"
-                                    value="Enviar"
-                                    disabled={!validCode}
-                                    className={validCode ? 'bg-color-sena w-full py-3 text-white uppercase font-bold rounded-full hover: cursor-pointer hover:bg-color-sena-hover transition-colors duration-300 ease-in-out' : 'bg-gray-300 w-full py-3 text-white uppercase font-bold rounded-full cursor-pointer'}
-                                />
-                            </div>
-                        </form>
-                    </div>
+            <div className="flex flex-row justify-center items-center w-full h-screen p-8">
+                <div className={`${showVerifyCard ? 'hidden-card' : 'duration-1000'} max-w-md `}>
+                    <form onSubmit={onSubmitEmail} className="bg-white shadow-xl rounded-xl border border-gray-300">
+                        <div className="flex justify-center">
+                            <img src={Logo} alt="Logo360" className="rounded-lg w-20 h-30 md:ml-6" />
+                        </div>
+                        <div className='px-6 py-8'>
+                            <FormAlert errors={errorsEmail} />
+                            <label className="text-gray-700 font-bold sm:text-lg text-sm">Correo Electrónico:</label>
+                            <input
+                                id='email'
+                                type="email"
+                                {...email("email", {
+                                    required: true
+                                })}
+                                className="w-full border rounded-lg bg-gray-50 p-3 mt-4"
+                                placeholder="Digita tú correo electrónico"
+                            />
+                            <p className="mt-4 mb-6 text-gray-600 text-center text-sm font-bold text|">
+                                Digita tu correo electrónico para que te enviemos un código de verificación y puedas responder la encuesta
+                            </p>
+                            <p onClick={() => { setShowVerifyCard(true); setErrorsEmail([]) }}
+                                className='my-3 text-green-500 text-xs hover:text-green-700 cursor-pointer text-end'>
+                                Tengo un codigo -&gt;
+                            </p>
+                            <input
+                                type="submit"
+                                value="Enviar"
+                                onClick={() => setEmailSend(true)}
+                                disabled={!validEmail}
+                                className={validEmail ? 'bg-color-sena w-full py-3 text-white uppercase font-bold rounded-full hover: cursor-pointer hover:bg-color-sena-hover transition-colors duration-300 ease-in-out' : 'bg-gray-300 w-full py-3 text-white uppercase font-bold rounded-full cursor-pointer'}
+                            />
+                        </div>
+                    </form>
+                </div>
+                {/* Verify code */}
+                <div className={`${showVerifyCard ? 'show-card' : 'hidden-card-right'} max-w-md absolute `}>
+                    <form onSubmit={onSubmitCode} className="bg-white shadow-xl rounded-xl border border-gray-300">
+                        <div className="flex justify-center md:justify-center">
+                            <img src={Logo} alt="Logo360" className="rounded-lg w-20 h-30 md:ml-6" />
+                        </div>
+                        <div className='px-6 py-8'>
+                            <FormAlert errors={errorsCode} success={successCode} />
+                            <label className="text-gray-700 font-bold text-sm sm:text-lg">Digita tu codigo:</label>
+                            <input
+                                id='code'
+                                type="text"
+                                {...code("code", {
+                                    required: true,
+                                    minLength: 6
+                                })}
+                                className="w-full border rounded-lg bg-gray-50 p-3 mt-4"
+                                placeholder="Digita tú codigo"
+                            />
+                            <p className="mt-4 mb-6 text-gray-600 text-center text-sm font-bold">
+                                Digita el codigo que llego a tu correo
+                            </p>
+                            <p onClick={() => { setShowVerifyCard(false); setErrorsCode([]) }}
+                                className='my-3 text-green-500 text-xs hover:text-green-700 cursor-pointer text-start'>
+                                &lt;- Obtener un codigo
+                            </p>
+                            <input
+                                type="submit"
+                                value="Enviar"
+                                disabled={!validCode}
+                                className={validCode ? 'bg-color-sena w-full py-3 text-white uppercase font-bold rounded-full hover: cursor-pointer hover:bg-color-sena-hover transition-colors duration-300 ease-in-out' : 'bg-gray-300 w-full py-3 text-white uppercase font-bold rounded-full cursor-pointer'}
+                            />
+                        </div>
+                    </form>
                 </div>
             </div>
         </>

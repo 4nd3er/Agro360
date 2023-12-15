@@ -16,7 +16,7 @@
 }
 
 .show-card {
-    transform: translateX(41%);
+    transform: translateX(0%);
     transition: 1s ease;
 }
 

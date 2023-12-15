@@ -52,14 +52,6 @@ export const createForm = async (req, res) => {
             }
         }
 
-        //* Capitalizar Questions y Options
-        const newQuestions = questions.map(({ question, type, options }) => ({
-            question: capitalizeString(question),
-            type,
-            options: options.map(({ option }) => ({ option: capitalizeString(option) }))
-        }))
-        data.questions = newQuestions
-
         await createMethod(data, find, res, Forms, "Form")
     } catch (error) {
         errorResponse(res, error)
@@ -89,14 +81,6 @@ export const updateForm = async (req, res) => {
                 return;
             }
         }
-
-        //* Capitalizar Questions y Options
-        const newQuestions = questions.map(({ question, type, options }) => ({
-            question: capitalizeString(question),
-            type,
-            options: options.map(({ option }) => ({ option: capitalizeString(option) }))
-        }))
-        data.questions = newQuestions
 
         await updateMethod(data, id, find, res, Forms, "Form")
     } catch (error) {
