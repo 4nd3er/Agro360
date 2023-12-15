@@ -165,7 +165,7 @@ export const getFormReport = async (req, res) => {
             const total = points.reduce((total, num) => total + num, 0)
             const percents = []
             for (const object of response.responses) {
-                const aprobation = object.points / (object.answers.length * 10)
+                const aprobation = object.points / (object.answers.length * 5)
                 object.aprobation = aprobation
                 percents.push(aprobation)
             }

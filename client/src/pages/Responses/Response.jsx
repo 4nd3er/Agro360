@@ -261,10 +261,10 @@ const Response = () => {
                         const id = instructor._id
                         const names = `${instructor.names} ${instructor.lastnames}`
                         return (
-                            <div key={id} className={`image-container ${instructor !== actualInstructor ? 'blur' : ''}`} onClick={() => changeInstructor(instructor)} >
+                            <div key={id} className={`image-container flex flex-col justify-center items-center ${instructor !== actualInstructor ? 'blur' : ''}`} onClick={() => changeInstructor(instructor)} >
                                 <img src={userImg} alt={names}
                                     style={{
-                                        width: '100%',
+                                        width: '70%',
                                         height: 'auto',
                                         borderRadius: '8px',
                                         border: '1px solid transparent',

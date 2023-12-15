@@ -50,7 +50,7 @@ const Topics = () => {
                 <ModalTopic />
                 <main className="grid grid-cols-3 gap-8 mr-10 mt-24">
                     {loading ? <Spinner /> :
-                        topics.length ? topics.map(topic => (
+                        topics.length > 0 ? topics.map(topic => (
                             <CardTopic
                                 key={topic._id}
                                 topic={topic}

@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer'
+import { FRONTEND_URL } from '../config/config.js'
 
 //* Funcion enviar correo para recuperacion de contraseña
 export function sendEmailResetPassword(res, data) {
@@ -16,7 +17,7 @@ export function sendEmailResetPassword(res, data) {
     from: 'ladigiococ@gmail.com',
     to: userEmail,
     subject: 'Agro360 - recuperacion de contraseña',
-    text: `Para recuperar tu contraseña, haz click en el siguiente enlace: http://localhost:4000/reset-password/${token}`
+    text: `Para recuperar tu contraseña, haz click en el siguiente enlace: ${FRONTEND_URL}/reset-password/${token}`
   }
 
   transporter.sendMail(mailOptions, (error, info) => {
