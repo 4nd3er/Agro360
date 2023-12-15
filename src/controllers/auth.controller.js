@@ -27,8 +27,7 @@ export const login = async (req, res) => {
             response: "Inicio exitoso",
             data: {
                 id: findUser._id,
-                names: findUser.names,
-                lastnames: findUser.lastnames,
+                user: `${findUser.names} ${findUser.lastnames}`,
                 token: token
             }
         })
@@ -168,9 +167,12 @@ export const verifyToken = async (req, res) => {
             if (!findUser) return res.status(401).json({ message: ["No autorizado"] })
 
             return res.json({
-                id: findUser._id,
-                user: `${findUser.names} ${findUser.lastnames}`,
-                email: findUser.email
+                response: "Usuario verificado correctamente",
+                data: {
+                    id: findUser._id,
+                    user: `${findUser.names} ${findUser.lastnames}`,
+                    email: findUser.email
+                }
             });
         })
     } catch (error) {

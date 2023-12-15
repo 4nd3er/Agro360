@@ -25,7 +25,7 @@ const Login = () => {
                     <h1 className="text-green-800 font-black text-6xl capitalize typing">
                         AGRO
                         <span className="text-green-500 text-8xl">360°</span>
-                        <p className='text-green-800 text-2xl flex justify-center'>Teams</p>
+                        <p className='text-green-800 text-2xl flex justify-center font-extrabold'>Key Performance Indicator</p>
                     </h1>
                 </div>
                 <div className="w-3/5 h-full ">

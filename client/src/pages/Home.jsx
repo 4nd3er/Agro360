@@ -30,7 +30,7 @@ const Home = () => {
                             <br />
                         </span>
                         <span className="text-black text-2xl">
-                            {user ? user.user : null}
+                            {user.data.user}
                         </span>
                     </p>
                     <Link to='charge-data' className='relative -right-60'>
