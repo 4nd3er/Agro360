@@ -51,7 +51,6 @@ export const createCourses = async (req, res) => {
     }
 }
 
-//!PENDIENTE
 export const createCronograms = async (req, res) => {
     const files = req.files
 
@@ -125,8 +124,7 @@ export const createInstructors = async (req, res) => {
                 if (!instructor || !documentType || !document || !email) return res.status(400).json({ message: ["Existen campo vacios o la estructura es incorrecta"] })
                 const [instructorNames, instructorLastnames] = getNamesLastnames(instructor)
 
-                const data = { names: instructorNames.toString(), lastnames: instructorLastnames.toString(), documentType: documentType.toString(), document: document.toString(), rol: rol, email: email.toString() }
-
+                const data = { names: instructorNames.toString(), lastnames: instructorLastnames.toString(), documentType: documentType.toString(), document: document.toString(), rol: rol, email: email.toString() }                
                 const findInstructor = await Users.findOne({ document: data.document })
                 if (findInstructor) {
                     const updateInstructor = await Users.findOneAndUpdate({ document: data.document }, data)

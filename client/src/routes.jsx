@@ -1,8 +1,8 @@
 import { Navigate, Outlet } from 'react-router-dom';
-import { useAuth } from "./context/Context.js";
+import { useAuth, useResponses } from "./context/Context.js";
 import { Spinner } from './components/Components'
 
-function ProtectedRoute() {
+export function ProtectedRoute() {
     const { isAuthenticated, loading } = useAuth();
 
     if (loading) return <Spinner />;
@@ -10,4 +10,9 @@ function ProtectedRoute() {
     return <Outlet />;
 }
 
-export default ProtectedRoute;
+export function ProtectedForm() {
+    const  { checkUser } = useResponses();
+
+    if (!checkUser()) return window.history.back();
+    return <Outlet />;
+}

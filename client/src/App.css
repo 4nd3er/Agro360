@@ -6,7 +6,7 @@
 }
 
 .hidden-card {
-    transform: translateX(-200%);
+    transform: translateX(-210%);
     transition: 1s ease;
 }
 
