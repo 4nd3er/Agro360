@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+const defaultTheme = require('tailwindcss/defaultTheme')
+
 export default {
   content: ["index.html", "./src/**/*.jsx"],
   theme: {
@@ -17,6 +19,10 @@ export default {
         'color-instructor': '#CB7766',
         'color-directivo': '#385C57',
       },
+    },
+    screens: {
+      'xs': '475px',
+      ...defaultTheme.screens,
     },
   },
   plugins: [],

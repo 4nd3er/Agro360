@@ -1,19 +1,21 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useResponses, useRoles } from '../../context/Context.js'
+import { userImg } from '../../assets/Assets.jsx'
+import { Option } from '../../components/Components.jsx'
+import { FRONTEND_URL } from '../../config.js';
+import Spinner from '../../components/Spinner.jsx';
+import Swal from 'sweetalert2';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { useForms, useResponses, useRoles } from '../../context/Context.js'
-import { useParams } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
-import Spinner from '../../components/Spinner.jsx';
-import { Option } from '../../components/Components.jsx'
-import Swal from 'sweetalert2';
-import { userImg } from '../../assets/Assets.jsx'
+import Cookies from 'js-cookie';
 
 const Response = () => {
     const { idform } = useParams();
     const navigate = useNavigate();
 
+    const [user, setUser] = useState(null)
     const [form, setForm] = useState([]);
     const [topic, setTopic] = useState([])
     const [instructors, setInstructors] = useState([])
@@ -27,45 +29,85 @@ const Response = () => {
     const [allOptionsValid, setAllOptionsValid] = useState(false);
     const [validQuestions, setValidQuestions] = useState([])
 
-    const { getFormtoResponse, user, loading: loadingComp, createResponse } = useResponses();
+    const { getFormtoResponse, createResponse, checkUser } = useResponses();
     const { getTopic } = useRoles();
 
     const [loading, setLoading] = useState(true)
+
+    //* COMP USER
+    useEffect(() => {
+        setUser(checkUser())
+        setLoading(false)
+    }, [actualIndex])
 
     //* GET DATA
     //Get Form & Instructors
     useEffect(() => {
         const getData = async () => {
+            setLoading(true)
             const res = await getFormtoResponse(idform);
             if (res) {
-                setInstructors(res.instructors)
+                const getInstructorsImages = async () => {
+                    const array = res.instructors.map(async (instructor) => {
+                        const img = `${FRONTEND_URL}/src/img/instructores/${instructor.document}.png`
+                        instructor.image = img
+                        if (!await findImage(img)) instructor.image = false
+                        return instructor
+                    })
+                    const instructors = await Promise.all(array)
+                    setInstructors(instructors)
+                }
+                getInstructorsImages();
                 setActualInstructor(res.instructors[0])
                 setForm(res.form);
+
+                // Get Questions
+                const questions = res.form.questions.map(question => question)
+                setQuestions(questions)
+                setActualQuestion(questions[actualIndex])
+
+                // Get Topic
+                const topic = await getTopic(res.form.topic)
+                setTopic(topic)
+
+                setLoading(false)
             }
         }
         getData();
     }, [])
 
-    //Get Questions
-    useEffect(() => {
-        if (form.name && form.questions) {
-            const questions = form.questions.map(question => question)
-            setQuestions(questions)
-            setActualQuestion(questions[actualIndex])
-            setLoading(false)
-        }
-    }, [form])
-
-    //Get Topic
-    useEffect(() => {
-        const topic = async () => {
-            const res = await getTopic(form.topic)
-            setTopic(res)
-        }
-        if (form && form.topic) topic();
-    }, [form])
-
     //* FUNCTIONS
+    //Comprobar existencia de la imagen
+    const findImage = async (ruta) => {
+        try {
+            const response = await fetch(ruta, { method: 'HEAD' });
+            return response.status !== 404;
+        } catch (error) {
+            console.error('Error al verificar la existencia de la imagen:', error);
+            return false;
+        }
+    };
+
+    //Salir del formulario
+    const Exit = () => {
+        Swal.fire({
+            title: 'Salir del formulario',
+            text: "¿Estas Seguro que deseas salir? Perderas tus respuestas",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#39a900',
+            cancelButtonColor: '#d33',
+            confirmButtonText: "Salir",
+            cancelButtonText: "Cancelar",
+            reverseButtons: true
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                localStorage.clear()
+                Cookies.remove('user')
+                navigate(`/forms/v/${idform}`)
+            }
+        })
+    }
 
     //Al hacer click en un instructor
     const changeInstructor = (instructor) => {
@@ -111,23 +153,8 @@ const Response = () => {
 
     //Al dar click en siguiente
     const Next = () => {
-        let state;
-        const findValid = validQuestions.find((question) => question.question === questions[actualIndex + 1].question)
-        if (findValid && findValid.state === true) state = true
-        else (state = false)
-        setValidationStates((prevStates) => {
-            // Crear un nuevo array solo con la pregunta actual
-            const newStates = instructors.map((instructor) => ({
-                instructor: instructor._id,
-                question: questions[actualIndex + 1].question,
-                state: state,
-            }));
-            return newStates;
-        });
-        if (allOptionsValid) {
-            setActualIndex(actualIndex + 1)
-        } else {
-            Swal.mixin({
+        if (!allOptionsValid) {
+            return Swal.mixin({
                 toast: true,
                 position: 'top-end',
                 showConfirmButton: false,
@@ -137,7 +164,20 @@ const Response = () => {
                 icon: 'error',
                 title: 'Debes responder las preguntas a cada instructor.',
             })
-        }
+        };
+        const state = validQuestions.some(question =>
+            question.question === questions[actualIndex + 1].question && question.state === true
+        );
+        setValidationStates(() => {
+            // Crear un nuevo array solo con la pregunta actual
+            const newStates = instructors.map((instructor) => ({
+                instructor: instructor._id,
+                question: questions[actualIndex + 1].question,
+                state: state,
+            }));
+            return newStates;
+        });
+        setActualIndex(actualIndex + 1);
     }
 
     //Al dar click en atras
@@ -146,13 +186,10 @@ const Response = () => {
         setValidationStates(validationStates.map((obj) => ({ ...obj, state: true })))
     }
 
-    const response = {
-        answers: []
-    }
-
+    //Guardar el formulario
     const saveForm = () => {
         if (!allOptionsValid) {
-            Swal.mixin({
+            return Swal.mixin({
                 toast: true,
                 position: 'top-end',
                 showConfirmButton: false,
@@ -160,60 +197,62 @@ const Response = () => {
                 timerProgressBar: true,
             }).fire({
                 icon: 'error',
-                title: 'Debes responder a cada instructor',
-            })
-        } else {
-            for (const instructor of instructors) {
-                for (const question of questions) {
-                    const data = {
-                        question: question.question,
-                        instructor: instructor._id,
-                        answer: localStorage.getItem(`instructor: ${instructor.document}, question: ${question.question}`)
-                    }
-                    response.answers.push(data)
-                }
-            }
-            Swal.fire({
-                title: 'Enviar Formulario',
-                text: "¿Estas Seguro? No podras cambiar tus respuestas despues de enviarlas",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#39a900',
-                cancelButtonColor: '#d33',
-                confirmButtonText: "Enviar",
-                cancelButtonText: "Cancelar",
-                reverseButtons: true
-            }).then(async (result) => {
-                if (result.isConfirmed) {
-                    try {
-                        setLoading(true)
-                        await createResponse(idform, response)
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Formulario enviado',
-                            text: "El formulario ha sido enviado satisfactoriamente, gracias por tus respuestas!",
-                            showConfirmButton: false,
-                            timer: 5000,
-                            timerProgressBar: true
-                        })
-                        localStorage.clear();
-                        setTimeout(() => {
-                            navigate(`/forms/v/${idform}`)
-                        }, 5000)
-                    } catch (error) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error al enviar el formulario',
-                            text: "Ha habido un error al enviar el formulario, intenta nuevamente... " + error.response.data.message,
-                            showConfirmButton: false,
-                            timer: 4000,
-                            timerProgressBar: true
-                        })
-                        setLoading(false)
-                    }
-                }
+                title: 'Debes responder las preguntas a cada instructor',
             })
         }
+        const response = {
+            answers: []
+        }
+        for (const instructor of instructors) {
+            for (const question of questions) {
+                const data = {
+                    question: question.question,
+                    instructor: instructor._id,
+                    answer: localStorage.getItem(`instructor: ${instructor.document}, question: ${question.question}`)
+                }
+                response.answers.push(data)
+            }
+        }
+        Swal.fire({
+            title: 'Enviar Formulario',
+            text: "¿Estas Seguro? No podras cambiar tus respuestas despues de enviarlas",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#39a900',
+            cancelButtonColor: '#d33',
+            confirmButtonText: "Enviar",
+            cancelButtonText: "Cancelar",
+            reverseButtons: true
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    setLoading(true)
+                    await createResponse(idform, response)
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Formulario enviado',
+                        text: "El formulario ha sido enviado satisfactoriamente, gracias por tus respuestas!",
+                        showConfirmButton: false,
+                        timer: 5000,
+                        timerProgressBar: true
+                    })
+                    localStorage.clear();
+                    setTimeout(() => {
+                        navigate(`/forms/v/${idform}`)
+                    }, 5000)
+                } catch (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error al enviar el formulario',
+                        text: "Ha habido un error al enviar el formulario, intenta nuevamente... " + error.response.data.message,
+                        showConfirmButton: false,
+                        timer: 4000,
+                        timerProgressBar: true
+                    })
+                    setLoading(false)
+                }
+            }
+        })
     }
 
     //* OTHERS
@@ -222,13 +261,13 @@ const Response = () => {
         dots: false,
         infinite: true,
         speed: 500,
-        slidesToShow: 3,
-        slidesToScroll: 1,
+        slidesToShow: 4,
+        slidesToScroll: 4,
         centerMode: true,
     };
 
     //Si no existe la cookie o no se ha comprobado el codigo
-    if (!user && !loadingComp) {
+    if (!user && !loading) {
         Swal.mixin({
             toast: true,
             position: 'top-end',
@@ -237,7 +276,7 @@ const Response = () => {
             timerProgressBar: true,
         }).fire({
             icon: 'warning',
-            title: 'No estas autorizado para responder este formulario, seras redirigido...',
+            title: 'Tu tiempo para responder al formulario ha finalizado, seras redirigido...',
         })
         localStorage.clear();
         setTimeout(() => {
@@ -245,15 +284,27 @@ const Response = () => {
         }, 6000)
     }
 
-    if (loading || loadingComp) return <Spinner />
+
+
+    if (loading) return <Spinner />
 
     return (
         <div className='w-full flex flex-col p-10'>
             <div className='flex flex-col gap-5 p-8 text-center border rounded-md shadow-lg'>
-                <h1 className='text-2xl sm:text-4xl font-bold text-color-sena'>{form.name}</h1>
+                <div className='flex flex-row justify-between'>
+                    <button onClick={Exit} className='btn text-color-sena bg-white border-color-sena w-fit h-fit hover:bg-color-sena hover:text-white'>
+                        <svg className='w-4 h-4 xs:w-7 xs:h-7 sm:w-11 sm:h-11' viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                            <g fill="none" fillRule="evenodd" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" transform="matrix(-1 0 0 1 18 3)">
+                                <path d="m10.595 10.5 2.905-3-2.905-3" />
+                                <path d="m13.5 7.5h-9" />
+                                <path d="m10.5.5-8 .00224609c-1.1043501.00087167-1.9994384.89621131-2 2.00056153v9.99438478c.0005616 1.1043502.8956499 1.9996898 2 2.0005615l8 .0022461" />
+                            </g>
+                        </svg>
+                    </button>
+                    <h1 className='text-2xl sm:text-4xl font-bold text-color-sena mx-auto'>{form.name}</h1>
+                </div>
                 <h1 className='text-xl sm:text-2xl'>{form.description}</h1>
                 <h1 className='text-lg sm:text-xl text-green-600'>Tematica: <span className='font-bold text-lg sm:text-xl'>{topic ? topic.name : null}</span></h1>
-
             </div>
             <div className='p-4 mt-4 border rounded-md shadow-lg'>
                 <Slider {...settings}>
@@ -261,9 +312,9 @@ const Response = () => {
                         const id = instructor._id
                         const names = `${instructor.names} ${instructor.lastnames}`
                         return (
-                            <div key={id} className={`image-container !flex flex-col justify-center items-center ${instructor !== actualInstructor ? 'blur' : ''}`} onClick={() => changeInstructor(instructor)} >
-                                <img src={userImg} alt={names} className='rounded-s-lg h-auto w-full sm:w-2/3 border-solid border-2 border-transparent' />
-                                <p className="image-name text-md sm:text-lg md:text-xl sm:w-28 md:w-40 text-center mt-4 overflow-hidden text-ellipsis whitespace-nowrap w-20">{names}</p>
+                            <div key={id} className={`image-container mx-3 !flex flex-col justify-center items-center ${instructor !== actualInstructor ? 'blur' : ''}`} onClick={() => changeInstructor(instructor)} >
+                                <img src={instructor.image ? instructor.image : userImg} alt={names} className='rounded-s-lg h-20 xs:h-28 sm:h-36 md:h-48 lg:h-64 xl:h-72 w-full sm:w-4/5 border-solid border-2 border-transparent' />
+                                <p className="image-name text-xs w-16 xs:w-24 sm:text-md sm:w-28 md:text-lg md:w-40 lg:w-60 xl:text-2xl xl:w-full text-center mt-4 overflow-hidden text-ellipsis whitespace-nowrap">{names}</p>
                             </div>
                         )
                     }) : null}
@@ -286,7 +337,7 @@ const Response = () => {
                 )}
                 {actualInstructor && actualIndex + 1 < questions.length && (
                     <button className={`${allOptionsValid ? 'bg-green-400 hover:bg-green-600' : 'bg-gray-500'} btn bottom-10 p-4 rounded-md text-white`}
-                        disable={!allOptionsValid}
+                        disable={!allOptionsValid ? "true" : "false"}
                         onClick={Next}>
                         Siguiente
                     </button>

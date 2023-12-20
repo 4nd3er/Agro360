@@ -16,8 +16,6 @@ export const ResponsesProvider = ({ children }) => {
     const [errors, setErrors] = useState([]);
     const [success, setSuccess] = useState('');
     const [existsForm, setExistsForm] = useState(false);
-    const [user, setUser] = useState(false);
-    const [loading, setLoading] = useState(true);
 
     //* Responses
     // Responses
@@ -53,23 +51,11 @@ export const ResponsesProvider = ({ children }) => {
     //* Create Response
 
     //ValidateCookie
-    useEffect(() => {
-        const checkUser = async () => {
-            const cookies = Cookies.get();
-            if (!cookies.user) {
-                setUser(false)
-                setTimeout(() => {
-                    setLoading(false)
-                }, 3000)
-                return;
-            }
-            const userObject = JSON.parse(cookies.user.substring(2));
-            setUser(userObject)
-            setLoading(false)
-        }
-        checkUser();
-    }, [])
-
+    const checkUser = () => {
+        const cookies = Cookies.get();
+        if (!cookies.user) return false
+        return JSON.parse(cookies.user.substring(2));
+    }
 
     //CompForm
     const compFormResponse = async (id) => {
@@ -80,6 +66,7 @@ export const ResponsesProvider = ({ children }) => {
             ContextErrors(error, setErrors)
         }
     }
+
     // Get Code Response
     const getCodeResponse = async (id, email) => {
         const res = await getCodeResponseRequest(id, email);
@@ -89,7 +76,6 @@ export const ResponsesProvider = ({ children }) => {
     // Verificate Code Response
     const verificateCodeResponse = async (id, code) => {
         const res = await verificateCodeResponseRequest(id, code)
-        if (res.status == 200) setUser(true)
         return res.data
     }
 
@@ -115,11 +101,10 @@ export const ResponsesProvider = ({ children }) => {
                 errors,
                 success,
                 existsForm,
-                user,
-                loading,
                 getResponses,
                 getReponse,
                 getResponsesForm,
+                checkUser,
                 compFormResponse,
                 getCodeResponse,
                 verificateCodeResponse,
