@@ -262,7 +262,7 @@ const Response = () => {
         infinite: true,
         speed: 500,
         slidesToShow: 4,
-        slidesToScroll: 4,
+        slidesToScroll: 1,
         centerMode: true,
     };
 
@@ -283,8 +283,6 @@ const Response = () => {
             navigate(`/forms/v/${idform}`)
         }, 6000)
     }
-
-
 
     if (loading) return <Spinner />
 

@@ -27,7 +27,10 @@ const UserValidation = () => {
     useEffect(() => {
         compFormResponse(form)
         const cookies = Cookies.get();
-        if (cookies.user && JSON.parse(cookies.user.substring(2)).userCode !== '') navigate(`/forms/r/${form}`)
+        if (cookies.user) {
+            const user = JSON.parse(cookies.user.substring(2))
+            if (user.userCode !== '') navigate(`/forms/r/${form}`)
+        }
         setTimeout(() => {
             setLoading(false)
         }, 3000)
@@ -68,7 +71,7 @@ const UserValidation = () => {
         }
     }, [errorsEmail])
 
-    const changeCard = () =>{
+    const changeCard = () => {
         setShowVerifyCard(!showVerifyCard)
         setErrorsCode([])
     }

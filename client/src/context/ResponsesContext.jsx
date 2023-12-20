@@ -54,7 +54,9 @@ export const ResponsesProvider = ({ children }) => {
     const checkUser = () => {
         const cookies = Cookies.get();
         if (!cookies.user) return false
-        return JSON.parse(cookies.user.substring(2));
+        const user = JSON.parse(cookies.user.substring(2));
+        if (!user.userCode) return false
+        return user
     }
 
     //CompForm
