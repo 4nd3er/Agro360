@@ -57,6 +57,7 @@ export const getCode = async (req, res) => {
         //Crear cookie
         const data = { id: user._id.toString(), email: email, sessionCode: hashCode, userCode: "" }
         res.cookie("user", data, {
+            httpOnly: false,
             maxAge: 3600000,
             secure: true,
             sameSite: "none",
@@ -81,6 +82,7 @@ export const compCode = async (req, res) => {
         //Redefinir cookie
         user.userCode = code
         res.cookie("user", user, {
+            httpOnly: false,
             maxAge: 3600000,
             secure: true,
             sameSite: "none",
