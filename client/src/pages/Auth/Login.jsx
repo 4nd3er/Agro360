@@ -1,13 +1,14 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom';
+import { Spinner } from '../../components/Components'
 import { useAuth } from '../../context/Context';
 import '../../css/Login.css';
 
 const Login = () => {
 
     const { register, handleSubmit, formState: { errors, isValid }, } = useForm();
-    const { signin, errors: loginErrors, isAuthenticated } = useAuth();
+    const { signin, errors: loginErrors, isAuthenticated, loading } = useAuth();
     const navigate = useNavigate();
 
     const onSubmit = handleSubmit((data) => {
@@ -17,6 +18,8 @@ const Login = () => {
     useEffect(() => {
         if (isAuthenticated) navigate("/inicio");
     }, [isAuthenticated]);
+
+    if (loading) return <Spinner />
 
     return (
         <>

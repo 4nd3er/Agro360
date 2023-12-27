@@ -107,22 +107,6 @@ export const resetPassword = async (req, res) => {
     }
 }
 
-//* Logout
-export const logout = (req, res) => {
-    try {
-        //Eliminar cookie
-        res.cookie("token", "", {
-            httpOnly: true,
-            secure: true,
-            sameSite: "none",
-            expires: new Date(0)
-        });
-        return res.sendStatus(200);
-    } catch (error) {
-        errorResponse(res, error)
-    }
-}
-
 //* Profile
 export const profile = async (req, res) => {
     const { token } = req.cookies
@@ -142,7 +126,7 @@ export const profile = async (req, res) => {
 
 //* Verify Token
 export const verifyToken = async (req, res) => {
-    const { token } = req.cookies
+    const { token } = req.params
 
     try {//Comprobar existencia de token
         if (!token) return res.status(401).json({ message: ["No autorizado"] });
@@ -160,7 +144,8 @@ export const verifyToken = async (req, res) => {
                 data: {
                     id: findUser._id,
                     user: `${findUser.names} ${findUser.lastnames}`,
-                    email: findUser.email
+                    email: findUser.email,
+                    token: token
                 }
             });
         })

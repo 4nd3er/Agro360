@@ -214,7 +214,11 @@ const CreateQuest = () => {
 							});
 							setTimeout(() => {
 								window.location.href = '/crear-formulario';
-								localStorage.clear();
+								localStorage.removeItem('title');
+								localStorage.removeItem('descrip');
+								localStorage.removeItem('topic');
+								localStorage.removeItem('date');
+								localStorage.removeItem('questions');
 							}, 2100);
 							break;
 					}

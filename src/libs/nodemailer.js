@@ -52,15 +52,7 @@ export function sendEmailFormCode(res, userEmail, code) {
   }
 
   transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.log('Error al enviar el correo electrónico: ' + error);
-    }
-    else {
-      res.json({
-        response: "Email sent successfully to " + userEmail,
-        info: info.response
-      });
-    }
+    if (error) return res.status(500).json({ message: [`Error al enviar el correo electrónico: ${error}`] });
   });
 }
 

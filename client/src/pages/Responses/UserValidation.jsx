@@ -22,18 +22,18 @@ const UserValidation = () => {
 
     const navigate = useNavigate()
     const { form } = useParams()
-    const { getCodeResponse, verificateCodeResponse, compFormResponse, existsForm } = useResponses();
+    const { getCodeResponse, verificateCodeResponse, compFormResponse, existsForm, checkUser } = useResponses();
 
     useEffect(() => {
         compFormResponse(form)
-        const cookies = Cookies.get();
-        if (cookies.user) {
-            const user = JSON.parse(cookies.user.substring(2))
-            if (user.userCode !== '') navigate(`/forms/r/${form}`)
+        const user = async () => {
+            const res = await checkUser(form)
+            if (res) navigate(`/forms/r/${form}`)
+            setTimeout(() => {
+                setLoading(false)
+            }, 3000)
         }
-        setTimeout(() => {
-            setLoading(false)
-        }, 3000)
+        user()
     }, [])
 
     // By submitting the form
@@ -53,9 +53,12 @@ const UserValidation = () => {
 
     const onSubmitCode = codeSubmit(async (data) => {
         try {
-            const res = await verificateCodeResponse(form, data);
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (!user) return setErrorsCode(['Debes obtener un codigo primero'])
+            user.userCode = data.code
+            const res = await verificateCodeResponse(form, { user: user });
+            localStorage.setItem('user', JSON.stringify({ ...user, userCode: data.code }))
             setSuccessCode(res)
-            localStorage.clear()
             setTimeout(() => {
                 navigate(`/forms/r/${form}`)
             }, 2000)

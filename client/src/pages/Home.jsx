@@ -17,7 +17,7 @@ const Home = () => {
         }
         Roles();
     }, [])
-
+    
     if (!user) return <Spinner/>
     
     return (

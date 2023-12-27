@@ -1,6 +1,7 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useParams } from 'react-router-dom';
 import { useAuth, useResponses } from "./context/Context.js";
 import { Spinner } from './components/Components'
+import { useEffect } from 'react';
 
 export function ProtectedRoute() {
     const { isAuthenticated, loading } = useAuth();
@@ -11,8 +12,16 @@ export function ProtectedRoute() {
 }
 
 export function ProtectedForm() {
-    const  { checkUser } = useResponses();
+    const { checkUser } = useResponses();
+    const { idform } = useParams();
 
-    if (!checkUser()) return window.history.back();
+    useEffect(() => {
+        const compUser = async () => {
+            const res = await checkUser(idform);
+            if (!res) window.history.back();
+        }
+        compUser();
+    }, [])
+
     return <Outlet />;
 }

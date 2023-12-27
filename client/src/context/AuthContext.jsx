@@ -1,8 +1,6 @@
 import { createContext, useState, useContext, useEffect } from 'react'
-import { loginRequest, registerRequest, verifyTokenRequest, logoutRequest } from '../api/auth.js'
-import Cookies from 'js-cookie'
+import { loginRequest, registerRequest, verifyTokenRequest } from '../api/auth.js'
 import { ContextErrors } from './Alerts.jsx';
-import { useNavigate } from 'react-router-dom';
 
 export const AuthContext = createContext()
 
@@ -34,7 +32,7 @@ export const AuthProvider = ({ children }) => {
         try {
             const res = await loginRequest(user)
             const data = res.data.data
-            sessionStorage.setItem('session', JSON.stringify(data))
+            localStorage.setItem('session', JSON.stringify(data))
             setUser(data)
             setIsAuthenticated(true)
         } catch (error) {
@@ -44,7 +42,7 @@ export const AuthProvider = ({ children }) => {
 
     const logout = async () => {
         try {
-            await logoutRequest();
+            localStorage.removeItem('session')
             setUser(null)
             setIsAuthenticated(false)
             window.location.href = '/';
@@ -55,7 +53,7 @@ export const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         const checkLogin = async () => {
-            const session = JSON.parse(sessionStorage.getItem('session'))
+            const session = JSON.parse(localStorage.getItem('session'))
             if (!session) {
                 setIsAuthenticated(false);
                 setLoading(false);

@@ -5,7 +5,7 @@ import { errorResponse } from '../libs/libs.js';
 //* Funcion para validar un token de una cookie
 export const validateTokenCookie = (req, res, next) => {
     try {
-        const { token } = req.cookies
+        const token = req.header('Authorization').replace('Bearer ', '');
         if (!token) return res.status(401).json({ message: ["No token, authorization denied"] });
         jwt.verify(token, SECRET_TOKEN, (err, user) => {
             if (err) return res.status(403).json({ message: ["Invalid token"] });

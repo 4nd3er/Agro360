@@ -1,52 +1,33 @@
 import React, { useEffect, useRef, useState } from 'react'
 
-function Option({ dataQuestion, dataInstructor, setValid }) {
-    const [openres, setOpenres] = useState('') //Respuesta abierta
-    const [likert, setLikert] = useState('') //Escala de Likert
-    const [radio, setRadio] = useState('') //Seleccion Unica
-    const [checkbox, setCheckbox] = useState([]) //Seleccion Multiple   
-    const [pointScale, setPointScale] = useState('') //Escala de Puntuación
-    const scalePoints = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-
-    //const { openres, likert, radio, checkbox, pointScale } = states;
+function Option({ dataQuestion, dataInstructor, setValid, actualIndex }) {
+    const [value, setValue] = useState('') //Valor de la respuesta
 
     const question = dataQuestion.question
     const type = dataQuestion.type
     const options = dataQuestion.options
     const instructor = dataInstructor.document
 
+    const compValue = () =>{
+        const responses = JSON.parse(localStorage.getItem('responses'))
+        const getInstructor = responses.find(response => response.instructor === instructor)
+        const getQuestion = getInstructor.answers.find(answer => answer.question === question)
+        return getQuestion.value
+    }
+
     //Al cargar el componente, se verifica si hay una respuesta guardada en el localStorage
     useEffect(() => {
-        const local = localStorage.getItem(`instructor: ${instructor}, question: ${question}`)
-        switch (type) {
-            case '654058b803a2be5f286df7b8': //Respuesta abierta
-                setOpenres(local)
-                if (!openres || openres === '') return setValid(false)
-                setValid(true)
-                break;
-            case '6540651189e8593b88d3848e': //Seleccion Unica
-                setRadio(local)
-                if (!radio || radio === '') return setValid(false)
-                setValid(true)
-                break;
-            case '6556dd95fe823a88d48fafc3': //Seleccion Multiple
-                setCheckbox(local)
-                break;
-            case '6556ddbbfe823a88d48fafc4': //Escala de Likert
-                setLikert(local)
-                if (!likert || likert === '') return setValid(false)
-                setValid(true)
-                break;
-            case '6556de54fe823a88d48fafc5': //Escala de Puntuación
-                setPointScale(local)
-                break;
-        }
-    }, [question, openres, likert, radio, checkbox, pointScale])
+        setValue(compValue())
+    }, [instructor])
 
     //Al cambiar de respuesta, se guarda en el localStorage
-    const handleChange = (set, value) => {
-        set(value);
-        localStorage.setItem(`instructor: ${instructor}, question: ${question}`, value);
+    const handleChange = (value) => {
+        const responses = JSON.parse(localStorage.getItem('responses'))
+        responses.find(response => response.instructor === instructor).answers.find(answer => answer.question === question).value = value
+        localStorage.setItem('responses', JSON.stringify(responses))
+        setValue(value);
+        if (!value || value === '') return setValid(false)
+        setValid(true)
     };
 
     return (
@@ -58,7 +39,7 @@ function Option({ dataQuestion, dataInstructor, setValid }) {
                         type="text"
                         placeholder='Campo para respuesta abierta'
                         className="border-2 p-2 border-gray-400 resize-none rounded-lg w-full mb-3"
-                        onChange={(e) => handleChange(setOpenres, e.target.value)}
+                        onChange={(e) => handleChange(e.target.value)}
                         defaultValue={openres}
                     ></textarea>
                 </div>
@@ -69,7 +50,7 @@ function Option({ dataQuestion, dataInstructor, setValid }) {
                     {options.map((option, index) => {
                         return (
                             <div key={option._id} className="flex flex-col gap-1 items-center justify-center">
-                                <input id={option._id} name={`option${instructor}`} value={option.option} defaultChecked={radio === option.option} onClick={(e) => handleChange(setRadio, e.target.value)} type="radio" className="w-5 h-5 text-blue-600  ring-offset-gray-800 bg-gray-700 border-gray-600" />
+                                <input id={option._id} name={`option${instructor}`} value={option.option} defaultChecked={radio === option.option} onClick={(e) => handleChange(e.target.value)} type="radio" className="w-5 h-5 text-blue-600  ring-offset-gray-800 bg-gray-700 border-gray-600" />
                                 <label htmlFor={option._id}>
                                     {option.option}
                                 </label>
@@ -85,7 +66,7 @@ function Option({ dataQuestion, dataInstructor, setValid }) {
                     {options.map((option) => {
                         return (
                             <div key={option._id} className="flex flex-col gap-1 items-center justify-center">
-                                <input id={option._id} value={option.option} checked={checkbox.find(checkbox => checkbox === option.option)} onChange={(e) => setRadio([...checkbox, e.target.value])} type="checkbox" className="w-5 h-5 text-blue-600 focus:ring-blue-500 ring-offset-gray-800 bg-gray-700 border-gray-600" />
+                                <input id={option._id} value={option.option} checked={checkbox.find(checkbox => checkbox === option.option)} onChange={(e) => handleChange([...value, e.target.value])} type="checkbox" className="w-5 h-5 text-blue-600 focus:ring-blue-500 ring-offset-gray-800 bg-gray-700 border-gray-600" />
                                 <label htmlFor={option._id}>
                                     {option.option}
                                 </label>
@@ -94,15 +75,15 @@ function Option({ dataQuestion, dataInstructor, setValid }) {
                     })}
                 </div>
             )}
-            {/* Escala de Likert */}
+            {/* Escala de value */}
             {type == '6556ddbbfe823a88d48fafc4' && (
                 <div className='py-4 overflow-auto max-w-max'>
                     <ul className="flex gap-16 mb-4">
-                        <li className='flex flex-col text-center' onClick={() => handleChange(setLikert, '1')}>
+                        <li className='flex flex-col text-center' onClick={() => handleChange('1')}>
                             <input disabled type="radio" id="opcion1" name="escala" value="1" className="hidden peer" />
                             <label
                                 htmlFor="opcion1"
-                                className={`${likert === '1' ? '!bg-gray-600' : ''} px-5 py-4 text-gray-800 bg-white border-2 border-gray-500 rounded-lg cursor-pointer peer-checked:bg-gray-300  ${likert != '1' ? 'hover:bg-gray-100 hover:text-gray-600' : ''} text-3xl select-none`}
+                                className={`${compValue() === '1' ? '!bg-gray-600' : ''} px-5 py-4 text-gray-800 bg-white border-2 border-gray-500 rounded-lg cursor-pointer peer-checked:bg-gray-300  ${value != '1' ? 'hover:bg-gray-100 hover:text-gray-600' : ''} text-3xl select-none`}
                             >
                                 1
                             </label>
@@ -110,11 +91,11 @@ function Option({ dataQuestion, dataInstructor, setValid }) {
                                 Nunca
                             </label>
                         </li>
-                        <li className="flex flex-col text-center" onClick={() => handleChange(setLikert, '2')}>
+                        <li className="flex flex-col text-center" onClick={() => handleChange('2')}>
                             <input disabled type="radio" id="opcion2" name="escala" value="2" className="hidden peer" />
                             <label
                                 htmlFor="opcion2"
-                                className={`${likert == '2' ? '!bg-gray-600' : ''} px-5 py-4 text-gray-800 bg-white border-2 border-gray-500 rounded-lg cursor-pointer peer-checked:bg-gray-300  ${likert != '2' ? 'hover:bg-gray-100 hover:text-gray-600' : ''} text-3xl select-none`}
+                                className={`${compValue() == '2' ? '!bg-gray-600' : ''} px-5 py-4 text-gray-800 bg-white border-2 border-gray-500 rounded-lg cursor-pointer peer-checked:bg-gray-300  ${value != '2' ? 'hover:bg-gray-100 hover:text-gray-600' : ''} text-3xl select-none`}
                             >
                                 2
                             </label>
@@ -122,11 +103,11 @@ function Option({ dataQuestion, dataInstructor, setValid }) {
                                 Casi nunca
                             </label>
                         </li>
-                        <li className="flex flex-col text-center" onClick={() => handleChange(setLikert, '3')}>
+                        <li className="flex flex-col text-center" onClick={() => handleChange('3')}>
                             <input disabled type="radio" id="opcion3" name="escala" value="3" className="hidden peer" />
                             <label
                                 htmlFor="opcion3"
-                                className={`${likert == '3' ? '!bg-gray-600' : ''} px-5 py-4 text-gray-800 bg-white border-2 border-gray-500 rounded-lg cursor-pointer peer-checked:bg-gray-300  ${likert != '3' ? 'hover:bg-gray-100 hover:text-gray-600' : ''} text-3xl select-none`}
+                                className={`${compValue() == '3' ? '!bg-gray-600' : ''} px-5 py-4 text-gray-800 bg-white border-2 border-gray-500 rounded-lg cursor-pointer peer-checked:bg-gray-300  ${value != '3' ? 'hover:bg-gray-100 hover:text-gray-600' : ''} text-3xl select-none`}
                             >
                                 3
                             </label>
@@ -134,11 +115,11 @@ function Option({ dataQuestion, dataInstructor, setValid }) {
                                 A veces
                             </label>
                         </li>
-                        <li className="flex flex-col text-center" onClick={() => handleChange(setLikert, '4')}>
+                        <li className="flex flex-col text-center" onClick={() => handleChange('4')}>
                             <input disabled type="radio" id="opcion4" name="escala" value="4" className="hidden peer" />
                             <label
                                 htmlFor="opcion4"
-                                className={`${likert == '4' ? '!bg-gray-600' : ''} px-5 py-4 text-gray-800 bg-white border-2 border-gray-500 rounded-lg cursor-pointer peer-checked:bg-gray-300  ${likert != '4' ? 'hover:bg-gray-100 hover:text-gray-600' : ''} text-3xl select-none`}
+                                className={`${compValue() == '4' ? '!bg-gray-600' : ''} px-5 py-4 text-gray-800 bg-white border-2 border-gray-500 rounded-lg cursor-pointer peer-checked:bg-gray-300  ${value != '4' ? 'hover:bg-gray-100 hover:text-gray-600' : ''} text-3xl select-none`}
                             >
                                 4
                             </label>
@@ -146,11 +127,11 @@ function Option({ dataQuestion, dataInstructor, setValid }) {
                                 Casi siempre
                             </label>
                         </li>
-                        <li className="flex flex-col text-center" onClick={() => handleChange(setLikert, '5')}>
+                        <li className="flex flex-col text-center" onClick={() => handleChange('5')}>
                             <input disabled type="radio" id="opcion5" name="escala" value="5" className="hidden peer" />
                             <label
                                 htmlFor="opcion5"
-                                className={`${likert == '5' ? '!bg-gray-600' : ''} px-5 py-4 text-gray-800 bg-white border-2 border-gray-500 rounded-lg cursor-pointer peer-checked:bg-gray-300  ${likert != '5' ? 'hover:bg-gray-100 hover:text-gray-600' : ''} text-3xl select-none`}
+                                className={`${compValue() == '5' ? '!bg-gray-600' : ''} px-5 py-4 text-gray-800 bg-white border-2 border-gray-500 rounded-lg cursor-pointer peer-checked:bg-gray-300  ${value != '5' ? 'hover:bg-gray-100 hover:text-gray-600' : ''} text-3xl select-none`}
                             >
                                 5
                             </label>

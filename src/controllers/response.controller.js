@@ -16,26 +16,6 @@ export const compForm = async (req, res, next) => {
     }
 }
 
-//* Comprobar la cookie y que el codigo este correcto para el acceso
-export const compFormCookie = async (req, res, next) => {
-    const { form } = req.params
-    const user = req.cookies.user
-    if (!user) return res.status(403).json({ message: ["Code not found, you are not authorized"] })
-    const { id, email, sessionCode, userCode } = user
-
-    try {
-        //Si no se ha definido un codigo
-        if (!sessionCode) return res.status(403).json({ message: ["Code not defined, get your code"] })
-        if (!userCode) return res.status(403).json({ message: ["You have not entered any code"] })
-        if (!await bcrypt.compare(userCode, sessionCode)) return res.status(400).json({ message: ["The code is incorrect"] })
-        const findForm = await compObjectId(form, Forms, "Form")
-        if (!findForm.success) return res.status(findForm.status).json({ message: [findForm.msg] })
-        next()
-    } catch (error) {
-        errorResponse(res, error)
-    }
-}
-
 // *Dar y Comprobar codigo para acceso
 export const getCode = async (req, res) => {
     const { form } = req.params
@@ -54,45 +34,71 @@ export const getCode = async (req, res) => {
         //Generar codigo aleatorio
         const code = generateCode(6);
         const hashCode = await bcrypt.hash(code, 6)
-        //Crear cookie
-        const data = { id: user._id.toString(), email: email, sessionCode: hashCode, userCode: "" }
-        res.cookie("user", data, {
-            maxAge: 3600000,
-            secure: true,
-            sameSite: "none",
-        })
+
         //Enviar correo
         sendEmailFormCode(res, email, code)
+
+        res.json({
+            response: "Email send successfully",
+            data: {
+                id: user._id,
+                form: form,
+                user: `${user.names} ${user.lastnames}`,
+                email: email,
+                sessionCode: hashCode
+            }
+        })
     } catch (error) {
         errorResponse(res, error)
     }
 }
 
 export const compCode = async (req, res) => {
-    const user = req.cookies.user
+    const { form: urlForm } = req.params
+    const { user } = req.body
     if (!user) return res.status(403).json({ message: ["Your code has expired"] })
-    const { id, email, sessionCode, userCode } = user
-    const { code } = req.body
+    const { id, form: userForm, email, sessionCode, userCode } = user
 
     try {
+        //Validar que el formulario sea el mismo
+        if (urlForm !== userForm) return res.status(403).json({ message: ['You received a code to answer another form'] })
         //Validar que el codigo sea correcto        
-        if (!await bcrypt.compare(code, sessionCode)) return res.status(400).json({ message: ["The code is incorrect"] })
+        if (!await bcrypt.compare(userCode, sessionCode)) return res.status(400).json({ message: ["The code is incorrect"] })
 
-        //Redefinir cookie
-        user.userCode = code
-        res.cookie("user", user, {
-            maxAge: 3600000,
-            secure: true,
-            sameSite: "none",
-        })
         const findUser = await Users.findById(id)
         res.json({
             response: "Code comprobate successfully",
             data: {
-                code: code,
-                user: `${findUser.names} ${findUser.lastnames}`
+                id: id,
+                form: urlForm,
+                user: `${findUser.names} ${findUser.lastnames}`,
+                email: email,
+                sessionCode: sessionCode,
+                userCode: userCode
             }
         })
+    } catch (error) {
+        errorResponse(res, error)
+    }
+}
+
+//* Comprobar la cookie y que el codigo este correcto para el acceso
+export const compUser = async (req, res, next) => {
+    const { form } = req.params
+    const user = JSON.parse(req.headers.user)
+    if (!user) return res.status(403).json({ message: ["Code not found, you are not authorized"] })
+    const { form: userForm, sessionCode, userCode } = user
+    req.user = user
+
+    try {
+        //Si no se ha definido un codigo
+        if (!sessionCode) return res.status(403).json({ message: ["Code not defined, get your code"] })
+        if (!userCode) return res.status(403).json({ message: ["You have not entered any code"] })
+        if (!await bcrypt.compare(userCode, sessionCode)) return res.status(400).json({ message: ["The code is incorrect"] })
+        if (form !== userForm) return res.status(403).json({ message: ['You received a code to answer another form'] })
+        const findForm = await compObjectId(form, Forms, "Form")
+        if (!findForm.success) return res.status(findForm.status).json({ message: [findForm.msg] })
+        next()
     } catch (error) {
         errorResponse(res, error)
     }
@@ -101,8 +107,7 @@ export const compCode = async (req, res) => {
 // *Recibir formulario segun los instructores del cronograma de mi ficha
 export const getFormtoResponse = async (req, res) => {
     const { form } = req.params
-    const user = req.cookies.user
-    const { id } = user
+    const { id } = req.user
 
     try {
         const findForm = await Forms.findById(form)
@@ -126,10 +131,9 @@ export const getFormtoResponse = async (req, res) => {
     }
 }
 
-
 export const createResponse = async (req, res) => {
     const { form } = req.params
-    const user = req.cookies.user
+    const user = req.user
     const { answers } = req.body
     const data = { user: user.id, form: form, answers }
 
@@ -143,11 +147,6 @@ export const createResponse = async (req, res) => {
             const findInstructor = await compObjectId(instructor, Users, "Instructor")
             if (!findInstructor.success) return res.status(findInstructor.success) - json({ message: [findInstructor.msg] })
         }
-
-        //Eliminar cookie
-        res.cookie("user", "", {
-            expires: new Date(0)
-        })
 
         await createMethod(data, data, res, Responses, "Response")
     } catch (error) {

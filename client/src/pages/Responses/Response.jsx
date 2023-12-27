@@ -9,20 +9,18 @@ import Swal from 'sweetalert2';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import Cookies from 'js-cookie';
 
 const Response = () => {
     const { idform } = useParams();
     const navigate = useNavigate();
 
-    const [user, setUser] = useState(null)
     const [form, setForm] = useState([]);
     const [topic, setTopic] = useState([])
     const [instructors, setInstructors] = useState([])
     const [questions, setQuestions] = useState([])
 
-    const [actualInstructor, setActualInstructor] = useState()
     const [actualIndex, setActualIndex] = useState(0)
+    const [actualInstructor, setActualInstructor] = useState(0)
     const [actualQuestion, setActualQuestion] = useState([])
 
     const [validationStates, setValidationStates] = useState([]);
@@ -34,142 +32,146 @@ const Response = () => {
 
     const [loading, setLoading] = useState(true)
 
-    //* COMP USER
-    useEffect(() => {
-        setUser(checkUser())
-        setLoading(false)
-    }, [actualIndex])
-
     //* GET DATA
-    //Get Form & Instructors
     useEffect(() => {
         const getData = async () => {
-            setLoading(true)
             const res = await getFormtoResponse(idform);
-            if (res) {
-                const getInstructorsImages = async () => {
-                    const array = res.instructors.map(async (instructor) => {
-                        const img = `${FRONTEND_URL}/src/img/instructores/${instructor.document}.png`
-                        instructor.image = img
-                        if (!await findImage(img)) instructor.image = false
-                        return instructor
-                    })
-                    const instructors = await Promise.all(array)
-                    setInstructors(instructors)
-                }
-                getInstructorsImages();
-                setActualInstructor(res.instructors[0])
-                setForm(res.form);
-
-                // Get Questions
-                const questions = res.form.questions.map(question => question)
-                setQuestions(questions)
-                setActualQuestion(questions[actualIndex])
-
-                // Get Topic
-                const topic = await getTopic(res.form.topic)
-                setTopic(topic)
-
-                setLoading(false)
+            const getInstructors = async () => {
+                const array = res.instructors.map(async (instructor) => {
+                    const img = `${FRONTEND_URL}/src/img/instructores/${instructor.document}.png`
+                    instructor.image = img
+                    if (!await findImage(img)) instructor.image = false
+                    return instructor
+                })
+                const instructors = await Promise.all(array)
+                setInstructors(instructors)
             }
+            getInstructors();
+            setActualInstructor(res.instructors[0])
+            setForm(res.form);
+
+            // Get Questions
+            const questions = res.form.questions.map(question => question)
+            setQuestions(questions)
+            setActualQuestion(questions[actualIndex])
+
+            // Get Topic
+            const topic = await getTopic(res.form.topic)
+            setTopic(topic)
+
+            //Set localStorage
+            const local = JSON.parse(localStorage.getItem('responses'))
+            if (!local) {
+                const storage = res.instructors.map((instructor) => {
+                    return {
+                        instructor: instructor.document,
+                        answers: res.form.questions.map((question) => {
+                            return {
+                                question: question.question,
+                                value: ''
+                            }
+                        })
+                    }
+                })
+                localStorage.setItem('responses', JSON.stringify(storage))
+            }
+
+            //Set Initial Validation States
+            const initialStates = res.instructors.map((instructor) => {
+                const localInstructor = local.find((localInstructor) => localInstructor.instructor === instructor.document)
+                const localQuestionValue = localInstructor.answers.find((answer) => answer.question === questions[0].question).value
+                return {
+                    instructor: instructor._id,
+                    question: questions[0].question,
+                    state: localQuestionValue.length > 0 ? true : false
+                }
+            })
+            setValidationStates(initialStates)
+
+            const initialValidQuestions = res.form.questions.map((question) => {
+                const localValidQuestion = local.every((obj) => obj.answers.some((answer) => answer.question === question.question && answer.value.length > 0))
+                return {
+                    question: question.question,
+                    state: localValidQuestion
+                }
+            })
+            setValidQuestions(initialValidQuestions)
         }
         getData();
+        setTimeout(() => {
+            setLoading(false)
+        }, 4000)
     }, [])
 
+
+    //* ALERTS
+    //Alerta de error
+    const alertRequired = () => Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+    }).fire({
+        icon: 'error',
+        title: 'Debes responder las preguntas a cada instructor.',
+    })
+
+    const alertSendForm = () => Swal.fire({
+        title: 'Enviar Formulario',
+        text: "¿Estas Seguro? No podras cambiar tus respuestas despues de enviarlas",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#39a900',
+        cancelButtonColor: '#d33',
+        confirmButtonText: "Enviar",
+        cancelButtonText: "Cancelar",
+        reverseButtons: true
+    })
+
+    const alertSuccessForm = () => Swal.fire({
+        icon: 'success',
+        title: 'Formulario enviado',
+        text: "El formulario ha sido enviado satisfactoriamente, gracias por tus respuestas!",
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true
+    })
+
+    const alertExit = () => Swal.fire({
+        title: 'Salir del formulario',
+        text: "¿Estas Seguro que deseas salir? Perderas tus respuestas",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#39a900',
+        cancelButtonColor: '#d33',
+        confirmButtonText: "Salir",
+        cancelButtonText: "Cancelar",
+        reverseButtons: true
+    })
+
+    const alertErrorForm = (error) => Swal.fire({
+        icon: 'error',
+        title: 'Error al enviar el formulario',
+        text: "Ha habido un error al enviar el formulario, intenta nuevamente... " + error.response.data.message,
+        showConfirmButton: false,
+        timer: 4000,
+        timerProgressBar: true
+    })
+
+
     //* FUNCTIONS
-    //Comprobar existencia de la imagen
-    const findImage = async (ruta) => {
-        try {
-            const response = await fetch(ruta, { method: 'HEAD' });
-            return response.status !== 404;
-        } catch (error) {
-            console.error('Error al verificar la existencia de la imagen:', error);
-            return false;
-        }
-    };
-
-    //Salir del formulario
-    const Exit = () => {
-        Swal.fire({
-            title: 'Salir del formulario',
-            text: "¿Estas Seguro que deseas salir? Perderas tus respuestas",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#39a900',
-            cancelButtonColor: '#d33',
-            confirmButtonText: "Salir",
-            cancelButtonText: "Cancelar",
-            reverseButtons: true
-        }).then(async (result) => {
-            if (result.isConfirmed) {
-                localStorage.clear()
-                Cookies.remove('user')
-                navigate(`/forms/v/${idform}`)
-            }
-        })
-    }
-
-    //Al hacer click en un instructor
-    const changeInstructor = (instructor) => {
-        setActualInstructor(instructor)
-    }
-
-    //Al cambiar de index, cambiar de pregunta
-    useEffect(() => {
-        setActualQuestion(questions[actualIndex]);
-        setActualInstructor(instructors[0]);
-    }, [actualIndex]);
-
-    //Comprobar si los campos son validos
-    const setValid = (isValid, instructor) => {
-        setValidationStates((prevStates) => {
-            const newStates = [...prevStates];
-            const find = newStates.find((state) => state.instructor === instructor._id && state.question === questions[actualIndex].question)
-            if (find) find.state = isValid
-            else newStates.push({ instructor: instructor._id, question: questions[actualIndex].question, state: isValid })
-            return newStates;
-        });
-    };
-
-    //Comprobar si todas las preguntas son validas
-    useEffect(() => {
-        const allValid = validationStates.every((state) => state.state);
-        setAllOptionsValid(allValid);
-    }, [validationStates])
-
-    //Guardar en un estado si todas las preguntas del questions actual son validas
-    useEffect(() => {
-        if (questions.length > 0) {
-            const findQuestionValid = validQuestions.find((question) => question.question === questions[actualIndex].question)
-            if (allOptionsValid) {
-                if (findQuestionValid) findQuestionValid.state = true
-                else (setValidQuestions([...validQuestions, { question: questions[actualIndex].question, state: true }]))
-            } else {
-                if (findQuestionValid) findQuestionValid.state = false
-                else (setValidQuestions([...validQuestions, { question: questions[actualIndex].question, state: false }]))
-            }
-        }
-    }, [allOptionsValid])
-
     //Al dar click en siguiente
     const Next = () => {
+        const local = localStorage.getItem('responses')
+        if (!local) return location.reload()
         if (!allOptionsValid) {
-            return Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-            }).fire({
-                icon: 'error',
-                title: 'Debes responder las preguntas a cada instructor.',
-            })
-        };
-        const state = validQuestions.some(question =>
-            question.question === questions[actualIndex + 1].question && question.state === true
-        );
+            return alertRequired()
+        }
+        //Comprobar si las preguntas siguientes ya estaban validadas y crear un array con ese valor
+        const state = validQuestions.some(question => question.question === questions[actualIndex + 1].question && question.state === true);
         setValidationStates(() => {
-            // Crear un nuevo array solo con la pregunta actual
+            // Crear un array con los estados de validacion de las preguntas
             const newStates = instructors.map((instructor) => ({
                 instructor: instructor._id,
                 question: questions[actualIndex + 1].question,
@@ -186,103 +188,122 @@ const Response = () => {
         setValidationStates(validationStates.map((obj) => ({ ...obj, state: true })))
     }
 
+    //Salir del formulario
+    const Exit = () => {
+        alertExit().then(async (result) => {
+            if (result.isConfirmed) {
+                localStorage.removeItem('responses')
+                localStorage.removeItem('user')
+                navigate(`/forms/v/${idform}`)
+            }
+        })
+    }
+
+    //Al hacer click en un instructor
+    const changeInstructor = (instructor) => {
+        setActualInstructor(instructor)
+    }
+
+    //Funcion para guardar el estado de la validacion de la pregunta
+    const setValid = (isValid, instructor) => {
+        setValidationStates((prevStates) => {
+            const newStates = [...prevStates];
+            const find = newStates.find((state) => state.instructor === instructor._id && state.question === questions[actualIndex].question)
+            if (find) find.state = isValid
+            return newStates;
+        });
+    };
+
     //Guardar el formulario
     const saveForm = () => {
         if (!allOptionsValid) {
-            return Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-            }).fire({
-                icon: 'error',
-                title: 'Debes responder las preguntas a cada instructor',
-            })
+            return alertRequired()
         }
         const response = {
             answers: []
         }
+        const local = JSON.parse(localStorage.getItem('responses'))
+        if (!local) return location.reload()
         for (const instructor of instructors) {
             for (const question of questions) {
                 const data = {
                     question: question.question,
                     instructor: instructor._id,
-                    answer: localStorage.getItem(`instructor: ${instructor.document}, question: ${question.question}`)
+                    answer: local.find((localInstructor) => localInstructor.instructor === instructor.document).answers.find((answer) => answer.question === question.question).value
                 }
                 response.answers.push(data)
             }
         }
-        Swal.fire({
-            title: 'Enviar Formulario',
-            text: "¿Estas Seguro? No podras cambiar tus respuestas despues de enviarlas",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#39a900',
-            cancelButtonColor: '#d33',
-            confirmButtonText: "Enviar",
-            cancelButtonText: "Cancelar",
-            reverseButtons: true
-        }).then(async (result) => {
+        alertSendForm().then(async (result) => {
             if (result.isConfirmed) {
                 try {
                     setLoading(true)
                     await createResponse(idform, response)
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Formulario enviado',
-                        text: "El formulario ha sido enviado satisfactoriamente, gracias por tus respuestas!",
-                        showConfirmButton: false,
-                        timer: 5000,
-                        timerProgressBar: true
-                    })
-                    localStorage.clear();
+                    alertSuccessForm()
                     setTimeout(() => {
+                        localStorage.removeItem('responses')
+                        localStorage.removeItem('user')
                         navigate(`/forms/v/${idform}`)
                     }, 5000)
                 } catch (error) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error al enviar el formulario',
-                        text: "Ha habido un error al enviar el formulario, intenta nuevamente... " + error.response.data.message,
-                        showConfirmButton: false,
-                        timer: 4000,
-                        timerProgressBar: true
-                    })
+                    alertErrorForm(error)
                     setLoading(false)
                 }
             }
         })
     }
 
+    //Comprobar existencia de la imagen
+    const findImage = async (ruta) => {
+        try {
+            const response = await fetch(ruta, { method: 'HEAD' });
+            return response.status !== 404;
+        } catch (error) {
+            console.error('Error al verificar la existencia de la imagen:', error);
+            return false;
+        }
+    };
+
+
+    //* EFFECTS
+    //Al cambiar de index, cambiar de pregunta
+    useEffect(() => {
+        //Comprobar usuario
+        const compUser = async () => {
+            const res = await checkUser(idform)
+            if (!res) return window.location.back()
+        }
+        compUser()
+        setActualQuestion(questions[actualIndex]);
+        setActualInstructor(instructors[0]);
+    }, [actualIndex]);
+
+    //Comprobar si todas las preguntas son validas
+    useEffect(() => {
+        const allValid = validationStates.every((state) => state.state);
+        setAllOptionsValid(allValid);
+    }, [validationStates])
+
+    //Guardar en un estado si todas las preguntas del questions actual son validas
+    useEffect(() => {
+        if (questions.length > 0) {
+            const findQuestionValid = validQuestions.find((question) => question.question === questions[actualIndex].question)
+            let state = false
+            if (allOptionsValid) state = true
+            if (findQuestionValid) findQuestionValid.state = state
+            else (setValidQuestions([...validQuestions, { question: questions[actualIndex].question, state: state }]))
+        }
+    }, [allOptionsValid])
+
     //* OTHERS
     // Configuración del carrusel utilizando la librería react-slick
     const settings = {
-        dots: false,
+        dots: true,
         infinite: true,
         speed: 500,
-        slidesToShow: 4,
-        slidesToScroll: 1,
-        centerMode: true,
+        slidesToShow: 3, //!CAMBIAR A 4
+        slidesToScroll: 2
     };
-
-    //Si no existe la cookie o no se ha comprobado el codigo
-    if (!user && !loading) {
-        Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 6000,
-            timerProgressBar: true,
-        }).fire({
-            icon: 'warning',
-            title: 'Tu tiempo para responder al formulario ha finalizado, seras redirigido...',
-        })
-        localStorage.clear();
-        setTimeout(() => {
-            navigate(`/forms/v/${idform}`)
-        }, 6000)
-    }
 
     if (loading) return <Spinner />
 
@@ -304,7 +325,7 @@ const Response = () => {
                 <h1 className='text-xl sm:text-2xl'>{form.description}</h1>
                 <h1 className='text-lg sm:text-xl text-green-600'>Tematica: <span className='font-bold text-lg sm:text-xl'>{topic ? topic.name : null}</span></h1>
             </div>
-            <div className='p-4 mt-4 border rounded-md shadow-lg'>
+            <div className='p-8 mt-4 border rounded-md shadow-lg'>
                 <Slider {...settings}>
                     {instructors ? instructors.map((instructor, index) => {
                         const id = instructor._id
@@ -318,14 +339,12 @@ const Response = () => {
                     }) : null}
                 </Slider>
             </div>
-            {instructors.map((instructor, index) => {
-                return (
-                    <div key={instructor._id} className={`${actualInstructor && actualInstructor._id !== instructor._id || !actualInstructor ? 'hidden' : ''} p-8 flex flex-col md:items-center gap-8 mt-4 border rounded-md shadow-lg`}>
-                        <p className='text-center text-lg md:text-xl lg:text-2xl'>{actualQuestion.question}</p>
-                        <Option key={instructor._id} dataQuestion={actualQuestion} dataInstructor={instructor} setValid={(isValid) => setValid(isValid, instructor)} />
-                    </div>
-                )
-            })}
+            {actualQuestion && actualInstructor && (
+                <div className={`p-8 flex flex-col md:items-center gap-8 mt-4 border rounded-md shadow-lg`}>
+                    <p className='text-center text-lg md:text-xl lg:text-2xl'>{actualQuestion.question}</p>
+                    <Option dataQuestion={actualQuestion} dataInstructor={actualInstructor} setValid={(isValid) => setValid(isValid, actualInstructor)} actualIndex={actualIndex} />
+                </div>
+            )}
             <div className={`${actualIndex > 0 ? 'justify-between' : 'justify-end'} flex flex-row w-full mt-5 `}>
                 {actualIndex > 0 && (
                     <button className={`bg-green-400 hover:bg-green-600 btn p-4 rounded-md text-white`}

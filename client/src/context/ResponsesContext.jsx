@@ -16,6 +16,7 @@ export const ResponsesProvider = ({ children }) => {
     const [errors, setErrors] = useState([]);
     const [success, setSuccess] = useState('');
     const [existsForm, setExistsForm] = useState(false);
+    const [user, setUser] = useState(null)
 
     //* Responses
     // Responses
@@ -51,12 +52,17 @@ export const ResponsesProvider = ({ children }) => {
     //* Create Response
 
     //ValidateCookie
-    const checkUser = () => {
-        const cookies = Cookies.get();
-        if (!cookies.user) return false
-        const user = JSON.parse(cookies.user.substring(2));
-        if (!user.userCode) return false
-        return user
+    const checkUser = async (form) => {
+        const user = JSON.parse(localStorage.getItem("user"))
+        if (!user || !user.userCode) return false
+        try {
+            const res = await verificateCodeResponseRequest(form, { user: user })
+            if (res.status == 200) setUser(res.data.data)
+            return res.data.data
+        } catch (error) {
+            setUser(null)
+            return false
+        }
     }
 
     //CompForm
@@ -72,19 +78,21 @@ export const ResponsesProvider = ({ children }) => {
     // Get Code Response
     const getCodeResponse = async (id, email) => {
         const res = await getCodeResponseRequest(id, email);
+        localStorage.setItem("user", JSON.stringify(res.data.data))
         return res;
     }
 
     // Verificate Code Response
-    const verificateCodeResponse = async (id, code) => {
-        const res = await verificateCodeResponseRequest(id, code)
+    const verificateCodeResponse = async (id, user) => {
+        const res = await verificateCodeResponseRequest(id, user)
         return res.data
     }
 
     // Get Form to Response
     const getFormtoResponse = async (id) => {
         try {
-            const res = await getFormtoResponseRequest(id)
+            const user = localStorage.getItem('user')
+            const res = await getFormtoResponseRequest(id, user)
             return res.data
         } catch (error) {
             ContextErrors(error, setErrors)
@@ -93,7 +101,8 @@ export const ResponsesProvider = ({ children }) => {
 
     //Create Response
     const createResponse = async (id, data) => {
-        const res = await createResponseRequest(id, data)
+        const user = localStorage.getItem('user')
+        const res = await createResponseRequest(id, data, user)
         return res
     }
 
@@ -102,6 +111,7 @@ export const ResponsesProvider = ({ children }) => {
             value={{
                 errors,
                 success,
+                user,
                 existsForm,
                 getResponses,
                 getReponse,

@@ -6,4 +6,12 @@ const instance = axios.create({
   withCredentials: true,
 });
 
+instance.interceptors.request.use((config) => {
+  const session = JSON.parse(localStorage.getItem('session'));
+  if (session) config.headers.Authorization = `Bearer ${session.token}`
+  return config
+}, (error) => {
+  return Promise.reject(error)
+})
+
 export default instance;
