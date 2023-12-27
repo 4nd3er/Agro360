@@ -17,18 +17,13 @@ export const login = async (req, res) => {
         if (!isPassword) return res.status(400).json({ message: ["Contraseña incorrecta"] })
 
         //Creacion del token y guardado en cookie
-        const token = await createToken({ id: findUser.id, username: `${findUser.names} ${findUser.lastnames}` })
-        res.cookie("token", token, {
-            httpOnly: process.env.NODE_ENV !== "development",
-            secure: true,
-            sameSite: "none",
-        });
-
+        const token = await createToken({ id: findUser.id })
         res.json({
             response: "Inicio exitoso",
             data: {
                 id: findUser._id,
                 user: `${findUser.names} ${findUser.lastnames}`,
+                email: findUser.email,
                 token: token
             }
         })
@@ -54,22 +49,14 @@ export const register = async (req, res) => {
         const userSaved = await newUser.save()
 
         //Creacion de token y guardado en cookie
-        const token = await createToken({
-            id: userSaved._id
-        });
-        res.cookie("token", token, {
-            httpOnly: process.env.NODE_ENV !== "development",
-            secure: true,
-            sameSite: "none"
-        });
-
+        const token = await createToken({ id: userSaved._id });
         res.json({
             response: "Usuario creado exitosamente",
             data: {
                 id: userSaved._id,
-                names: userSaved.names,
-                lastnames: userSaved.lastnames,
-                email: userSaved.email
+                user: `${userSaved.names} ${userSaved.lastnames}`,
+                email: userSaved.email,
+                token: token
             }
         })
     } catch (error) {
