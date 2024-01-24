@@ -7,8 +7,12 @@ import { FRONTEND_URL } from '../../config.js';
 import Spinner from '../../components/Spinner.jsx';
 import Swal from 'sweetalert2';
 import Slider from 'react-slick';
+import '../../App.css'
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+
+//!Validar el estado del formulario
+//!Check del instructor cuando se haya respondido
 
 const Response = () => {
     const { idform } = useParams();
@@ -60,8 +64,8 @@ const Response = () => {
             setTopic(topic)
 
             //Set localStorage
-            const local = JSON.parse(localStorage.getItem('responses'))
-            if (!local) {
+            const findLocal = localStorage.getItem('responses')
+            if (!findLocal) {
                 const storage = res.instructors.map((instructor) => {
                     return {
                         instructor: instructor.document,
@@ -76,6 +80,8 @@ const Response = () => {
                 localStorage.setItem('responses', JSON.stringify(storage))
             }
 
+            const local = JSON.parse(localStorage.getItem('responses'))
+
             //Set Initial Validation States
             const initialStates = res.instructors.map((instructor) => {
                 const localInstructor = local.find((localInstructor) => localInstructor.instructor === instructor.document)
@@ -88,6 +94,7 @@ const Response = () => {
             })
             setValidationStates(initialStates)
 
+            //Set Initial Valid Questions
             const initialValidQuestions = res.form.questions.map((question) => {
                 const localValidQuestion = local.every((obj) => obj.answers.some((answer) => answer.question === question.question && answer.value.length > 0))
                 return {
@@ -98,6 +105,7 @@ const Response = () => {
             setValidQuestions(initialValidQuestions)
         }
         getData();
+        
         setTimeout(() => {
             setLoading(false)
         }, 4000)
@@ -114,7 +122,7 @@ const Response = () => {
         timerProgressBar: true,
     }).fire({
         icon: 'error',
-        title: 'Debes responder las preguntas a cada instructor.',
+        title: 'Debes responder la pregunta a cada instructor.',
     })
 
     const alertSendForm = () => Swal.fire({
@@ -264,6 +272,14 @@ const Response = () => {
         }
     };
 
+    //Comprobar si hay una respuesta guardada en el localStorage
+    const compValue = (instructor) =>{
+        const responses = JSON.parse(localStorage.getItem('responses'))
+        const getInstructor = responses.find(response => response.instructor === instructor.document)
+        const getQuestion = getInstructor.answers.find(answer => answer.question === actualQuestion.question)
+        return getQuestion.value.length > 0
+    }
+
 
     //* EFFECTS
     //Al cambiar de index, cambiar de pregunta
@@ -299,9 +315,10 @@ const Response = () => {
     // Configuración del carrusel utilizando la librería react-slick
     const settings = {
         dots: true,
+        arrows: true,
         infinite: true,
         speed: 500,
-        slidesToShow: 3, //!CAMBIAR A 4
+        slidesToShow: 4,
         slidesToScroll: 2
     };
 
@@ -327,11 +344,11 @@ const Response = () => {
             </div>
             <div className='p-8 mt-4 border rounded-md shadow-lg'>
                 <Slider {...settings}>
-                    {instructors ? instructors.map((instructor, index) => {
+                    {instructors ? instructors.map((instructor) => {
                         const id = instructor._id
-                        const names = `${instructor.names} ${instructor.lastnames}`
+                        const names = `${instructor.names} ${instructor.lastnames}`                        
                         return (
-                            <div key={id} className={`image-container mx-3 !flex flex-col justify-center items-center ${instructor !== actualInstructor ? 'blur' : ''}`} onClick={() => changeInstructor(instructor)} >
+                            <div key={id} className={`image-container mx-3 !flex flex-col justify-center items-center ${compValue(instructor) ? 'border-2 rounded-lg border-green-600' : ''} ${instructor !== actualInstructor ? 'blur' : ''} `} onClick={() => changeInstructor(instructor)} >
                                 <img src={instructor.image ? instructor.image : userImg} alt={names} className='rounded-s-lg h-20 xs:h-28 sm:h-36 md:h-48 lg:h-64 xl:h-72 w-full sm:w-4/5 border-solid border-2 border-transparent' />
                                 <p className="image-name text-xs w-16 xs:w-24 sm:text-md sm:w-28 md:text-lg md:w-40 lg:w-60 xl:text-2xl xl:w-full text-center mt-4 overflow-hidden text-ellipsis whitespace-nowrap">{names}</p>
                             </div>

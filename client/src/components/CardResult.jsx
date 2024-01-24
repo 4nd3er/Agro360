@@ -2,32 +2,36 @@ import React from 'react'
 import { useState } from 'react'
 import '../App.css'
 
-function CardResult({ answer, instructor, questions, totalAnswers }) {
-    const [actualQuestion, setActualQuestion] = useState('')
+function CardResult({ instructor, results }) {
 
-    const answersQuestion = answer.responses.filter((object) => object.question === actualQuestion).map((object) => object.answers).flat()
+    const { responses, prom } = results
+    const instructorNames = `${instructor.names} ${instructor.lastnames}`
+
     return (
-        <div className="response w-full mb-8" key={answer.instructor}>
-
-            <div className="text-wrapper-10 inline">{instructor ? `${instructor.names} ${instructor.lastnames}` : "instructor"}</div>
-            <select
-                className='p-2 rounded-lg border-2 inline absolute right-7 max-w-xs'
-                onChange={(e) => setActualQuestion(e.target.value)}>
-                <option defaultValue value="">Seleccione la pregunta</option>
-                {questions.map((question) => {
-                    return (
-                        <option key={question} value={question}>{question}</option>
-                    )
-                })}
-            </select>
-            <div className="text-wrapper-9">{totalAnswers} respuestas</div>
-
-            <div className='mt-12 mx-10 text-2xl flex flex-col gap-1 overflow-y-scroll answers-height'>
-                {answersQuestion.map((answer) => {
-                    return (
-                        <p className='text-sm'>{answer}</p>
-                    )
-                })}
+        <div className="response w-full p-8 flex flex-col gap-6">
+            <h1 className=" text-xl text-color-sena">{instructorNames}</h1>
+            {/* Tabla */}
+            <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+                <table className="w-full text-sm text-left rtl:text-right text-gray-500">
+                    <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+                        <tr>
+                            <th scope="col" className="px-6 py-3">Pregunta</th>
+                            <th scope="col" className="px-6 py-3">Puntaje</th>
+                            <th scope="col" className="px-6 py-3">Aprobacion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {responses.map(({ question, points, aprobation }) => {
+                            return (
+                                <tr className="odd:bg-white even:bg-gray-50 border-b">
+                                    <td className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-md'>{question}</td>
+                                    <td className='px-6 py-4 text-center'>{points}</td>
+                                    <td className='px-6 py-4 text-center'>{aprobation * 100}%</td>
+                                </tr>
+                            )
+                        })}
+                    </tbody>
+                </table>
             </div>
         </div>
     )

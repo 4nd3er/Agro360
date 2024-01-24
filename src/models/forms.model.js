@@ -23,7 +23,7 @@ const formsSchema = new mongoose.Schema({
     },
     status: {
         type: Boolean,
-        default: false
+        default: true
     },
     creator: {
         type: mongoose.Schema.Types.ObjectId,

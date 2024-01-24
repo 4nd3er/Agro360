@@ -93,6 +93,76 @@ export const deleteForm = async (req, res) => {
     await deleteMethod(id, res, Forms, "Form")
 }
 
+//* Funcion para obtener los resultados de los instructores
+function instructorsResults(responses) {
+    const instructorsResults = []
+    for (const { answers } of responses) {
+        for (const { question, instructor: instructorId, answer } of answers) {
+            let points = 0;
+            if (answer.length <= 2) points = parseInt(answer)
+            const instructor = instructorId.toString()
+
+            //
+            const findInstructor = instructorsResults.find(object => object.instructor === instructor)
+            if (!findInstructor) {
+                instructorsResults.push({
+                    instructor: instructor,
+                    responses: [
+                        {
+                            question: question,
+                            answers: [answer],
+                            points: points,
+                        }
+                    ],
+                    prom: 0,
+                })
+                continue;
+            }
+            //
+            const findQuestion = findInstructor.responses.find(object => object.question === question)
+            if (!findQuestion) {
+                findInstructor.responses.push({
+                    question: question,
+                    answers: [answer],
+                    points: points,
+                })
+                continue;
+            }
+            findQuestion.answers.push(answer)
+            findQuestion.points += points
+        }
+    }
+
+    //Calcular el porcentaje de aprobacion y el porcentaje del promedio
+    for (const result of instructorsResults) {
+        const percents = []
+        for (const object of result.responses) {
+            const aprobation = object.points / (object.answers.length * 5)
+            object.aprobation = aprobation
+            percents.push(aprobation)
+        }
+        result.prom = percents.reduce((total, num) => total + num, 0) / percents.length
+    }
+
+    return instructorsResults
+}
+
+//* Generar los resultados del instructor segun las respuestas
+export const getInstructorsResults = async (req, res) => {
+    const { id } = req.params
+
+    try {
+        const findForm = await Forms.findById(id)
+        const findResponses = await Responses.find({ form: id })
+        if (!findForm) return res.status(404).json({ message: [messages.notFound("Form")] })
+        const results = instructorsResults(findResponses)
+
+        res.json(results)
+    } catch (error) {
+        errorResponse(res, error)
+    }
+}
+
 //* Reporte en excel de resultados
 export const getFormReport = async (req, res) => {
     const { id } = req.params
@@ -103,58 +173,7 @@ export const getFormReport = async (req, res) => {
         const findResponses = await Responses.find({ form: id })
         if (!findResponses) return res.status(404).json({ message: [messages.notFound("Responses")] })
 
-        const responses = []
-
-        //Extraer respuestas y puntaje
-        for (const response of findResponses) {
-            for (const { question, instructor: instructorId, answer } of response.answers) {
-                let points = 0;
-                if (answer.length <= 2) points = parseInt(answer)
-                const instructor = instructorId.toString()
-
-                //
-                const findInstructor = responses.find(object => object.instructor === instructor)
-                if (!findInstructor) {
-                    responses.push({
-                        instructor: instructor,
-                        responses: [
-                            {
-                                question: question,
-                                answers: [answer],
-                                points: points,
-                            }
-                        ],
-                        prom: 0,
-                    })
-                    continue;
-                }
-                //
-                const findQuestion = findInstructor.responses.find(object => object.question === question)
-                if (!findQuestion) {
-                    findInstructor.responses.push({
-                        question: question,
-                        answers: [answer],
-                        points: points,
-                    })
-                    continue;
-                }
-                findQuestion.answers.push(answer)
-                findQuestion.points += points
-            }
-        }
-
-        //Extraer promedio
-        for (const response of responses) {
-            const points = response.responses.map(object => object.points)
-            const total = points.reduce((total, num) => total + num, 0)
-            const percents = []
-            for (const object of response.responses) {
-                const aprobation = object.points / (object.answers.length * 5)
-                object.aprobation = aprobation
-                percents.push(aprobation)
-            }
-            response.prom = percents.reduce((total, num) => total + num, 0) / percents.length
-        }
+        const responses = instructorsResults(findResponses)
 
         //*XLSX
 

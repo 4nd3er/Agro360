@@ -11,6 +11,7 @@ export const deleteQuestionTypeRequest = async (id) => axios.delete(`/forms/ques
 export const FormsRequest = async () => axios.get("/forms")
 export const getFormRequest = async (id) => axios.get(`/forms/${id}`)
 export const getFormsResponsesRequest = async () => axios.get("/forms/responses")
+export const getFormInstructorsResultsRequest = async (id) => axios.get(`/forms/${id}/results`)
 export const createFormRequest = async (data) => axios.post(`/forms`, data)
 export const updateFormRequest = async (id, data) => axios.put(`/forms/${id}`, data)
 export const deleteFormRequest = async (id) => axios.delete(`/forms/${id}`)

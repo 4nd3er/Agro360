@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken'
 import { SECRET_TOKEN } from '../config/config.js'
 import { errorResponse } from '../libs/libs.js';
+import { Forms } from '../models/models.js';
 
 //* Funcion para validar un token de una cookie
 export const validateTokenCookie = (req, res, next) => {
@@ -39,5 +40,18 @@ export const validate = (validator, type) => (req, res, next) => {
         next()
     } catch (error) {
         return res.status(400).json({ message: error.errors.map(err => err.message) });
+    }
+}
+
+//* Funcion para cambiar el estado de los formularios segun la fecha
+export const validateStatusForm = async (req, res, next) => {
+    try {
+        await Forms.updateMany(
+            { end: { $lt: new Date() } },
+            { $set: { status: false } }
+        )
+        next()
+    } catch (error) {
+        errorResponse(res, error)
     }
 }

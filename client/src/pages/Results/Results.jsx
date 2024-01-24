@@ -33,7 +33,7 @@ const Results = () => {
                                 key={quest._id}
                                 title={quest.name}
                                 imageSrc={imgEncuesta}
-                                isActive={true}
+                                isActive={quest.status}
                             />
                         ))
                     ) : <h3 className="text-2xl text-gray-600">No existen respuestas</h3>}

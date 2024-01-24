@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { validate, validateTokenCookie } from '../middlewares/middlewares.js'
+import { validate, validateStatusForm, validateTokenCookie } from '../middlewares/middlewares.js'
 import { formValidator, questionTypeValidator } from '../validators/form.validators.js';
-import { createForm, createQuestionType, deleteForm, deleteQuestionType, forms, getForm, getFormReport, getFormsResponse, getQuestionType, questionTypes, updateForm, updateQuestionType } from '../controllers/form.controller.js'
+import { createForm, createQuestionType, deleteForm, deleteQuestionType, forms, getForm, getFormReport, getFormsResponse, getInstructorsResults, getQuestionType, questionTypes, updateForm, updateQuestionType } from '../controllers/form.controller.js'
 
 const router = Router()
 
@@ -20,14 +20,14 @@ router.route("/forms/questions/questiontypes/:id")
 // *Forms
 router.route("/forms")
     .all(validateTokenCookie)
-    .get(forms)
+    .get(validateStatusForm, forms)
     .post(validate(formValidator), createForm)
 
 router.route("/forms/responses")
     .all(validateTokenCookie)
     .get(getFormsResponse)
 
-router.get("/forms/:id", getForm)
+router.get("/forms/:id", validateStatusForm, getForm)
 
 router.route("/forms/:id")
     .all(validateTokenCookie)
@@ -35,5 +35,6 @@ router.route("/forms/:id")
     .delete(deleteForm)
 
 router.get("/forms/:id/report", validateTokenCookie, getFormReport)
+router.get("/forms/:id/results", validateTokenCookie, getInstructorsResults)
 
 export default router

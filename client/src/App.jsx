@@ -55,10 +55,9 @@ function App() {
                       </Route>
                       <Route path='/resultados' element={<AuthLayout />}>
                         <Route index element={<Results />} />
-                        <Route path=':idQuest' element={<ResultQuest />} />
+                        <Route path=':idform' element={<ResultQuest />} />
                       </Route>
                     </Route>
-
 
                     <Route path='/forms' element={<LayoutLogin />}>
                       <Route path='v/:form' element={<UserValidation />} />

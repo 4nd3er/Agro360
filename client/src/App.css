@@ -1,17 +1,17 @@
 @import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400&display=swap");
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap');
 
-*{
+* {
     font-family: 'Josefin Sans', sans-serif !important;
 }
 
 .hidden-card {
-    transform: translateX(-210%);
+    transform: translateX(-710%);
     transition: 1s ease;
 }
 
 .hidden-card-right {
-    transform: translateX(300%);
+    transform: translateX(800%);
     transition: 1s ease;
 }
 
@@ -47,3 +47,26 @@
     box-shadow: .15s ease-in-out;
 }
 
+.slick-slider .slick-prev,
+.slick-slider .slick-next {
+    background: #369206;
+    border-radius: 100%;
+}
+
+.slick-slider .slick-prev:hover,
+.slick-slider .slick-prev:focus,
+.slick-slider .slick-next:hover,
+.slick-slider .slick-next:focus {
+    background: #369206;
+}
+
+.slick-slider .slick-prev:hover:before,
+.slick-slider .slick-next:hover:before {
+    opacity: .75;
+}
+
+.slick-slider .slick-prev:before,
+.slick-slider .slick-next:before {
+    opacity: 1;
+    color: white
+}

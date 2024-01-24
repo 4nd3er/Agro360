@@ -85,8 +85,8 @@ export const compCode = async (req, res) => {
 //* Comprobar la cookie y que el codigo este correcto para el acceso
 export const compUser = async (req, res, next) => {
     const { form } = req.params
+    if (!req.headers.user) return res.status(403).json({ message: ["Code not found, you are not authorized"] })
     const user = JSON.parse(req.headers.user)
-    if (!user) return res.status(403).json({ message: ["Code not found, you are not authorized"] })
     const { form: userForm, sessionCode, userCode } = user
     req.user = user
 
@@ -133,21 +133,11 @@ export const getFormtoResponse = async (req, res) => {
 
 export const createResponse = async (req, res) => {
     const { form } = req.params
-    const user = req.user
     const { answers } = req.body
+    const user = req.user
     const data = { user: user.id, form: form, answers }
 
     try {
-        for (const [index, answer] of answers.entries()) {
-            const question = answer.question
-            const instructor = answer.instructor
-
-            const findQuestion = await Forms.findOne({ _id: form, "questions.question": question })
-            if (!findQuestion) return res.status(400).json({ message: [messages.notFound(`Question ${index} for this form`)] })
-            const findInstructor = await compObjectId(instructor, Users, "Instructor")
-            if (!findInstructor.success) return res.status(findInstructor.success) - json({ message: [findInstructor.msg] })
-        }
-
         await createMethod(data, data, res, Responses, "Response")
     } catch (error) {
         errorResponse(res, error)

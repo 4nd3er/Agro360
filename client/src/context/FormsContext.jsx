@@ -1,5 +1,5 @@
 import { useContext, createContext, useEffect, useState } from "react";
-import { FormsRequest, QuestionTypesRequest, createFormRequest, createQuestionTypeRequest, deleteFormRequest, deleteQuestionTypeRequest, getFormReportRequest, getFormRequest, getFormsResponsesRequest, getQuestionTypeRequest, updateFormRequest, updateQuestionTypeRequest } from "../api/forms";
+import { FormsRequest, QuestionTypesRequest, createFormRequest, createQuestionTypeRequest, deleteFormRequest, deleteQuestionTypeRequest, getFormInstructorsResultsRequest, getFormReportRequest, getFormRequest, getFormsResponsesRequest, getQuestionTypeRequest, updateFormRequest, updateQuestionTypeRequest } from "../api/forms";
 import { ContextErrors } from "./Alerts";
 import { saveAs } from 'file-saver';
 
@@ -46,6 +46,16 @@ export const FormsProvider = ({ children }) => {
         }
     }
 
+    // Get Form Instructors Results
+    const FormInstructorsResults = async (id) => {
+        try {
+            const res = await getFormInstructorsResultsRequest(id);
+            return res.data
+        } catch (error) {
+            ContextErrors(error, setErrors)
+        }
+    }
+
     // Create Form
     const createForm = async form => {
         try {
@@ -79,7 +89,7 @@ export const FormsProvider = ({ children }) => {
     const getFormReport = async id => {
         try {
             const res = await getFormReportRequest(id);
-            const blob = new Blob([res.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'})
+            const blob = new Blob([res.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
             saveAs(blob, `Reporte de Encuesta ${id}.xlsx`)
         } catch (error) {
             ContextErrors(error, setErrors)
@@ -146,6 +156,7 @@ export const FormsProvider = ({ children }) => {
                 getForms,
                 FormsResponses,
                 getForm,
+                FormInstructorsResults,
                 createForm,
                 updateForm,
                 deleteForm,

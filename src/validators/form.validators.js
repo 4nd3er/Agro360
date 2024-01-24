@@ -27,7 +27,7 @@ export const formValidator = z.object({
         }),        
     status: z
         .boolean()
-        .default(false)
+        .default(true)
         .nullish(),
     questions: z.array(
         z.object({
