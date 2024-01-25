@@ -22,13 +22,13 @@ const UserValidation = () => {
 
     const navigate = useNavigate()
     const { form } = useParams()
-    const { getCodeResponse, verificateCodeResponse, compFormResponse, existsForm, checkUser } = useResponses();
+    const { getCodeResponse, verificateCodeResponse, compFormResponse, existsForm, enabledForm, checkUser } = useResponses();
 
     useEffect(() => {
         compFormResponse(form)
         const user = async () => {
             const res = await checkUser(form)
-            if (res) navigate(`/forms/r/${form}`)
+            if (res && enabledForm) navigate(`/forms/r/${form}`)
             setTimeout(() => {
                 setLoading(false)
             }, 3000)
@@ -84,6 +84,12 @@ const UserValidation = () => {
     if (!existsForm && !loading) return (
         <div className='w-full min-h-screen flex flex-col items-center justify-center text-color-sena font-bold'>
             <h1>Formulario no encontrado</h1>
+        </div>
+    )
+
+    if (!enabledForm && !loading) return (
+        <div className='w-full min-h-screen flex flex-col items-center justify-center text-color-sena font-bold'>
+            <h1>Este formulario ya no recibe mas respuestas</h1>
         </div>
     )
 

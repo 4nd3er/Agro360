@@ -16,6 +16,7 @@ export const ResponsesProvider = ({ children }) => {
     const [errors, setErrors] = useState([]);
     const [success, setSuccess] = useState('');
     const [existsForm, setExistsForm] = useState(false);
+    const [enabledForm, setEnabledForm] = useState(false);
     const [user, setUser] = useState(null)
 
     //* Responses
@@ -70,6 +71,7 @@ export const ResponsesProvider = ({ children }) => {
         try {
             const res = await getFormRequest(id)
             if (res.status == 200) setExistsForm(true)
+            setEnabledForm(res.data.status)
         } catch (error) {
             ContextErrors(error, setErrors)
         }
@@ -113,6 +115,7 @@ export const ResponsesProvider = ({ children }) => {
                 success,
                 user,
                 existsForm,
+                enabledForm,
                 getResponses,
                 getReponse,
                 getResponsesForm,

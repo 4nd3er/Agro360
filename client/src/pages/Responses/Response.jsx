@@ -12,7 +12,6 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 //!Validar el estado del formulario
-//!Check del instructor cuando se haya respondido
 
 const Response = () => {
     const { idform } = useParams();
@@ -105,7 +104,7 @@ const Response = () => {
             setValidQuestions(initialValidQuestions)
         }
         getData();
-        
+
         setTimeout(() => {
             setLoading(false)
         }, 4000)
@@ -273,7 +272,7 @@ const Response = () => {
     };
 
     //Comprobar si hay una respuesta guardada en el localStorage
-    const compValue = (instructor) =>{
+    const compValue = (instructor) => {
         const responses = JSON.parse(localStorage.getItem('responses'))
         const getInstructor = responses.find(response => response.instructor === instructor.document)
         const getQuestion = getInstructor.answers.find(answer => answer.question === actualQuestion.question)
@@ -346,9 +345,15 @@ const Response = () => {
                 <Slider {...settings}>
                     {instructors ? instructors.map((instructor) => {
                         const id = instructor._id
-                        const names = `${instructor.names} ${instructor.lastnames}`                        
+                        const names = `${instructor.names} ${instructor.lastnames}`
                         return (
-                            <div key={id} className={`image-container mx-3 !flex flex-col justify-center items-center ${compValue(instructor) ? 'border-2 rounded-lg border-green-600' : ''} ${instructor !== actualInstructor ? 'blur' : ''} `} onClick={() => changeInstructor(instructor)} >
+                            <div key={id} className={`relative image-container mx-3 px-2 py-4 !flex flex-col justify-center items-center rounded-xl ${instructor !== actualInstructor ? 'blur' : 'border-2 border-color-sena focus-visible:outline-none'} `} onClick={() => changeInstructor(instructor)} >
+                                <div className={`${!compValue(instructor) ? 'hidden' : 'absolute rounded-full bg-color-sena p-1 top-2 left-2'} `}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-check" width="18" viewBox="0 0 24 24" stroke-width="3" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M5 12l5 5l10 -10" />
+                                    </svg>
+                                </div>
                                 <img src={instructor.image ? instructor.image : userImg} alt={names} className='rounded-s-lg h-20 xs:h-28 sm:h-36 md:h-48 lg:h-64 xl:h-72 w-full sm:w-4/5 border-solid border-2 border-transparent' />
                                 <p className="image-name text-xs w-16 xs:w-24 sm:text-md sm:w-28 md:text-lg md:w-40 lg:w-60 xl:text-2xl xl:w-full text-center mt-4 overflow-hidden text-ellipsis whitespace-nowrap">{names}</p>
                             </div>
