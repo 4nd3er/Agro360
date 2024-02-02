@@ -39,7 +39,7 @@ const UserValidation = () => {
                 setLoading(false)
             }, 3000)
         }
-        user();
+        user()
     }, [existsForm, enabledForm])
 
     // By submitting the form
