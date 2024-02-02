@@ -1,13 +1,13 @@
 export function notFound(name){
 
-    return `${name} not found`
+    return `${name} no encontrado`
 }
 
 export function invalidId(name){
 
-    return `Invalid ${name} id`
+    return `Id ${name} invalido`
 }
 
 export function alreadyExists(name){
-    return `${name} already exists`
+    return `${name} ya existe`
 }

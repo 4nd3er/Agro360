@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }) => {
                 setIsAuthenticated(true);
             }
         } catch (error) {
-            ContextErrors(errors, setErrors)
+            ContextErrors(error, setErrors)
         }
     };
 
@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }) => {
             setUser(data)
             setIsAuthenticated(true)
         } catch (error) {
-            ContextErrors(errors, setErrors)
+            ContextErrors(error, setErrors)
         }
     }
 
@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }) => {
             setIsAuthenticated(false)
             window.location.href = '/';
         } catch (error) {
-            ContextErrors(errors, setErrors)
+            ContextErrors(error, setErrors)
         }
     };
 

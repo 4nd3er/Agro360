@@ -16,7 +16,7 @@ const Navbar = () => {
 		<>
 			<header className="header">
 				<img className="logo" src={LogoBlanco} />
-				<Menu as="div" className="user">
+				<Menu as="div">
 					<Menu.Button onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
 						<svg xmlns="http://www.w3.org/2000/svg" className="perfil icon icon-tabler icon-tabler-user-circle" width="44" height="44" viewBox="0 0 24 24" strokeWidth="1.5" stroke={`${isHovered ? '#c1ff95' : '#ffffff'}`} fill="none" strokeLinecap="round" strokeLinejoin="round">
 							<path stroke="none" d="M0 0h24v24H0z" fill="none" />

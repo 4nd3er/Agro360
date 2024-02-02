@@ -8,7 +8,7 @@ import { SECRET_TOKEN } from '../config/config.js'
 export const login = async (req, res) => {
     const { email, password } = req.body
     try {
-        //Validacion Usuario no existe en base de datos
+        //Validación Usuario no existe en base de datos
         const findUser = await Admin.findOne({ email })
         if (!findUser) return res.status(400).json({ message: ["El usuario no existe"] })
 
@@ -37,8 +37,8 @@ export const register = async (req, res) => {
     const { names, lastnames, email, password } = req.body
     try {
         //Permitir registro
-        const enabledRegister = true
-        if (!enabledRegister) return res.status(401).json({ message: ['You are not allowed to register'] })
+        const enabledRegister = false
+        if (!enabledRegister) return res.status(401).json({ message: ['No estas habilitado para registrarte'] })
 
         //Validadion Usuario ya existe en base de datos
         const findUser = await Admin.findOne({ email })
@@ -70,7 +70,7 @@ export const forgetPassword = async (req, res) => {
     try {
         //Buscar usuario por email
         const finduser = await Admin.findOne({ email })
-        if (!finduser) return res.status(400).json({ message: ['User not found'] })
+        if (!finduser) return res.status(400).json({ message: ['Usuario no encontrado'] })
 
         //Creacion de token
         const token = await createToken({ id: finduser.email })
@@ -88,14 +88,14 @@ export const resetPassword = async (req, res) => {
     try {
         //BUscar usuario
         const User = await Admin.findOne({ email: req.user.id })
-        if (!User) return res.status(400).json({ message: ['User not found'] })
+        if (!User) return res.status(400).json({ message: ['Usuario no encontrado'] })
 
         //Actualizar contraseña
         User.password = password
         await User.save()
 
         res.json({
-            response: "Password changed successfully",
+            response: "Contraseña cambiada satisfactoriamente",
             data: {
                 names: User.names,
                 lastnames: User.lastnames,
@@ -113,7 +113,7 @@ export const profile = async (req, res) => {
     try {
         //Buscar Admin
         const findUser = await Admin.findById(req.user.id).select("-password -__v")
-        if (!findUser) return res.status(404).json({ message: ["User not found"] })
+        if (!findUser) return res.status(404).json({ message: ["Usuario no encontrado"] })
 
         res.json({
             session_token: token,
