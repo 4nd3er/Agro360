@@ -7,7 +7,6 @@ export const getMethod = async (res, model, name) => {
     const [lowerName, mayusName] = nameMayusName(name)
     try {
         const findModel = await model.find({})
-        //if (!findModel.length > 0) return res.status(404).json({ message: [messages.notFound(mayusName)] })
         res.json(findModel)
     } catch (error) {
         errorResponse(res, error)
@@ -37,7 +36,7 @@ export const createMethod = async (data, find, res, model, name, capitalize) => 
         const newModel = new model(data)
         const saveModel = await newModel.save()
         res.json({
-            response: `${mayusName} created successfully`,
+            response: `${mayusName} creado satisfactoriamente`,
             data: saveModel
         })
     } catch (error) {
@@ -58,7 +57,7 @@ export const updateMethod = async (data, id, find, res, model, name, capitalize)
         })
         if (!findModel) return res.status(404).json({ message: [messages.notFound(mayusName)] })
         res.json({
-            response: `${mayusName} updated successfully`,
+            response: `${mayusName} actualizado satisfactoriamente`,
             data: findModel
         })
     } catch (error) {
@@ -74,7 +73,7 @@ export const deleteMethod = async (id, res, model, name) => {
         const findModel = await model.findByIdAndDelete(id)
         if (!findModel) return res.status(404).json({ message: [messages.notFound(mayusName)] })
         res.json({
-            response: `${mayusName} deleted successfully`,
+            response: `${mayusName} eliminado satisfactoriamente`,
             data: findModel
         })
     } catch (error) {

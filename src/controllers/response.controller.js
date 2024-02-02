@@ -8,8 +8,10 @@ import { generateCode, capitalizeWord } from '../libs/functions.js'
 export const compForm = async (req, res, next) => {
     const { form } = req.params
     try {
-        const findForm = await compObjectId(form, Forms, "Form")
-        if (!findForm.success) return res.status(findForm.status).json({ message: [findForm.msg] })
+        const compIdForm = await compObjectId(form, Forms, "Form")
+        if (!compIdForm.success) return res.status(compIdForm.status).json({ message: [compIdForm.msg] })
+        const findForm = await Forms.findById(form)
+        req.form = findForm
         next();
     } catch (error) {
         errorResponse(res, error)
@@ -23,23 +25,24 @@ export const getCode = async (req, res) => {
 
     try {
         const user = await Users.findOne({ email })
-        if (!user) return res.status(404).json({ message: ["User not found"] })
+        if (!user) return res.status(404).json({ message: ["Usuario no encontrado"] })
+        const userNames = `${user.names} ${user.lastnames}`
         //Buscar ficha
-        if (!user.course) return res.status(400).json({ message: ["You do not have a course, you cannot respond to this form."] })
+        if (!user.course) return res.status(400).json({ message: ["No puedes responder a esta encuesta, debes pertenecer a una ficha"] })
         const findCronogram = await CoursesCronogram.findOne({ course: user.course })
-        if (!findCronogram) return res.status(400).json({ message: ["You cannot respond to this form"] })
+        if (!findCronogram) return res.status(400).json({ message: ["Tu ficha no puede responder a esta encuesta"] })
         //Comprobar si existe una respuesta
         const findResponse = await Responses.findOne({ form: form, user: user._id })
-        if (findResponse) return res.status(400).json({ message: ["You have already responded to this form"] })
+        if (findResponse) return res.status(400).json({ message: ["Ya has respondido a esta encuesta"] })
         //Generar codigo aleatorio
         const code = generateCode(6);
         const hashCode = await bcrypt.hash(code, 6)
 
         //Enviar correo
-        sendEmailFormCode(res, email, code)
+        sendEmailFormCode(res, { formName: req.form.name, code: code, userEmail: email, userNames: userNames })
 
         res.json({
-            response: "Email send successfully",
+            response: "Email enviado satisfactoriamente",
             data: {
                 id: user._id,
                 form: form,
@@ -56,18 +59,18 @@ export const getCode = async (req, res) => {
 export const compCode = async (req, res) => {
     const { form: urlForm } = req.params
     const { user } = req.body
-    if (!user) return res.status(403).json({ message: ["Your code has expired"] })
+    if (!user) return res.status(403).json({ message: ["Tu codigo ha expirado"] })
     const { id, form: userForm, email, sessionCode, userCode } = user
 
     try {
         //Validar que el formulario sea el mismo
-        if (urlForm !== userForm) return res.status(403).json({ message: ['You received a code to answer another form'] })
+        if (urlForm !== userForm) return res.status(403).json({ message: ['Recibiste un codigo para responder a otra encuesta'] })
         //Validar que el codigo sea correcto        
-        if (!await bcrypt.compare(userCode, sessionCode)) return res.status(400).json({ message: ["The code is incorrect"] })
+        if (!await bcrypt.compare(userCode, sessionCode)) return res.status(400).json({ message: ["El codigo es incorrecto"] })
 
         const findUser = await Users.findById(id)
         res.json({
-            response: "Code comprobate successfully",
+            response: "Codigo comprobado satisfactoriamente",
             data: {
                 id: id,
                 form: urlForm,
@@ -85,17 +88,17 @@ export const compCode = async (req, res) => {
 //* Comprobar la cookie y que el codigo este correcto para el acceso
 export const compUser = async (req, res, next) => {
     const { form } = req.params
-    if (!req.headers.user) return res.status(403).json({ message: ["Code not found, you are not authorized"] })
+    if (!req.headers.user) return res.status(403).json({ message: ["Codigo no encontrado, no estas autorizado para responder a esta encuesta"] })
     const user = JSON.parse(req.headers.user)
     const { form: userForm, sessionCode, userCode } = user
     req.user = user
 
     try {
         //Si no se ha definido un codigo
-        if (!sessionCode) return res.status(403).json({ message: ["Code not defined, get your code"] })
-        if (!userCode) return res.status(403).json({ message: ["You have not entered any code"] })
-        if (!await bcrypt.compare(userCode, sessionCode)) return res.status(400).json({ message: ["The code is incorrect"] })
-        if (form !== userForm) return res.status(403).json({ message: ['You received a code to answer another form'] })
+        if (!sessionCode) return res.status(403).json({ message: ["Codigo no definido, primero obten un codigo"] })
+        if (!userCode) return res.status(403).json({ message: ["No has ingresado ningun codigo"] })
+        if (!await bcrypt.compare(userCode, sessionCode)) return res.status(400).json({ message: ["El codigo es incorrecto"] })
+        if (form !== userForm) return res.status(403).json({ message: ['Recibiste un codigo para responder a otra encuesta'] })
         const findForm = await compObjectId(form, Forms, "Form")
         if (!findForm.success) return res.status(findForm.status).json({ message: [findForm.msg] })
         next()

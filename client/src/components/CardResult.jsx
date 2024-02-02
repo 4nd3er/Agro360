@@ -26,7 +26,7 @@ function CardResult({ instructor, results }) {
                                 <tr className="odd:bg-white even:bg-gray-50 border-b">
                                     <td className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-md'>{question}</td>
                                     <td className='px-6 py-4 text-center'>{points}</td>
-                                    <td className='px-6 py-4 text-center'>{aprobation * 100}%</td>
+                                    <td className='px-6 py-4 text-center'>{aprobation}%</td>
                                 </tr>
                             )
                         })}

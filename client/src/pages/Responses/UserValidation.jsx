@@ -53,6 +53,7 @@ const UserValidation = () => {
 
     const onSubmitCode = codeSubmit(async (data) => {
         try {
+            setErrorsCode([])
             const user = JSON.parse(localStorage.getItem('user'));
             if (!user) return setErrorsCode(['Debes obtener un codigo primero'])
             user.userCode = data.code

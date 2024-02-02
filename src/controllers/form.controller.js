@@ -41,7 +41,7 @@ export const createForm = async (req, res) => {
 
         //*Comprobar preguntas duplicadas
         const questionNames = questions.map((question) => question.question)
-        if (compDuplicate(questionNames)) return res.status(400).json({ message: ["Exists duplicate questions"] })
+        if (compDuplicate(questionNames)) return res.status(400).json({ message: ["Existen preguntas duplicadas"] })
 
         // *Validar tipo de pregunta
         for (const [index, { type }] of questions.entries()) {
@@ -71,7 +71,7 @@ export const updateForm = async (req, res) => {
 
         //*Comprobar preguntas duplicadas
         const questionNames = questions.map((question) => question.question)
-        if (compDuplicate(questionNames)) return res.status(400).json({ message: ["Exists duplicate questions"] })
+        if (compDuplicate(questionNames)) return res.status(400).json({ message: ["Existen preguntas duplicadas"] })
 
         // *Validar tipo de pregunta
         for (const [index, { type }] of questions.entries()) {
@@ -137,7 +137,11 @@ function instructorsResults(responses) {
     for (const result of instructorsResults) {
         const percents = []
         for (const object of result.responses) {
-            const aprobation = object.points / (object.answers.length * 5)
+            const calcAprobation = (object.points / (object.answers.length * 5)) * 100
+            let aprobation = calcAprobation
+            if (calcAprobation.toString().indexOf('.') !== -1){
+                aprobation = parseFloat(calcAprobation.toFixed(2))
+            }
             object.aprobation = aprobation
             percents.push(aprobation)
         }
@@ -182,6 +186,7 @@ export const getFormReport = async (req, res) => {
 
         //Hoja de calculo
         for (const response of responses) {
+            console.log(response)
             const questions = response.responses.map(object => object.question)
             const instructor = await Users.findById(response.instructor)
             const instructorNames = `${instructor.names} ${instructor.lastnames}`
@@ -211,8 +216,8 @@ export const getFormReport = async (req, res) => {
             });
             //Datos json a excel
             response.responses.forEach(object => {
-                const row = sheet.addRow([object.question, object.points, object.aprobation])
-                row.getCell(3).numFmt = '0%'
+                const row = sheet.addRow([object.question, object.points, object.aprobation/100])
+                row.getCell(3).numFmt = object.aprobation % 1 !== 0 ? '0.00%' : '0%'
             })
             //Ultima fila
             const lastRow = sheet.lastRow
@@ -227,8 +232,8 @@ export const getFormReport = async (req, res) => {
             sheet.getCell(`B${rowIndexToInsert}`).alignment = { vertical: 'middle', horizontal: 'center' }
             sheet.getCell(`B${rowIndexToInsert}`).font = { bold: true }
             sheet.mergeCells(`B${rowIndexToInsert + 1}:C${rowIndexToInsert + 1}`)
-            sheet.getCell(`B${rowIndexToInsert + 1}`).value = response.prom
-            sheet.getCell(`B${rowIndexToInsert + 1}`).numFmt = '0%'
+            sheet.getCell(`B${rowIndexToInsert + 1}`).value = response.prom/100
+            sheet.getCell(`B${rowIndexToInsert + 1}`).numFmt = response.prom % 1 !== 0 ? '0.00%' : '0%'
 
             // Centrar las celdas en las columnas B y C
             sheet.eachRow({ includeEmpty: true }, function (row, rowNumber) {

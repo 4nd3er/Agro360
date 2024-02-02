@@ -71,7 +71,7 @@ const Login = () => {
                                 value="Iniciar Sesion"
                                 className={isValid ? 'bg-green-600 w-full py-3 text-white uppercase font-bold rounded-xl hover: cursor-pointer hover:bg-green-700 transition-color' : 'bg-gray-400 w-full py-3 text-white uppercase font-bold rounded-xl hover: cursor-pointer'}
                             />
-                            <Link className='block my-5 text-slate-500 uppercase text-xs' to='register'>¿No tiene una cuenta? Regístrese</Link>
+                            {/*<Link className='block my-5 text-slate-500 uppercase text-xs' to='register'>¿No tiene una cuenta? Regístrese</Link>*/}
                         </form>
                         <nav className='lg:flex lg: justify-between'></nav>
                     </div>

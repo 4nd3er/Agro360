@@ -11,8 +11,6 @@ import '../../App.css'
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
-//!Validar el estado del formulario
-
 const Response = () => {
     const { idform } = useParams();
     const navigate = useNavigate();
@@ -30,7 +28,7 @@ const Response = () => {
     const [allOptionsValid, setAllOptionsValid] = useState(false);
     const [validQuestions, setValidQuestions] = useState([])
 
-    const { getFormtoResponse, createResponse, checkUser } = useResponses();
+    const { getFormtoResponse, createResponse, checkUser, compFormResponse, existsForm, enabledForm } = useResponses();
     const { getTopic } = useRoles();
 
     const [loading, setLoading] = useState(true)
@@ -38,6 +36,12 @@ const Response = () => {
     //* GET DATA
     useEffect(() => {
         const getData = async () => {
+            compFormResponse(idform)
+            if (!existsForm || !enabledForm) {
+                localStorage.removeItem('responses')
+                localStorage.removeItem('user')
+                navigate(`/forms/v/${idform}`)
+            }
             const res = await getFormtoResponse(idform);
             const getInstructors = async () => {
                 const array = res.instructors.map(async (instructor) => {
@@ -231,6 +235,8 @@ const Response = () => {
         }
         const local = JSON.parse(localStorage.getItem('responses'))
         if (!local) return location.reload()
+        const user = JSON.parse(localStorage.getItem('user'))
+        if (!user) return navigate(`/forms/v/${idform}`)
         for (const instructor of instructors) {
             for (const question of questions) {
                 const data = {
@@ -317,7 +323,7 @@ const Response = () => {
         arrows: true,
         infinite: true,
         speed: 500,
-        slidesToShow: 4,
+        slidesToShow: 3,
         slidesToScroll: 2
     };
 
@@ -363,7 +369,10 @@ const Response = () => {
             </div>
             {actualQuestion && actualInstructor && (
                 <div className={`p-8 flex flex-col md:items-center gap-8 mt-4 border rounded-md shadow-lg`}>
-                    <p className='text-center text-lg md:text-xl lg:text-2xl'>{actualQuestion.question}</p>
+                    <div className='flex flex-col gap-2 text-lg'>
+                        <p className='text-center text-color-sena'>Pregunta {actualIndex + 1}/{questions.length}</p>
+                        <p className='text-center text-lg md:text-xl lg:text-2xl'>{actualQuestion.question}</p>
+                    </div>
                     <Option dataQuestion={actualQuestion} dataInstructor={actualInstructor} setValid={(isValid) => setValid(isValid, actualInstructor)} actualIndex={actualIndex} />
                 </div>
             )}

@@ -61,7 +61,7 @@ export const createCronograms = async (req, res) => {
             const cronograms = []
             for (const [index, object] of file.entries()) {
                 const values = Object.values(object)
-                
+
                 const course = values[0].toString()
                 const start = parseDate(values[1])
                 const end = parseDate(values[2])
@@ -70,10 +70,10 @@ export const createCronograms = async (req, res) => {
                 const cronogramYear = end.toString().split(" ")[3]
                 const actualYear = new Date().getFullYear().toString()
 
-                if (instructor.length > 10 && instructor !== 'Sin Programar' && cronogramYear === actualYear && end < new Date()) {
+                if (instructor.length >= 10 && instructor !== 'Sin Programar' && cronogramYear === actualYear && end < new Date()) {
                     const [instructorNames, instructorLastnames] = getNamesLastnames(instructor)
                     const findCourse = await Courses.findOne({ number: course })
-                    if (!findCourse) return res.status(404).json({ message: [messages.notFound(`Course ${index} index ${index + 2}`)] })
+                    if (!findCourse) return res.status(404).json({ message: [messages.notFound(`Ficha ${index} index ${index + 2}`)] })
                     const findInstructor = await Users.findOne({ names: instructorNames, lastnames: instructorLastnames })
                     if (!findInstructor) return res.status(404).json({ message: [messages.notFound(`Instructor ${instructor} index ${index + 2}`)] })
 
@@ -85,6 +85,7 @@ export const createCronograms = async (req, res) => {
                     if (!findCronogram.instructors.includes(findInstructor._id.toString())) findCronogram.instructors.push(findInstructor._id.toString())
                 }
             }
+
             for (const cronogram of cronograms) {
                 const findCronogram = await CoursesCronogram.findOne({ course: cronogram.course })
                 if (findCronogram) {
@@ -160,7 +161,7 @@ export const createUsers = async (req, res) => {
                 const course = values[5]
 
                 const findCourse = await Courses.findOne({ number: course })
-                if (!findCourse) return res.status(400).json({ message: [messages.notFound(`Course index ${index + 1}`)] })
+                if (!findCourse) return res.status(400).json({ message: [messages.notFound(`Ficha index ${index + 1}`)] })
                 const findUser = await Users.findOne({ document: doc.toString() })
                 const data = {
                     names: capitalizeString(names),
