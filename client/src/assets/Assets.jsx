@@ -6,5 +6,6 @@ export { default as imgEncuesta } from './icons/encuesta.png';
 export { default as userImg } from './icons/user.png';
 export { default as imgNuevaEncuesta } from './icons/Icon.png';
 export { default as Logo } from './logos/Logo.png';
+export { default as Logo2 } from './logos/LogoAgro360-2.png'
 export { default as LogoBlanco } from './logos/LogoAgro360Blanco.png';
 export { default as LogoSenaBlanco } from './logos/logo-sena-blanco.png';

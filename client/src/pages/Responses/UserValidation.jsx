@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form'
 import { useResponses } from '../../context/Context.js';
 import { FormAlert, Spinner } from '../../components/Components.jsx';
-import { Logo } from '../../assets/Assets.jsx';
+import { Logo2 } from '../../assets/Assets.jsx';
 import '../../App.css'
 import Swal from 'sweetalert2';
 import Cookies from 'js-cookie';
@@ -100,7 +100,7 @@ const UserValidation = () => {
                 <div className={`${showVerifyCard ? 'hidden-card' : 'duration-1000'} max-w-md `}>
                     <form onSubmit={onSubmitEmail} className="bg-white shadow-xl rounded-xl border border-gray-300">
                         <div className="flex justify-center my-6">
-                            <img src={Logo} alt="Logo360" className="rounded-lg w-40 h-30 md:ml-6" />
+                            <img src={Logo2} alt="Logo360" className="rounded-lg w-40 h-30 md:ml-6" />
                         </div>
                         <div className='px-6 py-8'>
                             <FormAlert errors={errorsEmail} />
@@ -134,8 +134,8 @@ const UserValidation = () => {
                 {/* Verify code */}
                 <div className={`${!showVerifyCard ? 'hidden-card-right' : 'show-card'} max-w-md absolute code-card `}>
                     <form onSubmit={onSubmitCode} className="bg-white shadow-xl rounded-xl border border-gray-300">
-                        <div className="flex justify-center md:justify-center">
-                            <img src={Logo} alt="Logo360" className="rounded-lg w-20 h-30 md:ml-6" />
+                        <div className="flex justify-center my-6">
+                            <img src={Logo2} alt="Logo360" className="rounded-lg w-40 h-30 md:ml-6" />
                         </div>
                         <div className='px-6 py-8'>
                             <FormAlert errors={errorsCode} success={successCode} />
