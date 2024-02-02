@@ -33,15 +33,22 @@ const Response = () => {
 
     const [loading, setLoading] = useState(true)
 
-    //* GET DATA
+    //* COMP USER
     useEffect(() => {
-        const getData = async () => {
-            compFormResponse(idform)
+        const compForm = async () => {
+            await compFormResponse(idform)
             if (!existsForm || !enabledForm) {
                 localStorage.removeItem('responses')
                 localStorage.removeItem('user')
                 navigate(`/forms/v/${idform}`)
             }
+        }
+        compForm();
+    }, [])
+
+    //* GET DATA
+    useEffect(() => {
+        const getData = async () => {
             const res = await getFormtoResponse(idform);
             const getInstructors = async () => {
                 const array = res.instructors.map(async (instructor) => {
@@ -112,7 +119,7 @@ const Response = () => {
         setTimeout(() => {
             setLoading(false)
         }, 4000)
-    }, [])
+    }, [existsForm, enabledForm])
 
 
     //* ALERTS

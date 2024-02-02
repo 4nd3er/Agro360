@@ -25,7 +25,13 @@ const UserValidation = () => {
     const { getCodeResponse, verificateCodeResponse, compFormResponse, existsForm, enabledForm, checkUser } = useResponses();
 
     useEffect(() => {
-        compFormResponse(form)
+        const compForm = async () => {
+            await compFormResponse(form)
+        }
+        compForm();
+    }, [])
+
+    useEffect(() => {
         const user = async () => {
             const res = await checkUser(form)
             if (res && enabledForm) navigate(`/forms/r/${form}`)
@@ -34,7 +40,7 @@ const UserValidation = () => {
             }, 3000)
         }
         user()
-    }, [])
+    }, [existsForm, enabledForm])
 
     // By submitting the form
     const onSubmitEmail = emailSubmit(async (data) => {
