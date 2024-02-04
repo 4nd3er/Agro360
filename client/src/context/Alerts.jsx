@@ -37,6 +37,7 @@ export function ContextErrors(error, setErrors, setSuccess, setLoading) {
                 error500()
                 break;
         }
+        console.error(error)
         if (setSuccess) setSuccess('')
         if (setLoading) setLoading(false)
     }
