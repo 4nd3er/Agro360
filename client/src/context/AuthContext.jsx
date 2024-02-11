@@ -1,6 +1,6 @@
 import { createContext, useState, useContext, useEffect } from 'react'
-import { loginRequest, registerRequest, verifyTokenRequest } from '../api/auth.js'
-import { ContextErrors } from './Alerts.jsx';
+import { forgetPasswordRequest, loginRequest, registerRequest, resetPasswordRequest, verifyTokenRequest } from '../api/auth.js'
+import { ContextErrors, ContextSuccess } from './Alerts.jsx';
 
 export const AuthContext = createContext()
 
@@ -14,7 +14,12 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [errors, setErrors] = useState([]);
+    const [success, setSuccess] = useState();
     const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        setErrors([])
+    }, [location.href])
 
     const signup = async (user) => {
         try {
@@ -35,6 +40,21 @@ export const AuthProvider = ({ children }) => {
             localStorage.setItem('session', JSON.stringify(data))
             setUser(data)
             setIsAuthenticated(true)
+        } catch (error) {
+            ContextErrors(error, setErrors)
+        }
+    }
+
+    const forgetPassword = async email => {
+        const res = await forgetPasswordRequest(email)
+        return res
+    }
+
+    const resetPassword = async (password, token) => {
+        try {
+            const res = await resetPasswordRequest(password, token)
+            ContextSuccess(res, setSuccess, setErrors)
+            return res.data
         } catch (error) {
             ContextErrors(error, setErrors)
         }
@@ -80,9 +100,13 @@ export const AuthProvider = ({ children }) => {
                 user,
                 signup,
                 signin,
+                forgetPassword,
+                resetPassword,
                 logout,
                 isAuthenticated,
                 errors,
+                setErrors,
+                success,
                 loading,
             }}>
             {children}

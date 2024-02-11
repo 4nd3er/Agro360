@@ -27,7 +27,7 @@ const error401 = () => {
 export function ContextErrors(error, setErrors, setSuccess, setLoading) {
     if (error.response) {
         switch (error.response.status) {
-            case 400 || 401 || 403 :
+            case 400 && 401 && 403:
                 setErrors(error.response.data.message)
                 break;
             case 404:
