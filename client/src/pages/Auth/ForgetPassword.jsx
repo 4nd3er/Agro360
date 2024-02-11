@@ -2,27 +2,21 @@ import { Link, useNavigate } from "react-router-dom"
 import { FormAlert } from '../../components/Components'
 import { useForm } from 'react-hook-form'
 import { useAuth } from '../../context/Context.js'
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { cleanAlerts } from '../../context/Alerts.jsx'
 
 const ForgetPassword = () => {
     const navigate = useNavigate()
-    const [errors, setErrors] = useState([])
-    const [success, setSuccess] = useState()
     const { register, handleSubmit } = useForm();
-    const { forgetPassword } = useAuth();
+    const { forgetPassword, errors, setErrors, success, setSuccess } = useAuth();
+
+    useEffect(() => {
+        cleanAlerts(setErrors, setSuccess)
+    }, [])
 
     const onSubmit = handleSubmit(async (data) => {
-        try {
-            const res = await forgetPassword(data)
-            setErrors([])
-            setSuccess(res.data)
-            setTimeout(() => {
-                navigate('/')
-            }, 3000)
-        } catch (error) {
-            setSuccess()
-            setErrors([error.response.data.message])
-        }
+        const res = await forgetPassword(data)
+        if (res) setTimeout(() => navigate('/'), 3000)
     })
 
     return (

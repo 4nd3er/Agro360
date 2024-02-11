@@ -60,7 +60,7 @@ const Login = () => {
                                     type="password"
                                     placeholder='Digite la contraseña'
                                     className='w-full mt-3 p-3 border rounded-xl bg-gray-50'
-                                    value="12345678"
+                                    value='12345678'
                                 />
                                 {errors.password && (<p className='text-red-600'>La contraseña es requerida</p>)}
                                 <Link className='block my-5 text-slate-500 uppercase text-xs' to='forget-password'>¿Olvidaste tu contraseña?</Link>

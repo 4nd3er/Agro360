@@ -17,10 +17,6 @@ export const AuthProvider = ({ children }) => {
     const [success, setSuccess] = useState();
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        setErrors([])
-    }, [location.href])
-
     const signup = async (user) => {
         try {
             const res = await registerRequest(user);
@@ -46,17 +42,24 @@ export const AuthProvider = ({ children }) => {
     }
 
     const forgetPassword = async email => {
-        const res = await forgetPasswordRequest(email)
-        return res
+        try {
+            const res = await forgetPasswordRequest(email)
+            ContextSuccess(res, setSuccess, setErrors)
+            return res
+        } catch (error) {
+            ContextErrors(error, setErrors)
+            return false
+        }
     }
 
     const resetPassword = async (password, token) => {
         try {
             const res = await resetPasswordRequest(password, token)
             ContextSuccess(res, setSuccess, setErrors)
-            return res.data
+            return res
         } catch (error) {
             ContextErrors(error, setErrors)
+            return false
         }
     }
 
@@ -107,6 +110,7 @@ export const AuthProvider = ({ children }) => {
                 errors,
                 setErrors,
                 success,
+                setSuccess,
                 loading,
             }}>
             {children}

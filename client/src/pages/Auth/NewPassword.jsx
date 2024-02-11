@@ -6,24 +6,17 @@ import { useParams, useNavigate } from "react-router-dom";
 
 const NewPassword = () => {
   const navigate = useNavigate()
-  const { token } = useParams();
-  console.log(token)
+  const token = new URLSearchParams(window.location.search).get('token')
 
   const { register, handleSubmit } = useForm();
-  const { resetPassword, errors, setErrors, success } = useAuth();
+  const { resetPassword, errors, success } = useAuth();
 
   const [password, setPassword] = useState('')
 
   const onSubmit = handleSubmit(async (data) => {
-    await resetPassword(data, token)
+    const res = await resetPassword(data, token)
+    if (res) setTimeout(() => navigate('/'), 3000)
   })
-
-  if (errors.length > 0) {
-    setTimeout(() => {
-      navigate('/')
-    }, 3000)
-
-  }
 
   return (
     <>
@@ -44,7 +37,7 @@ const NewPassword = () => {
               <div className='my-5'>
                 <label className=' text-gray-600 block text-sm font-bold' htmlFor='newPassword'>Nueva contraseña</label>
                 <input id='newPassword' type="password" placeholder='Digita tu nueva contraseña' className='w-full mt-3 p-3 border rounded-xl bg-gray-50'
-                  {...register("newPassword", { required: true, minLength: 8 })}
+                  {...register("password", { required: true, minLength: 8 })}
                   onChange={(e) => setPassword(e.target.value)} />
               </div>
               <input
