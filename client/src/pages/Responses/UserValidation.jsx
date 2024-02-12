@@ -8,7 +8,7 @@ import { validateSenaEmail } from '../../helpers/functions.js'
 import '../../App.css'
 
 const UserValidation = () => {
-    const { register: email, handleSubmit: emailSubmit, getValues: getEmail, reset: resetEmail, formState: { isValid: validEmail } } = useForm()
+    const { register: email, handleSubmit: emailSubmit, reset: resetEmail, formState: { isValid: validEmail } } = useForm()
     const { register: code, handleSubmit: codeSubmit, reset: resetCode, formState: { isValid: validCode } } = useForm()
 
     const [errorsEmail, setErrorsEmail] = useState([])
@@ -47,7 +47,7 @@ const UserValidation = () => {
             resetEmail()
             setErrorsEmail([])
             setLoading(true)
-            const { email } = getEmail();
+            const { email } = data;
             if (!validateSenaEmail(email)) {
                 setLoading(false)
                 return setErrorsEmail(['El correo debe ser de dominio Soy.Sena'])
@@ -120,10 +120,7 @@ const UserValidation = () => {
                                 type="email"
                                 {...email("email", {
                                     required: true,
-                                    validate: (value) =>{
-                                        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-                                        return emailRegex.test(value)
-                                    }
+                                    validate: (value) => validateSenaEmail(value)
                                 })}
                                 className="w-full border rounded-lg bg-gray-50 p-3 mt-4"
                                 placeholder="Digita tú correo electrónico"

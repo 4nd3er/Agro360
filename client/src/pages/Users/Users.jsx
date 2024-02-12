@@ -144,10 +144,9 @@ function Users() {
                             className='w-full m-1 p-2 border rounded-xl bg-gray-50'
                             id="rol"
                             {...register("rol")}
-                            value="6558e534c44fb9ddd8295320">
+                            readonly>
                             <option value="">Selecciona tu rol</option>
-                            <option value="6558e534c44fb9ddd8295320">Aprendiz</option>
-                            <option value="655b1f6df9b6aad257662a58">Instructor</option>
+                            <option value="6558e534c44fb9ddd8295320" selected>Aprendiz</option>
                         </select>
                     </div>
                 </div>
