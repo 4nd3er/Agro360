@@ -7,7 +7,7 @@ import { cleanAlerts } from '../../context/Alerts.jsx'
 
 const ForgetPassword = () => {
     const navigate = useNavigate()
-    const { register, handleSubmit } = useForm();
+    const { register, handleSubmit, formState: { isValid } } = useForm();
     const { forgetPassword, errors, setErrors, success, setSuccess } = useAuth();
 
     useEffect(() => {
@@ -38,9 +38,20 @@ const ForgetPassword = () => {
                             <div className='my-5'>
                                 <label className=' text-gray-600 block text-sm font-bold' htmlFor='email'>Correo Electrónico</label>
                                 <input id='email' type="email" placeholder='Digita tu correo electronico' className='w-full mt-3 p-3 border rounded-xl bg-gray-50'
-                                    {...register("email", { required: true })} />
+                                    {...register("email", {
+                                        required: true,
+                                        validate: (value) => {
+                                            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                                            return emailRegex.test(value)
+                                        }
+                                    })} />
                             </div>
-                            <input type="submit" value="Enviar" className='bg-green-600 w-full py-1 text-white uppercase font-bold rounded-xl hover: cursor-pointer hover:bg-green-700 transition-color' />
+                            <input
+                                type="submit"
+                                value="Enviar"
+                                className={`${isValid ? 'bg-green-600 hover:cursor-pointer hover:bg-green-700' : 'bg-gray-500'} w-full py-1 text-white uppercase font-bold rounded-xl  transition-color `}
+                                disabled={!isValid}
+                            />
                             <nav>
                                 <Link className='block my-5 text-slate-500 uppercase text-xs' to='/' style={{ marginLeft: 'auto' }}>
                                     Iniciar sesión

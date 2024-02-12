@@ -8,10 +8,8 @@ const NewPassword = () => {
   const navigate = useNavigate()
   const token = new URLSearchParams(window.location.search).get('token')
 
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, formState: { isValid } } = useForm();
   const { resetPassword, errors, success } = useAuth();
-
-  const [password, setPassword] = useState('')
 
   const onSubmit = handleSubmit(async (data) => {
     const res = await resetPassword(data, token)
@@ -37,14 +35,17 @@ const NewPassword = () => {
               <div className='my-5'>
                 <label className=' text-gray-600 block text-sm font-bold' htmlFor='newPassword'>Nueva contraseña</label>
                 <input id='newPassword' type="password" placeholder='Digita tu nueva contraseña' className='w-full mt-3 p-3 border rounded-xl bg-gray-50'
-                  {...register("password", { required: true, minLength: 8 })}
-                  onChange={(e) => setPassword(e.target.value)} />
+                  {...register("password", {
+                    required: true,
+                    minLength: 8
+                  })}
+                />
               </div>
               <input
                 type="submit"
                 value="Enviar"
-                className={`${password.length < 8 ? 'bg-gray-500' : 'bg-green-600 hover:bg-green-700 hover:cursor-pointer'} w-full py-1 text-white uppercase font-bold rounded-xl transition-color `}
-                disabled={password.length < 8 ? true : false} />
+                className={`${isValid ? 'bg-green-600 hover:bg-green-700 hover:cursor-pointer' : 'bg-gray-500'} w-full py-1 text-white uppercase font-bold rounded-xl transition-color `}
+                disabled={!isValid} />
             </form>
           </div>
         </div>

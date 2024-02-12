@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useUsers } from '../../context/UsersContext';
 import { FormAlert, Spinner } from '../../components/Components';
+import { validateSenaEmail } from '../../helpers/functions';
 
 function Users() {
 
-    const { register, handleSubmit, formState: { isValid }, reset } = useForm();
+    const { register, handleSubmit, formState: { isValid, errors: formErrors }, reset } = useForm();
     const { getCourses, getCourseName, createUser, errors, success } = useUsers();
     const [courses, setCourses] = useState([]);
     const [dataCourses, setDataCourses] = useState([]);
@@ -112,9 +113,10 @@ function Users() {
                             className='w-full m-1 p-2 border rounded-xl bg-gray-50'
                             id="email"
                             type='email'
-                            placeholder='Digita tu correo'
+                            placeholder='Digita tu correo Soy.Sena'
                             {...register("email", {
-                                required: true
+                                required: true,
+                                validate: (value) => validateSenaEmail(value)
                             })} />
                     </div>
                     <div className='col w-1/2'>
@@ -155,7 +157,7 @@ function Users() {
                         type="submit"
                         disabled={!isValid}
                         value="Enviar"
-                        className={isValid ? 'bg-green-600 w-1/2 py-2 m-4 text-white uppercase font-bold rounded-xl hover: cursor-pointer hover:bg-green-700 transition-color' : 'bg-gray-400 w-1/2 py-2 m-4 text-white uppercase font-bold rounded-xl hover: cursor-pointer'}
+                        className={isValid ? 'bg-green-600 w-1/2 py-2 m-4 text-white uppercase font-bold rounded-xl hover:cursor-pointer hover:bg-green-700 transition-color' : 'bg-gray-400 w-1/2 py-2 m-4 text-white uppercase font-bold rounded-xl'}
                     />
                 </div>
             </form>

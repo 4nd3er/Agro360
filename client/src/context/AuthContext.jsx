@@ -20,12 +20,11 @@ export const AuthProvider = ({ children }) => {
     const signup = async (user) => {
         try {
             const res = await registerRequest(user);
-            if (res.status === 200) {
-                setUser(res.data.data);
-                setIsAuthenticated(true);
-            }
+            ContextSuccess(res, setSuccess, setErrors)
+            return res
         } catch (error) {
             ContextErrors(error, setErrors)
+            return false
         }
     };
 
