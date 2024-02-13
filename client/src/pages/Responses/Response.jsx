@@ -46,8 +46,7 @@ const Response = () => {
             const getInstructors = async () => {
                 const array = res.instructors.map(async (instructor) => {
                     const cl = new cloudinary.Cloudinary({ cloud_name: 'dqwz38i0y' })
-                    const imageUrl = cl.url(`instructores/${instructor.document}.png`, { width: 'auto', crop: 'scale' })
-                    console.log(imageUrl)
+                    const imageUrl = cl.url(`instructores/${instructor.document}`, { width: 'auto', crop: 'scale' })                    
                     instructor.image = imageUrl
                     return instructor
                 })

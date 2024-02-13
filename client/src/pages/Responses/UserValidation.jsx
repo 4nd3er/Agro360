@@ -6,7 +6,8 @@ import { FormAlert, Spinner } from '../../components/Components.jsx';
 import { Logo2 } from '../../assets/Assets.jsx';
 import { validateSenaEmail } from '../../helpers/functions.js'
 import '../../App.css'
-
+//!CORREO MISENA
+//!CRONOGRAMA FICHA ESTA
 const UserValidation = () => {
     const { register: email, handleSubmit: emailSubmit, reset: resetEmail, formState: { isValid: validEmail } } = useForm()
     const { register: code, handleSubmit: codeSubmit, reset: resetCode, formState: { isValid: validCode } } = useForm()
@@ -123,10 +124,10 @@ const UserValidation = () => {
                                     validate: (value) => validateSenaEmail(value)
                                 })}
                                 className="w-full border rounded-lg bg-gray-50 p-3 mt-4"
-                                placeholder="Digita tú correo electrónico"
+                                placeholder="Digita tú correo electrónico @SoySena o @Misena"
                             />
                             <p className="mt-4 mb-6 text-gray-600 text-center text-sm font-bold text|">
-                                Digita tu correo electrónico para que te enviemos un código de verificación y puedas responder la encuesta
+                                Digita tu correo electrónico @SoySena o @Misena para que te enviemos un código de verificación y puedas responder la encuesta
                             </p>
                             <section className='flex flex-row justify-between mt-4 mb-8'>
                                 <Link to='/users' >

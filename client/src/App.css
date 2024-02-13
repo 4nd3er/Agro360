@@ -80,3 +80,13 @@ input:focus, select:focus{
 .select-container:hover .react-select__control {
     border-color: #369206 !important;
   }
+
+.react-select__input:focus{
+    outline: transparent !important;
+    border-color: transparent !important;
+    box-shadow: 0 0 0 1px transparent !important;
+}
+
+.react-select__control--is-focused{
+    box-shadow: 0 0 0 1px #369206 !important;
+}
