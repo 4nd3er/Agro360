@@ -33,22 +33,15 @@ const Response = () => {
 
     const [loading, setLoading] = useState(true)
 
-    //* COMP USER
+    //* GET DATA
     useEffect(() => {
-        const compForm = async () => {
+        const getData = async () => {
             await compFormResponse(idform)
             if (!existsForm || !enabledForm) {
                 localStorage.removeItem('responses')
                 localStorage.removeItem('user')
-                navigate(`/forms/v/${idform}`)
+                return navigate(`/forms/v/${idform}`)
             }
-        }
-        compForm();
-    }, [])
-
-    //* GET DATA
-    useEffect(() => {
-        const getData = async () => {
             const res = await getFormtoResponse(idform);
             const getInstructors = async () => {
                 const array = res.instructors.map(async (instructor) => {
@@ -119,7 +112,7 @@ const Response = () => {
         setTimeout(() => {
             setLoading(false)
         }, 4000)
-    }, [existsForm, enabledForm])
+    }, [])
 
 
     //* ALERTS
@@ -362,7 +355,7 @@ const Response = () => {
                         return (
                             <div key={id} className={`relative image-container mx-3 px-2 py-4 !flex flex-col justify-center items-center rounded-xl ${instructor !== actualInstructor ? 'blur' : 'border-2 border-color-sena focus-visible:outline-none'} `} onClick={() => changeInstructor(instructor)} >
                                 <div className={`${!compValue(instructor) ? 'hidden' : 'absolute rounded-full bg-color-sena p-1 top-2 left-2'} `}>
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-check" width="18" viewBox="0 0 24 24" stroke-width="3" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-check" width="18" viewBox="0 0 24 24" strokeWidth="3" stroke="#ffffff" fill="none" strokeLinecap="round" strokeLinejoin="round">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                         <path d="M5 12l5 5l10 -10" />
                                     </svg>
