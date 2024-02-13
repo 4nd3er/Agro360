@@ -1,15 +1,8 @@
 import { Outlet } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Menu from '../components/Menu';
-import { useAuth } from '../context/Context'
-import { useEffect } from 'react';
 
 const AuthLayout = () => {
-    const { checkLogin } = useAuth()
-
-    useEffect(()=>{
-        checkLogin();
-    }, [])
     
     return (
         <>

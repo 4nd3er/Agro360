@@ -4,8 +4,12 @@ import { Spinner } from './components/Components'
 import { useEffect } from 'react';
 
 export function ProtectedRoute() {
-    const { isAuthenticated, loading } = useAuth();
+    const { isAuthenticated, loading, checkLogin } = useAuth();
 
+    useEffect(() => {
+        checkLogin();
+    }, [])
+    
     if (loading) return <Spinner />;
     if (!isAuthenticated && !loading) return <Navigate to="/" replace />;
     return <Outlet />;
