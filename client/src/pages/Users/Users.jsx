@@ -123,7 +123,7 @@ function Users() {
                     </div>
                     <div className='col w-1/2'>
                         <label>Ficha</label>
-                        <div className='select-container'>
+                        <div className='select-container mt-2'>
                             <Controller
                                 name="course"
                                 control={control}
