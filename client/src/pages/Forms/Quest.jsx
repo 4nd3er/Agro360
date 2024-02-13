@@ -27,11 +27,13 @@ const Quest = () => {
 			</div>
 			<div>
 				<h1>ENCUESTAS RECIENTES</h1>
-				<Survey
-					title="Encuesta pedagógica"
-					imageSrc={imgEncuesta}
-					isActive={true}
-				/>
+				<div onClick={() => location.reload()}>
+					<Survey
+						title="Encuesta pedagógica"
+						imageSrc={imgEncuesta}
+						isActive={true}
+					/>
+				</div>
 			</div>
 		</div>
 	);
