@@ -66,7 +66,9 @@ function Option({ dataQuestion, dataInstructor, setValid, actualIndex }) {
                     {options.map((option) => {
                         return (
                             <div key={option._id} className="flex flex-col gap-1 items-center justify-center">
-                                <input id={option._id} value={option.option} checked={checkbox.find(checkbox => checkbox === option.option)} onChange={(e) => handleChange([...value, e.target.value])} type="checkbox" className="w-5 h-5 text-blue-600 focus:ring-blue-500 ring-offset-gray-800 bg-gray-700 border-gray-600" />
+                                <input id={option._id} value={option.option} 
+                                //checked={checkbox.find(checkbox => checkbox === option.option)} 
+                                onChange={(e) => handleChange([...value, e.target.value])} type="checkbox" className="w-5 h-5 text-blue-600 focus:ring-blue-500 ring-offset-gray-800 bg-gray-700 border-gray-600" />
                                 <label htmlFor={option._id}>
                                     {option.option}
                                 </label>

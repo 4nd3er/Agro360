@@ -6,14 +6,16 @@ import '../App.css'
 import { Link } from 'react-router-dom'
 
 const Home = () => {
-    const { getRoles, loading } = useRoles();
+    const { getRoles } = useRoles();
     const { user } = useAuth();
     const [roles, setRoles] = useState([])
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         const Roles = async () => {
             const res = await getRoles();
             setRoles(res)
+            setLoading(false)
         }
         Roles();
     }, [])
@@ -59,7 +61,7 @@ const Home = () => {
             </header>
             <main className="grid grid-cols-3 gap-4">
                 {/* Iterate roles */}
-                {roles.length ?
+                {roles.length > 0 ?
                     roles.map(rol => (
                         <CardRol
                             key={rol._id}
