@@ -54,6 +54,7 @@ const UserValidation = () => {
                 return setErrorsEmail(['El correo debe ser de dominio Soy.Sena'])
             }
             await getCodeResponse(form, email);
+            changeCard();
             setLoading(false)
         } catch (error) {
             setLoading(false)
@@ -79,12 +80,6 @@ const UserValidation = () => {
             setErrorsCode(error.response.data.message)
         }
     });
-
-    useEffect(() => {
-        if (errorsEmail.length === 0 && emailSend) {
-            changeCard()
-        }
-    }, [errorsEmail])
 
     const changeCard = () => {
         setShowVerifyCard(!showVerifyCard)
