@@ -52,10 +52,7 @@ const Menu = () => {
                         </Link>
                     </li>
                 </ul>
-                <div
-                    className="back"
-                    onClick={handleBack}
-                >
+                <div className="back" onClick={handleBack}>
                     <ion-icon name="arrow-back-outline"></ion-icon>
                     <p>Volver</p>
                 </div>

@@ -1,15 +1,14 @@
 import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form'
 import { useResponses } from '../../context/Context.js';
 import { FormAlert, Spinner } from '../../components/Components.jsx';
 import { Logo2 } from '../../assets/Assets.jsx';
+import { validateSenaEmail } from '../../helpers/functions.js'
 import '../../App.css'
-import Swal from 'sweetalert2';
-import Cookies from 'js-cookie';
 
 const UserValidation = () => {
-    const { register: email, handleSubmit: emailSubmit, getValues: getEmail, reset: resetEmail, formState: { isValid: validEmail } } = useForm()
+    const { register: email, handleSubmit: emailSubmit, reset: resetEmail, formState: { isValid: validEmail } } = useForm()
     const { register: code, handleSubmit: codeSubmit, reset: resetCode, formState: { isValid: validCode } } = useForm()
 
     const [errorsEmail, setErrorsEmail] = useState([])
@@ -45,10 +44,15 @@ const UserValidation = () => {
     // By submitting the form
     const onSubmitEmail = emailSubmit(async (data) => {
         try {
-            setLoading(true)
-            const { email } = getEmail();
-            await getCodeResponse(form, email);
+            resetEmail()
             setErrorsEmail([])
+            setLoading(true)
+            const { email } = data;
+            if (!validateSenaEmail(email)) {
+                setLoading(false)
+                return setErrorsEmail(['El correo debe ser de dominio Soy.Sena'])
+            }
+            await getCodeResponse(form, email);
             setLoading(false)
         } catch (error) {
             setLoading(false)
@@ -115,7 +119,8 @@ const UserValidation = () => {
                                 id='email'
                                 type="email"
                                 {...email("email", {
-                                    required: true
+                                    required: true,
+                                    validate: (value) => validateSenaEmail(value)
                                 })}
                                 className="w-full border rounded-lg bg-gray-50 p-3 mt-4"
                                 placeholder="Digita tú correo electrónico"
@@ -123,16 +128,23 @@ const UserValidation = () => {
                             <p className="mt-4 mb-6 text-gray-600 text-center text-sm font-bold text|">
                                 Digita tu correo electrónico para que te enviemos un código de verificación y puedas responder la encuesta
                             </p>
-                            <p onClick={changeCard}
-                                className='my-3 text-green-500 text-xs hover:text-green-700 cursor-pointer text-end'>
-                                Tengo un codigo -&gt;
-                            </p>
+                            <section className='flex flex-row justify-between mt-4 mb-8'>
+                                <Link to='/users' >
+                                    <p className='text-green-500 text-sm hover:text-green-700 cursor-pointer text-end'>
+                                        No tienes un usuario? <strong>Registrate</strong>
+                                    </p>
+                                </Link>
+                                <p onClick={changeCard}
+                                    className='text-green-500 text-sm hover:text-green-700 cursor-pointer text-end'>
+                                    Tengo un codigo -&gt;
+                                </p>
+                            </section>
                             <input
                                 type="submit"
                                 value="Enviar"
                                 onClick={() => setEmailSend(true)}
                                 disabled={!validEmail}
-                                className={validEmail ? 'bg-color-sena w-full py-3 text-white uppercase font-bold rounded-full hover: cursor-pointer hover:bg-color-sena-hover transition-colors duration-300 ease-in-out' : 'bg-gray-300 w-full py-3 text-white uppercase font-bold rounded-full cursor-pointer'}
+                                className={validEmail ? 'bg-color-sena w-full py-3 text-white uppercase font-bold rounded-full hover:cursor-pointer hover:bg-color-sena-hover transition-colors duration-300 ease-in-out' : 'bg-gray-300 w-full py-3 text-white uppercase font-bold rounded-full'}
                             />
                         </div>
                     </form>

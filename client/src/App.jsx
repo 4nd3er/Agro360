@@ -36,9 +36,8 @@ function App() {
 
                     <Route path='/' element={<LayoutLogin />}>
                       <Route index element={<Login />} />
-                      <Route path='register' element={<Register />} />
                       <Route path='forget-password' element={<ForgetPassword />} />
-                      <Route path='forget-password/:token' element={<NewPassword />} />
+                      <Route path='reset-password' element={<NewPassword />} />
                       <Route path='confirm/:id' element={<ConfirmAccount />} />
                     </Route>
 
@@ -48,6 +47,7 @@ function App() {
                         <Route path='tematicas/:id' element={<Topics />} />
                         <Route path='tematicas/:id/encuestas/:idtopic' element={<TopicsForm />} />
                         <Route path='charge-data' element={<ChargeData />} />
+                        <Route path='register-admin' element={<Register />} ></Route>
                       </Route>
                       <Route path='/crear-formulario' element={<AuthLayout />}>
                         <Route index element={<Quest />} />
@@ -65,7 +65,6 @@ function App() {
                         <Route path='r/:idform' element={<Response />} />
                       </Route>
                     </Route>
-
 
                     <Route path='/users' element={<LayoutLogin />}>
                       <Route index element={<Users />} />

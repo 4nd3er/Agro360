@@ -110,3 +110,9 @@ export function getNamesLastnames(data) {
 
     return [capitalizeString(instructorNames), capitalizeString(instructorLastnames)]
 }
+
+//* Funcion para verificar el correo Sena
+export function validateSenaEmail(email) {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@soy\.sena\.edu\.co$/;
+    return emailRegex.test(email);
+  }

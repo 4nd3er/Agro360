@@ -17,19 +17,15 @@ export function sendEmailResetPassword(res, data) {
     from: 'ladigiococ@gmail.com',
     to: userEmail,
     subject: 'Agro360 - recuperacion de contraseña',
-    text: `Para recuperar tu contraseña, haz click en el siguiente enlace: ${FRONTEND_URL}/reset-password/${token}`
+    text: `Para recuperar tu contraseña, haz click en el siguiente enlace: ${FRONTEND_URL}/reset-password/?token=${token}`
   }
 
   transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.log('Error al enviar el correo electrónico: ' + error);
-    }
-    else {
-      res.json({
-        response: "Email sent successfully to " + userEmail,
-        info: info.response
-      });
-    }
+    if (error) return console.log('Error al enviar el correo electrónico: ' + error);
+    res.json({
+      response: "Correo de recuperacion de contraseña enviado",
+      info: info.response
+    });
   });
 }
 

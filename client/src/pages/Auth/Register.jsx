@@ -1,137 +1,89 @@
-import { useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { useForm } from 'react-hook-form'
-import { useAuth } from '../../context/Context.js';
+import { FormAlert } from '../../components/Components'
+import { useAuth } from '../../context/Context'
 
 const Register = () => {
-  const { signup, errors: registerErrors, isAuthenticated } = useAuth();
-
-  //Variable que contiene los datos del formulario
-  const { register, handleSubmit, formState: { errors }, } = useForm();
   const navigate = useNavigate()
+  const { register, handleSubmit, formState: { isValid }, } = useForm();
+  const { signup, errors, success } = useAuth()
 
-  const onSubmit = handleSubmit(async (value) => {
-    await signup(value);
+  const onSubmit = handleSubmit(async (data) => {
+    const res = await signup(data)
+    if (res) {
+      setTimeout(() => {
+        navigate('/inicio')
+        location.reload()
+      }, 3000)
+    }
   })
-
-  useEffect(() => {
-    if (isAuthenticated) navigate("/inicio");
-  }, [isAuthenticated]);
 
   return (
     <>
-      <div className="flex  justify-center items-center min-h-[80vh]">
-        <div className="w-1/4 h-full flex flex-col justify-center">
-          <h1 className="text-green-800 font-black text-6xl capitalize ">AGRO
-            <span className="text-green-500 text-8xl">360°</span>
-            <p className='text-green-800 text-sm flex justify-center '>Evaluacion de desempeño</p>
-          </h1>
-        </div>
-
-        <div className="w-3/5 h-full ">
-          <div className=" flex flex-col justify-center place-items-center min-h-[80vh] ">
-            <strong className=' text-green-600  text-5xl capitalize font-sans'>Crea tu cuenta</strong>
-            {registerErrors.map((error, i) => (
-              <div className="bg-red-500 p-4 text-white text-center rounded-md shadow-md my-2 w-2/4" key={i}>
-                {error}
-              </div>
-            ))}
-            <form
-              className='my-10 bg-white shadow rounded-lg px-10 py-5 w-1/2' onSubmit={onSubmit}>
-              <div className='my-5'>
+      <article className="min-h-[80vh] flex items-center justify-center">
+        <section className="w-3/5 h-full flex flex-col justify-center items-center border-2 rounded-2xl border-gray-200 py-6 shadow-xl">
+          <header>
+            <h1 className="text-color-sena font-black text-3xl mb-8">Nuevo administrador</h1>
+          </header>
+          <FormAlert errors={errors} success={success} />
+          <form className='flex flex-col gap-6 w-3/4' onSubmit={onSubmit}>
+            {/*--------*/}
+            <section className="flex flex-row gap-2 justify-between">
+              <div className="w-full">
                 <label className=' text-gray-600 block text-sm font-bold' htmlFor='names'>Nombres</label>
-                <input
-                  id='names'
-                  type="text"
-                  placeholder='Nombres'
-                  className='w-full mt-3 p-3 border rounded-xl bg-gray-50'
-                  {...register('names', { required: true })}
+                <input id='names' type="text" placeholder='Nombres' className='w-full mt-3 p-2 border rounded-xl bg-gray-50 focus-visible: outline-8 outline-green-500'
+                  {...register('names', {
+                    required: true,
+                    minLength: 3
+                  })}
                 />
-                {errors.names && (
-                  <p className="text-red-600">Nombre es requerido</p>
-                )}
               </div>
-              <div className='my-5'>
+              <div className="w-full">
                 <label className=' text-gray-600 block text-sm font-bold' htmlFor='lastnames'>Apellidos</label>
-                <input
-                  id='lastnames'
-                  type="text"
-                  placeholder='Apellidos'
-                  className='w-full mt-3 p-3 border rounded-xl bg-gray-50'
-                  {...register('lastnames', { required: true })}
+                <input id='lastnames' type="text" placeholder='Apellidos' className='w-full mt-3 p-2 border rounded-xl bg-gray-50 focus-visible: outline-8 outline-green-500'
+                  {...register('lastnames', {
+                    required: true,
+                    minLength: 5
+                  })}
                 />
-                {errors.lastnames && (
-                  <p className="text-red-600">Apellido es requerido</p>
-                )}
               </div>
-              <div className='my-5'>
-                <label className=' text-gray-600 block text-sm font-bold' htmlFor='select'>Tipo de Documento:</label>
-                <select
-                  id='documentType'
-                  type="text"
-                  name='documentType'
-                  className='w-full mt-3 p-3 border rounded-xl bg-gray-50'
-                  {...register('documentType', { required: true })}>
-                  <option value=''>Seleccione</option>
-                  <option value='opcion2'>CC</option>
-                  <option value='opcion2'>CE</option>
-                  <option value='opcion3'>TI</option>
-                </select>
-                {errors.documentType && (
-                  <p className="text-red-600">Tipo documento es requerido</p>
-                )}
-              </div>
-              <div className='my-5'>
-                <label className=' text-gray-600 block text-sm font-bold' htmlFor='document'>Documento</label>
-                <input
-                  id='document'
-                  type="number"
-                  placeholder='Numero de documento'
-                  className='w-full mt-3 p-3 border rounded-xl bg-gray-50'
-                  {...register('document', { required: true })}
-                />
-                {errors.document && (
-                  <p className="text-red-600">Documento es requerido</p>
-                )}
-              </div>
-              <div className='my-5'>
+            </section>
+            {/*--------*/}
+            <section className="flex flex-row gap-2">
+              <div className="w-full">
                 <label className=' text-gray-600 block text-sm font-bold' htmlFor='email'>Correo Electronico</label>
-                <input
-                  id='email'
-                  type="email"
-                  placeholder='Email de Registro'
-                  className='w-full mt-3 p-3 border rounded-xl bg-gray-50'
-                  {...register('email', { required: true })}
+                <input id='email' type="email" placeholder='Email de Registro' className='w-full mt-3 p-2 border rounded-xl bg-gray-50 focus-visible: outline-8 outline-green-500'
+                  {...register('email', {
+                    required: true,
+                    validate: (value) => {
+                      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                      return emailRegex.test(value)
+                    }
+                  })}
                 />
-                {errors.email && (
-                  <p className="text-red-600">Email es requerido</p>
-                )}
               </div>
-              <div className='my-5'>
+              <div className="w-full">
                 <label className=' text-gray-600 block text-sm font-bold' htmlFor='password'>Contraseña</label>
-                <input
-                  id="password"
-                  type="password"
-                  placeholder="Contraseña"
-                  className="w-full mt-3 p-3 border rounded-xl bg-gray-50"
-                  {...register('password', { required: true })}
+                <input id="password" type="password" placeholder="Contraseña" className="w-full mt-3 p-2 border rounded-xl bg-gray-50 focus-visible: outline-8 outline-green-500"
+                  {...register('password', {
+                    required: true,
+                    minLength: 8
+                  })}
                 />
-                {errors.password && (
-                  <p className="text-red-600">La contraseña es requerida</p>
-                )}
               </div>
-              <input
+            </section>
+            {/*--------*/}
+            <section className="w-full flex items-center justify-center mt-4">
+              <button
                 type="submit"
-                value="Crear Cuenta"
-                className='bg-green-600 w-full py-1 text-white  font-bold rounded-xl
-                hover: cursor-pointer hover:bg-green-700 transition-color'
-              />
-              <Link className='block my-5 text-slate-500  text-xs' to='/'>¿Ya tienes una cuenta? Inicia sesion</Link>
-            </form>
-            <nav className='lg:flex lg: justify-between'></nav>
-          </div>
-        </div>
-      </div>
+                className={`${isValid ? 'bg-green-600 hover:cursor-pointer hover:bg-green-700' : 'bg-gray-500 cursor-default'} w-1/2 py-1 text-white rounded-xl  transition-color`}
+                disabled={!isValid}>
+                Registrar
+              </button>
+            </section>
+          </form>
+        </section>
+      </article>
     </>
   )
 }

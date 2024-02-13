@@ -23,7 +23,7 @@ export const getCode = async (req, res) => {
     const { form } = req.params
     const { email } = req.query
 
-    try {
+    try {        
         const user = await Users.findOne({ email })
         if (!user) return res.status(404).json({ message: ["Usuario no encontrado"] })
         const userNames = `${user.names} ${user.lastnames}`

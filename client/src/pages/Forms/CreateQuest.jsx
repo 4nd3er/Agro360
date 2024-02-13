@@ -161,7 +161,7 @@ const CreateQuest = () => {
 		return newObject;
 	}
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
 		let isContentValid = false;
 		let isTypeValid = false;
@@ -198,47 +198,32 @@ const CreateQuest = () => {
 				questions.map((question) => {
 					questionsObject.push(arraytoObject(question));
 				})
-				createForm({
+				await createForm({
 					name: title, description: descrip, topic: topic, end: date,
 					questions: questionsObject
-				}).then((data) => {
-					switch (data.response) {
-						case 'Form created successfully':
-							Swal.fire({
-								icon: 'success',
-								title: 'Encuesta creada!',
-								text: 'Se ha guardado la encuesta exitosamente',
-								timer: 2000,
-								showConfirmButton: false,
-								timerProgressBar: true,
-							});
-							setTimeout(() => {
-								window.location.href = '/crear-formulario';
-								localStorage.removeItem('title');
-								localStorage.removeItem('descrip');
-								localStorage.removeItem('topic');
-								localStorage.removeItem('date');
-								localStorage.removeItem('questions');
-							}, 2100);
-							break;
-					}
-				}).catch((error) => {
-					switch (error.response.data.message) {
-						case 'Form already exists':
-							Swal.fire({
-								icon: 'error',
-								title: 'Encuesta duplicada',
-								text: 'La encuesta que deseas registrar ya existe, intentalo mas tarde',
-								showConfirmButton: true,
-							});
-							break;
-					}
+				})
+				Swal.fire({
+					icon: 'success',
+					title: 'Encuesta creada!',
+					text: 'Se ha guardado la encuesta exitosamente',
+					timer: 2000,
+					showConfirmButton: false,
+					timerProgressBar: true,
 				});
+				setTimeout(() => {
+					window.location.href = '/crear-formulario';
+					localStorage.removeItem('title');
+					localStorage.removeItem('descrip');
+					localStorage.removeItem('topic');
+					localStorage.removeItem('date');
+					localStorage.removeItem('questions');
+				}, 2100);
 			} catch (error) {
 				Swal.fire({
 					icon: 'error',
-					text: error,
-					showConfirmButton: true
+					title: 'Error al crear la encuesta',
+					text: error.response.data.message,
+					showConfirmButton: true,
 				});
 			}
 		}

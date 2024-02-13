@@ -70,3 +70,13 @@
     opacity: 1;
     color: white
 }
+
+input:focus, select:focus{
+    outline: #369206 !important;
+    border-color: #369206 !important;
+    box-shadow: 0 0 0 1px #369206 !important;
+}
+
+.select-container:hover .react-select__control {
+    border-color: #369206 !important;
+  }
