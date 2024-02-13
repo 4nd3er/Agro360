@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import cloudinary from 'cloudinary-core'
 import { useParams, useNavigate } from 'react-router-dom';
 import { useResponses, useRoles } from '../../context/Context.js'
 import { userImg } from '../../assets/Assets.jsx'
 import { Option } from '../../components/Components.jsx'
-import { FRONTEND_URL } from '../../config.js';
 import Spinner from '../../components/Spinner.jsx';
 import Swal from 'sweetalert2';
 import Slider from 'react-slick';
@@ -28,7 +28,7 @@ const Response = () => {
     const [allOptionsValid, setAllOptionsValid] = useState(false);
     const [validQuestions, setValidQuestions] = useState([])
 
-    const { getFormtoResponse, createResponse, checkUser, compFormResponse, existsForm, enabledForm } = useResponses();
+    const { getFormtoResponse, createResponse, checkUser, compFormResponse } = useResponses();
     const { getTopic } = useRoles();
 
     const [loading, setLoading] = useState(true)
@@ -36,8 +36,8 @@ const Response = () => {
     //* GET DATA
     useEffect(() => {
         const getData = async () => {
-            await compFormResponse(idform)
-            if (!existsForm || !enabledForm) {
+            const validForm = await compFormResponse(idform)
+            if (!validForm.status === 200 || !validForm.data.status) {
                 localStorage.removeItem('responses')
                 localStorage.removeItem('user')
                 return navigate(`/forms/v/${idform}`)
@@ -45,9 +45,10 @@ const Response = () => {
             const res = await getFormtoResponse(idform);
             const getInstructors = async () => {
                 const array = res.instructors.map(async (instructor) => {
-                    const img = `${FRONTEND_URL}/src/img/instructores/${instructor.document}.png`
-                    instructor.image = img
-                    if (!await findImage(img)) instructor.image = false
+                    const cl = new cloudinary.Cloudinary({ cloud_name: 'dqwz38i0y' })
+                    const imageUrl = cl.url(`instructores/${instructor.document}.png`, { width: 'auto', crop: 'scale' })
+                    console.log(imageUrl)
+                    instructor.image = imageUrl
                     return instructor
                 })
                 const instructors = await Promise.all(array)
@@ -106,12 +107,11 @@ const Response = () => {
                 }
             })
             setValidQuestions(initialValidQuestions)
+            setTimeout(() => {
+                setLoading(false)
+            }, 4000)
         }
         getData();
-
-        setTimeout(() => {
-            setLoading(false)
-        }, 4000)
     }, [])
 
 
