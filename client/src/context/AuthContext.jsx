@@ -73,27 +73,24 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    useEffect(() => {
-        const checkLogin = async () => {
-            const session = JSON.parse(localStorage.getItem('session'))
-            if (!session) {
-                setIsAuthenticated(false);
-                setLoading(false);
-                return;
-            }
-            try {
-                const res = await verifyTokenRequest(session.token);
-                if (!res.data) return setIsAuthenticated(false);
-                setIsAuthenticated(true);
-                setUser(res.data.data)
-                setLoading(false);
-            } catch (error) {
-                setIsAuthenticated(false);
-                setLoading(false);
-            }
-        };
-        checkLogin();
-    }, []);
+    const checkLogin = async () => {
+        const session = JSON.parse(localStorage.getItem('session'))
+        if (!session) {
+            setIsAuthenticated(false);
+            setLoading(false);
+            return;
+        }
+        try {
+            const res = await verifyTokenRequest(session.token);
+            if (!res.data) return setIsAuthenticated(false);
+            setIsAuthenticated(true);
+            setUser(res.data.data)
+            setLoading(false);
+        } catch (error) {
+            setIsAuthenticated(false);
+            setLoading(false);
+        }
+    };
 
 
     return (
@@ -104,6 +101,7 @@ export const AuthProvider = ({ children }) => {
                 signin,
                 forgetPassword,
                 resetPassword,
+                checkLogin,
                 logout,
                 isAuthenticated,
                 errors,

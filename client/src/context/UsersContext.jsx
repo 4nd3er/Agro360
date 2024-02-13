@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { ContextErrors, ContextSuccess } from "./Alerts";
-import { CoursesRequest, UsersRequest, createUserRequest, getCourseNameRequest, getCourseRequest, getUserRequest } from "../api/users";
+import { CoursesRequest, UsersRequest, createUserRequest, getCourseNameRequest, getCourseRequest, getCourseNamesRequest, getUserRequest } from "../api/users";
 
 export const UsersContext = createContext();
 
@@ -71,6 +71,16 @@ export const UsersProvider = ({ children }) => {
     }
 
     //* Courses Names
+
+    const getCourseNames = async () => {
+        try {
+            const res = await getCourseNamesRequest();
+            return res.data
+        } catch (error) {
+            ContextErrors(error, setErrors)            
+        }
+    }
+
     const getCourseName = async (id) => {
         try {
             const res = await getCourseNameRequest(id);
@@ -87,6 +97,7 @@ export const UsersProvider = ({ children }) => {
             success,
             getUsers,
             getCourses,
+            getCourseNames,
             getUser,
             createUser,
             getCourse,

@@ -23,6 +23,7 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.48.2",
     "react-router-dom": "^6.17.0",
+    "react-select": "^5.8.0",
     "react-slick": "^0.29.0",
     "save": "^2.9.0",
     "slick-carousel": "^1.8.1",
