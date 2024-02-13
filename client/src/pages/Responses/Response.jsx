@@ -353,7 +353,7 @@ const Response = () => {
                         const id = instructor._id
                         const names = `${instructor.names} ${instructor.lastnames}`
                         return (
-                            <div key={id} className={`relative image-container mx-3 px-2 py-4 !flex flex-col justify-center items-center rounded-xl ${instructor !== actualInstructor ? 'blur' : 'border-2 border-color-sena focus-visible:outline-none'} `} onClick={() => changeInstructor(instructor)} >
+                            <div key={id} className={`relative image-container mx-3 px-2 py-4 !flex flex-col justify-center items-center rounded-xl transition-all ${instructor !== actualInstructor ? 'blur' : 'border-2 border-color-sena focus-visible:outline-none'} `} onClick={() => changeInstructor(instructor)} >
                                 <div className={`${!compValue(instructor) ? 'hidden' : 'absolute rounded-full bg-color-sena p-1 top-2 left-2'} `}>
                                     <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-check" width="18" viewBox="0 0 24 24" strokeWidth="3" stroke="#ffffff" fill="none" strokeLinecap="round" strokeLinejoin="round">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
