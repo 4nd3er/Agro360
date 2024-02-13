@@ -70,6 +70,10 @@ export const ResponsesProvider = ({ children }) => {
     const compFormResponse = async (id) => {
         try {
             const res = await getFormRequest(id)
+            if (res.status == 200) {
+                setExistsForm(true)
+                setEnabledForm(res.data.status)
+            }
             return res
         } catch (error) {
             ContextErrors(error, setErrors)
