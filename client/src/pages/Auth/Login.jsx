@@ -8,12 +8,16 @@ import '../../css/Login.css';
 const Login = () => {
 
     const { register, handleSubmit, formState: { errors, isValid }, } = useForm();
-    const { signin, errors: loginErrors, isAuthenticated, loading } = useAuth();
+    const { signin, errors: loginErrors, isAuthenticated, checkLogin, loading } = useAuth();
     const navigate = useNavigate();
 
     const onSubmit = handleSubmit((data) => {
         signin(data);
     })
+
+    useEffect(()=>{
+        checkLogin();
+    },[])
 
     useEffect(() => {
         if (isAuthenticated) navigate("/inicio");
