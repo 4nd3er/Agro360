@@ -102,7 +102,7 @@ function Users() {
                             placeholder='Digita tu Documento'
                             {...register("document", {
                                 required: true,
-                                minLength: 7,
+                                minLength: 5,
                                 maxLength: 10
                             })} />
                     </div>
