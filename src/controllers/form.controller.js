@@ -139,7 +139,7 @@ function instructorsResults(responses) {
         for (const object of result.responses) {
             const calcAprobation = (object.points / (object.answers.length * 5)) * 100
             let aprobation = calcAprobation
-            if (calcAprobation.toString().indexOf('.') !== -1){
+            if (calcAprobation.toString().indexOf('.') !== -1) {
                 aprobation = parseFloat(calcAprobation.toFixed(2))
             }
             object.aprobation = aprobation
@@ -186,7 +186,6 @@ export const getFormReport = async (req, res) => {
 
         //Hoja de calculo
         for (const response of responses) {
-            console.log(response)
             const questions = response.responses.map(object => object.question)
             const instructor = await Users.findById(response.instructor)
             const instructorNames = `${instructor.names} ${instructor.lastnames}`
@@ -216,7 +215,7 @@ export const getFormReport = async (req, res) => {
             });
             //Datos json a excel
             response.responses.forEach(object => {
-                const row = sheet.addRow([object.question, object.points, object.aprobation/100])
+                const row = sheet.addRow([object.question, object.points, object.aprobation / 100])
                 row.getCell(3).numFmt = object.aprobation % 1 !== 0 ? '0.00%' : '0%'
             })
             //Ultima fila
@@ -232,7 +231,7 @@ export const getFormReport = async (req, res) => {
             sheet.getCell(`B${rowIndexToInsert}`).alignment = { vertical: 'middle', horizontal: 'center' }
             sheet.getCell(`B${rowIndexToInsert}`).font = { bold: true }
             sheet.mergeCells(`B${rowIndexToInsert + 1}:C${rowIndexToInsert + 1}`)
-            sheet.getCell(`B${rowIndexToInsert + 1}`).value = response.prom/100
+            sheet.getCell(`B${rowIndexToInsert + 1}`).value = response.prom / 100
             sheet.getCell(`B${rowIndexToInsert + 1}`).numFmt = response.prom % 1 !== 0 ? '0.00%' : '0%'
 
             // Centrar las celdas en las columnas B y C
@@ -259,11 +258,11 @@ export const getFormReport = async (req, res) => {
 
         const file = `Reporte de resultados Encuesta: ${id}.xlsx`;
         //Crear el archivo
-        workbook.xlsx.writeFile(file)
+        const stream = await workbook.xlsx.writeBuffer();
         // Enviar el archivo como respuesta a la solicitud GET
         res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         res.setHeader('Content-Disposition', `attachment; filename=${file}`);
-        workbook.xlsx.write(res).then(() => res.end())
+        res.end(stream)
     } catch (error) {
         errorResponse(res, error)
     }
