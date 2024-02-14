@@ -10,7 +10,6 @@ async function main() {
       console.log(`Server running in: http://localhost:${PORT}`);
       console.log(`Enviroment: ${process.env.NODE_ENV}`);
     });
-    instructorImages();
   } catch (error) {
     console.error(error);
   }

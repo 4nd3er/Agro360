@@ -7,40 +7,10 @@ import {
   updateMethod,
 } from "../libs/methods.js";
 import { validateSenaEmail } from "../libs/functions.js";
+import exceljs from 'exceljs'
 
 export const users = async (req, res) => {
   await getMethod(res, Users, "User");
-};
-
-export const instructorImages = async () => {
-  try {
-    const instructors = await Users.find({
-      course: { $exists: false, $eq: null },
-    });
-    const notImageInstructors = instructors.map((instructor) => {
-      const img = `http://localhost:5173/src/img/instructores/${instructor.document}.png`;
-      if (!findImage(img)) {
-        return {
-          instructor: instructor.names + instructor.lastnames,
-          document: instructor.document,
-          image: false,
-        };
-      }
-    });
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-//Comprobar existencia de la imagen
-const findImage = async (ruta) => {
-  try {
-    const response = await fetch(ruta, { method: "HEAD" });
-    return response.status !== 404;
-  } catch (error) {
-    console.error("Error al verificar la existencia de la imagen:", error);
-    return false;
-  }
 };
 
 export const getUser = async (req, res) => {
