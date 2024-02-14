@@ -6,7 +6,7 @@ import { users, getUser, createUser, updateUser } from '../controllers/users.con
 const router = Router()
 
 router.route("/users")
-    .get(validateTokenCookie, users)
+    .get(users)
     .post(validate(usersValidator), createUser)
 
 router.route("/users/:id")
