@@ -6,8 +6,7 @@ import { FormAlert, Spinner } from '../../components/Components.jsx';
 import { Logo2 } from '../../assets/Assets.jsx';
 import { validateSenaEmail } from '../../helpers/functions.js'
 import '../../App.css'
-//!CORREO MISENA
-//!CRONOGRAMA FICHA ESTA
+
 const UserValidation = () => {
     const { register: email, handleSubmit: emailSubmit, reset: resetEmail, formState: { isValid: validEmail } } = useForm()
     const { register: code, handleSubmit: codeSubmit, reset: resetCode, formState: { isValid: validCode } } = useForm()

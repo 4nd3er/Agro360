@@ -133,6 +133,7 @@ function Users() {
                                         {...field}
                                         options={courses}
                                         placeholder={"Selecciona tu ficha"}
+                                        noOptionsMessage={() => "No se encontraron fichas"}
                                         onChange={val => field.onChange(val.value)}
                                         value={courses.find(({ value }) => value === field.value)}
                                         required
