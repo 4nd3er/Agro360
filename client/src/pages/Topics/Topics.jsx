@@ -48,7 +48,7 @@ const Topics = () => {
                     </button>
                 </header>
                 <ModalTopic />
-                <main className="grid grid-cols-3 gap-8 mr-10 mt-24">
+                <main className="grid grid-cols-1 gap-5 md:grid md:grid-cols-3 md:gap-5  mr-10 mt-24">
                     {loading ? <Spinner /> :
                         topics.length > 0 ? topics.map(topic => (
                             <CardTopic

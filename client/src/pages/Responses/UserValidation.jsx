@@ -101,7 +101,7 @@ const UserValidation = () => {
 
     return (
         <>
-            <div className="flex absolute overflow-hidden justify-center items-center w-full h-screen p-8">
+            <div className="flex absolute overflow-hidden justify-center xxs:items-start lg:items-center w-full h-screen p-8">
                 <div className={`${showVerifyCard ? 'hidden-card' : 'duration-1000'} max-w-md `}>
                     <form onSubmit={onSubmitEmail} className="bg-white shadow-xl rounded-xl border border-gray-300">
                         <div className="flex justify-center my-6">
@@ -118,10 +118,10 @@ const UserValidation = () => {
                                     validate: (value) => validateSenaEmail(value)
                                 })}
                                 className="w-full border rounded-lg bg-gray-50 p-3 mt-4"
-                                placeholder="Digita tú correo electrónico @SoySena o @Misena"
+                                placeholder="Digita tú correo electrónico @soy.sena o @misena"
                             />
                             <p className="mt-4 mb-6 text-gray-600 text-center text-sm font-bold text|">
-                                Digita tu correo electrónico @SoySena o @Misena para que te enviemos un código de verificación y puedas responder la encuesta
+                                Digita tu correo electrónico @soy.sena o @misena para que te enviemos un código de verificación y puedas responder la encuesta
                             </p>
                             <section className='flex flex-row justify-between mt-4 mb-8'>
                                 <Link to='/users' >

@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import { Dialog, Transition } from '@headlessui/react'
 import { useForm } from 'react-hook-form'
@@ -8,13 +8,32 @@ import { FormAlert } from '../components/Components'
 
 const ModalTopic = () => {
   const { id } = useParams()
-  const { modalTopicForm, createTopic, handleModalTopic, errors, success } = useRoles()
-  const { register, handleSubmit, formState: { isValid } } = useForm();
+  const [idTopic, setIdTopic] = useState('')
+  const { modalTopicForm, handleModalTopic, errors, success, topic, createTopic, editTopic } = useRoles()
+  const { register, setValue, handleSubmit, formState: { isValid } } = useForm();
+
+  useEffect(() => {
+    if (topic?._id) {
+      setIdTopic(topic._id)
+      setValue('name', topic.name)
+      return
+    }
+    setIdTopic('')
+    setValue('name', '')
+  }, [topic])
 
   const onSubmit = handleSubmit(async (data) => {
     const { name } = data
-    await createTopic({ name: name, role: id })
-    window.location.reload()
+    if (idTopic) {
+      await editTopic(idTopic, { role: id, name })
+    } else {
+      await createTopic({ role: id, name })
+    }
+    setTimeout(() => {
+      window.location.reload()
+    }, 3000)
+    setIdTopic('')
+    setValue('name', '')
   })
 
   return (
@@ -63,7 +82,7 @@ const ModalTopic = () => {
               <div className="sm:flex sm:items-start">
                 <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
                   <Dialog.Title as="h1" className="text-2xl text-center leading-6 font-bold text-color-sena my-4">
-                    Nueva Temática
+                    {idTopic ? 'Editar Temática' : 'Nueva Temática'}
                   </Dialog.Title>
 
                   <FormAlert errors={errors} success={success} />
@@ -87,8 +106,8 @@ const ModalTopic = () => {
                     </div>
                     <input
                       type="submit"
-                      className={`${isValid ? 'bg-color-sena hover:bg-color-sena-hover' : 'bg-gray-400 !cursor-default'} w-full p-3 text-white text-lg font-bold transition-colors rounded-xl`}
-                      value="Crear temática"
+                      className={`${isValid ? 'bg-color-sena hover:bg-color-sena-hover' : 'bg-gray-400 !cursor-default'} w-full p-3 text-white text-lg font-bold transition-colors rounded-xl cursor-pointer`}
+                      value={idTopic ? 'Guardar cambios' : 'Crear temática'}
                       disable={!isValid} />
                   </form>
                   {/* fin formulario crear tarea */}

@@ -1,6 +1,6 @@
 import { useState, createContext, useContext } from "react";
 import { RolesRequest, getRoleRequest, getRoleTopicsRequest } from "../api/roles";
-import { TopicsRequest, createTopicRequest, getTopicFormsRequest, getTopicRequest } from "../api/topics";
+import { TopicsRequest, createTopicRequest, getTopicFormsRequest, getTopicRequest, updateTopicRequest } from "../api/topics";
 import { ContextErrors, ContextSuccess } from "./Alerts";
 
 // Create the role context
@@ -8,7 +8,7 @@ export const RolesContext = createContext()
 
 export const useRoles = () => {
     const context = useContext(RolesContext)
-    if (!context) throw new Error("debe usarse dentro de un AuthoProvider")
+    if (!context) throw new Error("debe usarse dentro de un AuthProvider")
     return context;
 }
 
@@ -17,6 +17,7 @@ export const RolesProvider = ({ children }) => {
     const [loading, setLoading] = useState(true)
     const [errors, setErrors] = useState([])
     const [success, setSuccess] = useState('')
+    const [topic, setTopic] = useState({})
 
     // Roles
     const getRoles = async () => {
@@ -92,10 +93,29 @@ export const RolesProvider = ({ children }) => {
         }
     };
 
+    // Edit topic 
+    const editTopic = async (id, topic) => {
+        try {
+            const res = await updateTopicRequest(id, topic);
+            setModalTopicForm(false)
+            ContextSuccess(res, setSuccess, setErrors)
+            return res.data
+        } catch (error) {
+            ContextErrors(error, setErrors, setSuccess)
+        }
+    };
+
     // Open and close the Topic Modal
     const handleModalTopic = () => {
         setModalTopicForm(!modalTopicForm)
+        setTopic({})
     };
+
+    // Open and close the Topic Edit Modal
+    const handleModalEditTopic = (topic) => {
+        setTopic(topic)
+        setModalTopicForm(true)
+    }
 
     return (
         <RolesContext.Provider
@@ -109,9 +129,12 @@ export const RolesProvider = ({ children }) => {
                 getRoleTopics,
                 getTopics,
                 getTopic,
-                getTopicForms,
+                getTopicForms,                
+                handleModalTopic,
+                handleModalEditTopic,
+                topic,
                 createTopic,
-                handleModalTopic
+                editTopic                
             }}
         >
             {children}

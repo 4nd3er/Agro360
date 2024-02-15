@@ -33,6 +33,9 @@ const Response = () => {
 
     const [loading, setLoading] = useState(true)
 
+    const [slidesToShow, setSlidesToShow] = useState(2);
+    const [slidesToScroll, setSlidesToScroll] = useState(2);
+
     //* GET DATA
     useEffect(() => {
         const getData = async () => {
@@ -315,18 +318,39 @@ const Response = () => {
         }
     }, [allOptionsValid])
 
-    //* OTHERS
+    useEffect(() => {
+        const handleResize = () => {
+            const screenWidth = window.innerWidth;
+            if (screenWidth < 768) {
+                setSlidesToShow(1);
+                setSlidesToScroll(1);
+            } else if (screenWidth < 1440) {
+                setSlidesToShow(2);
+                setSlidesToScroll(2);
+            } else {
+                setSlidesToShow(4);
+                setSlidesToScroll(4);
+            }
+        };
+
+        handleResize();
+        window.addEventListener('resize', handleResize);
+
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+        //* OTHERS
     // Configuración del carrusel utilizando la librería react-slick
     const settings = {
         dots: true,
         arrows: true,
         infinite: true,
         speed: 500,
-        slidesToShow: 4,
-        slidesToScroll: 2
+        slidesToShow: slidesToShow,
+        slidesToScroll: slidesToScroll
     };
 
-    if (loading) return <Spinner />
+    if (loading) return <Spinner />;
+
 
     return (
         <div className='w-full flex flex-col p-10'>
@@ -352,15 +376,15 @@ const Response = () => {
                         const id = instructor._id
                         const names = `${instructor.names} ${instructor.lastnames}`
                         return (
-                            <div key={id} className={`relative image-container mx-3 px-2 py-4 !flex flex-col justify-center items-center rounded-xl transition-all ${instructor !== actualInstructor ? 'blur' : 'border-2 border-color-sena focus-visible:outline-none'} `} onClick={() => changeInstructor(instructor)} >
+                            <div key={id} className={`relative image-container w-auto px-2 py-4 !flex flex-col justify-center items-center rounded-xl transition-all ${instructor !== actualInstructor ? 'blur' : 'border-2 border-color-sena focus-visible:outline-none'} `} onClick={() => changeInstructor(instructor)} >
                                 <div className={`${!compValue(instructor) ? 'hidden' : 'absolute rounded-full bg-color-sena p-1 top-2 left-2'} `}>
                                     <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-check" width="18" viewBox="0 0 24 24" strokeWidth="3" stroke="#ffffff" fill="none" strokeLinecap="round" strokeLinejoin="round">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                         <path d="M5 12l5 5l10 -10" />
                                     </svg>
                                 </div>
-                                <img src={instructor.image ? instructor.image : userImg} alt={names} className='rounded-s-lg h-20 xs:h-28 sm:h-36 md:h-48 lg:h-64 xl:h-72 w-full sm:w-4/5 border-solid border-2 border-transparent' />
-                                <p className="image-name text-xs w-16 xs:w-24 sm:text-md sm:w-28 md:text-lg md:w-40 lg:w-60 xl:text-2xl xl:w-full text-center mt-4 overflow-hidden text-ellipsis whitespace-nowrap">{names}</p>
+                                <img src={instructor.image ? instructor.image : userImg} alt={names} className='rounded-s-lg h-20 xs:h-28 sm:h-36 md:h-48 lg:h-64 xl:h-72 w-1/2 sm:w-4/5 border-solid border-2 border-transparent' />
+                                <p className="image-name text-xs w-18 xs:w-24 sm:w-28 md:w-40 lg:w-60 xl:text-2xl xl:w-full text-center mt-4 overflow-hidden text-ellipsis whitespace-nowrap">{names}</p>
                             </div>
                         )
                     }) : null}
