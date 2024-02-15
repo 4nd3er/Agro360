@@ -24,12 +24,14 @@ const ModalTopic = () => {
 
   const onSubmit = handleSubmit(async (data) => {
     const { name } = data
-    if (topic?.idTopic) {
-      await editTopic(idTopic, topic)
+    if (idTopic) {
+      await editTopic(idTopic, { role: id, name })
     } else {
-      await createTopic(topic)
+      await createTopic({ role: id, name })
     }
-    window.location.reload()
+    setTimeout(() => {
+      window.location.reload()
+    }, 3000)
     setIdTopic('')
     setValue('name', '')
   })

@@ -8,7 +8,7 @@ export const RolesContext = createContext()
 
 export const useRoles = () => {
     const context = useContext(RolesContext)
-    if (!context) throw new Error("debe usarse dentro de un AuthoProvider")
+    if (!context) throw new Error("debe usarse dentro de un AuthProvider")
     return context;
 }
 
