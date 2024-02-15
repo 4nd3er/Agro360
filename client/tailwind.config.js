@@ -15,7 +15,8 @@ export default {
       colors: {
         'color-sena': '#39a900',
         'color-sena-hover': '#369206',
-        'color-aprendiz': '#82DEF0',
+        'color-aprendiz': '#82def0',
+        'color-aprendiz-text': '#1c566e',
         'color-instructor': '#CB7766',
         'color-directivo': '#385C57',
       },
