@@ -1,4 +1,4 @@
-import { Forms, QuestionTypes, Responses, Topics, Users } from "../models/models.js"
+import { Courses, CoursesNames, Forms, QuestionTypes, Responses, Topics, Users } from "../models/models.js"
 import { createMethod, deleteMethod, getMethod, getOneMethod, updateMethod } from "../libs/methods.js"
 import { compObjectId, errorResponse, messages } from "../libs/libs.js"
 import { capitalizeString, capitalizeWord, compDuplicate } from '../libs/functions.js'
@@ -151,6 +151,67 @@ function instructorsResults(responses) {
     return instructorsResults
 }
 
+//* Funcion para obtener promedio de instructor por ficha
+export const getCourseResults = async (responses) => {
+    const coursesResults = []
+    for (const { user, answers } of responses) {
+        const findUser = await Users.findById(user)
+        if (!findUser) continue;
+
+        const instructorResults = []
+        //Obtener el puntaje de cada pregunta segun el instructor
+        for (const { instructor: instructorId, answer } of answers) {
+            const points = Number(answer);
+            const findInstructor = instructorResults.find((instructor) => instructor.instructor === instructorId)
+            if (!findInstructor) {
+                instructorResults.push({
+                    instructor: "34234234",
+                    points: [points],
+                    prom: 0
+                })
+                continue;
+            }
+            findInstructor.points.push(points)
+        }
+        //
+        for (let { instructor, points, prom } of instructorResults) {
+            prom = points.reduce((total, num) => num + total, 0) / points.length
+            const findCourse = coursesResults.find((course) => course.number === courseNumber)
+            if (!findCourse) {
+                const courseId = findUser.course
+                const { name, number: courseNumber } = await Courses.findById(courseId)
+                const courseName = await CoursesNames.findById(name)
+                coursesResults.push({
+                    name: courseName.name,
+                    number: courseNumber,
+                    results: [{
+                        instructor: instructor,
+                        proms: [prom],
+                        prom: 0
+                    }]
+                })
+                continue;
+            }//Cierre
+            const findInstructor = findCourse.results.find((result) => result.instructor === instructor)
+            if (!findInstructor) {
+                findCourse.results.push({
+                    instructor: instructor,
+                    proms: [prom],
+                    prom: 0
+                })
+                continue;
+            }
+            findInstructor.proms.push(prom)
+        } //Cierre
+    }
+    for (const { results } of coursesResults) {
+        for (let { proms, prom } of results) {
+            prom = proms.reduce((total, num) => num + total, 0) / proms.length
+        }
+    }
+    return coursesResults
+}
+
 //* Generar los resultados del instructor segun las respuestas
 export const getInstructorsResults = async (req, res) => {
     const { id } = req.params
@@ -178,15 +239,19 @@ export const getFormReport = async (req, res) => {
         if (!findResponses) return res.status(404).json({ message: [messages.notFound("Responses")] })
 
         const responses = instructorsResults(findResponses)
-
+        const courses = await getCourseResults(findResponses)
+        console.log(courses)
         //*XLSX
 
         //Libro
         const workbook = new exceljs.Workbook();
 
+        //*Reporte Promedio Fichas
+
+
+        //*Reporte General
         //Hoja de calculo
         for (const response of responses) {
-            const questions = response.responses.map(object => object.question)
             const instructor = await Users.findById(response.instructor)
             const instructorNames = `${instructor.names} ${instructor.lastnames}`
 

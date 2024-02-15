@@ -44,11 +44,11 @@ function Users() {
 
     return (
         <div className='w-full flex flex-col justify-center items-center pt-14'>
-            <form onSubmit={onSubmit} className='flex flex-col gap-6 w-1/2 my-10 p-10 border-2 rounded-xl border-gray-300 shadow-xl'>
+            <form onSubmit={onSubmit} className='flex flex-col gap-6 w-[80%] my-10 p-10 border-2 rounded-xl border-gray-300 shadow-xl'>
                 <h1 className='text-green-500 text-3xl font-sans font-semibold w-full text-center mb-6'>Nuevo Usuario</h1>
                 <FormAlert errors={errors} success={success} />
-                <div className='form-group flex flex-row gap-6'>
-                    <div className='col w-1/2'>
+                <div className='form-group flex xxs:flex-col md:flex-row gap-6'>
+                    <div className='w-full col'>
                         <label htmlFor="names">Nombres</label>
                         <input
                             className='w-full m-1 p-2 border rounded-xl bg-gray-50'
@@ -61,7 +61,7 @@ function Users() {
                                 maxLength: 30
                             })} />
                     </div>
-                    <div className='col w-1/2'>
+                    <div className='w-full col'>
                         <label htmlFor="lastnames">Apellidos</label>
                         <input
                             className='w-full m-1 p-2 border rounded-xl bg-gray-50'
@@ -76,8 +76,8 @@ function Users() {
                     </div>
                 </div>
 
-                <div className='form-group flex flex-row gap-6'>
-                    <div className='col w-1/2'>
+                <div className='form-group flex xxs:flex-col md:flex-row gap-6'>
+                    <div className='w-full col'>
                         <label htmlFor="documentType">Tipo de documento</label>
                         <select
                             className='w-full m-1 p-2 border rounded-xl bg-gray-50'
@@ -91,7 +91,7 @@ function Users() {
                             <option value="CE">Cedula de Extranjeria</option>
                         </select>
                     </div>
-                    <div className='col w-1/2'>
+                    <div className='w-full col'>
                         <label htmlFor="document">Documento</label>
                         <input
                             className='w-full m-1 p-2 border rounded-xl bg-gray-50'
@@ -102,14 +102,14 @@ function Users() {
                             placeholder='Digita tu Documento'
                             {...register("document", {
                                 required: true,
-                                minLength: 7,
+                                minLength: 5,
                                 maxLength: 10
                             })} />
                     </div>
                 </div>
 
-                <div className='form-group flex flex-row gap-6'>
-                    <div className='col w-1/2'>
+                <div className='form-group flex xxs:flex-col md:flex-row gap-6'>
+                    <div className='w-full col'>
                         <label htmlFor="email">Correo Electronico</label>
                         <input
                             className='w-full m-1 p-2 border rounded-xl bg-gray-50'
@@ -121,7 +121,7 @@ function Users() {
                                 validate: (value) => validateSenaEmail(value)
                             })} />
                     </div>
-                    <div className='col w-1/2'>
+                    <div className='w-full col'>
                         <label>Ficha</label>
                         <div className='select-container mt-2'>
                             <Controller
