@@ -7,7 +7,7 @@ async function connectDB() {
         const url = `${db.connection.host}:${db.connection.port}`
         console.log("MongoDB is running in: " + url);
     } catch (error) {
-        console.log("Connection with DB failed: " + error);
+        console.log("Connection with DB failed - " + error);
     }
 }
 
