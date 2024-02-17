@@ -20,7 +20,7 @@ const Topics = () => {
             setLoading(false)
         }
         getTopics();
-    }, [])
+    }, [topics])
 
     // Get Role
     useEffect(() => {
@@ -47,17 +47,16 @@ const Topics = () => {
                         Añadir Temática
                     </button>
                 </header>
-                <ModalTopic />
-                <main className="grid grid-cols-1 gap-5 md:grid md:grid-cols-3 md:gap-5  mr-10 mt-24">
+                <ModalTopic 
+                    setTopics={setTopics}
+                />
+                <section className="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mr-10 mt-24 ">
                     {loading ? <Spinner /> :
                         topics.length > 0 ? topics.map(topic => (
-                            <CardTopic
-                                key={topic._id}
-                                topic={topic}
-                            />
+                                <CardTopic key={topic._id} topic={topic}/>                      
                         ))
                         : <h3 className="text-2xl text-gray-600">Aún no hay tématicas creadas para este rol, las temáticas creadas aparecerán aquí</h3>}
-                </main>
+                </section>
             </section>
         </>
     )
