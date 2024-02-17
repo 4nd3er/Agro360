@@ -134,7 +134,9 @@ export const RolesProvider = ({ children }) => {
                 handleModalEditTopic,
                 topic,
                 createTopic,
-                editTopic                
+                editTopic,    
+                setErrors,
+                setSuccess         
             }}
         >
             {children}
