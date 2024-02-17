@@ -2,6 +2,7 @@ import { errorResponse, messages } from '../libs/libs.js'
 import { parseDate, capitalizeString, deleteAccents, getNamesLastnames } from '../libs/functions.js'
 import { getDataXlsx } from '../libs/methods.js'
 import { Users, Courses, CoursesCronogram, CoursesNames } from '../models/models.js'
+import { validateSenaEmail } from '../libs/functions.js'
 
 export const createCourses = async (req, res) => {
     const files = req.files
@@ -125,7 +126,7 @@ export const createInstructors = async (req, res) => {
                 if (!instructor || !documentType || !document || !email) return res.status(400).json({ message: ["Existen campo vacios o la estructura es incorrecta"] })
                 const [instructorNames, instructorLastnames] = getNamesLastnames(instructor)
 
-                const data = { names: instructorNames.toString(), lastnames: instructorLastnames.toString(), documentType: documentType.toString(), document: document.toString(), rol: rol, email: email.toString() }                
+                const data = { names: instructorNames.toString(), lastnames: instructorLastnames.toString(), documentType: documentType.toString(), document: document.toString(), rol: rol, email: email.toString() }
                 const findInstructor = await Users.findOne({ document: data.document })
                 if (findInstructor) {
                     const updateInstructor = await Users.findOneAndUpdate({ document: data.document }, data)
@@ -160,8 +161,9 @@ export const createUsers = async (req, res) => {
                 const email = values[4]
                 const course = values[5]
 
+                if (!validateSenaEmail(email.toString())) return res.status(400).json({ message: [`Email invalido - fila #${index + 1}`] })
                 const findCourse = await Courses.findOne({ number: course })
-                if (!findCourse) return res.status(400).json({ message: [messages.notFound(`Ficha index ${index + 1}`)] })
+                if (!findCourse) return res.status(400).json({ message: [messages.notFound(`Ficha - fila #${index + 1}`)] })
                 const findUser = await Users.findOne({ document: doc.toString() })
                 const data = {
                     names: capitalizeString(names),
