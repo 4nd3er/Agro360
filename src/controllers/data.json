@@ -1,0 +1,16 @@
+[
+    {
+        "course": {
+            "_id": "adsasdasdasdas"
+        },
+        "results": [
+            {
+                "instructor": {
+                    "_id": "asdasdasdasd"
+                },
+                "points": [],
+                "prom": 0
+            }
+        ]
+    }
+]
