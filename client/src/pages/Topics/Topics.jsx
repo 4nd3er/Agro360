@@ -50,6 +50,7 @@ const Topics = () => {
                 </header>
                 <ModalTopic
                     setTopics={setTopics}
+                    topics={topics}
                 />
                 <section className="mr-5 mt-10">
                     <Masonry
