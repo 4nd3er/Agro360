@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon src/index.js --ignore client",
-    "start": "cross-env NODE_ENV=production node src/index.js"
+    "start": "cross-env NODE_ENV=production node src/index.js",
+    "test": "nodemon test/test.js"
   },
   "author": "AgroDevelopers",
   "license": "ISC",

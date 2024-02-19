@@ -2,9 +2,7 @@ import React from 'react'
 import { useState } from 'react'
 import '../App.css'
 
-function CardResult({ instructor, results }) {
-
-    const { responses, prom } = results
+function CardResult({ instructor, responses }) {
     const instructorNames = `${instructor.names} ${instructor.lastnames}`
 
     return (

@@ -3,22 +3,19 @@ import { Spinner } from '../../components/Components';
 import { ExcelSvg } from '../../assets/Assets';
 import { useParams } from 'react-router-dom';
 import '../../css/question.css';
-import { useResponses, useForms, useUsers, useRoles } from '../../context/Context.js'
+import { useResponses, useForms, useRoles } from '../../context/Context.js'
 import CardResult from '../../components/CardResult.jsx';
 
 const ResultQuest = () => {
     const { idform } = useParams();
 
     const [form, setForm] = useState({})
-    const [topic, setTopic] = useState({})
-    const [instructors, setInstructors] = useState([])
     const [results, setResults] = useState([])
     const [responsesLength, setResponsesLength] = useState(0)
 
     const { getForm, getFormReport, FormInstructorsResults } = useForms();
     const { getTopic } = useRoles()
     const { getResponsesForm } = useResponses();
-    const { getUser } = useUsers();
 
     const [loading, setLoading] = useState(true);
     const [loadingReport, setLoadingReport] = useState(false);
@@ -29,23 +26,11 @@ const ResultQuest = () => {
             const formData = await getForm(idform);
             const topic = await getTopic(formData.topic);
             formData.topic = topic.name;
+            //const responses = await getResponsesForm(idform)
             const instructorsResults = await FormInstructorsResults(idform);
-            const responses = await getResponsesForm(idform)
             setForm(formData)
-            //setTopic(topic)
             setResults(instructorsResults)
-            setResponsesLength(responses.length)
-
-            // Get instructors
-            const instructors = []
-            for (const { instructor } of instructorsResults) {
-                if (!instructors.includes(instructor)) instructors.push(instructor)
-            }
-            const instructorsData = await Promise.all(instructors.map(async (instructor) => {
-                return await getUser(instructor)
-            }))
-            setInstructors(instructorsData)
-
+            setResponsesLength(550)
             setLoading(false)
         }
         getData();
@@ -95,9 +80,8 @@ const ResultQuest = () => {
             </div>
 
             <div className="flex flex-col gap-8 mb-8">
-                {instructors.map((instructor) => {
-                    const instructorResult = results.find(({ instructor: instructorId }) => instructorId === instructor._id)
-                    return <CardResult key={instructor._id} instructor={instructor} results={instructorResult} />
+                {results.map(({instructor, responses}) => {
+                    return <CardResult key={instructor._id} instructor={instructor} responses={responses} />
                 })}
             </div>
         </article>
