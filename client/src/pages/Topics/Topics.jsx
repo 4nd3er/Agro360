@@ -4,6 +4,7 @@ import CardTopic from "../../components/CardTopic.jsx";
 import ModalTopic from "../../components/ModalTopic.jsx";
 import { useRoles } from "../../context/Context.js"
 import Spinner from "../../components/Spinner.jsx";
+import Masonry from "@mui/lab/Masonry"
 
 const Topics = () => {
     const params = useParams() // Obtain id of rol
@@ -47,15 +48,21 @@ const Topics = () => {
                         Añadir Temática
                     </button>
                 </header>
-                <ModalTopic 
+                <ModalTopic
                     setTopics={setTopics}
+                    topics={topics}
                 />
-                <section className="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mr-10 mt-24 ">
-                    {loading ? <Spinner /> :
-                        topics.length > 0 ? topics.map(topic => (
-                                <CardTopic key={topic._id} topic={topic}/>                      
-                        ))
-                        : <h3 className="text-2xl text-gray-600">Aún no hay tématicas creadas para este rol, las temáticas creadas aparecerán aquí</h3>}
+                <section className="mr-5 mt-10">
+                    <Masonry
+                        colums={{ xs:2, sm:3, md:5 }}
+                        spacing={{ xs:1, sm:2, md:3 }}
+                    >
+                        {loading ? <Spinner /> :
+                            topics.length > 0 ? topics.map(topic => (
+                                <CardTopic key={topic._id} topic={topic} />
+                            ))
+                                : <h3 className="text-xl text-gray-600">Aún no hay tématicas creadas para este rol, las temáticas creadas aparecerán aquí</h3>}
+                    </Masonry>
                 </section>
             </section>
         </>

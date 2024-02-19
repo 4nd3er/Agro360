@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form'
 import { useRoles } from '../context/Context.js'
 import { FormAlert } from '../components/Components'
 
-const ModalTopic = ({ setTopics }) => {
+const ModalTopic = ({ setTopics, topics }) => {
   const { id } = useParams()
   const [idTopic, setIdTopic] = useState('')
   const { modalTopicForm, handleModalTopic, errors, success, topic, createTopic, editTopic, setErrors, setSuccess } = useRoles()
@@ -25,10 +25,14 @@ const ModalTopic = ({ setTopics }) => {
     const { name } = data
     if (idTopic) {
       const newTopic = await editTopic(idTopic, { role: id, name })
-      setTopics(newTopic.data) // update state of topics
+      const updateTopics = [...topics] // Create a copy of the current topics
+      updateTopics.push(newTopic.data) // Add the new topic to the copy
+      setTopics(updateTopics) // update state of topics
     } else {
       const newTopic = await createTopic({ role: id, name })
-      setTopics(newTopic.data) // update state of topics
+      const updateTopics = [...topics] // Create a copy of the current topics
+      updateTopics.push(newTopic.data) // Add the new topic to the copy
+      setTopics(updateTopics) // update state of topics
     }
     setIdTopic('')
     setValue('name', '')
