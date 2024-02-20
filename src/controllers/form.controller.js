@@ -96,6 +96,7 @@ export const deleteForm = async (req, res) => {
 
 //* Funcion para obtener los resultados de los instructores
 async function instructorsResults(responses) {
+
     const instructorsResults = new Map()
     const instructorIds = Array.from(new Set(
         _.flatMap(responses, (response) => {
@@ -214,13 +215,19 @@ export const getInstructorsResults = async (req, res) => {
     const { id } = req.params
 
     try {
-        console.time("Querys")
-        const findForm = await Forms.findById(id)
-        const findResponses = await Responses.find({ form: id })
+        const findForm = await Forms.findOne({ _id: id })
         if (!findForm) return res.status(404).json({ message: [messages.notFound("Form")] })
+        console.time("findResponses")
+        const findResponses = await Responses.find({ form: id }).lean()
+        console.timeEnd("findResponses")
         const results = await instructorsResults(findResponses)
-        console.timeEnd("Querys")
-        res.json(results)
+        res.json({
+            response: "Instructor results created succesfully",
+            data: {
+                results,
+                responsesLength: findResponses.length
+            }
+        })
     } catch (error) {
         errorResponse(res, error)
     }
@@ -231,27 +238,21 @@ export const getFormReport = async (req, res) => {
     const { id } = req.params
 
     try {
-        console.time("QuerysReport")
         const findForm = await Forms.findById(id)
         if (!findForm) return res.status(404).json({ message: [messages.notFound("Form")] })
         const findResponses = await Responses.find({ form: id })
         if (!findResponses) return res.status(404).json({ message: [messages.notFound("Responses")] })
-        console.timeEnd("QuerysReport")
 
         //Data
-        console.time("instructorResultsReport")
         const responses = await instructorsResults(findResponses)
-        console.timeEnd("instructorResultsReport")
-        //console.time("courseResults")
-        //const courseProm = await getCourseResults(findResponses)
-        //console.timeEnd("courseResults")
+        const courseProm = await getCourseResults(findResponses)
 
         //*XLSX - Reporte General
         const workbook = new exceljs.Workbook();
 
         //Para cada instructor
         for (const response of responses) {
-            const instructorId = response.instructor.toString()
+            const instructorId = response.instructor._id.toString()
             const instructor = await Users.findById(instructorId)
             const instructorNames = `${instructor.names} ${instructor.lastnames}`
 
@@ -334,18 +335,18 @@ export const getFormReport = async (req, res) => {
             CoursePromColumnsCell2.value = "Promedio"
 
             //Data
-            // let actualCell = 0
-            // const CoursePromLastRow = sheet.lastRow.number + 1
-            // for (const { course, results } of courseProm) {
-            //     const cellE = sheet.getCell(`E${CoursePromLastRow + actualCell}`)
-            //     const cellF = sheet.getCell(`F${CoursePromLastRow + actualCell}`)
-            //     const findInstructor = _.find(results, ({ instructor: courseInstructor }) => { return courseInstructor._id.toString() == instructorId })
-            //     if (!findInstructor) continue;
-            //     cellE.value = Number(course.number)
-            //     cellF.numFmt = findInstructor.prom % 1 !== 0 ? '0.00%' : '0%'
-            //     cellF.value = findInstructor.prom / 100
-            //     actualCell += 1
-            // }
+            let actualCell = 0
+            const CoursePromLastRow = sheet.lastRow.number + 1
+            for (const { course, results } of courseProm) {
+                const cellE = sheet.getCell(`E${CoursePromLastRow + actualCell}`)
+                const cellF = sheet.getCell(`F${CoursePromLastRow + actualCell}`)
+                const findInstructor = _.find(results, ({ instructor: courseInstructor }) => { return courseInstructor._id.toString() == instructorId })
+                if (!findInstructor) continue;
+                cellE.value = Number(course.number)
+                cellF.numFmt = findInstructor.prom % 1 !== 0 ? '0.00%' : '0%'
+                cellF.value = findInstructor.prom / 100
+                actualCell += 1
+            }
 
             //Columns E & F
             const columnE = sheet.getColumn(5)

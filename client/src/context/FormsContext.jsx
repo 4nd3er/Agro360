@@ -50,7 +50,7 @@ export const FormsProvider = ({ children }) => {
     const FormInstructorsResults = async (id) => {
         try {
             const res = await getFormInstructorsResultsRequest(id);
-            return res.data
+            return res.data.data
         } catch (error) {
             ContextErrors(error, setErrors)
         }

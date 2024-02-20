@@ -26,11 +26,10 @@ const ResultQuest = () => {
             const formData = await getForm(idform);
             const topic = await getTopic(formData.topic);
             formData.topic = topic.name;
-            //const responses = await getResponsesForm(idform)
-            const instructorsResults = await FormInstructorsResults(idform);
+            const { results, responsesLength } = await FormInstructorsResults(idform);
             setForm(formData)
-            setResults(instructorsResults)
-            setResponsesLength(550)
+            setResults(results)
+            setResponsesLength(responsesLength)
             setLoading(false)
         }
         getData();

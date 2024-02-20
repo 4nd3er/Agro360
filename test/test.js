@@ -12,7 +12,7 @@ async function test() {
             "657b96d7a5531a7353610e88", "656c1fbb8aaa1a0c8605984e", "656c1fbd8aaa1a0c86059896", "657b96d7a5531a7353610e89", "657b96d7a5531a7353610e8a",
             "657b96d7a5531a7353610e8b", "657b96d7a5531a7353610e8c", "656c1fb78aaa1a0c860597e8", "656c1fb78aaa1a0c860597e5", "657b96d7a5531a7353610e8d",
             "657b96d7a5531a7353610e8e", "657b96d7a5531a7353610e8f"]
-        const res = await formsTesting(user, form, instructors, 500)
+        const res = await formsTesting(user, form, instructors, 5000)
         console.log(res)
     } catch (error) {
         console.log("Failed Test: " + error)
