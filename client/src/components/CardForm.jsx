@@ -19,7 +19,7 @@ const CardForm = ({ form }) => {
     return (
         <>
         <div
-            className="bg-[#82def0] w-60 mb-5 rounded-lg p-2 transform transition-all hover:-translate-y-2 duration-300 shadow-lg hover:shadow-xl"
+            className="bg-[#82def0] rounded-lg p-2 transform transition-all hover:-translate-y-2 duration-300 shadow-lg hover:shadow-xl"
         >
             {/* <img className="" src="../img/imagen-encuesta.jpg" alt="" /> */}
             <div className="p-2">
@@ -27,9 +27,8 @@ const CardForm = ({ form }) => {
                     {name}
                 </h2>
                 <p className="text-color-aprendiz-text text-base">{description}</p>
+                <p className="text-base text-color-aprendiz-text ">Estado:<span className='text-color-aprendiz-text text-sm'> {status ? 'Activo' : 'Inactivo'}</span></p>
             </div>
-
-            <p className="text-base text-color-aprendiz-text ">Estado:<span className='text-color-aprendiz-text text-sm'> {status ? 'Activo' : 'Inactivo'}</span></p>
             <Menu as="div">
                 <Menu.Button 
                 onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}

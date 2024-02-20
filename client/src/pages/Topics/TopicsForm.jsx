@@ -51,7 +51,7 @@ const TopicsForm = () => {
             </header>
             <h3 className='text-bold text-xl text-gray-600 text-center uppercase mt-10 mb-2'>Recientes</h3>
             <hr />
-            <main className="grid grid-cols-1 md:grid-cols-4 lg:grid-cold-4 gap-2 mr-5 mt-10">
+            <main className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 mr-5 mt-10 mb-8">
                 {/* iterate forms  */}
                 {loading ? <Spinner /> :
                     forms.length ? forms.map(form => (
