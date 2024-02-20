@@ -1,18 +1,23 @@
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { useState } from 'react'
 import { Menu } from '@headlessui/react'
+import { CopyToClipboard } from 'react-copy-to-clipboard'
+import { Toaster, toast } from 'react-hot-toast'
 
 const CardForm = ({ form }) => {
     const { _id, name, status, description } = form;
     const [isHovered, setIsHovered] = useState(false)
-    const navigate = useNavigate()
+    //const navigate = useNavigate()
 
     // Navigate to form
-    const handleClick = () => {
-        navigate(`/forms/v/${_id}`)
-    }
+    // const handleClick = () => {
+    //     navigate(`/forms/v/${_id}`)
+    // }
+
+    const url = import.meta.env.VITE_FRONTEND_URL
 
     return (
+        <>
         <div
             className="bg-[#82def0] w-60 mb-5 rounded-lg p-2 transform transition-all hover:-translate-y-2 duration-300 shadow-lg hover:shadow-xl"
         >
@@ -38,21 +43,29 @@ const CardForm = ({ form }) => {
                     <div className="px-1 py-1 ">
                         <Menu.Item>
                             {({ active }) => (
-                                <button
-                                    className={`${active ? 'bg-color-aprendiz-text text-white' : 'text-gray-900'} group flex w-full items-center rounded-md px-2 py-2 text-sm transition-colors duration-300 ease-out`}
-                                    onClick={handleClick}
+                                <CopyToClipboard
+                                    text={`${url}/forms/v/${_id}`} // Copy to url form
                                 >
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke={active ? '#ffffff' : '#1c566e'} className="w-6 h-6 mr-2">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="m18.375 12.739-7.693 7.693a4.5 4.5 0 0 1-6.364-6.364l10.94-10.94A3 3 0 1 1 19.5 7.372L8.552 18.32m.009-.01-.01.01m5.699-9.941-7.81 7.81a1.5 1.5 0 0 0 2.112 2.13" />
-                                    </svg>
-                                    Ver formulario
-                                </button>
+                                    <button
+                                        className={`${active ? 'bg-color-aprendiz-text text-white' : 'text-gray-900'} group flex w-full items-center rounded-md px-2 py-2 text-sm transition-colors duration-300 ease-out`}
+                                        onClick={() => toast.success('Link copiado',{
+                                            duration: 2500
+                                        }) }
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke={active ? '#ffffff' : '#1c566e'} className="w-6 h-6 mr-2">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="m18.375 12.739-7.693 7.693a4.5 4.5 0 0 1-6.364-6.364l10.94-10.94A3 3 0 1 1 19.5 7.372L8.552 18.32m.009-.01-.01.01m5.699-9.941-7.81 7.81a1.5 1.5 0 0 0 2.112 2.13" />
+                                        </svg>
+                                        Copiar Link
+                                    </button>
+                                </CopyToClipboard>                               
                             )}
                         </Menu.Item>
                     </div>
                 </Menu.Items>
             </Menu>
         </div>
+        <Toaster />
+        </>
     )
 }
 
