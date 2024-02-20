@@ -4,7 +4,7 @@ import { FRONTEND_URL } from '../config/config.js'
 //* Funcion enviar correo para recuperacion de contraseña
 export function sendEmailResetPassword(res, data) {
 
-  const { userEmail, token } = data
+  const { userEmail, token, userNames } = data
   const transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
@@ -23,7 +23,7 @@ export function sendEmailResetPassword(res, data) {
             <header style="width: 100%; background-color: #39A900; height: 80px; border-radius: .5rem; display: grid;">
                 <img src="https://www.sena.edu.co/Paginas/img/logo-sena-blanco.png" alt="Sena Logo" style="height: 4rem; margin: auto;">
             </header>
-            <h1 style="color: #39A900; text-align: center; margin-top: 1rem;">¡Hola ${userEmail}!</h1>
+            <h1 style="color: #39A900; text-align: center; margin-top: 1rem;">¡Hola, ${userNames}!</h1>
             <div style="text-align: center; margin-top: 1.5rem; color: black;">
                 <p>Recibiste este correo porque solicitaste restablecer tu contraseña en Agro360. Si no solicitaste esto, puedes ignorar este correo.</p>
                 <p>Para restablecer tu contraseña, haz clic en el siguiente enlace:</p>
