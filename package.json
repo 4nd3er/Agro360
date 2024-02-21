@@ -11,7 +11,7 @@
   "author": "AgroDevelopers",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^5.1.1",
+    "bcrypt": "5.0.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "exceljs": "^4.4.0",
