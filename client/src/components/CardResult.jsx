@@ -2,9 +2,7 @@ import React from 'react'
 import { useState } from 'react'
 import '../App.css'
 
-function CardResult({ instructor, results }) {
-
-    const { responses, prom } = results
+function CardResult({ instructor, responses }) {
     const instructorNames = `${instructor.names} ${instructor.lastnames}`
 
     return (
@@ -23,7 +21,7 @@ function CardResult({ instructor, results }) {
                     <tbody>
                         {responses.map(({ question, points, aprobation }) => {
                             return (
-                                <tr className="odd:bg-white even:bg-gray-50 border-b">
+                                <tr key={question} className="odd:bg-white even:bg-gray-50 border-b">
                                     <td className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-md'>{question}</td>
                                     <td className='px-6 py-4 text-center'>{points}</td>
                                     <td className='px-6 py-4 text-center'>{aprobation}%</td>

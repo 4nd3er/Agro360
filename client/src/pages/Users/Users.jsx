@@ -18,6 +18,7 @@ function Users() {
         if (res) {
             setTimeout(() => {
                 window.history.back()
+                location.reload()
             }, 3000)
         }
     })

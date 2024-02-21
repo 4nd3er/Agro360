@@ -1,10 +1,27 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Survey from '../../components/Survey';
 import Create from '../../components/Create';
 import { Link } from 'react-router-dom';
 import { imgEncuesta } from '../../assets/Assets';
+import { useForms } from '../../context/Context.js'
+import { Spinner } from '../../components/Components.jsx'
 
 const Quest = () => {
+	const { getRecentlyForms } = useForms()
+	const [recentlyForms, setRecentlyForms] = useState([])
+	const [loading, setLoading] = useState(true)
+
+	useEffect(() => {
+		const getForms = async () => {
+			const res = await getRecentlyForms()
+			setRecentlyForms(res)
+			setLoading(false)
+		}
+		getForms()
+	}, [])
+
+	if (loading) return <Spinner />
+
 	return (
 		<div className='flex flex-col justify-center items-center min-h-[80vh]'>
 			<div className='text-center mt-1 place-items-center' style={{ marginBottom: '1rem' }}>
@@ -25,16 +42,22 @@ const Quest = () => {
 				height: '10px',
 			}}>
 			</div>
-			<div>
-				<h1>ENCUESTAS RECIENTES</h1>
-				<div onClick={() => location.reload()}>
-					<Survey
-						title="Encuesta pedagógica"
-						imageSrc={imgEncuesta}
-						isActive={true}
-					/>
-				</div>
-			</div>
+			<article className='flex flex-col items-center'>
+				<header>
+					<h1>ENCUESTAS RECIENTES</h1>
+				</header>
+				<section className='flex'>
+					{recentlyForms.map(({ name, status }) => {
+						return (
+							<Survey
+								title={name}
+								imageSrc={imgEncuesta}
+								isActive={status}
+							/>
+						)
+					})}
+				</section>
+			</article>
 		</div>
 	);
 }

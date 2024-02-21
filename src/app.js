@@ -9,7 +9,7 @@ import { authRoutes, chargeDataRoutes, coursesRoutes, formsRoutes, responseRoute
 const app = express()
 
 //* Dependencies
-dotenv.config({ path: "./.env" })
+dotenv.config()
 app.use(express.json())
 app.use(cookieParser())
 app.use(morgan("dev"))

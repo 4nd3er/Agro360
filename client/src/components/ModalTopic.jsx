@@ -2,14 +2,13 @@ import { Fragment, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import { Dialog, Transition } from '@headlessui/react'
 import { useForm } from 'react-hook-form'
-import Swal from 'sweetalert2'
 import { useRoles } from '../context/Context.js'
 import { FormAlert } from '../components/Components'
 
-const ModalTopic = () => {
+const ModalTopic = ({ setTopics, topics }) => {
   const { id } = useParams()
   const [idTopic, setIdTopic] = useState('')
-  const { modalTopicForm, handleModalTopic, errors, success, topic, createTopic, editTopic } = useRoles()
+  const { modalTopicForm, handleModalTopic, errors, success, topic, createTopic, editTopic, setErrors, setSuccess } = useRoles()
   const { register, setValue, handleSubmit, formState: { isValid } } = useForm();
 
   useEffect(() => {
@@ -25,15 +24,20 @@ const ModalTopic = () => {
   const onSubmit = handleSubmit(async (data) => {
     const { name } = data
     if (idTopic) {
-      await editTopic(idTopic, { role: id, name })
+      const newTopic = await editTopic(idTopic, { role: id, name })
+      const updateTopics = [...topics] // Create a copy of the current topics
+      updateTopics.push(newTopic.data) // Add the new topic to the copy
+      setTopics(updateTopics) // update state of topics
     } else {
-      await createTopic({ role: id, name })
+      const newTopic = await createTopic({ role: id, name })
+      const updateTopics = [...topics] // Create a copy of the current topics
+      updateTopics.push(newTopic.data) // Add the new topic to the copy
+      setTopics(updateTopics) // update state of topics
     }
-    setTimeout(() => {
-      window.location.reload()
-    }, 3000)
     setIdTopic('')
     setValue('name', '')
+    setErrors([])
+    setSuccess('')
   })
 
   return (
