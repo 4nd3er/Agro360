@@ -94,6 +94,16 @@ export const deleteForm = async (req, res) => {
     await deleteMethod(id, res, Forms, "Form")
 }
 
+//*
+export const getRecentlyForms = async (req, res) => {
+    try {
+        const findForms = await Forms.find().sort({ createdAt: -1 }).limit(3)
+        res.json(findForms)
+    } catch (error) {
+        errorResponse(res, error)
+    }
+}
+
 //* Funcion para obtener los resultados de los instructores
 async function instructorsResults(responses) {
 

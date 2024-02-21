@@ -27,7 +27,7 @@ const CardForm = ({ form }) => {
                     {name}
                 </h2>
                 <p className="text-color-aprendiz-text text-base">{description}</p>
-                <p className="text-base text-color-aprendiz-text ">Estado:<span className='text-color-aprendiz-text text-sm'> {status ? 'Activo' : 'Inactivo'}</span></p>
+                <p className="text-base text-color-aprendiz-text ">Estado:<span className={`text-color-aprendiz-text text-sm ${status ? 'text-color-sena' : 'text-red-400'}`}> {status ? 'Activo' : 'Inactivo'}</span></p>
             </div>
             <Menu as="div">
                 <Menu.Button 

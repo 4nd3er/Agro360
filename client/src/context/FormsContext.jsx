@@ -1,5 +1,5 @@
 import { useContext, createContext, useEffect, useState } from "react";
-import { FormsRequest, QuestionTypesRequest, createFormRequest, createQuestionTypeRequest, deleteFormRequest, deleteQuestionTypeRequest, getFormInstructorsResultsRequest, getFormReportRequest, getFormRequest, getFormsResponsesRequest, getQuestionTypeRequest, updateFormRequest, updateQuestionTypeRequest } from "../api/forms";
+import { FormsRequest, QuestionTypesRequest, createFormRequest, createQuestionTypeRequest, deleteFormRequest, deleteQuestionTypeRequest, getFormInstructorsResultsRequest, getFormReportRequest, getFormRequest, getFormsResponsesRequest, getQuestionTypeRequest, getRecentlyFormsRequest, updateFormRequest, updateQuestionTypeRequest } from "../api/forms";
 import { ContextErrors } from "./Alerts";
 import { saveAs } from 'file-saver';
 
@@ -35,6 +35,16 @@ export const FormsProvider = ({ children }) => {
             ContextErrors(error, setErrors)
         }
     };
+
+    //Recently forms
+    const getRecentlyForms = async () => {
+        try {
+            const res = await getRecentlyFormsRequest()
+            return res.data
+        } catch (error) {
+            ContextErrors(error, setErrors)
+        }
+    }
 
     // Get Forms Responses
     const FormsResponses = async () => {
@@ -155,6 +165,7 @@ export const FormsProvider = ({ children }) => {
                 getForms,
                 FormsResponses,
                 getForm,
+                getRecentlyForms,
                 FormInstructorsResults,
                 createForm,
                 updateForm,
