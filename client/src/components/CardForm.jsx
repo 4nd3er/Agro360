@@ -27,18 +27,18 @@ const CardForm = ({ form }) => {
                     {name}
                 </h2>
                 <p className="text-color-aprendiz-text text-base">{description}</p>
-                <p className="text-base text-color-aprendiz-text ">Estado:<span className={`text-color-aprendiz-text text-sm ${status ? 'text-color-sena' : 'text-red-400'}`}> {status ? 'Activo' : 'Inactivo'}</span></p>
+                <p className="text-base text-color-aprendiz-text ">Estado:<span className={`text-color-aprendiz-text text-sm ${status ? 'text-color-sena' : 'text-red-500'}`}> {status ? 'Activo' : 'Inactivo'}</span></p>
             </div>
             <Menu as="div">
                 <Menu.Button 
-                onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}
-                className="ml-auto block"
+                    onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}
+                    className="absolute bottom-0 right-0 mr-2 mb-2"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke={`${isHovered ? '#1c566e' : '#ffffff'}`} className="w-8 h-8">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
                     </svg>
                 </Menu.Button>
-                <Menu.Items className="absolute right-4 top-16 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none">
+                <Menu.Items className="absolute right-5 bottom-10 w-40 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none">
                     <div className="px-1 py-1 ">
                         <Menu.Item>
                             {({ active }) => (

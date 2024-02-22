@@ -6,7 +6,7 @@ import { Menu } from '@headlessui/react'
 
 
 const CardTopic = ({ topic }) => {
-    const { name, _id, createdAt } = topic
+    const { name, _id, createdAt, updatedAt } = topic
     const [role, setRole] = useState() // Name role
     const idrol = useParams() // role id
     const [isHovered, setIsHovered] = useState(false)
@@ -54,17 +54,19 @@ const CardTopic = ({ topic }) => {
     }
     return (
         <div
-            className={`${cardColor} rounded-lg p-5 transition duration-150 ease-in-out transform hover:scale-105 hover:shadow-lg`}>
-            <div className='flex justify-between'>
-                <p className="text-color-aprendiz-text text-xl font-black uppercase">{name}</p>
+            className={`${cardColor} rounded-lg p-4 transition duration-150 ease-in-out transform hover:scale-105 hover:shadow-lg`}>
+                <h3 className="text-color-aprendiz-text text-xl font-black uppercase">{name}</h3>
                 <Menu as="div">
-                    <Menu.Button onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
+                    <Menu.Button 
+                        onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}
+                        className="absolute bottom-0 right-0 mb-2 mr-2"
+                    >
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke={`${isHovered ? '#1c566e' : '#ffffff'}`} className="w-8 h-8">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
                         </svg>
 
                     </Menu.Button>
-                    <Menu.Items className="absolute right-4 top-16 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none">
+                    <Menu.Items className="absolute right-5 top-5 w-44 origin-top-right divide-y divide-gray-100 rounded-lg bg-white shadow-lg ring-1 ring-black/5 focus:outline-none">
                         <div className="px-1 py-1 ">
                             <Menu.Item>
                                 {({ active }) => (
@@ -98,8 +100,9 @@ const CardTopic = ({ topic }) => {
                         </div>
                     </Menu.Items>
                 </Menu>
-            </div>
-            <p className='text-base text-color-aprendiz-text text-bold'>Fecha creación: {formatDate(createdAt)}</p>
+            
+            <p className='text-base text-color-aprendiz-text text-bold mt-3'>Creada el: {formatDate(createdAt)}</p>
+            <p className='text-base text-color-aprendiz-text text-bold my-3'>Última actualización: {formatDate(updatedAt)}</p>
         </div>
     )
 }
