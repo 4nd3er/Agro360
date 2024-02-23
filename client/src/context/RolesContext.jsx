@@ -1,6 +1,6 @@
 import { useState, createContext, useContext } from "react";
 import { RolesRequest, getRoleRequest, getRoleTopicsRequest } from "../api/roles";
-import { TopicsRequest, createTopicRequest, getTopicFormsRequest, getTopicRequest, updateTopicRequest } from "../api/topics";
+import { TopicsRequest, createTopicRequest, getTopicFormsRequest, getTopicRequest, updateTopicRequest, deleteTopicRequest } from "../api/topics";
 import { ContextErrors, ContextSuccess } from "./Alerts";
 
 // Create the role context
@@ -123,6 +123,19 @@ export const RolesProvider = ({ children }) => {
         setTopic(topic)
         setModalDeleteTopic(!modalDeleteTopic)
     }
+
+    // Delete topic
+    const deleteTopic = async  () => {
+        try {
+            const res = await deleteTopicRequest(topic._id)
+            setModalDeleteTopic(!modalDeleteTopic)
+            console.log('Temática eliminada correctamente' )
+            return res.data
+        } catch (error) {
+            console('error al eliminar la temática: ', error)
+        }
+    }
+    
     return (
         <RolesContext.Provider
             value={{
@@ -144,7 +157,8 @@ export const RolesProvider = ({ children }) => {
                 setErrors,
                 setSuccess,
                 handleModalDeleteTopic,
-                modalDeleteTopic         
+                modalDeleteTopic,
+                deleteTopic         
             }}
         >
             {children}
