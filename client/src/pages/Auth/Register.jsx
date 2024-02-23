@@ -1,26 +1,22 @@
-import { useNavigate } from "react-router-dom";
-import { useForm } from 'react-hook-form';
-import { FormAlert } from '../../components/Components';
-import { useAuth } from '../../context/Context';
+import { useNavigate } from "react-router-dom"
+import { useForm } from 'react-hook-form'
+import { FormAlert } from '../../components/Components'
+import { useAuth } from '../../context/Context'
 
 const Register = () => {
-  const navigate = useNavigate();
-  const { register, handleSubmit, formState: { isValid } } = useForm();
-  const { signup, errors, success } = useAuth();
+  const navigate = useNavigate()
+  const { register, handleSubmit, formState: { isValid }, } = useForm();
+  const { signup, errors, success } = useAuth()
 
   const onSubmit = handleSubmit(async (data) => {
-    const res = await signup(data);
+    const res = await signup(data)
     if (res) {
       setTimeout(() => {
-        navigate('/inicio');
-        location.reload();
-      }, 3000);
+        navigate('/inicio')
+        location.reload()
+      }, 3000)
     }
-  });
-
-  const handleCancel = () => {
-    navigate('/'); // Boton para cancelar el registro
-  };
+  })
 
   return (
     <>
@@ -61,7 +57,7 @@ const Register = () => {
                     required: true,
                     validate: (value) => {
                       const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-                      return emailRegex.test(value);
+                      return emailRegex.test(value)
                     }
                   })}
                 />
@@ -79,24 +75,17 @@ const Register = () => {
             {/*--------*/}
             <section className="w-full flex items-center justify-center mt-4">
               <button
-                type="button"
-                onClick={handleCancel}
-                className="bg-color-sena hover:bg-color-sena-hover text-white w-5/6 py-1 rounded-xl mt-1 mr-2 transition-color">
-                Cancelar
-              </button>
-              <button
                 type="submit"
-                className={`${isValid ? 'bg-green-600 hover:cursor-pointer hover:bg-green-700' : 'bg-gray-500 cursor-default'} w-5/6 py-1 text-white rounded-xl transition-color`}
+                className={`${isValid ? 'bg-green-600 hover:cursor-pointer hover:bg-green-700' : 'bg-gray-500 cursor-default'} w-1/2 py-1 text-white rounded-xl  transition-color`}
                 disabled={!isValid}>
                 Registrar
               </button>
-
             </section>
           </form>
         </section>
       </article>
     </>
-  );
-};
+  )
+}
 
-export default Register;
+export default Register
