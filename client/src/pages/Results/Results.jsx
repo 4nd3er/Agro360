@@ -24,7 +24,7 @@ const Results = () => {
 
     return (
         <div className='flex flex-col min-h-[80vh] mt-12'>
-            <div className='flex flex-row h-2'> {/* Agrega la clase flex-row */}
+            <div className='grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-6 gap-7'> {/* Utilizamos grid para hacerlo responsive */}
                 {cargando ? <Spinner /> :
                     forms.length ? (
                         forms.map((quest) => (

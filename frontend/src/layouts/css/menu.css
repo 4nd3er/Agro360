@@ -1,0 +1,218 @@
+@import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.navigation {
+  position: fixed;
+  inset: 7rem 0 1.8rem 1rem;
+  width: 6rem;
+  height: 80%;
+  background: #fff;
+  transition: 0.5s all ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 2rem;
+  box-shadow: 0 0 5px 2px gray;
+  user-select: none;
+}
+
+
+.navigation.close {
+  width: 4rem;
+  height: 4rem;
+  transform: translateX(-3rem);
+  overflow: hidden;
+}
+
+.navigation.close:hover{
+  transform: translateX(-0.5rem);
+}
+
+.navigation.close ul {
+  opacity: 0;
+  transform: translateX(-7rem);
+}
+
+.navigation.close .menuArrow {
+  position: relative;
+  right: -0.6rem;
+  cursor: pointer;
+}
+
+
+.navigation .menuToggle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4rem;
+  border-bottom: 0.1rem solid rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1.7rem;
+  transition: .3s all;
+}
+
+.navigation .menuToggle::before {
+  content: "";
+  position: absolute;
+  width: 1.5rem;
+  height: 0.2rem;
+  background: #333;
+  transform: translateY(-0.5rem);
+  transition: 0.5s;
+}
+
+.navigation .menuToggle::after {
+  content: "";
+  position: absolute;
+  width: 1.5rem;
+  height: 0.2rem;
+  background: #333;
+  transform: translateY(0.5rem);
+  transition: 0.5s;
+  box-shadow: 0 -0.5rem 0 #333;
+}
+
+.navigation ul {
+  display: flex;
+  flex-direction: column;
+  margin-top: 3rem;
+  gap: 4rem;
+  width: 100%;
+  transition: .3s all;
+}
+
+.navigation ul li {
+  list-style: none;
+  position: relative;
+  width: 100%;
+  height: 4rem;
+  transition: 0.5s;
+}
+
+.navigation ul li.active {
+  transform: translateX(3rem);
+}
+
+.navigation ul li.active a .icon {
+  color: #fff;
+  background: var(--clr);
+}
+
+.navigation ul li.active a .icon::before {
+  opacity: 0.5;
+}
+
+.navigation ul li.active a .text {
+  color: white !important;
+  font-weight: bold;
+}
+
+.navigation ul li a {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  text-decoration: none;
+}
+
+.navigation ul li a .icon {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: 0.5s;
+  border-radius: 0.6rem;
+  color: #222;
+  padding: .5rem;
+  padding-inline: 1rem;
+}
+
+.navigation ul li:nth-child(1) a .icon {
+  right: 0;
+}
+
+.navigation ul li:nth-child(2) a .icon {
+  right: -10px;
+}
+
+.navigation ul li:nth-child(3) a .icon {
+  right: -10px;
+}
+
+.navigation ul li a .icon::before {
+  content: "";
+  position: absolute;
+  top: 0.7rem;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--clr);
+  filter: blur(0.7rem);
+  text-decoration: white !important;
+  opacity: 0;
+  transition: 0.5s;
+}
+
+.navigation ul li a .icon ion-icon {
+  width: 3.5rem;
+  height: 3.5rem;
+}
+
+.navigation .back {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 4rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1.7rem;
+  transition: .3s all;
+  margin-bottom: 1rem;
+  transition: .3s all;
+}
+
+.navigation.close .back {
+  opacity: 0;
+  transform: translateX(-7rem);
+}
+
+.navigation.close .menuToggle::before {
+  transform: translateY(0px) rotate(45deg);
+}
+
+.navigation.close .menuToggle::after {
+  transform: translateY(0px) rotate(-45deg);
+  box-shadow: none;
+}
+
+.navigation .back ion-icon {
+  position: absolute;
+  width: 2rem;
+  height: 2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1.7rem;
+  transition: .3s all;
+}
+
+.navigation .back p {
+  margin-top: 3rem;
+  user-select: none;
+}
+
+/*# sourceMappingURL=style.css.map */
