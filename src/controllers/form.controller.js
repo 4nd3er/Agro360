@@ -91,7 +91,14 @@ export const updateForm = async (req, res) => {
 
 export const deleteForm = async (req, res) => {
     const { id } = req.params
-    await deleteMethod(id, res, Forms, "Form")
+    await deleteMethod(id, res, Forms, "Form", async (form) => {
+        const findResponses = await Responses.findOne({ form: form._id })
+        if (findResponses) {
+            res.status(400).json({ message: "La encuesta contiene respuestas" })
+            return;
+        }
+        return true
+    })
 }
 
 //*

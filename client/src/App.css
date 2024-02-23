@@ -71,6 +71,9 @@
     color: white
 }
 
+input{
+    transition: all .3s;
+}
 input:focus, select:focus{
     outline: #369206 !important;
     border-color: #369206 !important;
