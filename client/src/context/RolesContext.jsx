@@ -14,6 +14,7 @@ export const useRoles = () => {
 
 export const RolesProvider = ({ children }) => {
     const [modalTopicForm, setModalTopicForm] = useState(false)
+    const [modalDeleteTopic, setModalDeleteTopic] = useState(false)
     const [loading, setLoading] = useState(true)
     const [errors, setErrors] = useState([])
     const [success, setSuccess] = useState('')
@@ -117,6 +118,11 @@ export const RolesProvider = ({ children }) => {
         setModalTopicForm(true)
     }
 
+     // Open and close the Topic Delete Modal
+     const handleModalDeleteTopic = (topic) => {
+        setTopic(topic)
+        setModalDeleteTopic(!modalDeleteTopic)
+    }
     return (
         <RolesContext.Provider
             value={{
@@ -136,7 +142,9 @@ export const RolesProvider = ({ children }) => {
                 createTopic,
                 editTopic,    
                 setErrors,
-                setSuccess         
+                setSuccess,
+                handleModalDeleteTopic,
+                modalDeleteTopic         
             }}
         >
             {children}

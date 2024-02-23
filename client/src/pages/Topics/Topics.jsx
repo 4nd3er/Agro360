@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import CardTopic from "../../components/CardTopic.jsx";
 import ModalTopic from "../../components/ModalTopic.jsx";
+import ModalDeleteTopic from "../../components/ModalDeleteTopic.jsx";
 import { useRoles } from "../../context/Context.js"
 import Spinner from "../../components/Spinner.jsx";
 import Masonry from "@mui/lab/Masonry"
@@ -48,10 +49,6 @@ const Topics = () => {
                         Añadir Temática
                     </button>
                 </header>
-                <ModalTopic
-                    setTopics={setTopics}
-                    topics={topics}
-                />
                 <section className="mr-5 mt-10">
                     <Masonry
                         colums={{ xs:2, sm:3, md:5 }}
@@ -64,6 +61,13 @@ const Topics = () => {
                                 : <h3 className="text-xl text-gray-600">Aún no hay tématicas creadas para este rol, las temáticas creadas aparecerán aquí</h3>}
                     </Masonry>
                 </section>
+                {/* Modal crear y editar temática */}
+                <ModalTopic
+                    setTopics={setTopics}
+                    topics={topics}
+                />
+                {/* Modal eliminar temática */}
+                <ModalDeleteTopic />
             </section>
         </>
     )
