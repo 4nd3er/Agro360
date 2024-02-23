@@ -38,8 +38,7 @@ const Topics = () => {
             <section className='min-h-[80vh]'>
                 <header className="flex justify-between mt-16">
                     <p>
-                        <span
-                            className="text-4xl font-bold uppercase">Temáticas</span>
+                        <span className="text-4xl font-bold uppercase">Temáticas</span>
                         <br />
                         <span className="text-lg text-gray-500 uppercase">{role}</span>
                     </p>
@@ -51,10 +50,10 @@ const Topics = () => {
                 </header>
                 <section className="mr-5 mt-10">
                     <Masonry
-                        colums={{ xs:2, sm:3, md:5 }}
-                        spacing={{ xs:1, sm:2, md:3 }}
+                        columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
+                        spacing={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
                     >
-                        {loading ? <Spinner /> :
+                        {loading ? <Spinner className={'!m-0'}/> :
                             topics.length > 0 ? topics.map(topic => (
                                 <CardTopic key={topic._id} topic={topic} />
                             ))
@@ -74,4 +73,3 @@ const Topics = () => {
 }
 
 export default Topics;
-
