@@ -57,7 +57,7 @@ const Topics = () => {
                         colums={{ xs:2, sm:3, md:5 }}
                         spacing={{ xs:1, sm:2, md:3 }}
                     >
-                        {loading ? <Spinner /> :
+                        {loading ? <Spinner className={'!m-0'}/> :
                             topics.length > 0 ? topics.map(topic => (
                                 <CardTopic key={topic._id} topic={topic} />
                             ))
