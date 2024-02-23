@@ -41,16 +41,14 @@ const TopicsForm = () => {
 
     return (
         <section className='min-h-[80vh]'>
-            <header className="flex justify-between mt-16">
-                <p>
-                    <span
-                        className="text-4xl font-bold uppercase">Encuestas</span>
-                    <br />
-                    <span className="text-lg text-gray-700 uppercase">tématica:{' '} {topic}</span>
-                </p>
-                <div className="relative">
+            <header className="flex flex-col sm:flex-row justify-between items-center mt-16">
+                <div className="flex flex-col items-center sm:items-start">
+                    <p className="text-4xl font-bold uppercase mb-2 sm:mb-0">Encuestas</p>
+                    <p className="text-lg text-gray-700 uppercase">tématica: {topic}</p>
+                </div>
+                <div className="relative mt-4 sm:mt-0">
                     <input type="search"
-                        className="w-80 h-12 pl-10 pr-4 border rounded-full focus:outline-none focus:ring focus:border-blue-300 shadow-lg"
+                        className="w-full sm:w-80 h-12 pl-10 pr-4 border rounded-full focus:outline-none focus:ring focus:border-blue-300 shadow-lg"
                         placeholder="Buscar..."
                         onChange={(e) => searchTopic(e.target.value)} />
                     <div className="absolute inset-y-0 left-0 flex items-center pl-3">
@@ -80,4 +78,5 @@ const TopicsForm = () => {
         </section>
     )
 }
+
 export default TopicsForm
