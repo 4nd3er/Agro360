@@ -47,10 +47,10 @@ export const updateTopic = async (req, res) => {
 export const deleteTopic = async (req, res) => {
     const { id } = req.params
     deleteMethod(id, res, Topics, "Topic", async (topic) => {
-        const findForms = await Forms.findOne(topic._id)
+        const findForms = await Forms.findOne({ topic: topic._id })
         if (findForms) {
             res.status(400).json({ message: "La tematica contiene encuestas" })
-            return;            
+            return;
         }
         return true;
     })
