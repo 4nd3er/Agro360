@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import '../css/Create.css';
 import Alert from './Alert';
 import { useRoles } from '../context/Context.js';
-import { imgNuevaEncuesta } from '../assets/Assets.jsx';
 
-const Create = () => {
+const Create = ({ modalState, topic }) => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const { getTopics } = useRoles();
 	const [alert, setAlert] = useState({});
 	const [topics, setTopics] = useState([]);
+	const { openModal, setOpenModal } = modalState;
 
 	useEffect(() => {
 		const Topics = async () => {
@@ -18,12 +18,13 @@ const Create = () => {
 		Topics();
 	}, [])
 
-	const openModal = () => {
-		setIsModalOpen(true);
-	};
+	useEffect(() => {
+		setIsModalOpen(openModal)
+	}, [openModal])
 
 	const closeModal = () => {
 		setIsModalOpen(false);
+		setOpenModal(false)
 	};
 
 	const handleModalClick = (e) => {
@@ -92,18 +93,6 @@ const Create = () => {
 
 	return (
 		<div className='flex-container'>
-			<div>
-				<div className="image-label">
-					CREAR ENCUESTA
-				</div>
-				<img
-					src={imgNuevaEncuesta}
-					alt="img"
-					className="img-icon cursor-pointer hover:scale-110 transition"
-					onClick={openModal}
-				/>
-			</div>
-
 			{isModalOpen && (
 				<div className="modal" onClick={handleModalClick}>
 					<div className="modal-form">
@@ -141,12 +130,16 @@ const Create = () => {
 									name="opciones"
 									value={formValues.opciones}
 									onChange={handleInputChange}
-									className="input-select"
-								>
-									<option value="">Seleccione Temática</option>
-									{topics.map((topic) => (
-										<option key={topic._id} value={topic._id}>{topic.name}</option>
-									))}
+									className="input-select">
+									{topic && (<option value={topic._id}>{topic.name}</option>)
+										|| (
+											<>
+												<option value="">Seleccione Temática</option>
+												{topics.map(topic => (
+													<option key={topic._id} value={topic._id}>{topic.name}</option>
+												))}
+											</>
+										)}
 								</select>
 							</div>
 

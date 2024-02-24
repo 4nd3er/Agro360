@@ -5,11 +5,13 @@ import { Link } from 'react-router-dom';
 import { imgEncuesta } from '../../assets/Assets';
 import { useForms } from '../../context/Context.js'
 import { Spinner } from '../../components/Components.jsx'
+import { imgNuevaEncuesta } from '../../assets/Assets.jsx';
 
 const Quest = () => {
 	const { getRecentlyForms } = useForms()
 	const [recentlyForms, setRecentlyForms] = useState([])
 	const [loading, setLoading] = useState(true)
+	const [openModal, setOpenModal] = useState(false)
 
 	useEffect(() => {
 		const getForms = async () => {
@@ -25,7 +27,18 @@ const Quest = () => {
 	return (
 		<div className='flex flex-col justify-center items-center min-h-[80vh]'>
 			<div className='text-center mt-1 place-items-center' style={{ marginBottom: '1rem' }}>
-				<Create />
+				<div>
+					<div className="image-label">
+						CREAR ENCUESTA
+					</div>
+					<img
+						src={imgNuevaEncuesta}
+						alt="img"
+						className="img-icon cursor-pointer hover:scale-110 transition"
+						onClick={() => setOpenModal(true)}
+					/>
+				</div>
+				<Create modalState={{ openModal, setOpenModal }} />
 				{localStorage.getItem('title') && localStorage.getItem('descrip') && localStorage.getItem('topic') && localStorage.getItem('date') && (
 					<div className='relative w-44 bottom-32 left-96'>
 						<Link
