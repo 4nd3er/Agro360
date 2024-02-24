@@ -131,17 +131,16 @@ const TopicsForm = () => {
     }
 
     return (
-        <article className='min-h-[80vh]'>
+        <article className='min-h-[80vh] px-8'>
             <Toaster />
-            <header className="flex justify-between mt-16">
-                <p>
+            <header className="flex flex-col gap-8 md:flex-row md:gap-10 justify-between mt-16">
+                <p className='flex flex-col gap-2 lg:basis-[50%]'>
                     <span className="text-4xl font-bold uppercase">Encuestas</span>
-                    <br />
                     <span className="text-lg text-gray-700 uppercase">tématica:{' '} {topic}</span>
                 </p>
                 <section className="relative">
                     <input type="search"
-                        className="w-80 h-12 pl-11 pr-4 border border-color-sena rounded-full focus:outline-none focus:ring focus:border-blue-300 shadow-md"
+                        className="w-80 md:w-[17rem] lg:w-80 h-12 pl-11 pr-4 border border-color-sena rounded-full focus:outline-none focus:ring focus:border-blue-300 shadow-md"
                         placeholder="Buscar..."
                         onChange={(e) => searchTopic(e.target.value)} />
                     <div className="absolute flex items-center top-3 left-3 text-color-sena">
@@ -152,22 +151,22 @@ const TopicsForm = () => {
                 </section>
             </header>
             <article className='flex justify-between items-end mt-12 mb-6'>
-                <section className='basis-[25%]'>
-                    <button className='group bg-color-sena p-2 rounded-lg text-white transition-[1s_all_ease-in-out] w-12 flex hover:w-[70%] items-center hover:gap-2'
+                <section className='basis-[25%] md:basis-[30%] lg:basis-[28%]'>
+                    <button className='group bg-color-sena p-2 rounded-lg text-white transition-[1s_all_ease-in-out] w-12 sm:hover:w-[70%] flex md:hover:w-full xl:hover:w-[70%] lg:hover:w-[95%] items-center'
                         onClick={() => setOpenModal(true)}>
                         <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-plus w-8 max-width-[3rem]" viewBox="0 0 24 24" strokeWidth="3" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                             <path d="M12 5l0 14" />
                             <path d="M5 12l14 0" />
                         </svg>
-                        <span className='whitespace-nowrap transition-all max-w-0 opacity-0 group-hover:opacity-100'>
+                        <span className='md:text-md lg:text-base sm:group-hover:ml-2 whitespace-nowrap transition-all max-w-0 opacity-0 sm:group-hover:opacity-100'>
                             Añadir encuesta
                         </span>
                     </button>
                 </section>
-                <h3 className='text-bold text-lg text-gray-600 text-center uppercase flex-none basis-1/2'>Encuestas</h3>
+                <h3 className='text-bold text-lg text-gray-600 text-center uppercase flex-none basis-1/2 md:basis-[0%] lg:basis-[40%]'>Encuestas</h3>
                 <Select
-                    className='basis-1/4'
+                    className='md:basis-[30%] xxs:basis-[45%]'
                     options={[
                         {
                             label: "Todos",
@@ -200,7 +199,7 @@ const TopicsForm = () => {
                             ...theme.colors,
                             primary: '#39a900',
                             primary25: '#dfffc7',
-                            primary50: '#dfffc7',                        
+                            primary50: '#dfffc7',
                         }
                     })}
                 />
