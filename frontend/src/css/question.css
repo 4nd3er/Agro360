@@ -1,0 +1,362 @@
+.response {
+    background-color: #ffffff;
+    border-color: #2ea84a;
+    border-left-style: solid;
+    border-left-width: 5px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 4px #00000040;
+    height: 250px;
+    position: relative;
+    width: 1100px;
+}
+
+
+.response .yellow {
+    height: 20.5px;
+    margin-right: -2px;
+    position: relative;
+    width: 266px;
+}
+
+.response .rectangle {
+    background-color: #dad20b;
+    border: 1px solid;
+    border-radius: 5px;
+    height: 21px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 23px;
+}
+
+.response .text-wrapper {
+    color: #000000;
+    font-family: "Work Sans-Medium", Helvetica;
+    font-size: 15px;
+    font-weight: 500;
+    height: 19px;
+    left: 37px;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    top: 1px;
+    width: 227px;
+}
+
+.response .blue {
+    height: 22.55px;
+    margin-right: -2px;
+    position: relative;
+    width: 266px;
+}
+
+.response .div {
+    background-color: #335cc4;
+    border: 1px solid;
+    border-radius: 5px;
+    height: 21px;
+    left: 0;
+    position: absolute;
+    top: 2px;
+    width: 23px;
+}
+
+.response .text-wrapper-2 {
+    color: #000000;
+    font-family: "Work Sans-Medium", Helvetica;
+    font-size: 15px;
+    font-weight: 500;
+    height: 19px;
+    left: 37px;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    top: 0;
+    width: 227px;
+}
+
+.response .green {
+    height: 22.55px;
+    position: relative;
+    width: 184.48px;
+}
+
+.response .text-wrapper-3 {
+    color: #000000;
+    font-family: "Work Sans-Medium", Helvetica;
+    font-size: 15px;
+    font-weight: 500;
+    height: 19px;
+    left: 33px;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    top: 3px;
+    width: 150px;
+}
+
+.response .rectangle-2 {
+    background-color: #65ac1d;
+    border: 1px solid;
+    border-radius: 5px;
+    height: 21px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 23px;
+}
+
+.response .red {
+    height: 21px;
+    left: 1px;
+    position: absolute;
+    top: 123px;
+    width: 184px;
+}
+
+.response .rectangle-3 {
+    background-color: #d90a0a;
+    border: 1px solid;
+    border-color: #dd3030;
+    border-radius: 5px;
+    height: 21px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 23px;
+}
+
+.response .text-wrapper-4 {
+    color: #000000;
+    font-family: "Work Sans-Medium", Helvetica;
+    font-size: 15px;
+    font-weight: 500;
+    height: 19px;
+    left: 33px;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    top: 1px;
+    width: 150px;
+}
+
+.response .pastel {
+    height: 192px;
+    left: 112px;
+    position: absolute;
+    top: 92px;
+    width: 227px;
+}
+
+.response .overlap {
+    height: 192px;
+    position: relative;
+    width: 229px;
+}
+
+.response .overlap-group-wrapper {
+    height: 184px;
+    left: 32px;
+    position: absolute;
+    top: 0;
+    width: 183px;
+}
+
+.response .overlap-group {
+    height: 184px;
+    position: relative;
+    width: 181px;
+}
+
+.response .ellipse {
+    height: 181px;
+    left: 0;
+    position: absolute;
+    top: 3px;
+    width: 181px;
+}
+
+.response .rectangle-4 {
+    -webkit-backdrop-filter: blur(45px) brightness(100%);
+    backdrop-filter: blur(45px) brightness(100%);
+    background-color: #f3f3f3b2;
+    border-radius: 11px;
+    height: 23px;
+    left: 102px;
+    position: absolute;
+    top: 0;
+    width: 50px;
+}
+
+.response .text-wrapper-5 {
+    color: #d90a0a;
+    font-family: "Josefin Sans-Bold", Helvetica;
+    font-size: 16px;
+    font-weight: 700;
+    left: 115px;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    top: 5px;
+    width: 39px;
+}
+
+.response .overlap-wrapper {
+    height: 181px;
+    left: 0;
+    position: absolute;
+    top: 3px;
+    width: 215px;
+}
+
+.response .overlap-2 {
+    height: 181px;
+    position: relative;
+    width: 213px;
+}
+
+.response .img {
+    height: 181px;
+    left: 32px;
+    position: absolute;
+    top: 0;
+    width: 181px;
+}
+
+.response .rectangle-5 {
+    -webkit-backdrop-filter: blur(45px) brightness(100%);
+    backdrop-filter: blur(45px) brightness(100%);
+    background-color: #f3f3f3b2;
+    border-radius: 11px;
+    height: 23px;
+    left: 0;
+    position: absolute;
+    top: 85px;
+    width: 50px;
+}
+
+.response .text-wrapper-6 {
+    color: #eaee2b;
+    font-family: "Josefin Sans-Bold", Helvetica;
+    font-size: 16px;
+    font-weight: 700;
+    left: 12px;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    top: 90px;
+    width: 39px;
+}
+
+.response .div-wrapper {
+    height: 189px;
+    left: 32px;
+    position: absolute;
+    top: 3px;
+    width: 183px;
+}
+
+.response .overlap-3 {
+    height: 189px;
+    position: relative;
+    width: 181px;
+}
+
+.response .ellipse-2 {
+    height: 181px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 181px;
+}
+
+.response .rectangle-6 {
+    -webkit-backdrop-filter: blur(45px) brightness(100%);
+    backdrop-filter: blur(45px) brightness(100%);
+    background-color: #f3f3f3b2;
+    border-radius: 11px;
+    height: 23px;
+    left: 95px;
+    position: absolute;
+    top: 165px;
+    width: 50px;
+}
+
+.response .text-wrapper-7 {
+    color: #006dd3;
+    font-family: "Josefin Sans-Bold", Helvetica;
+    font-size: 16px;
+    font-weight: 700;
+    left: 107px;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    top: 169px;
+    width: 29px;
+}
+
+.response .green-2 {
+    height: 181px;
+    left: 32px;
+    position: absolute;
+    top: 3px;
+    width: 197px;
+}
+
+.response .overlap-4 {
+    height: 181px;
+    position: relative;
+    width: 195px;
+}
+
+.response .rectangle-7 {
+    -webkit-backdrop-filter: blur(45px) brightness(100%);
+    backdrop-filter: blur(45px) brightness(100%);
+    background-color: #f3f3f3b2;
+    border-radius: 11px;
+    height: 23px;
+    left: 143px;
+    position: absolute;
+    top: 117px;
+    width: 50px;
+}
+
+.response .text-wrapper-8 {
+    color: #39a900;
+    font-family: "Josefin Sans-Bold", Helvetica;
+    font-size: 16px;
+    font-weight: 700;
+    left: 156px;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    top: 122px;
+    width: 39px;
+}
+
+.response .text-wrapper-9 {
+    color: #000000;
+    font-family: "Josefin Sans-Regular", Helvetica;
+    font-size: 12px;
+    font-weight: 400;
+    height: 12px;
+    left: 24px;
+    letter-spacing: 0.36px;
+    line-height: normal;
+    position: relative;
+    top: 30px;
+    white-space: nowrap;
+}
+
+.response .text-wrapper-10 {
+    color: #000000;
+    font-family: "Josefin Sans-Regular", Helvetica;
+    font-size: 20px;
+    font-weight: 400;
+    left: 26px;
+    letter-spacing: 0;
+    line-height: normal;
+    position: relative;
+    top: 16px;
+    width: 661px;
+}
