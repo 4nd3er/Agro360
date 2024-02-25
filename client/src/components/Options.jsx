@@ -1,7 +1,19 @@
-const Options = ({ option, index, questionIndex, question, handleOptionChange, deleteOption, questionTypeValue, validationQuestionOption }) => {
+const Options = ({ option, index, questionIndex, question, handleOptionChange, deleteOption, questionTypeValue, validationQuestionOption, params }) => {
+    let questionType = '';
+    let questionOptions = '';
+    if (!params.id) {
+        questionType = question[1][1];
+        questionOptions = question[2];
+        option = option;
+    }
+    else {
+        questionType = question.type;
+        questionOptions = question.options;
+        option = option[0];
+    }
     return (
         <>
-            {questionTypeValue[question[1][1]] == 'Respuesta Abierta' && (
+            {questionTypeValue[questionType] == 'Respuesta Abierta' && (
                 <div className='flex items-center'>
                     <textarea
                         id={index + 1}
@@ -15,7 +27,7 @@ const Options = ({ option, index, questionIndex, question, handleOptionChange, d
                     />
                 </div>
             )}
-            {questionTypeValue[question[1][1]] == 'Selección Única' && (
+            {questionTypeValue[questionType] == 'Selección Única' && (
                 <div className='flex items-center'>
                     <input disabled type="radio" name="default-radio" className="w-5 h-5 text-blue-600 focus:ring-blue-500 ring-offset-gray-800 bg-gray-700 border-gray-600" />
                     <input
@@ -28,7 +40,7 @@ const Options = ({ option, index, questionIndex, question, handleOptionChange, d
                         onChange={(e) => handleOptionChange(questionIndex, index, e.target.value)}
                         className="ml-2 text-lg font-medium text-gray-900 focus:border-b-2 p-2 border-gray-400"
                     />
-                    {question[2].length > 1 && (
+                    {questionOptions.length > 1 && (
                         <div
                             className='font-bold hover:bg-gray-100 p-2 text-xs rounded-md transition-all cursor-pointer'
                             onClick={() => deleteOption(index, questionIndex)}
@@ -41,7 +53,7 @@ const Options = ({ option, index, questionIndex, question, handleOptionChange, d
                     </div>
                 </div>
             )}
-            {questionTypeValue[question[1][1]] == 'Selección Múltiple' && (
+            {questionTypeValue[questionType] == 'Selección Múltiple' && (
                 <div className='flex items-center'>
                     <div className=''>
                         <input disabled type="checkbox" className=" rounded w-5 h-5 text-blue-600 focus:ring-blue-500 ring-offset-gray-800 bg-gray-700 border-gray-600" />
@@ -56,7 +68,7 @@ const Options = ({ option, index, questionIndex, question, handleOptionChange, d
                             className="ml-2 text-lg font-medium text-gray-900 focus:border-b-2 p-2 border-gray-400"
                         />
                     </div>
-                    {question[2].length > 1 && (
+                    {questionOptions.length > 1 && (
                         <div
                             className='font-bold hover:bg-gray-100 p-2 text-xs rounded-md transition-all cursor-pointer'
                             onClick={() => deleteOption(index, questionIndex)}
@@ -69,7 +81,7 @@ const Options = ({ option, index, questionIndex, question, handleOptionChange, d
                     </div>
                 </div>
             )}
-            {questionTypeValue[question[1][1]] == 'Escala de Likert' && (
+            {questionTypeValue[questionType] == 'Escala de Likert' && (
                 <div className='py-4'>
                     {/* <div className='flex justify-around'>
                         {option.map((content, indexContent) => (
@@ -151,7 +163,7 @@ const Options = ({ option, index, questionIndex, question, handleOptionChange, d
                     </ul>
                 </div>
             )}
-            {questionTypeValue[question[1][1]] == 'Escala de Puntuación' && (
+            {questionTypeValue[questionType] == 'Escala de Puntuación' && (
                 <div className='py-4'>
                     {/* <div className='flex justify-between'>
                         {option.map((content, indexContent) => (
@@ -277,7 +289,7 @@ const Options = ({ option, index, questionIndex, question, handleOptionChange, d
                     </ul>
                 </div>
             )}
-            {questionTypeValue[question[1][1]] == 'Escala Semántica' && (
+            {questionTypeValue[questionType] == 'Escala Semántica' && (
                 <div className='flex items-center'>
                     <ul className='flex justify-center gap-10 mb-4'>
                         <li
@@ -292,7 +304,7 @@ const Options = ({ option, index, questionIndex, question, handleOptionChange, d
                             />
                         </li>
                     </ul>
-                    {question[2].length > 1 && (
+                    {questionOptions.length > 1 && (
                         <div
                             className='font-bold hover:bg-gray-100 p-2 text-xs rounded-md transition-all cursor-pointer'
                             onClick={() => deleteOption(index, questionIndex)}

@@ -5,8 +5,11 @@ import { Options } from '../../components/Components.jsx';
 import '../../css/question.css';
 import Swal from 'sweetalert2';
 import { useRoles, useForms } from '../../context/Context.js';
+import { getTopicFormsRequest } from '../../api/topics.js';
+import { useParams } from 'react-router-dom';
 
 const CreateQuest = () => {
+	const params = useParams();
 	const location = useLocation();
 	const searchParams = new URLSearchParams(location.search);
 	const [title, setTitle] = useState('');
@@ -17,11 +20,12 @@ const CreateQuest = () => {
 	const [date, setDate] = useState('');
 	const [questions, setQuestions] = useState(() => JSON.parse(localStorage.getItem('questions')) || [[['question', ""], ['type', ""], ['options', ['']]]]);
 	const [optionsAdded, setOptionsAdded] = useState(false);
-	const { getTopics } = useRoles();
+	const [role, setRole] = useState('');
+	const { getTopics, getTopic } = useRoles();
 	const { createForm, getQuestionsType } = useForms();
-	const [validationQuestionContent, setValidationQuestionContent] = useState(false);
-	const [validationQuestionType, setValidationQuestionType] = useState(false);
-	const [validationQuestionOption, setValidationQuestionOption] = useState(false);
+	const [validationQuestionContent, setValidationQuestionContent] = useState(0);
+	const [validationQuestionType, setValidationQuestionType] = useState(0);
+	const [validationQuestionOption, setValidationQuestionOption] = useState(0);
 	const questionTypeValue = {};
 
 	useEffect(() => {
@@ -38,6 +42,14 @@ const CreateQuest = () => {
 			setTopics(res)
 		}
 		Topics();
+	}, [])
+
+	useEffect(() => {
+		const getTopicRequest = async () => {
+			const res = await getTopic(topic);
+			setRole(res[0].role);
+		}
+		getTopicRequest();
 	}, [])
 
 	useEffect(() => {
@@ -143,6 +155,7 @@ const CreateQuest = () => {
 		setQuestions(updatedQuestions);
 	};
 
+
 	let optionss = [];
 	const arraytoObject = (array) => {
 		var newObject = {};
@@ -163,36 +176,28 @@ const CreateQuest = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		let isContentValid = false;
-		let isTypeValid = false;
-		let isOptionValid = false;
+		let isContentValid = 0;
+		let isTypeValid = 0;
+		let isOptionValid = 0;
 		questions.forEach((question) => {
-			if (question[0][1] == '') {
-				setValidationQuestionContent(true);
-				isContentValid = false;
-			} else {
-				setValidationQuestionContent(false);
-				isContentValid = true;
+			if (question[0][1] != '') {
+				isContentValid += 1;
+				setValidationQuestionContent(isContentValid);
 			}
 
-			if (question[1][1] == '') {
-				setValidationQuestionType(true);
-				isTypeValid = false;
-			} else {
-				setValidationQuestionType(false);
-				isTypeValid = true;
+			if (question[1][1] != '') {
+				isTypeValid += 1;
+				setValidationQuestionType(isTypeValid);
 			}
 			question[2][1].forEach((option) => {
-				if (option.length == '' || option.length < 2) {
-					setValidationQuestionOption(true);
-					isOptionValid = false;
-				} else {
-					setValidationQuestionOption(false);
-					isOptionValid = true;
+				if (option != '' || option.length > 3) {
+					isOptionValid += 1;
+					setValidationQuestionOption(isOptionValid);
 				}
 			});
 		});
-		if (isContentValid && isTypeValid && isOptionValid) {
+		console.log(validationQuestionContent);
+		if ((isContentValid == questions.length) && (isTypeValid == questions.length) && (isOptionValid == questions.length)) {
 			try {
 				let questionsObject = []
 				questions.map((question) => {
@@ -211,7 +216,7 @@ const CreateQuest = () => {
 					timerProgressBar: true,
 				});
 				setTimeout(() => {
-					window.location.href = '/crear-formulario';
+					window.location.href = `/inicio/tematicas/${role}/encuestas/${topic}`;
 					localStorage.removeItem('title');
 					localStorage.removeItem('descrip');
 					localStorage.removeItem('topic');
@@ -252,7 +257,7 @@ const CreateQuest = () => {
 								<div className='flex justify-between px-10'>
 									<input
 										placeholder='Digite la pregunta'
-										className='border-b-2 p-2 border-gray-400 w-3/6'
+										className='border-b-2 p-2 border-gray-400 w-3/6 transition-all'
 										value={question[0][1]}
 										onChange={(e) => handleQuestionChange(e.target.value, questionIndex)}
 									/>
@@ -262,17 +267,22 @@ const CreateQuest = () => {
 										onChange={(e) => handleQuestionTypeChange(e.target.value, questionIndex)}
 									>
 										<option value="">Seleccione el tipo de pregunta</option>
-										{questionsType ? questionsType.map((questionType) => (
-											<option value={questionType._id}>{questionType.name}</option>
+										{questionsType ? questionsType.map((questionType, index) => (
+											<option
+												key={index}
+												value={questionType._id}
+											>
+												{questionType.name}
+											</option>
 										)) : null}
 									</select>
-									<div className='cursor-pointer my-auto' onClick={() => deleteQuestion(questionIndex)}>
+									<div className='cursor-pointer my-auto hover:scale-110' onClick={() => deleteQuestion(questionIndex)}>
 										<img src={DeleteQuestionSvg} />
 									</div>
 								</div>
 								<div className='px-10 mb-5 text-red-500 flex justify-around select-none'>
-									<span className={`${question[0][1] === '' && validationQuestionContent ? 'opacity-100' : 'opacity-0'} transition-[.1s_all]`}>Este campo es obligatorio</span>
-									<span className={`${question[1][1] === '' && validationQuestionType ? 'opacity-100' : 'opacity-0'} transition-[.1s_all]`}>Seleccione un elemento de la lista</span>
+									<span className={`${question[0][1] === '' && validationQuestionContent < question.length ? 'opacity-100' : 'opacity-0'} transition-[.1s_all]`}>Este campo es obligatorio</span>
+									<span className={`${question[1][1] === '' && validationQuestionType < question.length ? 'opacity-100' : 'opacity-0'} transition-[.1s_all]`}>Seleccione un elemento de la lista</span>
 								</div>
 								<div className='px-10'>
 									{question[2][1].map((option, index) => (
@@ -287,6 +297,7 @@ const CreateQuest = () => {
 											deleteOption={deleteOption}
 											questionTypeValue={questionTypeValue}
 											validationQuestionOption={validationQuestionOption}
+											params={params}
 										/>
 									))}
 									{question[1][1] && (questionTypeValue[question[1][1]] !== 'Escala de Likert' && questionTypeValue[question[1][1]] !== 'Escala de Puntuación' && questionTypeValue[question[1][1]] !== 'Respuesta Abierta') && (
@@ -312,10 +323,10 @@ const CreateQuest = () => {
 			<section className='fixed right-28 bottom-20 bg-white p-2 rounded-xl border-2 shadow-xl'>
 				<div className='flex flex-col gap-5 place-items-center'>
 					<button onClick={addQuestion}>
-						<img className='max-w-8' src={AddQuestionSvg} />
+						<img className='max-w-8 hover:scale-110 transition-all' src={AddQuestionSvg} />
 					</button>
 					<button>
-						<img className='max-w-10' src={ImportQuestionSvg} />
+						<img className='max-w-10 hover:scale-110 transition-all' src={ImportQuestionSvg} />
 					</button>
 				</div>
 			</section>
