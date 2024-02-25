@@ -6,13 +6,39 @@ import ModalDeleteTopic from "../../components/ModalDeleteTopic.jsx";
 import { useRoles } from "../../context/Context.js"
 import Spinner from "../../components/Spinner.jsx";
 import Masonry from "@mui/lab/Masonry"
+import Swal from "sweetalert2"
 
 const Topics = () => {
     const params = useParams() // Obtain id of rol
-    const { handleModalTopic, getRole, getRoleTopics } = useRoles()
+    const { handleModalTopic, getRole, getRoleTopics, sweetAlert, setSweetAlert } = useRoles()
     const [role, setRole] = useState()
     const [topics, setTopics] = useState([])
     const [loading, setLoading] = useState(true)
+
+    // Mostrar alertas al crear editar o eliminar temáticas
+    useEffect(() => {
+        const { ilsuccesso, errore } = sweetAlert 
+        const showAlert = (message, icon) => {
+            Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 5000,
+                timerProgressBar: true,
+            }).fire({
+                icon: icon,
+                title: message,
+            })
+        }
+        if (ilsuccesso) {
+             showAlert(ilsuccesso, 'success')
+             setSweetAlert({ ilsuccesso: '', errore: '' })
+        }
+        if (errore) {
+            showAlert(errore, 'error')
+            setSweetAlert({ ilsuccesso: '', errore: '' })
+       }
+    }, [sweetAlert, setSweetAlert])
 
     // Get Topics
     useEffect(() => {

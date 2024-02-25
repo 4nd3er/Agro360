@@ -19,6 +19,7 @@ export const RolesProvider = ({ children }) => {
     const [errors, setErrors] = useState([])
     const [success, setSuccess] = useState('')
     const [topic, setTopic] = useState({})
+    const [sweetAlert, setSweetAlert] = useState({ ilsuccesso: '', errore: '' })
 
     // Roles
     const getRoles = async () => {
@@ -87,7 +88,7 @@ export const RolesProvider = ({ children }) => {
         try {
             const res = await createTopicRequest(topic);
             setModalTopicForm(false)
-            ContextSuccess(res, setSuccess, setErrors)
+            setSweetAlert({ ilsuccesso: res.data.response, errore: ''})
             return res.data
         } catch (error) {
             ContextErrors(error, setErrors, setSuccess)
@@ -99,7 +100,7 @@ export const RolesProvider = ({ children }) => {
         try {
             const res = await updateTopicRequest(id, topic);
             setModalTopicForm(false)
-            ContextSuccess(res, setSuccess, setErrors)
+            setSweetAlert({ ilsuccesso: res.data.response, errore: ''})
             return res.data
         } catch (error) {
             ContextErrors(error, setErrors, setSuccess)
@@ -129,10 +130,12 @@ export const RolesProvider = ({ children }) => {
         try {
             const res = await deleteTopicRequest(topic._id)
             setModalDeleteTopic(!modalDeleteTopic)
-            console.log('Temática eliminada correctamente' )
+            setSweetAlert({ ilsuccesso: res.data.response, errore: ''})
             return res.data
         } catch (error) {
-            console('error al eliminar la temática: ', error)
+            setModalDeleteTopic(!modalDeleteTopic)
+            setSweetAlert({ ilsuccesso: '', errore: 'Error al eliminar: ' + error.response.data.message})
+            return
         }
     }
     
@@ -158,7 +161,9 @@ export const RolesProvider = ({ children }) => {
                 setSuccess,
                 handleModalDeleteTopic,
                 modalDeleteTopic,
-                deleteTopic         
+                deleteTopic,
+                sweetAlert,
+                setSweetAlert         
             }}
         >
             {children}
