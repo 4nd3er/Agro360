@@ -12,6 +12,7 @@ import {
   TopicsForm,
   Login,
   CreateQuest,
+  EditQuest,
   NewPassword,
   Register,
   ForgetPassword,
@@ -52,6 +53,7 @@ function App() {
                       <Route path='/crear-formulario' element={<AuthLayout />}>
                         <Route index element={<Quest />} />
                         <Route path='crear' element={<CreateQuest />} />
+                        <Route path='editar/:id' element={<EditQuest />} />
                       </Route>
                       <Route path='/resultados' element={<AuthLayout />}>
                         <Route index element={<Results />} />
