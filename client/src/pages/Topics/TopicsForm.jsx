@@ -131,12 +131,12 @@ const TopicsForm = () => {
     }
 
     return (
-        <article className='min-h-[80vh] px-8'>
+        <article className='min-h-[80vh] px-5 md:px-0 lg:px-8 xl:px-8'>
             <Toaster />
-            <header className="flex flex-col gap-8 md:flex-row md:gap-10 justify-between mt-16">
+            <header className="flex flex-col gap-8 md:flex-row md:gap-10 justify-between mt-4 md:mt-12 lg:mt-16 xl:mt-16">
                 <p className='flex flex-col gap-2 lg:basis-[50%]'>
-                    <span className="text-4xl font-bold uppercase">Encuestas</span>
-                    <span className="text-lg text-gray-700 uppercase">tématica:{' '} {topic}</span>
+                    <span className="text-4xl md:text-2xl font-bold uppercase">Encuestas</span>
+                    <span className="text-lg md:text-base text-gray-700 uppercase">tématica:{' '} {topic}</span>
                 </p>
                 <section className="relative">
                     <input type="search"
@@ -207,7 +207,7 @@ const TopicsForm = () => {
             </article>
             <hr />
             {loading && <Spinner /> || (
-                <article className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3 mr-5 mt-10 mb-8">
+                <article className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3 mr-0  md:mr-5 lg:mr-5 xl:mr-5 mt-10 mb-8">
                     {searchForms.length && (
                         searchForms.map(form => (
                             <CardForm key={form._id} form={form} showToast={showToast} duplicateForm={duplicateForm} deleteForm={deleteTopicForm} />

@@ -23,8 +23,8 @@ const Results = () => {
     }, [])
 
     return (
-        <div className='flex flex-col min-h-[80vh] mt-12'>
-            <div className='grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-6 gap-7'> {/* Utilizamos grid para hacerlo responsive */}
+        <div className='min-h-[80vh] mt-12 pl-0 pr-5'>
+            <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-6 gap-7'> {/* Utilizamos grid para hacerlo responsive */}
                 {cargando ? <Spinner /> :
                     forms.length ? (
                         forms.map((quest) => (

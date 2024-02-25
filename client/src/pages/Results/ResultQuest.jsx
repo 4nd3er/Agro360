@@ -53,7 +53,7 @@ const ResultQuest = () => {
                 <section className='flex flex-col md:flex-row items-center justify-between mt-5'>
                     <h1 className='text-4xl text-color-sena'>{form.name}</h1>
                     <aside className='w-full md:w-1/3 flex flex-col items-end mt-5 md:mt-0'>
-                        <button className={`w-full md:w-2/3 bg-white text-color-sena border-2 border-lime-400  ${!loadingReport ? 'hover:bg-color-sena hover:border-transparent hover:text-white' : 'cursor-progress'}  p-2 rounded-md shadow-md flex flex-row gap-4 items-center justify-center`}
+                        <button className={`w-full md:w-full lg:w-2/3 xl:w-2/3 bg-white text-color-sena border-2 border-lime-400  ${!loadingReport ? 'hover:bg-color-sena hover:border-transparent hover:text-white' : 'cursor-progress'}  p-2 rounded-md shadow-md flex flex-row gap-4 items-center justify-center transition-colors duration-300`}
                             onClick={generateReport} >
                             {loadingReport && (<Spinner className={'!m-0'} />) || (
                                 <>
