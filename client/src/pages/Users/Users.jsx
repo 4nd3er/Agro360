@@ -153,6 +153,15 @@ function Users() {
                         borderColor: '#369206',
                       }
                     }}
+                    theme={(theme) => ({
+                      ...theme,
+                      colors: {
+                        ...theme.colors,
+                        primary: '#39a900',
+                        primary25: '#dfffc7',
+                        primary50: '#dfffc7',
+                      }
+                    })}
                   />
                 )}
               />
