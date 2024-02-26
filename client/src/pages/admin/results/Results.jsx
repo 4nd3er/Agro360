@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Spinner } from '../../components/Components';
-import Survey from '../../components/Survey';
-import { useForms } from '../../context/Context.js';
-import { imgEncuesta } from '../../assets/Assets';
+import { useForms } from '../../../context/Context';
+import { Spinner } from '../../../components/Components';
+import CardForm from '../../../components/CardForm';
+import { imgEncuesta } from '../../../assets/Assets';
 
 const Results = () => {
     const { FormsResponses } = useForms();
@@ -28,7 +28,7 @@ const Results = () => {
                 {cargando ? <Spinner /> :
                     forms.length ? (
                         forms.map((quest) => (
-                            <Survey
+                            <CardForm
                                 id={quest._id}
                                 key={quest._id}
                                 title={quest.name}

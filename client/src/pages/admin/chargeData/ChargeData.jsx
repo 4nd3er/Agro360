@@ -1,8 +1,7 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useChargeData } from '../../../context/Context';
-import { FormAlert, Spinner } from '../../../components/Components'
-import { formatDate } from '../../../helpers/formatDate';
+import { ErrorsFormAlert, Spinner } from '../../../components/Components'
 
 function ChargeData() {
     const { createCourses, createCronograms, createInstructors, createUsers, errors, success, loading } = useChargeData();
@@ -48,7 +47,7 @@ function ChargeData() {
     return (
         <div className='w-full flex flex-col p-5 justify-center items-center gap-8'>
             <h1 className='text-3xl font-bold text-color-sena'>Cargar Datos</h1>
-            <FormAlert errors={errors} success={success} className={'!m-0'} />
+            <ErrorsFormAlert errors={errors} success={success} className={'!m-0'} />
             <form className='w-1/2' encType='multipart/form-data' onSubmit={onSubmitCourse}>
                 <label className="form-label">Fichas</label>
                 <div className="flex flex-row gap-1">

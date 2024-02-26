@@ -1,9 +1,9 @@
+import React, { useEffect } from 'react'
 import { Link, useNavigate } from "react-router-dom"
-import { FormAlert } from '../../components/Components'
 import { useForm } from 'react-hook-form'
-import { useAuth } from '../../context/Context.js'
-import { useEffect } from "react"
-import { cleanAlerts } from '../../context/Alerts.jsx'
+import { ErrorsFormAlert } from '../../components/Components'
+import { useAuth } from '../../context/Context'
+import { cleanAlerts } from '../../context/Alerts'
 
 const ForgetPassword = () => {
     const navigate = useNavigate()
@@ -34,7 +34,7 @@ const ForgetPassword = () => {
                     <div className="flex flex-col justify-center place-items-center min-h-[50vh]">
                         <strong className='text-green-600 text-4xl capitalize font-sans'>Recupera tu cuenta</strong>
                         <form className='bg-white shadow rounded-lg px-10 py-5 lg:w-1/2' onSubmit={onSubmit}>
-                            <FormAlert errors={errors} success={success} />
+                            <ErrorsFormAlert errors={errors} success={success} />
                             <div className='my-5'>
                                 <label className='text-gray-600 block text-sm font-bold' htmlFor='email'>Correo Electrónico</label>
                                 <input id='email' type="email" placeholder='Digita tu correo electronico' className='w-full mt-3 p-3 border rounded-xl bg-gray-50'

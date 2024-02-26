@@ -1,4 +1,4 @@
-import axios from './axios.js'
+import axios from './axios'
 
 //* Question Types
 export const QuestionTypesRequest = async () => axios.get("/forms/questions/questiontypes")

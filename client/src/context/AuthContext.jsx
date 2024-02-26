@@ -1,6 +1,6 @@
 import { createContext, useState, useContext, useEffect } from 'react'
-import { forgetPasswordRequest, loginRequest, registerRequest, resetPasswordRequest, verifyTokenRequest } from '../api/auth.js'
-import { ContextErrors, ContextSuccess } from './Alerts.jsx';
+import { forgetPasswordRequest, loginRequest, registerRequest, resetPasswordRequest, verifyTokenRequest } from '../api/auth'
+import { ContextErrors, ContextSuccess } from './Alerts';
 
 export const AuthContext = createContext()
 

@@ -1,6 +1,6 @@
-import '../css/Survey.css';
+import '../css/CardForm.css';
 
-const Survey = ({ title, imageSrc, isActive, id }) => {
+const CardForm = ({ title, imageSrc, isActive, id }) => {
 
     const handleClick = () => {
         window.location.href = `/resultados/${id}`;
@@ -25,4 +25,4 @@ const Survey = ({ title, imageSrc, isActive, id }) => {
     );
 };
 
-export default Survey; 
+export default CardForm; 

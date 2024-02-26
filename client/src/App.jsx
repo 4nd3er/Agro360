@@ -2,27 +2,27 @@ import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import LayoutLogin from './layouts/LayoutLogin';
 import AuthLayout from './layouts/AuthLayout';
-import { AuthProvider, RolesProvider, FormsProvider, ResponsesProvider, UsersProvider, ChargeDataProvider } from './context/Context.js'
-import { ProtectedRoute, ProtectedForm } from './routes.jsx'
+import { AuthProvider, RolesProvider, FormsProvider, ResponsesProvider, UsersProvider, ChargeDataProvider } from './context/Context'
+import { ProtectedRoute, ProtectedForm } from './routes'
 import {
-  Home,
-  Quest,
-  Results,
-  Topics,
-  Forms,
   Login,
+  ForgetPassword,
+  NewPassword,
+  Home,
+  RegisterAdmin,
+  Quest,
   CreateQuest,
   EditQuest,
-  NewPassword,
-  RegisterAdmin,
-  ForgetPassword,
-  ConfirmAccount,
+  Results,
   ResultQuest,
+  Topics,
+  Forms,
   UserValidation,
   Response,
-  Users,
+  RegisterUsers,
   ChargeData
 } from './pages/Pages';
+import './App.css';
 
 function App() {
   return (
@@ -69,7 +69,7 @@ function App() {
                     </Route>
 
                     <Route path='/users' element={<LayoutLogin />}>
-                      <Route index element={<Users />} />
+                      <Route index element={<RegisterUsers />} />
                     </Route>
 
                   </Routes>

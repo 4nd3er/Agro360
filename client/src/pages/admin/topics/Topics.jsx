@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import CardTopic from "../../components/CardTopic.jsx";
-import ModalTopic from "../../components/ModalTopic.jsx";
-import ModalDeleteTopic from "../../components/ModalDeleteTopic.jsx";
-import { useRoles } from "../../context/Context.js"
-import Spinner from "../../components/Spinner.jsx";
-import Masonry from "@mui/lab/Masonry"
-import Swal from "sweetalert2"
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import Masonry from '@mui/lab/Masonry'
+import Swal from 'sweetalert2'
+import CardTopic from './components/CardTopicComponent.jsx';
+import ModalTopic from './components/ModalCreateTopicComponent.jsx';
+import ModalDeleteTopic from './components/ModalDeleteTopicComponent.jsx';
+import { useRoles } from '../../../context/Context'
+import { Spinner } from '../../../components/Components';
 
 const Topics = () => {
     const params = useParams() // Obtain id of rol
@@ -17,7 +17,7 @@ const Topics = () => {
 
     // Mostrar alertas al crear editar o eliminar temáticas
     useEffect(() => {
-        const { ilsuccesso, errore } = sweetAlert 
+        const { ilsuccesso, errore } = sweetAlert
         const showAlert = (message, icon) => {
             Swal.mixin({
                 toast: true,
@@ -31,13 +31,13 @@ const Topics = () => {
             })
         }
         if (ilsuccesso) {
-             showAlert(ilsuccesso, 'success')
-             setSweetAlert({ ilsuccesso: '', errore: '' })
+            showAlert(ilsuccesso, 'success')
+            setSweetAlert({ ilsuccesso: '', errore: '' })
         }
         if (errore) {
             showAlert(errore, 'error')
             setSweetAlert({ ilsuccesso: '', errore: '' })
-       }
+        }
     }, [sweetAlert, setSweetAlert])
 
     // Get Topics
@@ -79,7 +79,7 @@ const Topics = () => {
                         columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
                         spacing={{ xs: 2, sm: 2, md: 3, lg: 4, xl: 5 }}
                     >
-                        {loading ? <Spinner className={'!m-0'}/> :
+                        {loading ? <Spinner className={'!m-0'} /> :
                             topics.length > 0 ? topics.map(topic => (
                                 <CardTopic key={topic._id} topic={topic} />
                             ))

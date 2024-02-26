@@ -1,11 +1,10 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form'
-import { useResponses } from '../../context/Context.js';
-import { FormAlert, Spinner } from '../../components/Components.jsx';
-import { Logo2 } from '../../assets/Assets.jsx';
-import { validateSenaEmail } from '../../helpers/functions.js'
-import '../../App.css'
+import { useResponses } from '../../../context/Context';
+import { ErrorsFormAlert, Spinner } from '../../../components/Components';
+import { validateSenaEmail } from '../../../helpers/functions'
+import { Logo2 } from '../../../assets/Assets';
 
 const UserValidation = () => {
     const { register: email, handleSubmit: emailSubmit, reset: resetEmail, formState: { isValid: validEmail } } = useForm()
@@ -108,7 +107,7 @@ const UserValidation = () => {
                             <img src={Logo2} alt="Logo360" className="rounded-lg w-40 h-30 md:ml-6" />
                         </div>
                         <div className='px-6 py-8'>
-                            <FormAlert errors={errorsEmail} />
+                            <ErrorsFormAlert errors={errorsEmail} />
                             <label className="text-gray-700 font-bold sm:text-lg text-sm">Correo Electrónico:</label>
                             <input
                                 id='email'
@@ -151,7 +150,7 @@ const UserValidation = () => {
                             <img src={Logo2} alt="Logo360" className="rounded-lg w-40 h-30 md:ml-6" />
                         </div>
                         <div className='px-6 py-8'>
-                            <FormAlert errors={errorsCode} success={successCode} />
+                            <ErrorsFormAlert errors={errorsCode} success={successCode} />
                             <label className="text-gray-700 font-bold text-sm sm:text-lg">Digita tu codigo:</label>
                             <input
                                 id='code'

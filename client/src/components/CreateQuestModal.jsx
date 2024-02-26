@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import '../css/Create.css';
-import Alert from './Alert.jsx';
-import { useRoles } from '../context/Context.js';
+import '../css/CreateModalQuest.css';
+import Alert from './Alert';
+import { useRoles } from '../context/Context';
 
 const CreateQuestModal = ({ modalState, topic }) => {
 	const [isModalOpen, setIsModalOpen] = useState(false);

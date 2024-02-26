@@ -2,10 +2,10 @@ import { Fragment, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import { Dialog, Transition } from '@headlessui/react'
 import { useForm } from 'react-hook-form'
-import { useRoles } from '../context/Context.js'
-import { FormAlert } from '../components/Components'
+import { useRoles } from '../../../../context/Context'
+import { ErrorsFormAlert } from '../../../../components/Components'
 
-const ModalTopic = ({ setTopics, topics }) => {
+const ModalCreateTopic = ({ setTopics, topics }) => {
   const { id } = useParams()
   const [idTopic, setIdTopic] = useState('')
   const { modalTopicForm, handleModalTopic, errors, success, topic, createTopic, editTopic, setErrors, setSuccess } = useRoles()
@@ -89,7 +89,7 @@ const ModalTopic = ({ setTopics, topics }) => {
                     {idTopic ? 'Editar Temática' : 'Nueva Temática'}
                   </Dialog.Title>
 
-                  <FormAlert errors={errors} success={success} />
+                  <ErrorsFormAlert errors={errors} success={success} />
                   {/* inicio formulario crear temática */}
                   <form
                     onSubmit={onSubmit}
@@ -125,4 +125,4 @@ const ModalTopic = ({ setTopics, topics }) => {
   )
 }
 
-export default ModalTopic
+export default ModalCreateTopic;

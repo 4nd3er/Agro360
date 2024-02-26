@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { AddQuestionSvg, ImportQuestionSvg, DeleteQuestionSvg } from '../../assets/Assets.jsx';
-import { useRoles } from '../../context/RolesContext';
-import { useForms } from '../../context/FormsContext.jsx';
-import Swal from 'sweetalert2';
 import { useParams } from 'react-router-dom';
-import { Options, Spinner } from '../../components/Components.jsx';
+import { useRoles } from '../../../context/RolesContext';
+import { useForms } from '../../../context/FormsContext';
+import { Options, Spinner } from '../../../components/Components';
+import Swal from 'sweetalert2';
+import {
+    AddQuestionSvg,
+    ImportQuestionSvg,
+    DeleteQuestionSvg
+} from '../../../assets/Assets';
 
 
 const EditQuest = () => {

@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react'
-import Survey from '../../components/Survey';
-import Create from '../../components/Create';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { imgEncuesta } from '../../assets/Assets';
-import { useForms } from '../../context/Context.js'
-import { Spinner } from '../../components/Components.jsx'
-import { imgNuevaEncuesta } from '../../assets/Assets.jsx';
+import { useForms } from '../../context/Context';
+import { Spinner } from '../../components/Components';
+import CardForm from '../../../components/CardForm';
+import CreateQuestModal from '../../../components/CreateQuestModal';
+import { imgNuevaEncuesta } from '../../../assets/Assets';
+import { imgEncuesta } from '../../../assets/Assets';
 
 const Quest = () => {
 	const { getRecentlyForms } = useForms()
@@ -38,7 +38,7 @@ const Quest = () => {
 						onClick={() => setOpenModal(true)}
 					/>
 				</div>
-				<Create modalState={{ openModal, setOpenModal }} />
+				<CreateQuestModal modalState={{ openModal, setOpenModal }} />
 				{localStorage.getItem('title') && localStorage.getItem('descrip') && localStorage.getItem('topic') && localStorage.getItem('date') && (
 					<div className='relative w-44 bottom-32 left-96'>
 						<Link
@@ -62,7 +62,7 @@ const Quest = () => {
 				<section className='flex flex-wrap justify-center'>
 					{recentlyForms.map(({ name, status }, index) => {
 						return (
-							<Survey
+							<CardForm
 								key={index}
 								title={name}
 								imageSrc={imgEncuesta}

@@ -1,8 +1,8 @@
-import { Fragment, useState, useEffect } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
-import { useRoles } from '../context/RolesContext.jsx'
+import { Fragment } from 'react';
+import { Dialog, Transition } from '@headlessui/react';
+import { useRoles } from '../../../../context/RolesContext';
 
-const ModalDeleteTopic = () => {
+const ModalDeleteTopicComponent = () => {
     const { handleModalDeleteTopic, modalDeleteTopic, deleteTopic} = useRoles()
     return (
         <Transition.Root show={modalDeleteTopic} as={Fragment}>
@@ -79,4 +79,4 @@ const ModalDeleteTopic = () => {
     )
 }
 
-export default ModalDeleteTopic
+export default ModalDeleteTopicComponent;

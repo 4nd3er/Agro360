@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react'
-import { formatDate } from '../../../../helpers/formatDate.js'
-import { useRoles } from "../../../../context/Context.js"
+import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate } from "react-router-dom";
 import { Menu } from '@headlessui/react'
+import { formatDate } from '../../../../helpers/formatDate'
+import { useRoles } from "../../../../context/Context.js"
 
-const CardTopicComponent = ({ topic }) => {
+const CardTopic = ({ topic }) => {
     const { name, _id, createdAt, updatedAt } = topic
     const [role, setRole] = useState() // Name role
     const idrol = useParams() // role id
@@ -116,10 +116,10 @@ const CardTopicComponent = ({ topic }) => {
                     </div>
                 </Menu.Items>
             </Menu>
-            <p className='text-base text-color-aprendiz-text text-bold mt-3'>Creada el: {formatDate(createdAt)}</p>
-            <p className='text-base text-color-aprendiz-text text-bold my-3'>Última actualización: {formatDate(updatedAt)}</p>
+            <p className='text-base text-color-aprendiz-text text-bold mt-3'>Creada el: {formatDate(createdAt, 'date')}</p>
+            <p className='text-base text-color-aprendiz-text text-bold my-3'>Última actualización: {formatDate(updatedAt, 'date')}</p>
         </div>
     )
 }
 
-export default CardTopicComponent;
+export default CardTopic;

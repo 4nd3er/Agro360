@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { AddQuestionSvg, ImportQuestionSvg, DeleteQuestionSvg } from '../../assets/Assets.jsx';
-import { Options } from '../../components/Components.jsx';
-import '../../css/question.css';
+import { useLocation, useParams } from 'react-router-dom';
+import { Options } from '../../../components/Components.jsx';
+import { useRoles, useForms } from '../../../context/Context';
 import Swal from 'sweetalert2';
-import { useRoles, useForms } from '../../context/Context.js';
-import { getTopicFormsRequest } from '../../api/topics.js';
-import { useParams } from 'react-router-dom';
+import {
+	AddQuestionSvg,
+	ImportQuestionSvg,
+	DeleteQuestionSvg
+} from '../../../assets/Assets.jsx';
 
 const CreateQuest = () => {
 	const params = useParams();

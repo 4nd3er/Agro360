@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import CardForm from '../../components/CardForm'
-import { useRoles } from '../../context/Context.js'
-import { Spinner, Create } from '../../components/Components'
 import { Toaster } from 'react-hot-toast'
 import Select from 'react-select'
+import { CardForm } from './components/CardFormComponent'
+import { useRoles } from '../../../../context/Context'
+import { Spinner, Create } from '../../../../components/Components'
 
 const Forms = () => {
     const params = useParams();

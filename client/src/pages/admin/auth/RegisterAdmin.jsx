@@ -1,7 +1,7 @@
-import { useNavigate } from "react-router-dom"
-import { useForm } from 'react-hook-form'
-import { FormAlert } from '../../../components/Components'
-import { useAuth } from '../../../context/Context'
+import { useNavigate } from "react-router-dom";
+import { useForm } from 'react-hook-form';
+import { useAuth } from '../../../context/Context';
+import { ErrorsFormAlert } from '../../../components/Components';
 
 const RegisterAdmin = () => {
   const navigate = useNavigate()
@@ -25,7 +25,7 @@ const RegisterAdmin = () => {
           <header>
             <h1 className="text-color-sena font-black text-3xl mb-8">Nuevo administrador</h1>
           </header>
-          <FormAlert errors={errors} success={success} />
+          <ErrorsFormAlert errors={errors} success={success} />
           <form className='flex flex-col gap-6 w-3/4' onSubmit={onSubmit}>
             {/*--------*/}
             <section className="flex flex-row gap-2 justify-between">

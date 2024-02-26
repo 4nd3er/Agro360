@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Spinner } from '../../components/Components';
-import { ExcelSvg } from '../../assets/Assets';
+import { Spinner } from '../../../../components/Components';
+import { ExcelSvg } from '../../../../assets/Assets';
 import { useParams } from 'react-router-dom';
-import '../../css/question.css';
-import { useResponses, useForms, useRoles } from '../../context/Context.js'
-import CardResult from '../../components/CardResult.jsx';
+import { useResponses, useForms, useRoles } from '../../../../context/Context'
+import QuestCard from './components/QuestCard';
 
 const ResultQuest = () => {
     const { idform } = useParams();
@@ -79,8 +78,8 @@ const ResultQuest = () => {
             </div>
 
             <div className="flex flex-col gap-8 mb-8">
-                {results.map(({instructor, responses}) => {
-                    return <CardResult key={instructor._id} instructor={instructor} responses={responses} />
+                {results.map(({ instructor, responses }) => {
+                    return <QuestCard key={instructor._id} instructor={instructor} responses={responses} />
                 })}
             </div>
         </article>

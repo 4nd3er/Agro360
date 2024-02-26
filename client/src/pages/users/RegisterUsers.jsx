@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import Select from 'react-select';
 import { useForm, Controller } from 'react-hook-form';
-import { useUsers } from '../../context/UsersContext';
-import { FormAlert, Spinner } from '../../components/Components';
+import Select from 'react-select';
+import { useUsers } from '../../context/Context';
+import { ErrorsFormAlert, Spinner } from '../../components/Components';
 import { validateSenaEmail } from '../../helpers/functions';
-import '../../App.css';
 
-function RegisterUsers() {
+const RegisterUsers = () => {
   const { register, handleSubmit, formState: { isValid }, control } = useForm();
   const { getCourses, getCourseNames, createUser, errors, success } = useUsers();
   const [courses, setCourses] = useState([]);
@@ -52,7 +51,7 @@ function RegisterUsers() {
     <div className='w-full flex flex-col justify-center items-center pt-14'>
       <form onSubmit={onSubmit} className='flex flex-col gap-6 w-full md:w-[80%] my-10 p-10 border-2 rounded-xl border-gray-300 shadow-xl'>
         <h1 className='text-color-sena text-3xl font-sans font-semibold w-full text-center mb-6'>Nuevo Usuario</h1>
-        <FormAlert errors={errors} success={success} />
+        <ErrorsFormAlert errors={errors} success={success} />
         <div className='form-group flex flex-col md:flex-row gap-6'>
           <div className='w-full'>
             <label htmlFor="names">Nombres</label>

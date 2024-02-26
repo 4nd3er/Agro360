@@ -8,9 +8,6 @@
     overflow: hidden;
 
     animation: teclear 1s steps(8), efecto .5s step-end infinite alternate, tipografia 2s step-end infinite 1s;
-    /* animation: teclear 1s steps(7); */
-    /* * el primer tiempo es lo que dura la animacion, y el segundo el delay que tiene, en este caso, en la animacion "tipografia" */
-    /* ? animation-delay: 0s, 0s, 1s; se puede de esta manera pero mejor es cuando se pone en la misma animacion */
 }
 
 @keyframes teclear {

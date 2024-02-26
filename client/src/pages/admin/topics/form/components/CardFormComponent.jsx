@@ -1,17 +1,18 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
+import Swal from 'sweetalert2'
+import { toast } from 'react-hot-toast'
 import { Menu } from '@headlessui/react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
-import { toast } from 'react-hot-toast'
-import Swal from 'sweetalert2'
-import { useForms } from '../../../../../context/Context.js'
+import { useForms } from '../../../../../context/Context'
+import { formatDate } from '../../../../../helpers/formatDate'
 
-const CardFormComponent = ({ form, setLoading, getForms }) => {
+const CardForm = ({ form, setLoading, getForms }) => {
     const { _id, name, status, description, createdAt, end } = form;
     const [isHovered, setIsHovered] = useState(false)
     const { deleteForm, createForm } = useForms();
     const url = import.meta.env.VITE_FRONTEND_URL
-    const formDate = new Date(createdAt).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })
-    const formLimit = new Date(end).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' })
+    const formDate = formatDate(createdAt, 'date');
+    const formLimit = formatDate(end, 'date-time');
 
     const editForm = (idForm) => {
         location.href = `/crear-formulario/editar/${idForm}`
@@ -179,4 +180,4 @@ const CardFormComponent = ({ form, setLoading, getForms }) => {
     )
 }
 
-export default CardFormComponent
+export default CardForm

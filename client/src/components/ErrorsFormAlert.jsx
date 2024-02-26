@@ -1,6 +1,6 @@
 import React from 'react'
 
-function FormAlert({ errors, success, className }) {
+function ErrorsFormAlert({ errors, success, className }) {
     return (
         <>
             {errors && errors.length > 0 ? errors.map((error, i) => (
@@ -22,4 +22,4 @@ function FormAlert({ errors, success, className }) {
     )
 }
 
-export default FormAlert
+export default ErrorsFormAlert;

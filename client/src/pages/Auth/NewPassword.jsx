@@ -1,8 +1,8 @@
-import { useState } from "react";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../../context/Context";
-import { FormAlert } from "../../components/Components";
-import { useParams, useNavigate } from "react-router-dom";
+import { ErrorsFormAlert } from "../../components/Components";
 
 const NewPassword = () => {
   const navigate = useNavigate()
@@ -31,7 +31,7 @@ const NewPassword = () => {
           <div className=" flex flex-col justify-center place-items-center min-h-[80vh] ">
             <strong className=' text-green-600  text-3xl capitalize font-sans'>Recupera tu contraseña</strong>
             <form className='bg-white shadow rounded-lg px-10 py-5 w-1/2' onSubmit={onSubmit}>
-              <FormAlert errors={errors} success={success} />
+              <ErrorsFormAlert errors={errors} success={success} />
               <div className='my-5'>
                 <label className=' text-gray-600 block text-sm font-bold' htmlFor='newPassword'>Nueva contraseña</label>
                 <input id='newPassword' type="password" placeholder='Digita tu nueva contraseña' className='w-full mt-3 p-3 border rounded-xl bg-gray-50'

@@ -1,8 +1,8 @@
-import { LogoBlanco } from '../assets/Assets';
+import { LogoBlanco } from '../../assets/Assets';
 import '../layouts/css/navbar.css';
-import { useAuth } from '../context/AuthContext';
-import { Menu, Transition } from '@headlessui/react'
-import { Fragment, useEffect, useRef, useState } from 'react'
+import { useAuth } from '../../context/AuthContext';
+import { Menu } from '@headlessui/react';
+import { useState } from 'react';
 
 const Navbar = () => {
 	const [isHovered, setIsHovered] = useState(false)

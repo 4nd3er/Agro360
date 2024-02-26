@@ -1,7 +1,7 @@
 import { useState, createContext, useContext } from "react";
 import { RolesRequest, getRoleRequest, getRoleTopicsRequest } from "../api/roles";
 import { TopicsRequest, createTopicRequest, getTopicFormsRequest, getTopicRequest, updateTopicRequest, deleteTopicRequest } from "../api/topics";
-import { ContextErrors, ContextSuccess } from "./Alerts";
+import { ContextErrors } from "./Alerts";
 
 // Create the role context
 export const RolesContext = createContext()
@@ -88,7 +88,7 @@ export const RolesProvider = ({ children }) => {
         try {
             const res = await createTopicRequest(topic);
             setModalTopicForm(false)
-            setSweetAlert({ ilsuccesso: res.data.response, errore: ''})
+            setSweetAlert({ ilsuccesso: res.data.response, errore: '' })
             return res.data
         } catch (error) {
             ContextErrors(error, setErrors, setSuccess)
@@ -100,7 +100,7 @@ export const RolesProvider = ({ children }) => {
         try {
             const res = await updateTopicRequest(id, topic);
             setModalTopicForm(false)
-            setSweetAlert({ ilsuccesso: res.data.response, errore: ''})
+            setSweetAlert({ ilsuccesso: res.data.response, errore: '' })
             return res.data
         } catch (error) {
             ContextErrors(error, setErrors, setSuccess)
@@ -119,26 +119,26 @@ export const RolesProvider = ({ children }) => {
         setModalTopicForm(true)
     }
 
-     // Open and close the Topic Delete Modal
-     const handleModalDeleteTopic = (topic) => {
+    // Open and close the Topic Delete Modal
+    const handleModalDeleteTopic = (topic) => {
         setTopic(topic)
         setModalDeleteTopic(!modalDeleteTopic)
     }
 
     // Delete topic
-    const deleteTopic = async  () => {
+    const deleteTopic = async () => {
         try {
             const res = await deleteTopicRequest(topic._id)
             setModalDeleteTopic(!modalDeleteTopic)
-            setSweetAlert({ ilsuccesso: res.data.response, errore: ''})
+            setSweetAlert({ ilsuccesso: res.data.response, errore: '' })
             return res.data
         } catch (error) {
             setModalDeleteTopic(!modalDeleteTopic)
-            setSweetAlert({ ilsuccesso: '', errore: 'Error al eliminar: ' + error.response.data.message})
+            setSweetAlert({ ilsuccesso: '', errore: 'Error al eliminar: ' + error.response.data.message })
             return
         }
     }
-    
+
     return (
         <RolesContext.Provider
             value={{
@@ -151,19 +151,19 @@ export const RolesProvider = ({ children }) => {
                 getRoleTopics,
                 getTopics,
                 getTopic,
-                getTopicForms,                
+                getTopicForms,
                 handleModalTopic,
                 handleModalEditTopic,
                 topic,
                 createTopic,
-                editTopic,    
+                editTopic,
                 setErrors,
                 setSuccess,
                 handleModalDeleteTopic,
                 modalDeleteTopic,
                 deleteTopic,
                 sweetAlert,
-                setSweetAlert         
+                setSweetAlert
             }}
         >
             {children}

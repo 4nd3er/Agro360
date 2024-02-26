@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useResponses, useRoles } from '../../context/Context.js'
-import { userImg } from '../../assets/Assets.jsx'
-import { Option } from '../../components/Components.jsx'
-import Spinner from '../../components/Spinner.jsx';
+import { useResponses, useRoles } from '../../context/Context'
+import { userImg } from '../../assets/Assets'
+import { Option } from '../../components/Components'
+import Spinner from '../../components/Spinner';
 import Swal from 'sweetalert2';
 import Slider from 'react-slick';
-import { FRONTEND_URL } from '../../config.js';
+import { FRONTEND_URL } from '../../config';
 import '../../App.css'
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';

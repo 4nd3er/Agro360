@@ -1,8 +1,7 @@
-import React from 'react'
-import { useState } from 'react'
-import '../App.css'
+import React from 'react';
+import '../App.css';
 
-function QuestCardComponent({ instructor, responses }) {
+function QuestCard({ instructor, responses }) {
     const instructorNames = `${instructor.names} ${instructor.lastnames}`
 
     return (
@@ -35,4 +34,4 @@ function QuestCardComponent({ instructor, responses }) {
     )
 }
 
-export default QuestCardComponent;
+export default QuestCard;

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 
-function Option({ dataQuestion, dataInstructor, setValid, actualIndex }) {
+function OptionResponseComponent({ dataQuestion, dataInstructor, setValid, actualIndex }) {
     const [value, setValue] = useState('') //Valor de la respuesta
 
     const question = dataQuestion.question
@@ -164,4 +164,4 @@ function Option({ dataQuestion, dataInstructor, setValid, actualIndex }) {
     )
 }
 
-export default Option
+export default OptionResponseComponent;
