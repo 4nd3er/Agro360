@@ -51,7 +51,11 @@
 .slick-slider .slick-next {
     background: #369206;
     border-radius: 100%;
+    width: 35px;
+    height: 35px;
+   
 }
+
 
 .slick-slider .slick-prev:hover,
 .slick-slider .slick-prev:focus,
@@ -63,13 +67,17 @@
 .slick-slider .slick-prev:hover:before,
 .slick-slider .slick-next:hover:before {
     opacity: .75;
+ 
 }
 
 .slick-slider .slick-prev:before,
 .slick-slider .slick-next:before {
     opacity: 1;
-    color: white
+    color: white;
+    font-size: 30px;
+
 }
+
 
 input:focus, select:focus{
     outline: #369206 !important;
@@ -90,3 +98,61 @@ input:focus, select:focus{
 .react-select__control--is-focused{
     box-shadow: 0 0 0 1px #369206 !important;
 }
+
+/* Estilos para el contenedor de la guía paso a paso */
+.top-0 {
+    position: absolute;
+    top: 0;
+}
+
+.left-0 {
+    position: absolute;
+    left: 0;
+}
+
+.w-full {
+    width: 100%;
+}
+
+.h-full {
+    height: 100%;
+}
+
+.flex {
+    display: flex;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.z-10 {
+    z-index: 10;
+}
+
+/* Estilos para el borde verde */
+.border-green-500 {
+    border-color: #10B981; /* Cambia el color del borde aquí */
+}
+
+/* Estilos para los botones */
+.btn {
+    padding: 0.5rem 1rem;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.border {
+    border-width: 1px;
+}
+
+.rounded-md {
+    border-radius: 0.375rem; /* Cambia el radio de los botones aquí */
+}
+
+/* Estilos adicionales según sea necesario */
+
