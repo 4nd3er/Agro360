@@ -1,16 +1,16 @@
 //* Auth Pages
 export { default as Login } from './Auth/Login.jsx';
-export { default as Register } from './Auth/Register.jsx';
+export { default as RegisterAdmin } from './admin/auth/RegisterAdmin.jsx';
 export { default as ForgetPassword } from './Auth/ForgetPassword.jsx';
 export { default as NewPassword } from './Auth/NewPassword.jsx';
 export { default as ConfirmAccount } from './Auth/ConfirmAccount.jsx';
 
 //* Home Page
-export { default as Home } from './Home.jsx';
+export { default as Home } from './admin/home/Home.jsx';
 
 // *Form Pages
 export { default as Quest } from './Forms/Quest.jsx';
-export { default as CreateQuest } from './Forms/CreateQuest.jsx';
+export { default as CreateQuest } from './admin/createForms/CreateQuest.jsx';
 export { default as EditQuest } from './Forms/EditQuest.jsx';
 
 //* Results Pages
@@ -19,14 +19,14 @@ export { default as ResultQuest } from './Results/ResultQuest.jsx';
 
 //* Topics Pages
 export { default as Topics } from './Topics/Topics.jsx';
-export { default as TopicsForm } from './Topics/TopicsForm.jsx';
+export { default as Forms } from './admin/topics/form/Forms.jsx';
 
 //* Responses Pages
-export { default as UserValidation } from './Responses/UserValidation.jsx';
-export { default as Response } from './Responses/Response.jsx';
+export { default as UserValidation } from './responses/UserValidation.jsx';
+export { default as Response } from './responses/Response.jsx';
 
 //* Users Pages
-export { default as Users } from './Users/Users.jsx';
+export { default as Users } from './users/RegisterUsers.jsx';
 
 //* Courses Pages
-export { default as ChargeData } from './ChargeData/ChargeData.jsx'
+export { default as ChargeData } from './admin/chargeData/ChargeData.jsx'

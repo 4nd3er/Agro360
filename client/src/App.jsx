@@ -9,12 +9,12 @@ import {
   Quest,
   Results,
   Topics,
-  TopicsForm,
+  Forms,
   Login,
   CreateQuest,
   EditQuest,
   NewPassword,
-  Register,
+  RegisterAdmin,
   ForgetPassword,
   ConfirmAccount,
   ResultQuest,
@@ -46,9 +46,9 @@ function App() {
                       <Route path='/inicio' element={<AuthLayout />}>
                         <Route index element={<Home />} />
                         <Route path='tematicas/:id' element={<Topics />} />
-                        <Route path='tematicas/:id/encuestas/:idtopic' element={<TopicsForm />} />
+                        <Route path='tematicas/:id/encuestas/:idtopic' element={<Forms />} />
                         <Route path='charge-data' element={<ChargeData />} />
-                        <Route path='register-admin' element={<Register />} ></Route>
+                        <Route path='register-admin' element={<RegisterAdmin />} ></Route>
                       </Route>
                       <Route path='/crear-formulario' element={<AuthLayout />}>
                         <Route index element={<Quest />} />

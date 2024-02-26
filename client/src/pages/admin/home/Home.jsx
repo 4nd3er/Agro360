@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
-import CardRol from '../components/CardRol'
-import { useAuth, useRoles } from '../context/Context.js'
-import { Spinner } from '../components/Components'
+import CardRol from './components/CardRolComponent.jsx'
+import { useAuth, useRoles } from '../../../context/Context.js'
+import { Spinner } from '../../../components/Components.jsx'
 import '../App.css'
 import { Link } from 'react-router-dom'
 

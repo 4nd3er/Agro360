@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
-import { formatDate } from '../helpers/formatDate'
-import { useRoles } from "../context/Context.js"
+import { formatDate } from '../../../../helpers/formatDate.js'
+import { useRoles } from "../../../../context/Context.js"
 import { useParams, useNavigate } from "react-router-dom";
 import { Menu } from '@headlessui/react'
 
-const CardTopic = ({ topic }) => {
+const CardTopicComponent = ({ topic }) => {
     const { name, _id, createdAt, updatedAt } = topic
     const [role, setRole] = useState() // Name role
     const idrol = useParams() // role id
@@ -122,4 +122,4 @@ const CardTopic = ({ topic }) => {
     )
 }
 
-export default CardTopic
+export default CardTopicComponent;

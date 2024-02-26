@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import '../css/Create.css';
-import Alert from './Alert';
+import Alert from './Alert.jsx';
 import { useRoles } from '../context/Context.js';
 
-const Create = ({ modalState, topic }) => {
+const CreateQuestModal = ({ modalState, topic }) => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const { getTopics } = useRoles();
 	const [alert, setAlert] = useState({});
@@ -172,4 +172,4 @@ const Create = ({ modalState, topic }) => {
 	);
 };
 
-export default Create;
+export default CreateQuestModal;

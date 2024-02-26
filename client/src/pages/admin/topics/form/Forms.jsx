@@ -6,7 +6,7 @@ import { Spinner, Create } from '../../components/Components'
 import { Toaster } from 'react-hot-toast'
 import Select from 'react-select'
 
-const TopicsForm = () => {
+const Forms = () => {
     const params = useParams();
     const { idtopic } = params;
     const { getTopicForms, getTopic } = useRoles();
@@ -162,4 +162,4 @@ const TopicsForm = () => {
     )
 }
 
-export default TopicsForm
+export default Forms

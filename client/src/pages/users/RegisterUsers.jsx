@@ -6,7 +6,7 @@ import { FormAlert, Spinner } from '../../components/Components';
 import { validateSenaEmail } from '../../helpers/functions';
 import '../../App.css';
 
-function Users() {
+function RegisterUsers() {
   const { register, handleSubmit, formState: { isValid }, control } = useForm();
   const { getCourses, getCourseNames, createUser, errors, success } = useUsers();
   const [courses, setCourses] = useState([]);
@@ -202,4 +202,4 @@ function Users() {
   );
 }
 
-export default Users;
+export default RegisterUsers;

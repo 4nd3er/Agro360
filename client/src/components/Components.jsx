@@ -1,9 +1,9 @@
 export { default as BarsChart } from './BarsChart.jsx';
-export { default as CardTopic } from './CardTopic.jsx';
-export { default as CardRol } from './CardRol.jsx';
-export { default as CardForm } from './CardForm.jsx';
-export { default as Create } from './Create.jsx';
-export { default as Forms } from './Forms.jsx';
+export { default as CardTopic } from '../pages/admin/topics/components/CardTopicComponent.jsx';
+export { default as CardRol } from '../pages/admin/home/components/CardRolComponent.jsx';
+export { default as CardForm } from '../pages/admin/topics/form/components/CardFormComponent.jsx';
+export { default as Create } from './CreateQuestModal.jsx';
+export { default as Forms } from './CardQuest.jsx';
 export { default as Menu } from './Menu.jsx';
 export { default as ModalTopic } from './ModalTopic.jsx';
 export { default as Navbar } from './Navbar.jsx';

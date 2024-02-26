@@ -2,7 +2,7 @@ import React from 'react'
 import { useState } from 'react'
 import '../App.css'
 
-function CardResult({ instructor, responses }) {
+function QuestCardComponent({ instructor, responses }) {
     const instructorNames = `${instructor.names} ${instructor.lastnames}`
 
     return (
@@ -15,7 +15,7 @@ function CardResult({ instructor, responses }) {
                         <tr>
                             <th scope="col" className="px-6 py-3">Pregunta</th>
                             <th scope="col" className="px-6 py-3">Puntaje</th>
-                            <th scope="col" className="px-6 py-3">Aprobacion</th>
+                            <th scope="col" className="px-6 py-3">Aprobación</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -35,4 +35,4 @@ function CardResult({ instructor, responses }) {
     )
 }
 
-export default CardResult
+export default QuestCardComponent;

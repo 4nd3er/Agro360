@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-const CardRol = ({ rol }) => {
+const CardRolComponent = ({ rol }) => {
     const { name, _id } = rol;
 
     // Define colors according to role 
@@ -25,4 +25,4 @@ const CardRol = ({ rol }) => {
     )
 }
 
-export default CardRol
+export default CardRolComponent

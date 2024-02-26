@@ -3,9 +3,9 @@ import { Menu } from '@headlessui/react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { toast } from 'react-hot-toast'
 import Swal from 'sweetalert2'
-import { useForms } from '../context/Context.js'
+import { useForms } from '../../../../../context/Context.js'
 
-const CardForm = ({ form, setLoading, getForms }) => {
+const CardFormComponent = ({ form, setLoading, getForms }) => {
     const { _id, name, status, description, createdAt, end } = form;
     const [isHovered, setIsHovered] = useState(false)
     const { deleteForm, createForm } = useForms();
@@ -179,4 +179,4 @@ const CardForm = ({ form, setLoading, getForms }) => {
     )
 }
 
-export default CardForm
+export default CardFormComponent

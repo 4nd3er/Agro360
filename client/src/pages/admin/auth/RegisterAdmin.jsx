@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom"
 import { useForm } from 'react-hook-form'
-import { FormAlert } from '../../components/Components'
-import { useAuth } from '../../context/Context'
+import { FormAlert } from '../../../components/Components'
+import { useAuth } from '../../../context/Context'
 
-const Register = () => {
+const RegisterAdmin = () => {
   const navigate = useNavigate()
   const { register, handleSubmit, formState: { isValid }, } = useForm();
   const { signup, errors, success } = useAuth()
@@ -88,4 +88,4 @@ const Register = () => {
   )
 }
 
-export default Register
+export default RegisterAdmin
