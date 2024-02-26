@@ -11,6 +11,7 @@ export { default as Home } from './Home.jsx';
 // *Form Pages
 export { default as Quest } from './Forms/Quest.jsx';
 export { default as CreateQuest } from './Forms/CreateQuest.jsx';
+export { default as EditQuest } from './Forms/EditQuest.jsx';
 
 //* Results Pages
 export { default as Results } from './Results/Results.jsx';
