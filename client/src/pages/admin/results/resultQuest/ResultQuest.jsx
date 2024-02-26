@@ -13,8 +13,7 @@ const ResultQuest = () => {
     const [responsesLength, setResponsesLength] = useState(0)
 
     const { getForm, getFormReport, FormInstructorsResults } = useForms();
-    const { getTopic } = useRoles()
-    const { getResponsesForm } = useResponses();
+    const { getTopic } = useRoles();
 
     const [loading, setLoading] = useState(true);
     const [loadingReport, setLoadingReport] = useState(false);

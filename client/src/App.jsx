@@ -39,7 +39,6 @@ function App() {
                       <Route index element={<Login />} />
                       <Route path='forget-password' element={<ForgetPassword />} />
                       <Route path='reset-password' element={<NewPassword />} />
-                      <Route path='confirm/:id' element={<ConfirmAccount />} />
                     </Route>
 
                     <Route element={<ProtectedRoute />}>

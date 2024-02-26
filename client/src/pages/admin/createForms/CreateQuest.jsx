@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import { Options } from '../../../components/Components.jsx';
+import OptionsQuest from './components/OptionsQuest';
 import { useRoles, useForms } from '../../../context/Context';
 import Swal from 'sweetalert2';
 import {
 	AddQuestionSvg,
 	ImportQuestionSvg,
 	DeleteQuestionSvg
-} from '../../../assets/Assets.jsx';
+} from '../../../assets/Assets';
 
 const CreateQuest = () => {
 	const params = useParams();
@@ -287,7 +287,7 @@ const CreateQuest = () => {
 								</div>
 								<div className='px-10'>
 									{question[2][1].map((option, index) => (
-										<Options
+										<OptionsQuest
 											key={index + 1}
 											questionIndex={questionIndex}
 											index={index}

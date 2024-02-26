@@ -56,6 +56,17 @@
    
 }
 
+.response {
+    background-color: #ffffff;
+    border: 2px solid #e5e7eb;
+    border-left-width: 5px;
+    border-left-color: #2ea84a;
+    border-radius: 10px;
+    box-shadow: 0px 4px 4px #00000040;
+    height: 350px;
+    position: relative;
+    width: 1100px;
+}
 
 .slick-slider .slick-prev:hover,
 .slick-slider .slick-prev:focus,

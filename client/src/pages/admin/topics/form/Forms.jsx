@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import Select from 'react-select'
-import { CardForm } from './components/CardFormComponent'
+import CardForm from './components/CardFormComponent'
 import { useRoles } from '../../../../context/Context'
-import { Spinner, Create } from '../../../../components/Components'
+import { Spinner, CreateQuestModal } from '../../../../components/Components'
 
 const Forms = () => {
     const params = useParams();
@@ -134,7 +134,7 @@ const Forms = () => {
                         }
                     })}
                 />
-                <Create modalState={{ openModal, setOpenModal }} topic={{ _id: idtopic, name: topic }} />
+                <CreateQuestModal modalState={{ openModal, setOpenModal }} topic={{ _id: idtopic, name: topic }} />
             </article>
             <hr />
             {loading && <Spinner /> || (

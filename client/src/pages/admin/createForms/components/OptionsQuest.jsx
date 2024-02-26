@@ -1,4 +1,4 @@
-const OptionsQuestComponent = ({ option, index, questionIndex, question, handleOptionChange, deleteOption, questionTypeValue, validationQuestionOption, params }) => {
+const OptionsQuest = ({ option, index, questionIndex, question, handleOptionChange, deleteOption, questionTypeValue, validationQuestionOption, params }) => {
     let questionType = '';
     let questionOptions = '';
     if (!params.id) {
@@ -321,4 +321,4 @@ const OptionsQuestComponent = ({ option, index, questionIndex, question, handleO
     )
 }
 
-export default OptionsQuestComponent;
+export default OptionsQuest;

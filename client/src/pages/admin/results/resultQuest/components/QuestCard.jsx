@@ -1,7 +1,6 @@
 import React from 'react';
-import '../App.css';
 
-function QuestCard({ instructor, responses }) {
+const QuestCard = ({ instructor, responses }) => {
     const instructorNames = `${instructor.names} ${instructor.lastnames}`
 
     return (

@@ -1,5 +1,5 @@
 import { LogoBlanco } from '../../assets/Assets';
-import '../layouts/css/navbar.css';
+import '../css/navbar.css';
 import { useAuth } from '../../context/AuthContext';
 import { Menu } from '@headlessui/react';
 import { useState } from 'react';

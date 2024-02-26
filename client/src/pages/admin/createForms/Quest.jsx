@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useForms } from '../../context/Context';
-import { Spinner } from '../../components/Components';
+import { useForms } from '../../../context/Context';
+import { Spinner } from '../../../components/Components';
 import CardForm from '../../../components/CardForm';
 import CreateQuestModal from '../../../components/CreateQuestModal';
 import { imgNuevaEncuesta } from '../../../assets/Assets';

@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useRoles } from '../../../context/RolesContext';
 import { useForms } from '../../../context/FormsContext';
-import { Options, Spinner } from '../../../components/Components';
+import OptionsQuest from './components/OptionsQuest';
 import Swal from 'sweetalert2';
 import {
     AddQuestionSvg,
     ImportQuestionSvg,
     DeleteQuestionSvg
 } from '../../../assets/Assets';
-
+import { Spinner } from '../../../components/Components';
 
 const EditQuest = () => {
 
@@ -297,7 +297,7 @@ const EditQuest = () => {
                                 </div>
                                 <div className='px-10'>
                                     {question.options.map((option, index) => (
-                                        <Options
+                                        <OptionsQuest
                                             params={params}
                                             key={index + 1}
                                             questionIndex={questionIndex}

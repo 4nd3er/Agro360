@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import Navbar from '../layouts/components/Navbar';
-import Menu from '../layouts/components/Navbar';
+import Menu from '../layouts/components/Menu';
 
 const AuthLayout = () => {
 
