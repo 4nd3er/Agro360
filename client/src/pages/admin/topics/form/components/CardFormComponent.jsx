@@ -3,20 +3,17 @@ import Swal from 'sweetalert2'
 import { toast } from 'react-hot-toast'
 import { Menu } from '@headlessui/react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
-import { useForms } from '../../../../../context/Context'
+import { useForms, useResponses } from '../../../../../context/Context'
 import { formatDate } from '../../../../../helpers/formatDate'
 
 const CardForm = ({ form, setLoading, getForms }) => {
     const { _id, name, status, description, createdAt, end } = form;
     const [isHovered, setIsHovered] = useState(false)
-    const { deleteForm, createForm } = useForms();
+    const { createForm, deleteForm } = useForms();
+    const { getResponsesForm } = useResponses();
     const url = import.meta.env.VITE_FRONTEND_URL
     const formDate = formatDate(createdAt, 'date');
     const formLimit = formatDate(end, 'date-time');
-
-    const editForm = (idForm) => {
-        location.href = `/crear-formulario/editar/${idForm}`
-    }
 
     //*MENU
 
@@ -42,6 +39,26 @@ const CardForm = ({ form, setLoading, getForms }) => {
         setLoading(false)
         if (!create) return toast.error('Error al duplicar la encuesta: limite excedido', { duration: 4000 })
         toast.success('Encuesta duplicada satisfactoriamente', { duration: 4000 })
+    }
+
+    //Edit Form
+    const editForm = async (idForm) => {
+        setLoading(true)
+        const findResponses = await getResponsesForm(idForm)
+        setLoading(false)
+        if (findResponses) {
+            return Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 4000,
+                timerProgressBar: true,
+            }).fire({
+                icon: 'error',
+                title: 'Error al editar la encuesta: La encuesta tiene respuestas'
+            })
+        }
+        location.href = `/crear-formulario/editar/${idForm}`;
     }
 
     // Delete Form
