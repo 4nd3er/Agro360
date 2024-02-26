@@ -15,7 +15,7 @@ const AuthLayout = () => {
             <div className="flex flex-col h-screen">
                 <Navbar />
                 <div className="flex flex-row">
-                    <div className="w-[15%]">
+                    <div className="w-[0%] md:w-[10%] lg:w-[15%] xl:w-[15%]">
                         <Menu />
                     </div>
                     <div className="w-full sm:w-5/6">

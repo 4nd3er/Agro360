@@ -51,7 +51,7 @@ function Users() {
   return (
     <div className='w-full flex flex-col justify-center items-center pt-14'>
       <form onSubmit={onSubmit} className='flex flex-col gap-6 w-full md:w-[80%] my-10 p-10 border-2 rounded-xl border-gray-300 shadow-xl'>
-        <h1 className='text-green-500 text-3xl font-sans font-semibold w-full text-center mb-6'>Nuevo Usuario</h1>
+        <h1 className='text-color-sena text-3xl font-sans font-semibold w-full text-center mb-6'>Nuevo Usuario</h1>
         <FormAlert errors={errors} success={success} />
         <div className='form-group flex flex-col md:flex-row gap-6'>
           <div className='w-full'>
@@ -60,7 +60,7 @@ function Users() {
               className='w-full m-1 p-2 border rounded-xl bg-gray-50'
               id="names"
               type='text'
-              placeholder='Digita tus nombres'
+              placeholder='Digite sus nombres'
               {...register("names", {
                 required: true,
                 minLength: 5,
@@ -73,7 +73,7 @@ function Users() {
               className='w-full m-1 p-2 border rounded-xl bg-gray-50'
               id="lastnames"
               type='text'
-              placeholder='Digita tus apellidos'
+              placeholder='Digite sus apellidos'
               {...register("lastnames", {
                 required: true,
                 minLength: 5,
@@ -91,7 +91,7 @@ function Users() {
               {...register("documentType", {
                 required: true
               })}>
-              <option value="">Selecciona tu documento</option>
+              <option value="">Seleccione su tipo de documento</option>
               <option value="CC">Cedula de Ciudadania</option>
               <option value="TI">Tarjeta de Identidad</option>
               <option value="CE">Cedula de Extranjeria</option>
@@ -105,7 +105,7 @@ function Users() {
               type='text'
               maxLength={10}
               onInput={(e) => { e.target.value = e.target.value.replace(/[^0-9]/g, ''); }}
-              placeholder='Digita tu Documento'
+              placeholder='Digite su numero de documento'
               {...register("document", {
                 required: true,
                 minLength: 5,
@@ -121,7 +121,7 @@ function Users() {
               className='w-full m-1 p-2 border rounded-xl bg-gray-50'
               id="email"
               type='email'
-              placeholder='Digita tu correo @SoySena'
+              placeholder='Digite su correo @SoySena'
               {...register("email", {
                 required: true,
                 validate: (value) => validateSenaEmail(value)
@@ -138,7 +138,7 @@ function Users() {
                   <Select
                     {...field}
                     options={courses}
-                    placeholder={"Selecciona tu ficha"}
+                    placeholder={"Seleccione su ficha"}
                     noOptionsMessage={() => "No se encontraron fichas"}
                     onChange={val => field.onChange(val.value)}
                     value={courses.find(({ value }) => value === field.value)}
@@ -177,7 +177,6 @@ function Users() {
               {...register("rol")}
               value="6558e534c44fb9ddd8295320"
               readOnly>
-              <option value="">Selecciona tu rol</option>
               <option value="6558e534c44fb9ddd8295320">Aprendiz</option>
             </select>
           </div>
@@ -187,7 +186,7 @@ function Users() {
           <button
             type="button"
             onClick={handleCancel}
-            className="bg-color-sena w-1/3 py-2 m-4 text-white uppercase font-bold rounded-xl hover:cursor-pointer hover:bg-color-sena-hover transition-color"
+            className="bg-color-sena w-1/3 py-2 m-4 text-white uppercase rounded-xl hover:cursor-pointer hover:bg-color-sena-hover transition-color"
           >
             Cancelar
           </button>
@@ -195,7 +194,7 @@ function Users() {
             type="submit"
             disabled={!isValid}
             value="Enviar"
-            className={isValid ? 'bg-green-600 w-1/3 py-2 m-4 text-white uppercase font-bold rounded-xl hover:cursor-pointer hover:bg-green-700 transition-color' : 'bg-gray-400 w-1/3 py-2 m-4 text-white uppercase rounded-xl'}
+            className={isValid ? 'bg-color-sena w-1/3 py-2 m-4 text-white uppercase font-bold rounded-xl hover:cursor-pointer hover:bg-color-sena-hover transition-color' : 'bg-gray-400 w-1/3 py-2 m-4 text-white uppercase rounded-xl'}
           />
         </div>
       </form>

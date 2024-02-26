@@ -23,9 +23,9 @@ const Home = () => {
     if (loading) return <Spinner />
 
     return (
-        <div className='min-h-[80vh] py-16 px-8'>
-            <header className='mb-20 flex flex-col sm:flex-row items-center justify-center w-full relative'>
-                <p className="text-center ">
+        <div className='min-h-[80vh] px-5 py-5 md:pl-0 md:pr-5 md:mt-14 lg:py-16 lg:px-8 xl:py-16 xl:px-8'>
+            <header className='mb-20 flex flex-col sm:flex-row items-center justify-center md:justify-between w-full relative'>
+                <p className="text-center md:text-left lg:text-center xl:text-center">
                     <span className="font-semibold text-color-sena text-5xl sm:text-7xl italic">
                         Bienvenido
                         <br />
