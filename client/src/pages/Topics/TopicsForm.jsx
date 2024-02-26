@@ -1,17 +1,15 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import CardForm from '../../components/CardForm'
-import { useRoles, useForms } from '../../context/Context.js'
+import { useRoles } from '../../context/Context.js'
 import { Spinner, Create } from '../../components/Components'
-import { Toaster, toast } from 'react-hot-toast'
-import Swal from 'sweetalert2'
+import { Toaster } from 'react-hot-toast'
 import Select from 'react-select'
 
 const TopicsForm = () => {
     const params = useParams();
     const { idtopic } = params;
     const { getTopicForms, getTopic } = useRoles();
-    const { deleteForm, createForm } = useForms();
     const [forms, setForms] = useState([]);
     const [topic, setTopic] = useState();
     const [loading, setLoading] = useState(true);
@@ -61,73 +59,6 @@ const TopicsForm = () => {
         const filterForms = forms.filter(form => form.status === status)
         if (status === "all") return setFilterForms([])
         setFilterForms(filterForms)
-    }
-
-    //*MENU
-
-    // Show Toast
-    const showToast = () => toast.success('Link copiado al portapapeles', { duration: 2500 })
-
-    // Duplicate Form
-    const duplicateForm = async ({ name, description, topic, end, status, creator, questions }) => {
-        const form = { name: `Copia ${name}`, description, topic, end, status, creator, questions }
-        setLoading(true)
-        let create = await createForm(form)
-        let num = 1
-        while (!create && num <= 10) {
-            num += 1
-            create = await createForm({ name: `Copia (${num}) ${name}`, description, topic, end, status, creator, questions })
-        }
-        await getForms()
-        setLoading(false)
-        if (!create) return toast.error('Error al duplicar la encuesta: limite excedido', { duration: 4000 })
-        toast.success('Encuesta duplicada satisfactoriamente', { duration: 4000 })
-    }
-
-    // Delete Form
-    const deleteTopicForm = async (id) => {
-        Swal.fire({
-            icon: 'warning',
-            title: 'Esta seguro que desea eliminar esta encuesta?',
-            showCancelButton: true,
-            showConfirmButton: true,
-            confirmButtonText: 'Eliminar',
-            cancelButtonText: 'Cancelar',
-            confirmButtonColor: 'red',
-        })
-            .then(async (result) => {
-                if (result.isConfirmed) {
-                    try {
-                        setLoading(true)
-                        await deleteForm(id)
-                        await getForms()
-                        setLoading(false)
-                        Swal.mixin({
-                            toast: true,
-                            position: 'top-end',
-                            showConfirmButton: false,
-                            timer: 4000,
-                            timerProgressBar: true,
-                        }).fire({
-                            icon: 'success',
-                            title: 'Encuesta eliminada satisfactoriamente'
-                        })
-                    } catch (error) {
-                        setLoading(false)
-                        Swal.mixin({
-                            toast: true,
-                            position: 'top-end',
-                            showConfirmButton: false,
-                            timer: 5000,
-                            timerProgressBar: true,
-                        }).fire({
-                            icon: 'error',
-                            title: 'Error al eliminar: ' + error.response.data.message
-                        })
-                    }
-
-                }
-            })
     }
 
     return (
@@ -210,19 +141,19 @@ const TopicsForm = () => {
                 <article className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3 mr-5 mt-10 mb-8">
                     {searchForms.length && (
                         searchForms.map(form => (
-                            <CardForm key={form._id} form={form} showToast={showToast} duplicateForm={duplicateForm} deleteForm={deleteTopicForm} />
+                            <CardForm key={form._id} form={form} setLoading={setLoading} getForms={getForms} />
                         ))
                     ) || searchForms.length <= 0 && searchInput.length > 0 && (
                         <h3 className="text-2xl text-gray-600">Encuesta no encontrada</h3>
                     ) || filterStatus !== "all" && filterForms.length && (
                         filterForms.map(form => (
-                            <CardForm key={form._id} form={form} showToast={showToast} duplicateForm={duplicateForm} deleteForm={deleteTopicForm} />
+                            <CardForm key={form._id} form={form} setLoading={setLoading} getForms={getForms} />
                         ))
                     ) || filterStatus !== "all" && filterForms.length <= 0 && (
                         <h3 className="text-2xl text-gray-600">No existen encuestas en estado {filterStatus !== null && filterStatus ? 'Activo' : 'Inactivo'}</h3>
                     ) || forms.length && (
                         forms.map(form => (
-                            <CardForm key={form._id} form={form} showToast={showToast} duplicateForm={duplicateForm} deleteForm={deleteTopicForm} />
+                            <CardForm key={form._id} form={form} setLoading={setLoading} getForms={getForms} />
                         ))
                     ) || (<h3 className="text-2xl text-gray-600">No hay Encuestas para esta tématica</h3>)}
                 </article>

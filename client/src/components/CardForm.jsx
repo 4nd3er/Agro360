@@ -1,16 +1,92 @@
 import { useState } from 'react'
 import { Menu } from '@headlessui/react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
+import { toast } from 'react-hot-toast'
+import Swal from 'sweetalert2'
+import { useForms } from '../context/Context.js'
 
-const CardForm = ({ form, showToast, duplicateForm, deleteForm }) => {
-    const { _id, name, status, description, createdAt } = form;
+const CardForm = ({ form, setLoading, getForms }) => {
+    const { _id, name, status, description, createdAt, end } = form;
     const [isHovered, setIsHovered] = useState(false)
+    const { deleteForm, createForm } = useForms();
     const url = import.meta.env.VITE_FRONTEND_URL
-    const date = new Date(createdAt)
-    const formDate = date.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })
+    const formDate = new Date(createdAt).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })
+    const formLimit = new Date(end).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' })
 
     const editForm = (idForm) => {
         location.href = `/crear-formulario/editar/${idForm}`
+    }
+
+    //*MENU
+
+    // Show Toast
+    const showToast = () => toast.success('Link copiado al portapapeles', { duration: 2500 })
+
+    // Duplicate Form
+    const duplicateForm = async ({ name, description, topic, creator, questions }) => {
+        let fechaActual = new Date();
+        // Añadir un día a la fecha actual
+        let end = new Date(fechaActual);
+        end.setDate(fechaActual.getDate() + 1);
+        const status = true;
+        const form = { name: `Copia ${name}`, description, topic, end, status, creator, questions }
+        setLoading(true)
+        let create = await createForm(form)
+        let num = 1
+        while (!create && num <= 10) {
+            num += 1
+            create = await createForm({ name: `Copia (${num}) ${name}`, description, topic, end, status, creator, questions })
+        }
+        await getForms()
+        setLoading(false)
+        if (!create) return toast.error('Error al duplicar la encuesta: limite excedido', { duration: 4000 })
+        toast.success('Encuesta duplicada satisfactoriamente', { duration: 4000 })
+    }
+
+    // Delete Form
+    const deleteTopicForm = async (id) => {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Esta seguro que desea eliminar esta encuesta?',
+            showCancelButton: true,
+            showConfirmButton: true,
+            confirmButtonText: 'Eliminar',
+            cancelButtonText: 'Cancelar',
+            confirmButtonColor: 'red',
+        })
+            .then(async (result) => {
+                if (result.isConfirmed) {
+                    try {
+                        setLoading(true)
+                        await deleteForm(id)
+                        await getForms()
+                        setLoading(false)
+                        Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 4000,
+                            timerProgressBar: true,
+                        }).fire({
+                            icon: 'success',
+                            title: 'Encuesta eliminada satisfactoriamente'
+                        })
+                    } catch (error) {
+                        setLoading(false)
+                        Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 5000,
+                            timerProgressBar: true,
+                        }).fire({
+                            icon: 'error',
+                            title: 'Error al eliminar: ' + error.response.data.message
+                        })
+                    }
+
+                }
+            })
     }
 
     return (
@@ -20,6 +96,7 @@ const CardForm = ({ form, showToast, duplicateForm, deleteForm }) => {
                     <h2 className="text-color-aprendiz-text text-xl font-black uppercase truncate">{name}</h2>
                     <p className="text-color-aprendiz-text text-base">{description}</p>
                     <p className='text-color-aprendiz-text text-base'>Fecha de creacion: {formDate}</p>
+                    <p className='text-color-aprendiz-text text-base'>Fecha limite a responder: {formLimit}</p>
                     <p className="text-base text-color-aprendiz-text ">Estado:<span className={`text-color-aprendiz-text text-sm ${status ? 'text-color-sena' : 'text-red-500'}`}> {status ? 'Activo' : 'Inactivo'}</span></p>
                 </div>
             </CopyToClipboard>
@@ -82,7 +159,7 @@ const CardForm = ({ form, showToast, duplicateForm, deleteForm }) => {
                         {({ active }) => (
                             <div>
                                 <button className={`${active ? 'bg-red-600 text-white' : 'text-gray-900'} group flex w-full items-center rounded-md px-2 py-2 text-sm transition-colors duration-300 ease-out`}
-                                    onClick={() => deleteForm(_id)}>
+                                    onClick={() => deleteTopicForm(_id)}>
                                     <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 mr-2 icon icon-tabler icon-tabler-trash" viewBox="0 0 24 24" strokeWidth="1.5" stroke={active ? '#ffffff' : '#ff2825'} fill="none" strokeLinecap="round" strokeLinejoin="round">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                         <path d="M4 7l16 0" />
