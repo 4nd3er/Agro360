@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import CardTopic from "../../components/CardTopic.jsx";
 import ModalTopic from "../../components/ModalTopic.jsx";
+import ModalDeleteTopic from "../../components/ModalDeleteTopic.jsx";
 import { useRoles } from "../../context/Context.js"
 import Spinner from "../../components/Spinner.jsx";
 import Masonry from "@mui/lab/Masonry"
@@ -37,8 +38,7 @@ const Topics = () => {
             <section className='min-h-[80vh]'>
                 <header className="flex justify-between mt-16">
                     <p>
-                        <span
-                            className="text-4xl font-bold uppercase">Temáticas</span>
+                        <span className="text-4xl font-bold uppercase">Temáticas</span>
                         <br />
                         <span className="text-lg text-gray-500 uppercase">{role}</span>
                     </p>
@@ -48,26 +48,28 @@ const Topics = () => {
                         Añadir Temática
                     </button>
                 </header>
-                <ModalTopic
-                    setTopics={setTopics}
-                    topics={topics}
-                />
                 <section className="mr-5 mt-10">
                     <Masonry
-                        colums={{ xs:2, sm:3, md:5 }}
-                        spacing={{ xs:1, sm:2, md:3 }}
+                        columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
+                        spacing={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
                     >
-                        {loading ? <Spinner /> :
+                        {loading ? <Spinner className={'!m-0'}/> :
                             topics.length > 0 ? topics.map(topic => (
                                 <CardTopic key={topic._id} topic={topic} />
                             ))
                                 : <h3 className="text-xl text-gray-600">Aún no hay tématicas creadas para este rol, las temáticas creadas aparecerán aquí</h3>}
                     </Masonry>
                 </section>
+                {/* Modal crear y editar temática */}
+                <ModalTopic
+                    setTopics={setTopics}
+                    topics={topics}
+                />
+                {/* Modal eliminar temática */}
+                <ModalDeleteTopic />
             </section>
         </>
     )
 }
 
 export default Topics;
-

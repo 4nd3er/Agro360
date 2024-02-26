@@ -7,19 +7,18 @@ const Menu = () => {
     const [close, setClose] = useState(false);
 
     const handleClose = () => {
-        setClose(() => (!close));
+        setClose(!close);
     }
 
     const handleBack = () => {
         window.history.back();
     }
 
-    // const pathName = location.pathname
     const pathName = (location.pathname.split('/')[1])
 
     return (
         <>
-            <div className={`navigation ${close ? 'close' : ''}`}>
+            <div className={`navigation ${close ? 'close' : ''}`} style={{ position: 'absolute', zIndex: '999' }}>
                 <div className={close ? 'menuArrow' : 'menuToggle'} onClick={handleClose}>
                     {close ? <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-badge-right" width="100%" viewBox="0 0 24 24" stroke-width="1.5" stroke="#39a900" fill="none" stroke-linecap="round" stroke-linejoin="round">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />

@@ -24,17 +24,18 @@ const Home = () => {
 
     return (
         <div className='min-h-[80vh] py-16 px-8'>
-            <header className='mb-20 flex flex-row items-center justify-center w-full relative'>
-                <p className="text-center">
-                    <span className="font-semibold text-color-sena text-7xl italic">
+            <header className='mb-20 flex flex-col sm:flex-row items-center justify-center w-full relative'>
+                <p className="text-center ">
+                    <span className="font-semibold text-color-sena text-5xl sm:text-7xl italic">
                         Bienvenido
                         <br />
                     </span>
+
                     <span className="text-black text-2xl">
                         {user.user}
                     </span>
                 </p>
-                <section className='flex flex-col justify-center items-end gap-4 absolute right-0 w-24'>
+                <section className='flex flex-col justify-center items-center sm:items-end gap-4 sm:absolute sm:right-0 sm:w-24'>
                     <Link to='charge-data'>
                         <button className="btn w-full flex flex-row justify-center items-center gap-2 text-white bg-color-sena hover:bg-color-sena-hover" type="button">
                             <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-upload" width="20" viewBox="0 0 24 24" stroke-width="2" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -59,7 +60,7 @@ const Home = () => {
                     </Link>
                 </section>
             </header>
-            <main className="grid grid-cols-3 gap-4">
+            <main className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 {/* Iterate roles */}
                 {roles.length > 0 ?
                     roles.map(rol => (

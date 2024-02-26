@@ -45,15 +45,15 @@ const ResultQuest = () => {
     if (loading) return <Spinner />;
 
     return (
-        <article className='flex flex-col justify-start mt-5 min-h-[70vh] w-3/2 mx-auto gap-10'>
+        <article className='flex flex-col justify-start mt-5 min-h-[70vh] w-full md:w-full mx-auto gap-10'>
             <header className='relative p-8 flex flex-col gap-2 shadow-lg rounded-md border-2'>
                 <aside className={`${form.status ? 'bg-color-sena' : 'bg-red-500'} absolute top-0 left-0 py-1 px-4 rounded-md text-white shadow-lg`}>
                     {form.status ? "Activo" : "Inactivo"}
                 </aside>
-                <section className='flex flex-row items-center justify-between mt-5'>
+                <section className='flex flex-col md:flex-row items-center justify-between mt-5'>
                     <h1 className='text-4xl text-color-sena'>{form.name}</h1>
-                    <aside className='w-1/3 flex flex-col items-end'>
-                        <button className={`w-2/3 bg-white text-color-sena border-2 border-lime-400  ${!loadingReport ? 'hover:bg-color-sena hover:border-transparent hover:text-white' : 'cursor-progress'}  p-2 rounded-md shadow-md flex flex-row gap-4 items-center justify-center`}
+                    <aside className='w-full md:w-1/3 flex flex-col items-end mt-5 md:mt-0'>
+                        <button className={`w-full md:w-2/3 bg-white text-color-sena border-2 border-lime-400  ${!loadingReport ? 'hover:bg-color-sena hover:border-transparent hover:text-white' : 'cursor-progress'}  p-2 rounded-md shadow-md flex flex-row gap-4 items-center justify-center`}
                             onClick={generateReport} >
                             {loadingReport && (<Spinner className={'!m-0'} />) || (
                                 <>
@@ -87,4 +87,4 @@ const ResultQuest = () => {
     );
 }
 
-export default ResultQuest
+export default ResultQuest;

@@ -1,6 +1,6 @@
 import { useState, createContext, useContext } from "react";
 import { RolesRequest, getRoleRequest, getRoleTopicsRequest } from "../api/roles";
-import { TopicsRequest, createTopicRequest, getTopicFormsRequest, getTopicRequest, updateTopicRequest } from "../api/topics";
+import { TopicsRequest, createTopicRequest, getTopicFormsRequest, getTopicRequest, updateTopicRequest, deleteTopicRequest } from "../api/topics";
 import { ContextErrors, ContextSuccess } from "./Alerts";
 
 // Create the role context
@@ -14,6 +14,7 @@ export const useRoles = () => {
 
 export const RolesProvider = ({ children }) => {
     const [modalTopicForm, setModalTopicForm] = useState(false)
+    const [modalDeleteTopic, setModalDeleteTopic] = useState(false)
     const [loading, setLoading] = useState(true)
     const [errors, setErrors] = useState([])
     const [success, setSuccess] = useState('')
@@ -117,6 +118,24 @@ export const RolesProvider = ({ children }) => {
         setModalTopicForm(true)
     }
 
+     // Open and close the Topic Delete Modal
+     const handleModalDeleteTopic = (topic) => {
+        setTopic(topic)
+        setModalDeleteTopic(!modalDeleteTopic)
+    }
+
+    // Delete topic
+    const deleteTopic = async  () => {
+        try {
+            const res = await deleteTopicRequest(topic._id)
+            setModalDeleteTopic(!modalDeleteTopic)
+            console.log('Temática eliminada correctamente' )
+            return res.data
+        } catch (error) {
+            console('error al eliminar la temática: ', error)
+        }
+    }
+    
     return (
         <RolesContext.Provider
             value={{
@@ -136,7 +155,10 @@ export const RolesProvider = ({ children }) => {
                 createTopic,
                 editTopic,    
                 setErrors,
-                setSuccess         
+                setSuccess,
+                handleModalDeleteTopic,
+                modalDeleteTopic,
+                deleteTopic         
             }}
         >
             {children}
