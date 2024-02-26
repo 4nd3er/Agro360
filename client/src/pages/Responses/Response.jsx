@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import cloudinary from 'cloudinary-core'
 import { useParams, useNavigate } from 'react-router-dom';
 import { useResponses, useRoles } from '../../context/Context.js'
 import { userImg } from '../../assets/Assets.jsx'
@@ -7,6 +6,7 @@ import { Option } from '../../components/Components.jsx'
 import Spinner from '../../components/Spinner.jsx';
 import Swal from 'sweetalert2';
 import Slider from 'react-slick';
+import { FRONTEND_URL } from '../../config.js';
 import '../../App.css'
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -48,9 +48,9 @@ const Response = () => {
             const res = await getFormtoResponse(idform);
             const getInstructors = async () => {
                 const array = res.instructors.map(async (instructor) => {
-                    const cl = new cloudinary.Cloudinary({ cloud_name: 'dqwz38i0y' })
-                    const imageUrl = cl.url(`instructores/${instructor.document}`, { width: 'auto', crop: 'scale' })                    
-                    instructor.image = imageUrl
+                    const img = `${FRONTEND_URL}/src/img/instructores/${instructor.document}.png`
+                    instructor.image = img
+                    if (!await findImage(img)) instructor.image = false
                     return instructor
                 })
                 const instructors = await Promise.all(array)
@@ -338,7 +338,7 @@ const Response = () => {
 
         return () => window.removeEventListener('resize', handleResize);
     }, []);
-        //* OTHERS
+    //* OTHERS
     // Configuración del carrusel utilizando la librería react-slick
     const settings = {
         dots: true,
