@@ -80,8 +80,8 @@ function Option({ dataQuestion, dataInstructor, setValid, actualIndex }) {
             {/* Escala de value */}
             {type == '6556ddbbfe823a88d48fafc4' && (
                 <div className='py-4 overflow-auto max-w-max'>
-                    <ul className="flex gap-16 mb-4">
-                        <li className='flex flex-col text-center' onClick={() => handleChange('1')}>
+                    <ul className="flex mb-4 gap-4 sm:gap-16 md:gap-4 lg:gap-16">
+                        <li className='flex flex-col text-c enter' onClick={() => handleChange('1')}>
                             <input disabled type="radio" id="opcion1" name="escala" value="1" className="hidden peer" />
                             <label
                                 htmlFor="opcion1"
