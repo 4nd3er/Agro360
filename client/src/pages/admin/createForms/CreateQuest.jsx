@@ -267,15 +267,8 @@ const CreateQuest = () => {
 										value={question[1][1]}
 										onChange={(e) => handleQuestionTypeChange(e.target.value, questionIndex)}
 									>
-										<option value="">Seleccione el tipo de pregunta</option>
-										{questionsType ? questionsType.map((questionType, index) => (
-											<option
-												key={index}
-												value={questionType._id}
-											>
-												{questionType.name}
-											</option>
-										)) : null}
+										<option value="">Seleccione un tipo de pregunta</option>
+										<option value="6556ddbbfe823a88d48fafc4">Escala de Likert</option>
 									</select>
 									<div className='cursor-pointer my-auto hover:scale-110' onClick={() => deleteQuestion(questionIndex)}>
 										<img src={DeleteQuestionSvg} />

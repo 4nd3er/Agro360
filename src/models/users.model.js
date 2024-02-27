@@ -37,6 +37,11 @@ const usersSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Courses',
         required: false
+    },
+    team: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'InstructorTeams',
+        required: false
     }
 }, { timestamps: true })
 

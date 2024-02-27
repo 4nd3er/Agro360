@@ -1,7 +1,7 @@
 import '../css/CardForm.css';
 
-const CardForm = ({ title, imageSrc, isActive, id }) => {
-
+const CardForm = ({ form, imageSrc }) => {
+    const { _id: id, name: title, status: isActive } = form
     const handleClick = () => {
         window.location.href = `/resultados/${id}`;
     };

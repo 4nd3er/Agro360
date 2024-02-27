@@ -267,15 +267,7 @@ const EditQuest = () => {
                                         value={question.type}
                                         onChange={(e) => handleQuestionTypeChange(e.target.value, questionIndex)}
                                     >
-                                        <option value="">Seleccione el tipo de pregunta</option>
-                                        {questionsType ? questionsType.map((questionType, questionIndex) => (
-                                            <option
-                                                key={questionIndex}
-                                                value={questionType._id}
-                                            >
-                                                {questionType.name}
-                                            </option>
-                                        )) : null}
+                                        <option value="6556ddbbfe823a88d48fafc4">Escala de Likert</option>
                                     </select>
                                     <div className='cursor-pointer my-auto hover:scale-110 transition-all'
                                         onClick={() => deleteQuestion(questionIndex)}

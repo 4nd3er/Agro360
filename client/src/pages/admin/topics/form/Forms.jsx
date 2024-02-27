@@ -11,7 +11,7 @@ const Forms = () => {
     const { idtopic } = params;
     const { getTopicForms, getTopic } = useRoles();
     const [forms, setForms] = useState([]);
-    const [topic, setTopic] = useState();
+    const [topic, setTopic] = useState('');
     const [loading, setLoading] = useState(true);
     const [searchForms, setSearchForms] = useState([])
     const [searchInput, setSearchInput] = useState('')
@@ -26,19 +26,17 @@ const Forms = () => {
             setTopic(res.name)
         }
         Topic();
-    }, [])
+    }, [topic])
 
     // Get forms of topic
     useEffect(() => {
+        const getForms = async () => {
+            const form = await getTopicForms(idtopic)
+            setForms(form)
+            setLoading(false)
+        }
         getForms();
-    }, [])
-
-    // Get forms of topic
-    const getForms = async () => {
-        const form = await getTopicForms(idtopic)
-        setForms(form)
-        setLoading(false)
-    }
+    }, [forms])
 
     //*HEADER
 
@@ -141,19 +139,19 @@ const Forms = () => {
                 <article className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3 mr-0  md:mr-5 lg:mr-5 xl:mr-5 mt-10 mb-8">
                     {searchForms.length && (
                         searchForms.map(form => (
-                            <CardForm key={form._id} form={form} setLoading={setLoading} getForms={getForms} />
+                            <CardForm key={form._id} form={form} setLoading={setLoading} />
                         ))
                     ) || searchForms.length <= 0 && searchInput.length > 0 && (
                         <h3 className="text-2xl text-gray-600">Encuesta no encontrada</h3>
                     ) || filterStatus !== "all" && filterForms.length && (
                         filterForms.map(form => (
-                            <CardForm key={form._id} form={form} setLoading={setLoading} getForms={getForms} />
+                            <CardForm key={form._id} form={form} setLoading={setLoading} />
                         ))
                     ) || filterStatus !== "all" && filterForms.length <= 0 && (
                         <h3 className="text-2xl text-gray-600">No existen encuestas en estado {filterStatus !== null && filterStatus ? 'Activo' : 'Inactivo'}</h3>
                     ) || forms.length && (
                         forms.map(form => (
-                            <CardForm key={form._id} form={form} setLoading={setLoading} getForms={getForms} />
+                            <CardForm key={form._id} form={form} setLoading={setLoading} />
                         ))
                     ) || (<h3 className="text-2xl text-gray-600">No hay Encuestas para esta tématica</h3>)}
                 </article>
