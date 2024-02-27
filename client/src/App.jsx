@@ -2,26 +2,27 @@ import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import LayoutLogin from './layouts/LayoutLogin';
 import AuthLayout from './layouts/AuthLayout';
-import { AuthProvider, RolesProvider, FormsProvider, ResponsesProvider, UsersProvider, ChargeDataProvider } from './context/Context.js'
-import { ProtectedRoute, ProtectedForm } from './routes.jsx'
+import { AuthProvider, RolesProvider, FormsProvider, ResponsesProvider, UsersProvider, ChargeDataProvider } from './context/Context'
+import { ProtectedRoute, ProtectedForm } from './routes'
 import {
-  Home,
-  Quest,
-  Results,
-  Topics,
-  TopicsForm,
   Login,
-  CreateQuest,
-  NewPassword,
-  Register,
   ForgetPassword,
-  ConfirmAccount,
+  NewPassword,
+  Home,
+  RegisterAdmin,
+  Quest,
+  CreateQuest,
+  EditQuest,
+  Results,
   ResultQuest,
+  Topics,
+  Forms,
   UserValidation,
   Response,
-  Users,
+  RegisterUsers,
   ChargeData
 } from './pages/Pages';
+import './App.css';
 
 function App() {
   return (
@@ -38,20 +39,20 @@ function App() {
                       <Route index element={<Login />} />
                       <Route path='forget-password' element={<ForgetPassword />} />
                       <Route path='reset-password' element={<NewPassword />} />
-                      <Route path='confirm/:id' element={<ConfirmAccount />} />
                     </Route>
 
                     <Route element={<ProtectedRoute />}>
                       <Route path='/inicio' element={<AuthLayout />}>
                         <Route index element={<Home />} />
                         <Route path='tematicas/:id' element={<Topics />} />
-                        <Route path='tematicas/:id/encuestas/:idtopic' element={<TopicsForm />} />
+                        <Route path='tematicas/:id/encuestas/:idtopic' element={<Forms />} />
                         <Route path='charge-data' element={<ChargeData />} />
-                        <Route path='register-admin' element={<Register />} ></Route>
+                        <Route path='register-admin' element={<RegisterAdmin />} ></Route>
                       </Route>
                       <Route path='/crear-formulario' element={<AuthLayout />}>
                         <Route index element={<Quest />} />
                         <Route path='crear' element={<CreateQuest />} />
+                        <Route path='editar/:id' element={<EditQuest />} />
                       </Route>
                       <Route path='/resultados' element={<AuthLayout />}>
                         <Route index element={<Results />} />
@@ -67,7 +68,7 @@ function App() {
                     </Route>
 
                     <Route path='/users' element={<LayoutLogin />}>
-                      <Route index element={<Users />} />
+                      <Route index element={<RegisterUsers />} />
                     </Route>
 
                   </Routes>

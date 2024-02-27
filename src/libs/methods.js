@@ -66,12 +66,16 @@ export const updateMethod = async (data, id, find, res, model, name, capitalize)
 }
 
 //* Eliminar un documento
-export const deleteMethod = async (id, res, model, name) => {
+export const deleteMethod = async (id, res, model, name, callback) => {
     const [lowerName, mayusName] = nameMayusName(name)
     try {
         if (!validObjectId(id)) return res.status(400).json({ message: [messages.invalidId(lowerName)] })
-        const findModel = await model.findByIdAndDelete(id)
+        const findModel = await model.findById(id)
         if (!findModel) return res.status(404).json({ message: [messages.notFound(mayusName)] })
+        if (callback && typeof callback === 'function') {
+            if (!await callback(findModel)) return;
+        }
+        await model.findByIdAndDelete(id)
         res.json({
             response: `${mayusName} eliminado satisfactoriamente`,
             data: findModel

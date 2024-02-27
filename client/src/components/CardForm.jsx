@@ -1,71 +1,28 @@
-// import { useNavigate } from "react-router-dom";
-import { useState } from 'react'
-import { Menu } from '@headlessui/react'
-import { CopyToClipboard } from 'react-copy-to-clipboard'
-import { Toaster, toast } from 'react-hot-toast'
+import '../css/CardForm.css';
 
-const CardForm = ({ form }) => {
-    const { _id, name, status, description } = form;
-    const [isHovered, setIsHovered] = useState(false)
-    //const navigate = useNavigate()
-
-    // Navigate to form
-    // const handleClick = () => {
-    //     navigate(`/forms/v/${_id}`)
-    // }
-
-    const url = import.meta.env.VITE_FRONTEND_URL
+const CardForm = ({ form, imageSrc }) => {
+    const { _id: id, name: title, status: isActive } = form
+    const handleClick = () => {
+        window.location.href = `/resultados/${id}`;
+    };
 
     return (
-        <>
         <div
-            className="bg-[#82def0] rounded-lg p-2 transform transition-all hover:-translate-y-2 duration-300 shadow-lg hover:shadow-xl"
-        >
-            {/* <img className="" src="../img/imagen-encuesta.jpg" alt="" /> */}
-            <div className="p-2">
-                <h2 className="text-color-aprendiz-text text-xl font-black uppercase truncate">
-                    {name}
-                </h2>
-                <p className="text-color-aprendiz-text text-base">{description}</p>
-                <p className="text-base text-color-aprendiz-text ">Estado:<span className={`text-color-aprendiz-text text-sm ${status ? 'text-color-sena' : 'text-red-400'}`}> {status ? 'Activo' : 'Inactivo'}</span></p>
+            className="card relative cursor-pointer hover:scale-110 transition-all hover:translate-y-[-1.25rem]"
+            onClick={handleClick}>
+            <div className={`activoinactivo flex place-items-center absolute top-[-5px] rounded-full px-2 ${!isActive ? 'border-red-500 text-red-500' : ''}`}>{isActive ? "Activo" : "Inactivo"}</div> {/* Muestra 'Activo' o 'Inactivo' dependiendo del valor de 'isActive' */}
+            <div className='flex flex-col place-items-center p-0 m-0 overflow-hidden'>
+                <div className='bg-[#39A900] rounded-b-md px-4 pt-2 pb-2'>
+                    <img src={imageSrc} className='' style={{ width: "105px", height: "100px" }} />
+                </div>
+                <div className='w-full mb-4'>
+                    <h2 className='h2Style text-xs border-t-2 px-4 border-[#39A900]'>
+                        {title}
+                    </h2>
+                </div>
             </div>
-            <Menu as="div">
-                <Menu.Button 
-                onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}
-                className="ml-auto block"
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke={`${isHovered ? '#1c566e' : '#ffffff'}`} className="w-8 h-8">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
-                    </svg>
-                </Menu.Button>
-                <Menu.Items className="absolute right-4 top-16 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none">
-                    <div className="px-1 py-1 ">
-                        <Menu.Item>
-                            {({ active }) => (
-                                <CopyToClipboard
-                                    text={`${url}/forms/v/${_id}`} // Copy to url form
-                                >
-                                    <button
-                                        className={`${active ? 'bg-color-aprendiz-text text-white' : 'text-gray-900'} group flex w-full items-center rounded-md px-2 py-2 text-sm transition-colors duration-300 ease-out`}
-                                        onClick={() => toast.success('Link copiado',{
-                                            duration: 2500
-                                        }) }
-                                    >
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke={active ? '#ffffff' : '#1c566e'} className="w-6 h-6 mr-2">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="m18.375 12.739-7.693 7.693a4.5 4.5 0 0 1-6.364-6.364l10.94-10.94A3 3 0 1 1 19.5 7.372L8.552 18.32m.009-.01-.01.01m5.699-9.941-7.81 7.81a1.5 1.5 0 0 0 2.112 2.13" />
-                                        </svg>
-                                        Copiar Link
-                                    </button>
-                                </CopyToClipboard>                               
-                            )}
-                        </Menu.Item>
-                    </div>
-                </Menu.Items>
-            </Menu>
         </div>
-        <Toaster />
-        </>
-    )
-}
+    );
+};
 
-export default CardForm
+export default CardForm; 

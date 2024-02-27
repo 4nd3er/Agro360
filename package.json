@@ -1,7 +1,7 @@
 {
   "name": "agro360api",
-  "version": "1.0.0",
-  "description": "Agro360 Web Application",
+  "version": "1.2.0",
+  "description": "Agro360 Web Application API",
   "main": "index.js",
   "type": "module",
   "scripts": {

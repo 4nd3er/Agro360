@@ -88,12 +88,8 @@ export const FormsProvider = ({ children }) => {
 
     // Delete Form
     const deleteForm = async id => {
-        try {
-            const res = await deleteFormRequest(id);
-            return res.data
-        } catch (error) {
-            ContextErrors(error, setErrors)
-        }
+        const res = await deleteFormRequest(id);
+        return res.data
     };
 
     const getFormReport = async id => {
