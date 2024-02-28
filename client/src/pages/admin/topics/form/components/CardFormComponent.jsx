@@ -10,9 +10,8 @@ import { SwalToast } from '../../../../../components/Components'
 
 const CardForm = ({ form, setReloadForms, deleteFormModal }) => {
     const { _id, name, status, description, createdAt, end } = form;
-    const { setLoading, setReloadForms } = loadings
     const [isHovered, setIsHovered] = useState(false)
-    const { createForm, deleteForm } = useForms();
+    const { createForm } = useForms();
     const { getResponsesForm } = useResponses();
     const url = import.meta.env.VITE_FRONTEND_URL
     const formDate = formatDate(createdAt, 'date');
