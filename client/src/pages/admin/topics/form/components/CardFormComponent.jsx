@@ -8,7 +8,7 @@ import { useForms, useResponses } from '../../../../../context/Context'
 import { formatDate } from '../../../../../helpers/formatDate'
 import { SwalToast } from '../../../../../components/Components'
 
-const CardForm = ({ form, setLoading }) => {
+const CardForm = ({ form, setLoading, deleteFormModal }) => {
     const { _id, name, status, description, createdAt, end } = form;
     const [isHovered, setIsHovered] = useState(false)
     const { createForm, deleteForm } = useForms();
@@ -24,17 +24,14 @@ const CardForm = ({ form, setLoading }) => {
 
     // Duplicate Form
     const duplicateForm = async ({ name, description, topic, creator, questions }) => {
-        let newName = `Copia ${name}`
-        const end = setHours(setMinutes(addDays(new Date(), 1), 0), 12);
+        const end = addDays(new Date(), 1)
         const status = true;
-        const form = { name: newName, description, topic, end, status, creator, questions }
         setLoading(true)
-        let create = await createForm(form)
+        let create = await createForm({ name: `Copia ${name}`, description, topic, end, status, creator, questions })
         let num = 1
         while (!create && num <= 10) {
+            create = await createForm({ name: `Copia (${num}) ${name}`, description, topic, end, status, creator, questions })
             num += 1
-            newName = `Copia (${num}) ${name}`
-            create = await createForm(form)
         }
         if (!create) return SwalToast('error', 'Error al duplicar la encuesta: Se ha alcanzado el limite')
         SwalToast('success', 'Encuesta duplicada exitosamente')
@@ -48,32 +45,6 @@ const CardForm = ({ form, setLoading }) => {
         setLoading(false)
         if (findResponses) return SwalToast('error', 'Error al editar: La encuesta ya tiene respuestas')
         location.href = `/crear-formulario/editar/${idForm}`;
-    }
-
-    // Delete Form
-    const deleteTopicForm = async (id) => {
-        Swal.fire({
-            icon: 'warning',
-            title: 'Esta seguro que desea eliminar esta encuesta?',
-            showCancelButton: true,
-            showConfirmButton: true,
-            confirmButtonText: 'Eliminar',
-            cancelButtonText: 'Cancelar',
-            confirmButtonColor: 'red',
-        })
-            .then(async (result) => {
-                if (result.isConfirmed) {
-                    try {
-                        setLoading(true)
-                        await deleteForm(id)
-                        SwalToast('success', 'Encuesta eliminada exitosamente')
-                        setLoading(false)
-                    } catch (error) {
-                        SwalToast('error', `Error al eliminar la encuesta: ${error.response.data.message}`)
-                        setLoading(false)
-                    }
-                }
-            })
     }
 
     return (
@@ -146,7 +117,7 @@ const CardForm = ({ form, setLoading }) => {
                         {({ active }) => (
                             <div>
                                 <button className={`${active ? 'bg-red-600 text-white' : 'text-gray-900'} group flex w-full items-center rounded-md px-2 py-2 text-sm transition-colors duration-300 ease-out`}
-                                    onClick={() => deleteTopicForm(_id)}>
+                                    onClick={() => deleteFormModal(_id)}>
                                     <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 mr-2 icon icon-tabler icon-tabler-trash" viewBox="0 0 24 24" strokeWidth="1.5" stroke={active ? '#ffffff' : '#ff2825'} fill="none" strokeLinecap="round" strokeLinejoin="round">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                         <path d="M4 7l16 0" />

@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import Select from 'react-select'
 import CardForm from './components/CardFormComponent'
+import ModalDeleteForm from './components/ModalDeleteFormComponent'
 import { useRoles } from '../../../../context/Context'
 import { Spinner, CreateQuestModal } from '../../../../components/Components'
 
@@ -17,7 +18,10 @@ const Forms = () => {
     const [searchInput, setSearchInput] = useState('')
     const [filterStatus, setFilterStatus] = useState("all")
     const [filterForms, setFilterForms] = useState([])
-    const [openModal, setOpenModal] = useState(false)
+    const [openCreateFormModal, setOpenCreateFormModal] = useState(false)
+
+    const [openDeleteFormModal, setOpenDeleteFormModal] = useState(false)
+    const [IdDeleteFormModal, setIdDeleteFormModal] = useState('')
 
     // Get Topic
     useEffect(() => {
@@ -59,6 +63,12 @@ const Forms = () => {
         setFilterForms(filterForms)
     }
 
+    //Delete Form Modal
+    const handleModalDeleteForm = (idForm) => {
+        setOpenDeleteFormModal(true)
+        setIdDeleteFormModal(idForm)
+    }
+
     return (
         <article className='min-h-[80vh] px-5 md:px-0 lg:px-8 xl:px-8'>
             <Toaster />
@@ -82,7 +92,7 @@ const Forms = () => {
             <article className='flex justify-between items-end mt-12 mb-6'>
                 <section className='basis-[25%] md:basis-[30%] lg:basis-[28%]'>
                     <button className='group bg-color-sena p-2 rounded-lg text-white transition-[1s_all_ease-in-out] w-12 sm:hover:w-[70%] flex md:hover:w-full xl:hover:w-[70%] lg:hover:w-[95%] items-center'
-                        onClick={() => setOpenModal(true)}>
+                        onClick={() => setOpenCreateFormModal(true)}>
                         <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-plus w-8 max-width-[3rem]" viewBox="0 0 24 24" strokeWidth="3" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                             <path d="M12 5l0 14" />
@@ -132,7 +142,7 @@ const Forms = () => {
                         }
                     })}
                 />
-                <CreateQuestModal modalState={{ openModal, setOpenModal }} topic={{ _id: idtopic, name: topic }} />
+                <CreateQuestModal modalState={{ openCreateFormModal, setOpenCreateFormModal }} topic={{ _id: idtopic, name: topic }} />
             </article>
             <hr />
             {loading && <Spinner /> || (
@@ -151,11 +161,12 @@ const Forms = () => {
                         <h3 className="text-2xl text-gray-600">No existen encuestas en estado {filterStatus !== null && filterStatus ? 'Activo' : 'Inactivo'}</h3>
                     ) || forms.length && (
                         forms.map(form => (
-                            <CardForm key={form._id} form={form} setLoading={setLoading} />
+                            <CardForm key={form._id} form={form} setLoading={setLoading} deleteFormModal={handleModalDeleteForm}/>
                         ))
                     ) || (<h3 className="text-2xl text-gray-600">No hay Encuestas para esta tématica</h3>)}
                 </article>
             )}
+            <ModalDeleteForm openDeleteModal={openDeleteFormModal} setOpenDeleteModal={setOpenDeleteFormModal} IdDeleteForm={IdDeleteFormModal} />
         </article>
     )
 }

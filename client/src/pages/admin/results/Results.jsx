@@ -27,13 +27,10 @@ const Results = () => {
             <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-6 gap-7'> {/* Utilizamos grid para hacerlo responsive */}
                 {cargando ? <Spinner /> :
                     forms.length ? (
-                        forms.map((quest) => (
+                        forms.map((form) => (
                             <CardForm
-                                id={quest._id}
-                                key={quest._id}
-                                title={quest.name}
+                                form={form}
                                 imageSrc={imgEncuesta}
-                                isActive={quest.status}
                             />
                         ))
                     ) : <h3 className="text-2xl text-gray-600">No existen respuestas</h3>}
