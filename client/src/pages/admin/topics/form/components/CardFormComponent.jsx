@@ -8,7 +8,7 @@ import { useForms, useResponses } from '../../../../../context/Context'
 import { formatDate } from '../../../../../helpers/formatDate'
 import { SwalToast } from '../../../../../components/Components'
 
-const CardForm = ({ form, setLoading, deleteFormModal }) => {
+const CardForm = ({ form, deleteFormModal }) => {
     const { _id, name, status, description, createdAt, end } = form;
     const [isHovered, setIsHovered] = useState(false)
     const { createForm, deleteForm } = useForms();
@@ -26,7 +26,6 @@ const CardForm = ({ form, setLoading, deleteFormModal }) => {
     const duplicateForm = async ({ name, description, topic, creator, questions }) => {
         const end = addDays(new Date(), 1)
         const status = true;
-        setLoading(true)
         let create = await createForm({ name: `Copia ${name}`, description, topic, end, status, creator, questions })
         let num = 1
         while (!create && num <= 10) {
@@ -35,14 +34,11 @@ const CardForm = ({ form, setLoading, deleteFormModal }) => {
         }
         if (!create) return SwalToast('error', 'Error al duplicar la encuesta: Se ha alcanzado el limite')
         SwalToast('success', 'Encuesta duplicada exitosamente')
-        setLoading(false)
     }
 
     //Edit Form
     const editForm = async (idForm) => {
-        setLoading(true)
         const findResponses = await getResponsesForm(idForm)
-        setLoading(false)
         if (findResponses) return SwalToast('error', 'Error al editar: La encuesta ya tiene respuestas')
         location.href = `/crear-formulario/editar/${idForm}`;
     }
