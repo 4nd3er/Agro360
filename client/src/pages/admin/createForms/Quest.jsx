@@ -60,13 +60,12 @@ const Quest = () => {
 					<h1 className="flex flex-col items-center">ENCUESTAS RECIENTES</h1>
 				</header>
 				<section className='flex flex-wrap justify-center'>
-					{recentlyForms.map(({ name, status }, index) => {
+					{recentlyForms.map((form) => {
 						return (
 							<CardForm
-								key={index}
-								title={name}
+								key={form._id}
+								form={form}
 								imageSrc={imgEncuesta}
-								isActive={status}
 							/>
 						)
 					})}
