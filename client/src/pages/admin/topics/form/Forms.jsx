@@ -161,13 +161,13 @@ const Forms = () => {
                 <article className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3 mr-0  md:mr-5 lg:mr-5 xl:mr-5 mt-10 mb-8">
                     {Array.isArray(showForms) && showForms.length && (
                         showForms.map(form => (
-                            <CardForm key={form._id} form={form} loadings={{ setLoading, setReloadForms }} deleteFormModal={handleModalDeleteForm} />
+                            <CardForm key={form._id} form={form} setReloadForms={setReloadForms} deleteFormModal={handleModalDeleteForm} />
                         ))
                     ) || <p className='text-center text-gray-600 text-lg'>{showForms}</p>
                     }
                 </article>
             )}
-            <ModalDeleteForm openDeleteModal={openDeleteFormModal} setOpenDeleteModal={setOpenDeleteFormModal} IdDeleteForm={IdDeleteFormModal} SetReloadForms={setReloadForms} />
+            <ModalDeleteForm openDeleteModal={openDeleteFormModal} setOpenDeleteModal={setOpenDeleteFormModal} IdDeleteForm={IdDeleteFormModal} setReloadForms={setReloadForms} />
         </article>
     )
 }

@@ -3,7 +3,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import { useForms } from '../../../../../context/Context';
 import { SwalToast } from '../../../../../components/Components';
 
-export const ModalDeleteForm = ({ openDeleteModal, setOpenDeleteModal, IdDeleteForm, SetReloadForms }) => {
+export const ModalDeleteForm = ({ openDeleteModal, setOpenDeleteModal, IdDeleteForm, setReloadForms }) => {
     const { deleteForm } = useForms()
 
     const closeDeleteModal = () => {
@@ -14,7 +14,7 @@ export const ModalDeleteForm = ({ openDeleteModal, setOpenDeleteModal, IdDeleteF
         try {
             await deleteForm(IdDeleteForm)
             SwalToast('success', 'Encuesta eliminada exitosamente')
-            SetReloadForms(true)
+            setReloadForms(true)
             closeDeleteModal()
         } catch (error) {
             SwalToast('error', `Error al eliminar la encuesta: ${error.response.data.message}`)
