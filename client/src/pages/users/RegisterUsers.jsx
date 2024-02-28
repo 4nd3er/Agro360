@@ -16,8 +16,8 @@ const RegisterUsers = () => {
     const res = await createUser(data);
     if (res) {
       setTimeout(() => {
-        window.history.back();
         location.reload();
+        window.history.back();
       }, 3000);
     }
   });

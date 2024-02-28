@@ -11,7 +11,7 @@ const Quest = () => {
 	const { getRecentlyForms } = useForms()
 	const [recentlyForms, setRecentlyForms] = useState([])
 	const [loading, setLoading] = useState(true)
-	const [openModal, setOpenModal] = useState(false)
+	const [openCreateFormModal, setOpenCreateFormModal] = useState(false)
 
 	useEffect(() => {
 		const getForms = async () => {
@@ -35,10 +35,10 @@ const Quest = () => {
 						src={imgNuevaEncuesta}
 						alt="img"
 						className="img-icon cursor-pointer hover:scale-110 transition"
-						onClick={() => setOpenModal(true)}
+						onClick={() => setOpenCreateFormModal(true)}
 					/>
 				</div>
-				<CreateQuestModal modalState={{ openModal, setOpenModal }} />
+				<CreateQuestModal modalState={{ openCreateFormModal, setOpenCreateFormModal }} />
 				{localStorage.getItem('title') && localStorage.getItem('descrip') && localStorage.getItem('topic') && localStorage.getItem('date') && (
 					<div className='relative w-44 bottom-32 left-96'>
 						<Link

@@ -8,8 +8,9 @@ import { useForms, useResponses } from '../../../../../context/Context'
 import { formatDate } from '../../../../../helpers/formatDate'
 import { SwalToast } from '../../../../../components/Components'
 
-const CardForm = ({ form, setLoading, deleteFormModal }) => {
+const CardForm = ({ form, loadings, deleteFormModal }) => {
     const { _id, name, status, description, createdAt, end } = form;
+    const { setLoading, setReloadForms } = loadings
     const [isHovered, setIsHovered] = useState(false)
     const { createForm, deleteForm } = useForms();
     const { getResponsesForm } = useResponses();
@@ -35,6 +36,7 @@ const CardForm = ({ form, setLoading, deleteFormModal }) => {
         }
         if (!create) return SwalToast('error', 'Error al duplicar la encuesta: Se ha alcanzado el limite')
         SwalToast('success', 'Encuesta duplicada exitosamente')
+        setReloadForms(true)
         setLoading(false)
     }
 

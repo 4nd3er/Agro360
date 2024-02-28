@@ -3,7 +3,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import { useForms } from '../../../../../context/Context';
 import { SwalToast } from '../../../../../components/Components';
 
-export const ModalDeleteForm = ({ openDeleteModal, setOpenDeleteModal, IdDeleteForm }) => {
+export const ModalDeleteForm = ({ openDeleteModal, setOpenDeleteModal, IdDeleteForm, SetReloadForms }) => {
     const { deleteForm } = useForms()
 
     const closeDeleteModal = () => {
@@ -14,6 +14,7 @@ export const ModalDeleteForm = ({ openDeleteModal, setOpenDeleteModal, IdDeleteF
         try {
             await deleteForm(IdDeleteForm)
             SwalToast('success', 'Encuesta eliminada exitosamente')
+            SetReloadForms(true)
             closeDeleteModal()
         } catch (error) {
             SwalToast('error', `Error al eliminar la encuesta: ${error.response.data.message}`)
@@ -71,7 +72,7 @@ export const ModalDeleteForm = ({ openDeleteModal, setOpenDeleteModal, IdDeleteF
                                     <Dialog.Title as="h3" className="text-xl text-center leading-6 font-bold text-gray-900">
                                         Eliminar encuesta
                                     </Dialog.Title>
-                                    <p className="mt-4">¿Estas seguro de eliminar esta encuesta? Esta accion no se puede revertir.</p>
+                                    <p className="mt-4">¿Esta seguro de eliminar esta encuesta? Esta accion no se puede revertir.</p>
                                 </div>
                             </div>
                             <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
