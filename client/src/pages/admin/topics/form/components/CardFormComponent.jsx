@@ -3,10 +3,12 @@ import Swal from 'sweetalert2'
 import { toast } from 'react-hot-toast'
 import { Menu } from '@headlessui/react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
+import { addDays, setHours, setMinutes } from 'date-fns'
 import { useForms, useResponses } from '../../../../../context/Context'
 import { formatDate } from '../../../../../helpers/formatDate'
+import { SwalToast } from '../../../../../components/Components'
 
-const CardForm = ({ form, setLoading, getForms }) => {
+const CardForm = ({ form, setLoading }) => {
     const { _id, name, status, description, createdAt, end } = form;
     const [isHovered, setIsHovered] = useState(false)
     const { createForm, deleteForm } = useForms();
@@ -22,23 +24,21 @@ const CardForm = ({ form, setLoading, getForms }) => {
 
     // Duplicate Form
     const duplicateForm = async ({ name, description, topic, creator, questions }) => {
-        let fechaActual = new Date();
-        // Añadir un día a la fecha actual
-        let end = new Date(fechaActual);
-        end.setDate(fechaActual.getDate() + 1);
+        let newName = `Copia ${name}`
+        const end = setHours(setMinutes(addDays(new Date(), 1), 0), 12);
         const status = true;
-        const form = { name: `Copia ${name}`, description, topic, end, status, creator, questions }
+        const form = { name: newName, description, topic, end, status, creator, questions }
         setLoading(true)
         let create = await createForm(form)
         let num = 1
         while (!create && num <= 10) {
             num += 1
-            create = await createForm({ name: `Copia (${num}) ${name}`, description, topic, end, status, creator, questions })
+            newName = `Copia (${num}) ${name}`
+            create = await createForm(form)
         }
-        await getForms()
+        if (!create) return SwalToast('error', 'Error al duplicar la encuesta: Se ha alcanzado el limite')
+        SwalToast('success', 'Encuesta duplicada exitosamente')
         setLoading(false)
-        if (!create) return toast.error('Error al duplicar la encuesta: limite excedido', { duration: 4000 })
-        toast.success('Encuesta duplicada satisfactoriamente', { duration: 4000 })
     }
 
     //Edit Form
@@ -46,18 +46,7 @@ const CardForm = ({ form, setLoading, getForms }) => {
         setLoading(true)
         const findResponses = await getResponsesForm(idForm)
         setLoading(false)
-        if (findResponses) {
-            return Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 4000,
-                timerProgressBar: true,
-            }).fire({
-                icon: 'error',
-                title: 'Error al editar la encuesta: La encuesta tiene respuestas'
-            })
-        }
+        if (findResponses) return SwalToast('error', 'Error al editar: La encuesta ya tiene respuestas')
         location.href = `/crear-formulario/editar/${idForm}`;
     }
 
@@ -77,32 +66,12 @@ const CardForm = ({ form, setLoading, getForms }) => {
                     try {
                         setLoading(true)
                         await deleteForm(id)
-                        await getForms()
+                        SwalToast('success', 'Encuesta eliminada exitosamente')
                         setLoading(false)
-                        Swal.mixin({
-                            toast: true,
-                            position: 'top-end',
-                            showConfirmButton: false,
-                            timer: 4000,
-                            timerProgressBar: true,
-                        }).fire({
-                            icon: 'success',
-                            title: 'Encuesta eliminada satisfactoriamente'
-                        })
                     } catch (error) {
+                        SwalToast('error', `Error al eliminar la encuesta: ${error.response.data.message}`)
                         setLoading(false)
-                        Swal.mixin({
-                            toast: true,
-                            position: 'top-end',
-                            showConfirmButton: false,
-                            timer: 5000,
-                            timerProgressBar: true,
-                        }).fire({
-                            icon: 'error',
-                            title: 'Error al eliminar: ' + error.response.data.message
-                        })
                     }
-
                 }
             })
     }

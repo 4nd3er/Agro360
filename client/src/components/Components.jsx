@@ -3,3 +3,4 @@ export { default as CardForm } from './CardForm';
 export { default as CreateQuestModal } from './CreateQuestModal';
 export { default as ErrorsFormAlert } from './ErrorsFormAlert';
 export { default as Spinner } from './Spinner';
+export { default as SwalToast } from './SwalToast';

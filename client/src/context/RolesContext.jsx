@@ -130,7 +130,7 @@ export const RolesProvider = ({ children }) => {
         try {
             const res = await deleteTopicRequest(topic._id)
             setModalDeleteTopic(!modalDeleteTopic)
-            setSweetAlert({ ilsuccesso: res.data.response, errore: '' })
+            setSweetAlert({ ilsuccesso: "Tematica eliminada satisfactoriamente", errore: '' })
             return res.data
         } catch (error) {
             setModalDeleteTopic(!modalDeleteTopic)
