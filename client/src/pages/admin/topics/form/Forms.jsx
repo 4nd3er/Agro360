@@ -12,14 +12,15 @@ const Forms = () => {
     const { idtopic } = params;
     const { getTopicForms, getTopic } = useRoles();
     const [forms, setForms] = useState([]);
+    const [reloadForms, setReloadForms] = useState(false)
     const [topic, setTopic] = useState('');
     const [loading, setLoading] = useState(true);
     const [searchForms, setSearchForms] = useState([])
     const [searchInput, setSearchInput] = useState('')
     const [filterStatus, setFilterStatus] = useState("all")
     const [filterForms, setFilterForms] = useState([])
+    const [showForms, setShowForms] = useState(null)
     const [openCreateFormModal, setOpenCreateFormModal] = useState(false)
-
     const [openDeleteFormModal, setOpenDeleteFormModal] = useState(false)
     const [IdDeleteFormModal, setIdDeleteFormModal] = useState('')
 
@@ -30,17 +31,28 @@ const Forms = () => {
             setTopic(res.name)
         }
         Topic();
-    }, [topic])
+    }, [idtopic])
 
     // Get forms of topic
     useEffect(() => {
         const getForms = async () => {
-            const form = await getTopicForms(idtopic)
-            setForms(form)
+            const forms = await getTopicForms(idtopic)
+            setForms(forms)
+            setShowForms(forms)
+            setReloadForms(false)
             setLoading(false)
         }
         getForms();
-    }, [forms])
+    }, [reloadForms])
+
+    useEffect(() => {
+        if (searchForms.length) return setShowForms(searchForms)
+        if (searchForms.length <= 0 && searchInput.length > 0) return setShowForms('Encuesta no encontrada')
+        if (filterStatus !== "all" && filterForms.length) return setShowForms(filterForms)
+        if (filterStatus !== "all" && filterForms.length <= 0) return setShowForms(`No existen encuestas en estado ${filterStatus !== 'all' && filterStatus ? 'Activo' : 'Inactivo'}`)
+        if (forms.length) return setShowForms(forms)
+        if (!forms.length) return setShowForms('No hay Encuestas para esta tématica')
+    }, [forms, searchForms, searchInput, filterStatus, filterForms])
 
     //*HEADER
 
@@ -147,26 +159,15 @@ const Forms = () => {
             <hr />
             {loading && <Spinner /> || (
                 <article className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3 mr-0  md:mr-5 lg:mr-5 xl:mr-5 mt-10 mb-8">
-                    {searchForms.length && (
-                        searchForms.map(form => (
-                            <CardForm key={form._id} form={form} setLoading={setLoading} />
+                    {Array.isArray(showForms) && showForms.length && (
+                        showForms.map(form => (
+                            <CardForm key={form._id} form={form} setReloadForms={setReloadForms} deleteFormModal={handleModalDeleteForm} />
                         ))
-                    ) || searchForms.length <= 0 && searchInput.length > 0 && (
-                        <h3 className="text-2xl text-gray-600">Encuesta no encontrada</h3>
-                    ) || filterStatus !== "all" && filterForms.length && (
-                        filterForms.map(form => (
-                            <CardForm key={form._id} form={form} setLoading={setLoading} />
-                        ))
-                    ) || filterStatus !== "all" && filterForms.length <= 0 && (
-                        <h3 className="text-2xl text-gray-600">No existen encuestas en estado {filterStatus !== null && filterStatus ? 'Activo' : 'Inactivo'}</h3>
-                    ) || forms.length && (
-                        forms.map(form => (
-                            <CardForm key={form._id} form={form} setLoading={setLoading} deleteFormModal={handleModalDeleteForm}/>
-                        ))
-                    ) || (<h3 className="text-2xl text-gray-600">No hay Encuestas para esta tématica</h3>)}
+                    ) || <p className='text-center text-gray-600 text-lg'>{showForms}</p>
+                    }
                 </article>
             )}
-            <ModalDeleteForm openDeleteModal={openDeleteFormModal} setOpenDeleteModal={setOpenDeleteFormModal} IdDeleteForm={IdDeleteFormModal} />
+            <ModalDeleteForm openDeleteModal={openDeleteFormModal} setOpenDeleteModal={setOpenDeleteFormModal} IdDeleteForm={IdDeleteFormModal} setReloadForms={setReloadForms} />
         </article>
     )
 }

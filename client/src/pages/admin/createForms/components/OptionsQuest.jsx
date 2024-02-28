@@ -165,22 +165,6 @@ const OptionsQuest = ({ option, index, questionIndex, question, handleOptionChan
             )}
             {questionTypeValue[questionType] == 'Escala de Puntuación' && (
                 <div className='py-4'>
-                    {/* <div className='flex justify-between'>
-                        {option.map((content, indexContent) => (
-                            <>
-                                <input
-                                    type="text"
-                                    value={content}
-                                    placeholder={`parametro ${indexContent + 1}`}
-                                    className="mb-6 text-lg font-medium text-gray-900 rounded"
-                                    onChange={(e) => handleOptionChange(questionIndex, index, e.target.value, indexContent)}
-                                />
-                                <div className='px-10 text-red-500 flex justify-around select-none'>
-                                    <span className={`${content === '' && validationQuestionOption ? 'opacity-100' : 'opacity-0'} transition-[.1s_all] text-xs`}>Las opción no debe ser vacia</span>
-                                </div>
-                            </>
-                        ))}
-                    </div> */}
                     <div className='flex flex-col justify-around place-items-center'>
                         <>
                             <div className='px-10 text-red-500 flex justify-around select-none mb-3'>

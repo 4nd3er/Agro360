@@ -14,18 +14,17 @@ const CreateQuest = () => {
 	const searchParams = new URLSearchParams(location.search);
 	const [title, setTitle] = useState('');
 	const [descrip, setDescrip] = useState('');
-	const [topics, setTopics] = useState([]); //Topics 
 	const [topic, setTopic] = useState('');
 	const [questionsType, setQuestionsType] = useState([]); //Question Types
 	const [date, setDate] = useState('');
 	const [questions, setQuestions] = useState(() => JSON.parse(localStorage.getItem('questions')) || [[['question', ""], ['type', ""], ['options', ['']]]]);
 	const [optionsAdded, setOptionsAdded] = useState(false);
 	const [role, setRole] = useState('');
-	const { getTopics, getTopic } = useRoles();
+	const { getTopic } = useRoles();
 	const { createForm, getQuestionsType } = useForms();
-	const [validationQuestionContent, setValidationQuestionContent] = useState(0);
-	const [validationQuestionType, setValidationQuestionType] = useState(0);
-	const [validationQuestionOption, setValidationQuestionOption] = useState(0);
+	const [validationQuestionContent, setValidationQuestionContent] = useState(false);
+	const [validationQuestionType, setValidationQuestionType] = useState(false);
+	const [validationQuestionOption, setValidationQuestionOption] = useState(false);
 	const questionTypeValue = {};
 
 	useEffect(() => {
@@ -37,20 +36,14 @@ const CreateQuest = () => {
 	}, [])
 
 	useEffect(() => {
-		const Topics = async () => {
-			const res = await getTopics();
-			setTopics(res)
-		}
-		Topics();
-	}, [])
-
-	useEffect(() => {
 		const getTopicRequest = async () => {
-			const res = await getTopic(topic);
-			setRole(res[0].role);
+			const getLocalTopic = localStorage.getItem('topic');
+			const res = await getTopic(getLocalTopic);
+			setTopic(res);
+			setRole(res.role);
 		}
 		getTopicRequest();
-	}, [])
+	}, [topic])
 
 	useEffect(() => {
 		localStorage.setItem('questions', JSON.stringify(questions));
@@ -181,22 +174,21 @@ const CreateQuest = () => {
 		let isOptionValid = 0;
 		questions.forEach((question) => {
 			if (question[0][1] != '') {
+				setValidationQuestionContent(true);
 				isContentValid += 1;
-				setValidationQuestionContent(isContentValid);
 			}
 
 			if (question[1][1] != '') {
+				setValidationQuestionType(true);
 				isTypeValid += 1;
-				setValidationQuestionType(isTypeValid);
 			}
 			question[2][1].forEach((option) => {
 				if (option != '' || option.length > 3) {
+					setValidationQuestionOption(true);
 					isOptionValid += 1;
-					setValidationQuestionOption(isOptionValid);
 				}
 			});
 		});
-		console.log(validationQuestionContent);
 		if ((isContentValid == questions.length) && (isTypeValid == questions.length) && (isOptionValid == questions.length)) {
 			try {
 				let questionsObject = []
@@ -244,9 +236,7 @@ const CreateQuest = () => {
 					<div className='p-2 py-4 text-center border-2 rounded-md flex flex-col gap-5 shadow-lg'>
 						<h1 className='text-4xl font-bold'>{title}</h1>
 						<h1 className='text-2xl'>{descrip}</h1>
-						<h1 className='text-xl text-[#39A900]'>{
-							topics.filter((i) => i._id === topic).map((topic) => topic.name)
-						}</h1>
+						<h1 className='text-xl text-[#39A900]'>{topic.name}</h1>
 					</div>
 					<div className='w-full flex flex-col justify-start mx-auto gap-10'>
 						{questions.map((question, questionIndex) => (
