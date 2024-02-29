@@ -28,6 +28,7 @@ export default {
         'color-gray': '#5D6D7E',
         'register-label':'#FAFAFA',
         'color-red':'#FF0000',
+        'color-greend': '#C6DA02',
 
         //alertas
         'color-alert-red': '#FF0000',
