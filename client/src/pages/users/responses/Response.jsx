@@ -63,7 +63,7 @@ const Response = () => {
             const res = await getFormtoResponse(idform);
             const getInstructors = async () => {
                 const array = res.instructors.map(async (instructor) => {
-                    const img = `${FRONTEND_URL}/src/img/instructores/${instructor.document}.png`
+                    const img = `${FRONTEND_URL}/src/assets/instructores/${instructor.document}.png`
                     instructor.image = img
                     if (!await findImage(img)) instructor.image = false
                     return instructor
