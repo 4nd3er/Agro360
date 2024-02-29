@@ -208,7 +208,7 @@ const CreateQuest = () => {
 					timerProgressBar: true,
 				});
 				setTimeout(() => {
-					window.location.href = `/inicio/tematicas/${role}/encuestas/${topic}`;
+					window.location.href = `/inicio/tematicas/${role}/encuestas/${topic._id}`;
 					localStorage.removeItem('title');
 					localStorage.removeItem('descrip');
 					localStorage.removeItem('topic');
