@@ -1,8 +1,7 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { ResponsesRequest, createResponseRequest, getCodeResponseRequest, getFormtoResponseRequest, getResponseRequest, getResponsesFormRequest, verificateCodeResponseRequest } from "../api/responses";
-import { ContextErrors, ContextSuccess } from "./Alerts";
+import { ContextErrors } from "./Alerts";
 import { getFormRequest } from "../api/forms";
-import Cookies from 'js-cookie'
 
 export const ResponsesContext = createContext();
 
