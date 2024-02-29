@@ -7,12 +7,14 @@ import {
 	AddQuestionSvg,
 	ImportQuestionSvg,
 } from '../../../assets/Assets';
+import { Spinner } from '../../../components/Components';
 
 const CreateQuest = () => {
 	const params = useParams();
 	const location = useLocation();
 	const searchParams = new URLSearchParams(location.search);
 	const [title, setTitle] = useState('');
+	const [loading, setLoading] = useState(true);
 	const [descrip, setDescrip] = useState('');
 	const [topic, setTopic] = useState('');
 	const [questionsType, setQuestionsType] = useState([]); //Question Types
@@ -41,6 +43,7 @@ const CreateQuest = () => {
 			const res = await getTopic(getLocalTopic);
 			setTopic(res);
 			setRole(res.role);
+			setLoading(false);
 		}
 		getTopicRequest();
 	}, [])
@@ -196,7 +199,7 @@ const CreateQuest = () => {
 					questionsObject.push(arraytoObject(question));
 				})
 				await createForm({
-					name: title, description: descrip, topic: topic, end: date,
+					name: title, description: descrip, topic: topic._id, end: date,
 					questions: questionsObject
 				})
 				Swal.fire({
@@ -225,6 +228,8 @@ const CreateQuest = () => {
 			}
 		}
 	};
+
+	if (loading) return <Spinner />
 
 	return (
 		<aside>
