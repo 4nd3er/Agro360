@@ -23,8 +23,8 @@ const Home = () => {
 
     return (
         <div className='min-h-[80vh] px-5 py-5 md:pl-0 md:pr-5 md:mt-14 lg:py-16 lg:px-8 xl:py-16 xl:px-8'>
-            <header className='mb-20 flex flex-col sm:flex-row items-center justify-center md:justify-between lg:items-center lg:justify-center w-full relative'>
-                <p className="text-center md:text-left lg:text-center xl:text-center">
+            <header className='mb-20 flex flex-col sm:flex-row xxs:gap-5 items-center justify-between lg:items-center lg:justify-center w-full relative'>
+                <p className="text-center">
                     <span className="font-semibold text-color-sena text-5xl sm:text-7xl italic">
                         Bienvenido
                         <br />

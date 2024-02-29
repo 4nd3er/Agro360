@@ -4,7 +4,6 @@ import { useForms } from '../../../context/Context';
 import { Spinner } from '../../../components/Components';
 import CardForm from '../../../components/CardForm';
 import CreateQuestModal from '../../../components/CreateQuestModal';
-import { imgNuevaEncuesta } from '../../../assets/Assets';
 import { imgEncuesta } from '../../../assets/Assets';
 
 const Quest = () => {
@@ -51,7 +50,7 @@ const Quest = () => {
             </svg>
           </button>
         
-        <CreateQuestModal modalState={{ openModal, setOpenModal }} />
+        <CreateQuestModal modalState={{ openCreateFormModal, setOpenCreateFormModal }} />
         {localStorage.getItem("title") &&
           localStorage.getItem("descrip") &&
           localStorage.getItem("topic") &&

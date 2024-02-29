@@ -18,7 +18,7 @@ const AuthLayout = () => {
                     <div className="w-[0%] md:w-[10%] lg:w-[15%] xl:w-[15%]">
                         <Menu />
                     </div>
-                    <div className="w-full sm:w-5/6">
+                    <div className="w-full">
                         <Outlet />
                     </div>
                 </div>
