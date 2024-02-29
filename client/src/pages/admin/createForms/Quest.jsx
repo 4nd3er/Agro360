@@ -62,7 +62,7 @@ const Quest = () => {
             <div className="my-auto me-10">
               <Link
                 to="crear"
-                className="transition-colors p-2 border-2 rounded-lg border-color-sena text-color-sena hover:text-white hover:bg-color-sena"
+                className="transition-colors p-2 border-2 rounded-lg border-color-sena text-color-sena hover:text-color-white hover:bg-color-sena"
               >
                 Volver al formulario
               </Link>

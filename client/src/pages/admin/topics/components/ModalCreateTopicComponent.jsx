@@ -54,7 +54,7 @@ const ModalCreateTopic = ({ setTopics, topics }) => {
             leaveTo="opacity-0"
           >
             <Dialog.Overlay
-              className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+              className="fixed inset-0 bg-color-gray bg-opacity-75 transition-opacity"
             />
           </Transition.Child>
           {/* This element is to trick the browser into centering the modal contents. */}
@@ -70,12 +70,12 @@ const ModalCreateTopic = ({ setTopics, topics }) => {
             leaveFrom="opacity-100 translate-y-0 sm:scale-100"
             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
-            <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
+            <div className="inline-block align-bottom bg-color-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
               {/* close modal */}
               <div className="hidden sm:block absolute top-0 right-0 pt-4 pr-4">
                 <button
                   type="button"
-                  className="bg-white text-red-400 hover:text-red-600"
+                  className="bg-color-white text-color-alert-red hover:color-alert-red"
                   onClick={handleModalTopic}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" viewBox="0 0 20 20" fill="currentColor">
@@ -104,13 +104,13 @@ const ModalCreateTopic = ({ setTopics, topics }) => {
                         id='topic'
                         type="text"
                         placeholder='Título de la temática'
-                        className="border w-full p-2 mt-2 placeholder-gray-400 rounded-lg"
+                        className="border w-full p-2 mt-2 placeholder-color-gray rounded-lg"
                         {...register('name', { required: true, minLength: 5 })}
                       />
                     </div>
                     <input
                       type="submit"
-                      className={`${isValid ? 'bg-color-sena hover:bg-color-sena-hover' : 'bg-gray-400 !cursor-default'} w-full p-3 text-white text-lg font-bold transition-colors rounded-xl cursor-pointer`}
+                      className={`${isValid ? 'bg-color-sena hover:bg-color-sena-hover' : 'bg-color-gray !cursor-default'} w-full p-3 text-color-white text-lg font-bold transition-colors rounded-xl cursor-pointer`}
                       value={idTopic ? 'Guardar cambios' : 'Crear temática'}
                       disable={!isValid} />
                   </form>

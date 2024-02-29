@@ -238,14 +238,14 @@ const CreateQuest = () => {
 	return (
 		<aside>
 			<section className='mt-5 mx-auto flex justify-center uppercase text-xl'>
-				<div className='border-[#39A900] text-[#39A900] font-bold border-b-[3px] w-full text-center pb-1'>Preguntas</div>
+				<div className='border-color-sena text-color-sena font-bold border-b-[3px] w-full text-center pb-1'>Preguntas</div>
 			</section>
 			<form onSubmit={handleSubmit}>
 				<section className='flex flex-col justify-start mt-5 min-h-[70vh] w-3/4 mx-auto gap-10 mb-20'>
 					<div className='p-2 py-4 text-center border-2 rounded-md flex flex-col gap-5 shadow-lg'>
 						<h1 className='text-4xl font-bold'>{title}</h1>
 						<h1 className='text-2xl'>{descrip}</h1>
-						<h1 className='text-xl text-[#39A900]'>{
+						<h1 className='text-xl text-color-sena'>{
 							topics.filter((i) => i._id === topic).map((topic) => topic.name)
 						}</h1>
 					</div>
@@ -258,7 +258,7 @@ const CreateQuest = () => {
 								<div className='flex justify-between px-10'>
 									<input
 										placeholder='Digite la pregunta'
-										className='border-b-2 p-2 border-gray-400 w-3/6 transition-all'
+										className='border-b-2 p-2 border-color-gray w-3/6 transition-all'
 										value={question[0][1]}
 										onChange={(e) => handleQuestionChange(e.target.value, questionIndex)}
 									/>
@@ -274,7 +274,7 @@ const CreateQuest = () => {
 										<img src={DeleteQuestionSvg} />
 									</div>
 								</div>
-								<div className='px-10 mb-5 text-red-500 flex justify-around select-none'>
+								<div className='px-10 mb-5 text-color-alert-red flex justify-around select-none'>
 									<span className={`${question[0][1] === '' && validationQuestionContent < question.length ? 'opacity-100' : 'opacity-0'} transition-[.1s_all]`}>Este campo es obligatorio</span>
 									<span className={`${question[1][1] === '' && validationQuestionType < question.length ? 'opacity-100' : 'opacity-0'} transition-[.1s_all]`}>Seleccione un elemento de la lista</span>
 								</div>
@@ -308,13 +308,13 @@ const CreateQuest = () => {
 				<section>
 					<button
 						type='submit'
-						className='fixed bottom-8 right-6 bg-[#39A900] px-3 py-2 text-white rounded-lg'
+						className='fixed bottom-8 right-6 bg-color-sena hover:bg-color-sena-hover px-3 py-2 text-color-white rounded-lg'
 					>
 						Guardar
 					</button>
 				</section>
 			</form>
-			<section className='fixed right-28 bottom-20 bg-white p-2 rounded-xl border-2 shadow-xl'>
+			<section className='fixed right-28 bottom-20 bg-color-white p-2 rounded-xl border-2 shadow-xl'>
 				<div className='flex flex-col gap-5 place-items-center'>
 					<button onClick={addQuestion}>
 						<img className='max-w-8 hover:scale-110 transition-all' src={AddQuestionSvg} />

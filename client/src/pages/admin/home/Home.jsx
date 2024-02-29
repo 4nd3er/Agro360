@@ -30,13 +30,13 @@ const Home = () => {
                         <br />
                     </span>
 
-                    <span className="text-black text-2xl">
+                    <span className="text-color-black text-2xl">
                         {user.user}
                     </span>
                 </p>
                 <section className='flex flex-col justify-center items-center sm:items-end gap-4 sm:absolute sm:right-0 sm:w-24'>
                     <Link to='charge-data'>
-                        <button className="btn w-full flex flex-row justify-center items-center gap-2 text-white bg-color-sena hover:bg-color-sena-hover" type="button">
+                        <button className="btn w-full flex flex-row justify-center items-center gap-2 text-color-white bg-color-sena hover:bg-color-sena-hover" type="button">
                             <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-upload" width="20" viewBox="0 0 24 24" stroke-width="2" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                 <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
@@ -47,7 +47,7 @@ const Home = () => {
                         </button>
                     </Link>
                     <Link to='register-admin'>
-                        <button className="btn w-full flex flex-row justify-center items-center gap-2 text-white bg-color-sena hover:bg-color-sena-hover" type="button">
+                        <button className="btn w-full flex flex-row justify-center items-center gap-2 text-color-white bg-color-sena hover:bg-color-sena-hover" type="button">
                             <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-user-shield" width="20" viewBox="0 0 24 24" stroke-width="2" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                 <path d="M6 21v-2a4 4 0 0 1 4 -4h2" />
@@ -68,7 +68,7 @@ const Home = () => {
                             rol={rol}
                         />
                     ))
-                    : <h3 className="text-2xl text-gray-600">Aún no hay roles</h3>}
+                    : <h3 className="text-2xl text-color-label">Aún no hay roles</h3>}
             </main>
         </div>
     )

@@ -66,24 +66,24 @@ const Topics = () => {
                     <p>
                         <span className="text-2xl md:text-4xl lg:text-4xl xl:text-4xl mr-8 md:mr-0 lg:mr-0 xl:mr-0 font-bold uppercase">Temáticas</span>
                         <br />
-                        <span className="text-lg text-gray-500 uppercase">{role}</span>
+                        <span className="text-lg text-color-gray uppercase">{role}</span>
                     </p>
                     <button
                         onClick={handleModalTopic}
-                        className='bg-[#00324D] text-white font-bold py-2 px-3 rounded-lg uppercase mr-5 md:mr-5 lg:mr-10 xl:mr-10 hover:shadow-shadow-button'>
+                        className='bg-color-blue-btn text-color-white font-bold py-2 px-3 rounded-lg uppercase mr-5 md:mr-5 lg:mr-10 xl:mr-10 hover:shadow-shadow-button'>
                         Añadir Temática
                     </button>
                 </header>
                 <section className="mr-0 md:mr-0 lg:mr-5 xl:mr-5 mt-5 md:mt-10 lg:mt-10 xl:mt-10">
                     <Masonry
                         columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
-                        spacing={{ xs: 2, sm: 2, md: 3, lg: 4, xl: 5 }}
+                        spacing={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
                     >
                         {loading ? <Spinner className={'!m-0'} /> :
                             topics.length > 0 ? topics.map(topic => (
                                 <CardTopic key={topic._id} topic={topic} />
                             ))
-                                : <h3 className="text-xl text-gray-600">Aún no hay tématicas creadas para este rol, las temáticas creadas aparecerán aquí</h3>}
+                                : <h3 className="text-xl text-color-gray">Aún no hay tématicas creadas para este rol, las temáticas creadas aparecerán aquí</h3>}
                     </Masonry>
                 </section>
                 {/* Modal crear y editar temática */}

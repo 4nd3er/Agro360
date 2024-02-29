@@ -75,7 +75,7 @@ const Forms = () => {
             <header className="flex flex-col gap-8 md:flex-row md:gap-10 justify-between mt-4 md:mt-12 lg:mt-16 xl:mt-16">
                 <p className='flex flex-col gap-2 lg:basis-[50%]'>
                     <span className="text-4xl md:text-2xl font-bold uppercase">Encuestas</span>
-                    <span className="text-lg md:text-base text-gray-700 uppercase">tématica:{' '} {topic}</span>
+                    <span className="text-lg md:text-base text-color-gray uppercase">tématica:{' '} {topic}</span>
                 </p>
                 <section className="relative">
                     <input type="search"
@@ -91,7 +91,7 @@ const Forms = () => {
             </header>
             <article className='flex justify-between items-end mt-12 mb-6'>
                 <section className='basis-[25%] md:basis-[30%] lg:basis-[28%]'>
-                    <button className='group bg-color-sena p-2 rounded-lg text-white transition-[1s_all_ease-in-out] w-12 sm:hover:w-[70%] flex md:hover:w-full xl:hover:w-[70%] lg:hover:w-[95%] items-center'
+                    <button className='group bg-color-sena p-2 rounded-lg text-color-white transition-[1s_all_ease-in-out] w-12 sm:hover:w-[70%] flex md:hover:w-full xl:hover:w-[70%] lg:hover:w-[95%] items-center'
                         onClick={() => setOpenCreateFormModal(true)}>
                         <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-plus w-8 max-width-[3rem]" viewBox="0 0 24 24" strokeWidth="3" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -103,7 +103,7 @@ const Forms = () => {
                         </span>
                     </button>
                 </section>
-                <h3 className='text-bold text-lg text-gray-600 text-center uppercase flex-none basis-1/2 md:basis-[0%] lg:basis-[40%]'>Encuestas</h3>
+                <h3 className='text-bold text-lg text-color-gray text-center uppercase flex-none basis-1/2 md:basis-[0%] lg:basis-[40%]'>Encuestas</h3>
                 <Select
                     className='md:basis-[30%] xxs:basis-[45%]'
                     options={[
@@ -152,18 +152,18 @@ const Forms = () => {
                             <CardForm key={form._id} form={form} setLoading={setLoading} />
                         ))
                     ) || searchForms.length <= 0 && searchInput.length > 0 && (
-                        <h3 className="text-2xl text-gray-600">Encuesta no encontrada</h3>
+                        <h3 className="text-2xl text-color-gray">Encuesta no encontrada</h3>
                     ) || filterStatus !== "all" && filterForms.length && (
                         filterForms.map(form => (
                             <CardForm key={form._id} form={form} setLoading={setLoading} />
                         ))
                     ) || filterStatus !== "all" && filterForms.length <= 0 && (
-                        <h3 className="text-2xl text-gray-600">No existen encuestas en estado {filterStatus !== null && filterStatus ? 'Activo' : 'Inactivo'}</h3>
+                        <h3 className="text-2xl text-color-gray">No existen encuestas en estado {filterStatus !== null && filterStatus ? 'Activo' : 'Inactivo'}</h3>
                     ) || forms.length && (
                         forms.map(form => (
                             <CardForm key={form._id} form={form} setLoading={setLoading} deleteFormModal={handleModalDeleteForm}/>
                         ))
-                    ) || (<h3 className="text-2xl text-gray-600">No hay Encuestas para esta tématica</h3>)}
+                    ) || (<h3 className="text-2xl text-color-gray">No hay Encuestas para esta tématica</h3>)}
                 </article>
             )}
             <ModalDeleteForm openDeleteModal={openDeleteFormModal} setOpenDeleteModal={setOpenDeleteFormModal} IdDeleteForm={IdDeleteFormModal} />

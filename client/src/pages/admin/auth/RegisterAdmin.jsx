@@ -30,8 +30,8 @@ const RegisterAdmin = () => {
             {/*--------*/}
             <section className="flex flex-row gap-2 justify-between">
               <div className="w-full">
-                <label className=' text-gray-600 block text-sm font-bold' htmlFor='names'>Nombres</label>
-                <input id='names' type="text" placeholder='Nombres' className='w-full mt-3 p-2 border rounded-xl bg-gray-50 focus-visible: outline-8 outline-green-500'
+                <label className=' text-color-gray block text-sm font-bold' htmlFor='names'>Nombres</label>
+                <input id='names' type="text" placeholder='Nombres' className='w-full mt-3 p-2 border rounded-xl bg-register-label focus-visible: outline-8 outline-color-sena'
                   {...register('names', {
                     required: true,
                     minLength: 3
@@ -39,8 +39,8 @@ const RegisterAdmin = () => {
                 />
               </div>
               <div className="w-full">
-                <label className=' text-gray-600 block text-sm font-bold' htmlFor='lastnames'>Apellidos</label>
-                <input id='lastnames' type="text" placeholder='Apellidos' className='w-full mt-3 p-2 border rounded-xl bg-gray-50 focus-visible: outline-8 outline-green-500'
+                <label className=' text-color-gray block text-sm font-bold' htmlFor='lastnames'>Apellidos</label>
+                <input id='lastnames' type="text" placeholder='Apellidos' className='w-full mt-3 p-2 border rounded-xl bg-register-label focus-visible: outline-8 outline-color-sena'
                   {...register('lastnames', {
                     required: true,
                     minLength: 5
@@ -51,8 +51,8 @@ const RegisterAdmin = () => {
             {/*--------*/}
             <section className="flex flex-row gap-2">
               <div className="w-full">
-                <label className=' text-gray-600 block text-sm font-bold' htmlFor='email'>Correo Electronico</label>
-                <input id='email' type="email" placeholder='Email de Registro' className='w-full mt-3 p-2 border rounded-xl bg-gray-50 focus-visible: outline-8 outline-green-500'
+                <label className=' text-color-gray block text-sm font-bold' htmlFor='email'>Correo Electronico</label>
+                <input id='email' type="email" placeholder='Email de Registro' className='w-full mt-3 p-2 border rounded-xl bg-register-label focus-visible: outline-8 outline-color-sena'
                   {...register('email', {
                     required: true,
                     validate: (value) => {
@@ -63,8 +63,8 @@ const RegisterAdmin = () => {
                 />
               </div>
               <div className="w-full">
-                <label className=' text-gray-600 block text-sm font-bold' htmlFor='password'>Contraseña</label>
-                <input id="password" type="password" placeholder="Contraseña" className="w-full mt-3 p-2 border rounded-xl bg-gray-50 focus-visible: outline-8 outline-green-500"
+                <label className=' text-color-gray block text-sm font-bold' htmlFor='password'>Contraseña</label>
+                <input id="password" type="password" placeholder="Contraseña" className="w-full mt-3 p-2 border rounded-xl bg-register-label focus-visible: outline-8 outline-color-sena"
                   {...register('password', {
                     required: true,
                     minLength: 8
@@ -76,7 +76,7 @@ const RegisterAdmin = () => {
             <section className="w-full flex items-center justify-center mt-4">
               <button
                 type="submit"
-                className={`${isValid ? 'bg-green-600 hover:cursor-pointer hover:bg-green-700' : 'bg-gray-500 cursor-default'} w-1/2 py-1 text-white rounded-xl  transition-color`}
+                className={`${isValid ? 'bg-color-sena hover:cursor-pointer hover:bg-color-sena-hover' : 'bg-color-gray cursor-default'} w-1/2 py-1 text-white rounded-xl  transition-color`}
                 disabled={!isValid}>
                 Registrar
               </button>

@@ -19,6 +19,22 @@ export default {
         'color-aprendiz-text': '#1c566e',
         'color-instructor': '#CB7766',
         'color-directivo': '#385C57',
+        'color-logo': '#0B5345 ',
+        'color-span-logo': '#27AE60',
+        'color-label': '#2C3E50',
+        'color-white': '#FDFEFE',
+        'color-black': '#000000',
+        'color-border':'#212121',
+        'color-gray': '#5D6D7E',
+        'register-label':'#FAFAFA',
+        'color-red':'#FF0000',
+
+        //alertas
+        'color-alert-red': '#FF0000',
+
+        //botones
+        'color-blue-btn':'#00324D',
+        'color-btn-white': '#FDFEFE',
       },
     },
     screens: {

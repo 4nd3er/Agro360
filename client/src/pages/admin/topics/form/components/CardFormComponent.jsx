@@ -67,13 +67,13 @@ const CardForm = ({ form, setLoading, deleteFormModal }) => {
                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
                     </svg>
                 </Menu.Button>
-                <Menu.Items className="absolute right-5 bottom-10 w-40 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none">
+                <Menu.Items className="absolute right-5 bottom-10 w-40 origin-top-right divide-y divide-gray-100 rounded-md bg-color-white shadow-lg ring-1 ring-black/5 focus:outline-none">
                     <Menu.Item>
                         {({ active }) => (
                             <div>
                                 <CopyToClipboard text={`${url}/forms/v/${_id}`} >
                                     <button
-                                        className={`${active ? 'bg-color-aprendiz-text text-white' : 'text-gray-900'} group flex w-full items-center rounded-md px-2 py-2 text-sm transition-colors duration-300 ease-out`}
+                                        className={`${active ? 'bg-color-aprendiz-text text-color-white' : 'text-gray-900'} group flex w-full items-center rounded-md px-2 py-2 text-sm transition-colors duration-300 ease-out`}
                                         onClick={showToast}>
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke={active ? '#ffffff' : '#1c566e'} className="w-6 h-6 mr-2">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="m18.375 12.739-7.693 7.693a4.5 4.5 0 0 1-6.364-6.364l10.94-10.94A3 3 0 1 1 19.5 7.372L8.552 18.32m.009-.01-.01.01m5.699-9.941-7.81 7.81a1.5 1.5 0 0 0 2.112 2.13" />

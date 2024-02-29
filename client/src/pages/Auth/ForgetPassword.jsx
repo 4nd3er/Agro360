@@ -23,21 +23,21 @@ const ForgetPassword = () => {
         <>
             <div className="flex flex-col lg:flex-row justify-center items-center min-h-[80vh]">
                 <div className="lg:w-1/4 h-full flex flex-col justify-center">
-                    <h1 className="text-green-800 font-black text-6xl capitalize">
+                    <h1 className="text-color-logo font-black text-6xl capitalize">
                         AGRO
-                        <span className="text-green-500 text-8xl">360°</span>
-                        <p className='text-green-800 text-2xl flex justify-center font-extrabold'>Key Performance Indicator</p>
+                        <span className="text-color-span-logo text-8xl">360°</span>
+                        <p className='text-color-logo text-2xl flex justify-center font-extrabold'>Key Performance Indicator</p>
                     </h1>
                 </div>
 
                 <div className="lg:w-3/5 h-full ">
                     <div className="flex flex-col justify-center place-items-center min-h-[50vh]">
-                        <strong className='text-green-600 text-4xl capitalize font-sans'>Recupera tu cuenta</strong>
-                        <form className='bg-white shadow rounded-lg px-10 py-5 lg:w-1/2' onSubmit={onSubmit}>
+                        <strong className='text-color-sena text-4xl capitalize font-sans'>Recupera tu cuenta</strong>
+                        <form className='shadow rounded-lg px-10 py-5 lg:w-1/2' onSubmit={onSubmit}>
                             <ErrorsFormAlert errors={errors} success={success} />
                             <div className='my-5'>
-                                <label className='text-gray-600 block text-sm font-bold' htmlFor='email'>Correo Electrónico</label>
-                                <input id='email' type="email" placeholder='Digita tu correo electronico' className='w-full mt-3 p-3 border rounded-xl bg-gray-50'
+                                <label className='text-color-label block text-sm font-bold' htmlFor='email'>Correo Electrónico</label>
+                                <input id='email' type="email" placeholder='Digita tu correo electronico' className='w-full mt-3 p-3 border rounded-xl '
                                     {...register("email", {
                                         required: true,
                                         validate: (value) => {
@@ -49,11 +49,11 @@ const ForgetPassword = () => {
                             <input
                                 type="submit"
                                 value="Enviar"
-                                className={`${isValid ? 'bg-green-600 hover:cursor-pointer hover:bg-green-700' : 'bg-gray-500'} w-full py-1 text-white uppercase font-bold rounded-xl  transition-color `}
+                                className={`${isValid ? 'bg-color-sena hover:cursor-pointer hover:bg-color-sena-hover' : 'bg-gray-500'} w-full py-1 text-white uppercase font-bold rounded-xl  transition-color `}
                                 disabled={!isValid}
                             />
                             <nav>
-                                <Link className='block my-5 text-slate-500 uppercase text-xs' to='/' style={{ marginLeft: 'auto' }}>
+                                <Link className='block my-5 text-color-span-logo hover:text-color-logo uppercase text-xs' to='/' style={{ marginLeft: 'auto' }}>
                                     Iniciar sesión
                                 </Link>
                             </nav>
