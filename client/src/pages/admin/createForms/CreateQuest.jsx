@@ -232,7 +232,7 @@ const CreateQuest = () => {
 				<div className='border-color-sena text-color-sena font-bold border-b-[3px] w-full text-center pb-1'>Preguntas</div>
 			</section>
 			<form onSubmit={handleSubmit}>
-				<section className='flex flex-col justify-start mt-5 min-h-[70vh] w-full lg:w-3/4 xl:w-3/4 mx-auto gap-10 mb-20'>
+				<section className='flex flex-col justify-start mt-5 min-h-[70vh] w-full lg:w-3/4 xl:w-3/4 mx-auto gap-10 mb-20 p-3 md:p-10 lg:p-0'>
 					<div className='p-2 py-4 text-center border-2 rounded-md flex flex-col gap-5 shadow-lg'>
 						<h1 className='text-4xl font-bold'>{title}</h1>
 						<h1 className='text-2xl'>{descrip}</h1>
@@ -247,7 +247,7 @@ const CreateQuest = () => {
 								<div className='flex flex-col md:flex-row lg:flex-row xl:flex-row lg:justify-between px-1 lg:px-10 gap-3'>
 									<input
 										placeholder='Digite la pregunta'
-										className='border-b-2 p-2 border-gray-400 w-3/6 transition-all'
+										className='border-b-2 p-2 border-gray-400 w-full lg:w-3/6 transition-all'
 										value={question[0][1]}
 										onChange={(e) => handleQuestionChange(e.target.value, questionIndex)}
 									/>
@@ -302,13 +302,13 @@ const CreateQuest = () => {
 				<section>
 					<button
 						type='submit'
-						className='fixed bottom-8 right-6 bg-[#39A900] px-3 py-2 text-white rounded-lg'
+						className='fixed bottom-8 right-1 lg:right-6 bg-[#39A900] px-7 py-2 text-white rounded-lg'
 					>
 						Guardar
 					</button>
 				</section>
 			</form>
-			<section className='fixed right-28 bottom-20 bg-white p-2 rounded-xl border-2 shadow-xl'>
+			<section className='fixed bottom-20  right-1 lg:right-28 bg-white p-2 rounded-xl border-2 shadow-xl'>
 				<div className='flex flex-col gap-5 place-items-center'>
 					<button onClick={addQuestion}>
 						<img className='max-w-8 hover:scale-110 transition-all' src={AddQuestionSvg} />

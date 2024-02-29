@@ -24,18 +24,18 @@ const Quest = () => {
 	if (loading) return <Spinner />
 
 	return (
-		<div className='flex flex-col justify-center mt-10 md:mt-20 lg:mt-28 xl:mt-28'>
+		<div className='flex flex-col justify-center mt-5 md:mt-10 lg:mt-28 xl:mt-28 p-3 md:p-5 lg:p-0'>
 			<section className='flex justify-between align-center'>
 			<button
-            className="block pl-10 sm:pl-0 lg:p-0 cursor-pointer hover:scale-110 transition-transform"
+            className="block cursor-pointer hover:scale-110 transition-transform"
             onClick={() => setOpenCreateFormModal(true)}
           >
             CREAR ENCUESTA
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="icon icon-tabler icon-tabler-square-plus mx-auto"
-              width="120"
-              height="120"
+              width="100"
+              height="100"
               viewBox="0 0 24 24"
               strokeWidth="1.1"
               stroke="#39a900"
@@ -55,7 +55,7 @@ const Quest = () => {
           localStorage.getItem("descrip") &&
           localStorage.getItem("topic") &&
           localStorage.getItem("date") && (
-            <div className="my-auto me-10">
+            <div className="my-auto lg:me-10">
               <Link
                 to="crear"
                 className="transition-colors p-2 border-2 rounded-lg border-color-sena text-color-sena hover:text-white hover:bg-color-sena"
