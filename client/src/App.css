@@ -51,6 +51,21 @@
 .slick-slider .slick-next {
     background: #369206;
     border-radius: 100%;
+    width: 35px;
+    height: 35px;
+   
+}
+
+.response {
+    background-color: #ffffff;
+    border: 2px solid #e5e7eb;
+    border-left-width: 5px;
+    border-left-color: #2ea84a;
+    border-radius: 10px;
+    box-shadow: 0px 4px 4px #00000040;
+    height: 350px;
+    position: relative;
+    width: 1100px;
 }
 
 .slick-slider .slick-prev:hover,
@@ -63,10 +78,102 @@
 .slick-slider .slick-prev:hover:before,
 .slick-slider .slick-next:hover:before {
     opacity: .75;
+ 
 }
 
 .slick-slider .slick-prev:before,
 .slick-slider .slick-next:before {
     opacity: 1;
-    color: white
+    color: white;
+    font-size: 30px;
+
 }
+
+
+input{
+    transition: all .3s;
+}
+
+input:focus, select:focus{
+    outline: #369206 !important;
+    border-color: #369206 !important;
+    box-shadow: 0 0 0 1px #369206 !important;
+}
+
+.select-container:hover .react-select__control {
+    border-color: #369206 !important;
+  }
+
+.react-select__input:focus{
+    outline: transparent !important;
+    border-color: transparent !important;
+    box-shadow: 0 0 0 1px transparent !important;
+}
+
+.react-select__control--is-focused{
+    box-shadow: 0 0 0 1px #369206 !important;
+
+}
+
+/* Estilos para el contenedor de la guía paso a paso */
+.top-0 {
+    position: absolute;
+    top: 0;
+}
+
+.left-0 {
+    position: absolute;
+    left: 0;
+}
+
+.w-full {
+    width: 100%;
+}
+
+.h-full {
+    height: 100%;
+}
+
+.flex {
+    display: flex;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.z-10 {
+    z-index: 10;
+}
+
+/* Estilos para el borde verde */
+.border-green-500 {
+    border-color: #10B981; /* Cambia el color del borde aquí */
+}
+
+/* Estilos para los botones */
+.btn {
+    padding: 0.5rem 1rem;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.border {
+    border-width: 1px;
+}
+
+.rounded-md {
+    border-radius: 0.375rem; /* Cambia el radio de los botones aquí */
+}
+
+/* Estilos adicionales según sea necesario */
+
+
+.plus-icon{
+    max-width: 70%;
+}
+

@@ -19,6 +19,7 @@
   border-radius: 2rem;
   box-shadow: 0 0 5px 2px gray;
   user-select: none;
+  z-index: 1;
 }
 
 
@@ -179,9 +180,16 @@
   align-items: center;
   justify-content: center;
   padding: 0 1.7rem;
-  transition: .3s all;
   margin-bottom: 1rem;
-  transition: .3s all;
+  transition: .25s all;
+}
+
+.navigation .back:hover{
+  color: white;
+  background-color: rgb(57 169 0);
+  border-radius: 100%;
+  width: 65%;
+  padding-bottom: 1.25rem;
 }
 
 .navigation.close .back {

@@ -1,4 +1,4 @@
-import axios from './axios.js'
+import axios from './axios'
 
 //* Topics
 export const TopicsRequest = async () => axios.get("/topics")

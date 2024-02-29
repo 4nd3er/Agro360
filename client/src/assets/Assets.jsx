@@ -1,7 +1,7 @@
-export { default as AddQuestionSvg } from './add.svg';
-export { default as DeleteQuestionSvg } from './delete.svg';
-export { default as ExcelSvg } from './excel.svg';
-export { default as ImportQuestionSvg } from './import.svg';
+export { default as AddQuestionSvg } from './svg/add.svg';
+export { default as DeleteQuestionSvg } from './svg/delete.svg';
+export { default as ExcelSvg } from './svg/excel.svg';
+export { default as ImportQuestionSvg } from './svg/import.svg';
 export { default as imgEncuesta } from './icons/encuesta.png';
 export { default as userImg } from './icons/user.png';
 export { default as imgNuevaEncuesta } from './icons/Icon.png';

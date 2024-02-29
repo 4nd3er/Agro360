@@ -1,12 +1,13 @@
 {
   "name": "agro360api",
-  "version": "1.0.0",
-  "description": "Agro360 Web Application",
+  "version": "1.2.0",
+  "description": "Agro360 Web Application API",
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nodemon src/index.js --ignore client",
-    "start": "cross-env NODE_ENV=production node src/index.js"
+    "dev": "nodemon src/index.js --ignore client",
+    "start": "cross-env NODE_ENV=production node src/index.js",
+    "test": "nodemon test/test.js"
   },
   "author": "AgroDevelopers",
   "license": "ISC",
@@ -17,6 +18,7 @@
     "exceljs": "^4.4.0",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.2",
+    "lodash": "^4.17.21",
     "mongoose": "^7.6.3",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
@@ -25,8 +27,8 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "dotenv": "^16.3.1",
     "cross-env": "^7.0.3",
+    "dotenv": "^16.3.1",
     "nodemon": "^3.0.1"
   }
 }

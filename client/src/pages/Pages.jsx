@@ -1,31 +1,31 @@
 //* Auth Pages
-export { default as Login } from './Auth/Login.jsx';
-export { default as Register } from './Auth/Register.jsx';
-export { default as ForgetPassword } from './Auth/ForgetPassword.jsx';
-export { default as NewPassword } from './Auth/NewPassword.jsx';
-export { default as ConfirmAccount } from './Auth/ConfirmAccount.jsx';
+export { default as Login } from './Auth/Login';
+export { default as ForgetPassword } from './Auth/ForgetPassword';
+export { default as NewPassword } from './Auth/NewPassword';
 
 //* Home Page
-export { default as Home } from './Home.jsx';
+export { default as Home } from './admin/home/Home';
+export { default as RegisterAdmin } from './admin/auth/RegisterAdmin';
 
 // *Form Pages
-export { default as Quest } from './Forms/Quest.jsx';
-export { default as CreateQuest } from './Forms/CreateQuest.jsx';
+export { default as Quest } from './admin/createForms/Quest';
+export { default as CreateQuest } from './admin/createForms/CreateQuest';
+export { default as EditQuest } from './admin/createForms/EditQuest';
 
 //* Results Pages
-export { default as Results } from './Results/Results.jsx';
-export { default as ResultQuest } from './Results/ResultQuest.jsx';
+export { default as Results } from './admin/results/Results';
+export { default as ResultQuest } from './admin/results/resultQuest/ResultQuest';
 
 //* Topics Pages
-export { default as Topics } from './Topics/Topics.jsx';
-export { default as TopicsForm } from './Topics/TopicsForm.jsx';
+export { default as Topics } from './admin/topics/Topics';
+export { default as Forms } from './admin/topics/form/Forms';
 
 //* Responses Pages
-export { default as UserValidation } from './Responses/UserValidation.jsx';
-export { default as Response } from './Responses/Response.jsx';
+export { default as UserValidation } from './users/responses/UserValidation';
+export { default as Response } from './users/responses/Response';
 
 //* Users Pages
-export { default as Users } from './Users/Users.jsx';
+export { default as RegisterUsers } from './users/RegisterUsers';
 
 //* Courses Pages
-export { default as ChargeData } from './ChargeData/ChargeData.jsx'
+export { default as ChargeData } from './admin/chargeData/ChargeData'

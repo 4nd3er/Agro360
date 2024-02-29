@@ -36,27 +36,20 @@ export const login = async (req, res) => {
 export const register = async (req, res) => {
     const { names, lastnames, email, password } = req.body
     try {
-        //Permitir registro
-        const enabledRegister = false
-        if (!enabledRegister) return res.status(401).json({ message: ['No estas habilitado para registrarte'] })
-
         //Validadion Usuario ya existe en base de datos
         const findUser = await Admin.findOne({ email })
-        if (findUser) return res.status(400).json({ message: ['El correo ya esta en eso'] })
+        if (findUser) return res.status(400).json({ message: ['El correo ya esta en uso'] })
 
         //Registro y guardado de usuario
         const newUser = new Admin({ names, lastnames, email, password })
         const userSaved = await newUser.save()
 
-        //Creacion de token y guardado en cookie
-        const token = await createToken({ id: userSaved._id });
         res.json({
-            response: "Usuario creado exitosamente",
+            response: "Administrador creado exitosamente",
             data: {
                 id: userSaved._id,
                 user: `${userSaved.names} ${userSaved.lastnames}`,
-                email: userSaved.email,
-                token: token
+                email: userSaved.email
             }
         })
     } catch (error) {
@@ -70,13 +63,14 @@ export const forgetPassword = async (req, res) => {
     try {
         //Buscar usuario por email
         const finduser = await Admin.findOne({ email })
+        const userNames = `${finduser.names} ${finduser.lastnames}` // Buscar y concatenar los nombres de los usuarios
         if (!finduser) return res.status(400).json({ message: ['Usuario no encontrado'] })
 
         //Creacion de token
         const token = await createToken({ id: finduser.email })
 
         //Envio de correo con enlace
-        sendEmailResetPassword(res, { userEmail: finduser.email, token: token })
+        sendEmailResetPassword(res, { userEmail: finduser.email, token: token,  userNames: userNames })
     } catch (error) {
         errorResponse(res, error)
     }

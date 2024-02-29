@@ -32,5 +32,7 @@ const responsesSchema = new mongoose.Schema({
     ]
 }, { timestamps: true })
 
+responsesSchema.index({ "form": 1 })
+
 export default mongoose.model("Responses", responsesSchema)
 

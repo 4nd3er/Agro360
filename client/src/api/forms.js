@@ -1,4 +1,4 @@
-import axios from './axios.js'
+import axios from './axios'
 
 //* Question Types
 export const QuestionTypesRequest = async () => axios.get("/forms/questions/questiontypes")
@@ -10,6 +10,7 @@ export const deleteQuestionTypeRequest = async (id) => axios.delete(`/forms/ques
 //* Forms
 export const FormsRequest = async () => axios.get("/forms")
 export const getFormRequest = async (id) => axios.get(`/forms/${id}`)
+export const getRecentlyFormsRequest = async () => axios.get("/forms/recently")
 export const getFormsResponsesRequest = async () => axios.get("/forms/responses")
 export const getFormInstructorsResultsRequest = async (id) => axios.get(`/forms/${id}/results`)
 export const createFormRequest = async (data) => axios.post(`/forms`, data)

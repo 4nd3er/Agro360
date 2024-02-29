@@ -1,9 +1,9 @@
 import React from 'react';
 import '../css/Spinner.css';
 
-const Spinner = () => {
+const Spinner = ({ className }) => {
     return (
-        <div className="sk-circle">
+        <div className={`sk-circle ${className ? className : ''} `}>
             <div className="sk-circle1 sk-child"></div>
             <div className="sk-circle2 sk-child"></div>
             <div className="sk-circle3 sk-child"></div>
