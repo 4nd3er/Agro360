@@ -25,31 +25,43 @@ const Quest = () => {
 	if (loading) return <Spinner />
 
 	return (
-		<div className='flex flex-col justify-center items-center min-h-[80vh]'>
-			<div className='text-center mt-1 place-items-center' style={{ marginBottom: '1rem' }}>
-				<div>
-					<div className="image-label">
-						CREAR ENCUESTA
-					</div>
-					<img
-						src={imgNuevaEncuesta}
-						alt="img"
-						className="img-icon cursor-pointer hover:scale-110 transition"
-						onClick={() => setOpenCreateFormModal(true)}
-					/>
-				</div>
+		<div className='flex flex-col justify-center mt-10 md:mt-20 lg:mt-28 xl:mt-28'>
+			<section className='flex justify-between align-center'>
+			<button
+            className="block pl-10 sm:pl-0 lg:p-0 cursor-pointer hover:scale-110 transition-transform"
+            onClick={() => setOpenCreateFormModal(true)}
+          >
+            CREAR ENCUESTA
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="icon icon-tabler icon-tabler-square-plus mx-auto"
+              width="120"
+              height="120"
+              viewBox="0 0 24 24"
+              strokeWidth="1.1"
+              stroke="#39a900"
+              fill="none"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M9 12h6" />
+              <path d="M12 9v6" />
+              <path d="M3 5a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-14z" />
+            </svg>
+          </button>
 				<CreateQuestModal modalState={{ openCreateFormModal, setOpenCreateFormModal }} />
 				{localStorage.getItem('title') && localStorage.getItem('descrip') && localStorage.getItem('topic') && localStorage.getItem('date') && (
-					<div className='relative w-44 bottom-32 left-96'>
+					<div className='my-auto me-10'>
 						<Link
 							to='crear'
-							className='absolute right-0 transition-colors p-2 border-2 rounded-lg border-color-sena text-color-sena hover:text-white hover:bg-color-sena'
+							className='transition-colors p-2 border-2 rounded-lg border-color-sena text-color-sena hover:text-white hover:bg-color-sena'
 						>
 							Volver al formulario
 						</Link>
 					</div>
 				)}
-			</div>
+			</section>
 			<div className='text-center' style={{
 				borderTop: '1px solid #ccc', width: '80%', marginLeft: '5%',
 				height: '10px',
