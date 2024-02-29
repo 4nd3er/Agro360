@@ -21,7 +21,7 @@ const ForgetPassword = () => {
 
     return (
         <>
-            <div className="flex flex-col lg:flex-row justify-center items-center min-h-[80vh]">
+            <div className="flex flex-col lg:flex-row justify-center items-center min-h-[80vh] px-5">
                 <div className="lg:w-1/4 h-full flex flex-col justify-center">
                     <h1 className="text-color-logo font-black text-6xl capitalize">
                         AGRO
@@ -30,13 +30,13 @@ const ForgetPassword = () => {
                     </h1>
                 </div>
 
-                <div className="lg:w-3/5 h-full ">
+                <div className="w-full md:w-1/2 lg:w-3/5 h-full">
                     <div className="flex flex-col justify-center place-items-center min-h-[50vh]">
                         <strong className='text-color-sena text-4xl capitalize font-sans'>Recupera tu cuenta</strong>
-                        <form className='shadow rounded-lg px-10 py-5 lg:w-1/2' onSubmit={onSubmit}>
+                        <form className='border border-gray-300 shadow-xl rounded-lg px-5 py-5 mt-10 w-full lg:w-1/2' onSubmit={onSubmit}>
                             <ErrorsFormAlert errors={errors} success={success} />
                             <div className='my-5'>
-                                <label className='text-color-label block text-sm font-bold' htmlFor='email'>Correo Electrónico</label>
+                                <label className='text-color-label block text-lg font-bold' htmlFor='email'>Correo Electrónico:</label>
                                 <input id='email' type="email" placeholder='Digita tu correo electronico' className='w-full mt-3 p-3 border rounded-xl '
                                     {...register("email", {
                                         required: true,
@@ -49,7 +49,7 @@ const ForgetPassword = () => {
                             <input
                                 type="submit"
                                 value="Enviar"
-                                className={`${isValid ? 'bg-color-sena hover:cursor-pointer hover:bg-color-sena-hover' : 'bg-gray-500'} w-full py-1 text-white uppercase font-bold rounded-xl  transition-color `}
+                                className={`${isValid ? 'bg-color-sena hover:cursor-pointer hover:bg-color-sena-hover' : 'bg-gray-500'} w-full py-2 text-white uppercase font-bold rounded-xl  transition-color `}
                                 disabled={!isValid}
                             />
                             <nav>
