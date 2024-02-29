@@ -33,7 +33,7 @@ const Results = () => {
                                 imageSrc={imgEncuesta}
                             />
                         ))
-                    ) : <h3 className="text-2xl text-gray-600">No existen respuestas</h3>}
+                    ) : <h3 className="text-2xl text-color-gray">No existen respuestas</h3>}
             </div>
         </div>
     );
