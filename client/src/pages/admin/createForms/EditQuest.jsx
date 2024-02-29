@@ -209,7 +209,7 @@ const EditQuest = () => {
             <form
                 onSubmit={e => handleSubmit(e)}
             >
-                <section className='flex flex-col justify-start mt-5 min-h-[70vh] w-full lg:w-3/4 mx-auto gap-10 mb-20 px-3 md:px-6'>
+                <section className='flex flex-col justify-start mt-5 min-h-[70vh] w-full lg:w-3/4 mx-auto gap-10 mb-20 px-3 md:px-10'>
                     <header className='p-2 py-4 text-center border-2 rounded-md flex flex-col gap-5 shadow-lg'>
                         <section>
                             <input
@@ -264,7 +264,7 @@ const EditQuest = () => {
                                         Seleccione un elemento de la lista
                                     </span>
                                 </div>
-                                <div className='px-10'>
+                                <div className='px-0 md:px-10 lg:px-10'>
                                     {question.options.map((option, index) => (
                                         <OptionsQuest
                                             params={params}
@@ -294,13 +294,13 @@ const EditQuest = () => {
                 <section>
                     <button
                         type='submit'
-                        className='fixed bottom-8 right-6 bg-[#39A900] px-3 py-2 text-white rounded-lg'
+                        className='fixed bottom-8 right-1 lg:right-6 bg-[#39A900] px-7 py-2 text-white rounded-lg'
                     >
                         Guardar
                     </button>
                 </section>
             </form>
-            <section className='fixed right-28 bottom-20 bg-white p-2 rounded-xl border-2 shadow-xl'>
+            <section className='fixed bottom-20  right-1 lg:right-28 bg-white p-2 rounded-xl border-2 shadow-xl'>
                 <div className='flex flex-col gap-5 place-items-center'>
                     <button
                         onClick={addQuestion}
