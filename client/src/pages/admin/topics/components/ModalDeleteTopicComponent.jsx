@@ -54,7 +54,7 @@ const ModalDeleteTopicComponent = () => {
                                     <Dialog.Title as="h3" className="text-xl text-center leading-6 font-bold text-gray-900">
                                         Eliminar temática
                                     </Dialog.Title>
-                                    <p className="mt-4">¿Estas seguro de eliminar esta temática? Esta accion no se puede revertir.</p>
+                                    <p className="mt-4">¿Esta seguro de eliminar esta temática? Esta accion no se puede revertir.</p>
                                 </div>
                             </div>
                             <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">

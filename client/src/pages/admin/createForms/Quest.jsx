@@ -11,7 +11,7 @@ const Quest = () => {
 	const { getRecentlyForms } = useForms()
 	const [recentlyForms, setRecentlyForms] = useState([])
 	const [loading, setLoading] = useState(true)
-	const [openModal, setOpenModal] = useState(false)
+	const [openCreateFormModal, setOpenCreateFormModal] = useState(false)
 
 	useEffect(() => {
 		const getForms = async () => {
@@ -25,14 +25,11 @@ const Quest = () => {
 	if (loading) return <Spinner />
 
 	return (
-		<div className="flex flex-col justify-center mt-10 md:mt-20 lg:mt-28 xl:mt-28">
-      <section
-        className="flex justify-between align-center"
-      >
-        
-          <button
+		<div className='flex flex-col justify-center mt-10 md:mt-20 lg:mt-28 xl:mt-28'>
+			<section className='flex justify-between align-center'>
+			<button
             className="block pl-10 sm:pl-0 lg:p-0 cursor-pointer hover:scale-110 transition-transform"
-            onClick={() => setOpenModal(true)}
+            onClick={() => setOpenCreateFormModal(true)}
           >
             CREAR ENCUESTA
             <svg
@@ -62,7 +59,7 @@ const Quest = () => {
             <div className="my-auto me-10">
               <Link
                 to="crear"
-                className="transition-colors p-2 border-2 rounded-lg border-color-sena text-color-sena hover:text-color-white hover:bg-color-sena"
+                className="transition-colors p-2 border-2 rounded-lg border-color-sena text-color-sena hover:text-white hover:bg-color-sena"
               >
                 Volver al formulario
               </Link>

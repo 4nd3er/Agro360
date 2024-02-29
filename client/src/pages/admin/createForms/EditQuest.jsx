@@ -15,7 +15,6 @@ const EditQuest = () => {
 
     const params = useParams();
     const [loading, setLoading] = useState(true);
-    const [topics, setTopics] = useState([]); //Topics
     const [topic, setTopic] = useState(''); //Topics
     const [questionsType, setQuestionsType] = useState([]); //Question Types
     const { getTopics, getTopic } = useRoles();
@@ -38,27 +37,13 @@ const EditQuest = () => {
     useEffect(() => {
         const Form = async () => {
             const res = await getForm(params.id);
+            const resTopic = await getTopic(res.topic);
             setQuest([res]);
             setLoading(false);
-            setTopic(quest[0].topic);
+            setTopic(resTopic.name);
+            setRole(resTopic.role);
         }
         Form();
-    }, [])
-
-    useEffect(() => {
-        const Topics = async () => {
-            const res = await getTopics();
-            setTopics(res)
-        }
-        Topics();
-    }, [])
-
-    useEffect(() => {
-        const getTopicRequest = async () => {
-            const resTopic = await getTopic(topic);
-            setRole(resTopic[0].role);
-        }
-        getTopicRequest();
     }, [])
 
 
@@ -169,23 +154,17 @@ const EditQuest = () => {
         let isTypeValid = 0;
         let isOptionValid = 0;
         quest[0].questions.forEach((question) => {
-            if (question.question == '') {
+            if (question.question != '') {
                 setValidationQuestionContent(true);
-            } else {
-                setValidationQuestionContent(false);
                 isContentValid += 1;
             }
-            if (question.type == '') {
+            if (question.type != '') {
                 setValidationQuestionType(true);
-            } else {
-                setValidationQuestionType(false);
                 isTypeValid += 1;
             }
             question.options.forEach((option) => {
-                if (option.length == '' || option.length < 2) {
+                if (option.length != '' || option.length < 2) {
                     setValidationQuestionOption(true);
-                } else {
-                    setValidationQuestionOption(false);
                     isOptionValid += 1;
                 }
             });
@@ -244,9 +223,7 @@ const EditQuest = () => {
                                 onChange={(e) => handleDescriptionChange(e.target.value)}
                             />
                         </section>
-                        <h1 className='text-xl text-[#39A900]'>{
-                            topics.filter((i) => i._id === quest[0].topic).map((topic) => topic.name)
-                        }</h1>
+                        <h1 className='text-xl text-[#39A900]'>{topic}</h1>
                     </header>
                     {quest[0].questions.map((question, questionIndex) => (
                         <div

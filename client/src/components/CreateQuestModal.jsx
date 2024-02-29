@@ -8,7 +8,7 @@ const CreateQuestModal = ({ modalState, topic }) => {
 	const { getTopics } = useRoles();
 	const [alert, setAlert] = useState({});
 	const [topics, setTopics] = useState([]);
-	const { openModal, setOpenModal } = modalState;
+	const { openCreateFormModal, setOpenCreateFormModal } = modalState;
 
 	useEffect(() => {
 		const Topics = async () => {
@@ -19,12 +19,12 @@ const CreateQuestModal = ({ modalState, topic }) => {
 	}, [])
 
 	useEffect(() => {
-		setIsModalOpen(openModal)
-	}, [openModal])
+		setIsModalOpen(openCreateFormModal)
+	}, [openCreateFormModal])
 
 	const closeModal = () => {
 		setIsModalOpen(false);
-		setOpenModal(false)
+		setOpenCreateFormModal(false)
 	};
 
 	const handleModalClick = (e) => {
