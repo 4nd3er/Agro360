@@ -85,7 +85,7 @@ function OptionResponse({ dataQuestion, dataInstructor, setValid, actualIndex })
                             <input disabled type="radio" id="opcion1" name="escala" value="1" className="hidden peer" />
                             <label
                                 htmlFor="opcion1"
-                                className={`${compValue() === '1' ? '!bg-gray-400' : ''} px-5 py-4 text-gray-800 bg-white border-2 border-gray-500 rounded-lg cursor-pointer peer-checked:bg-gray-300 transition-all ${value != '1' ? 'hover:bg-gray-100 hover:text-gray-600' : ''} text-3xl select-none`}
+                                className={`${compValue() === '1' ? '!bg-gray-400' : ''} px-5 py-4 text-gray-800 transition-all bg-white border-2 border-gray-500 rounded-lg cursor-pointer peer-checked:bg-gray-300  ${value != '1' ? 'hover:bg-gray-100 hover:text-gray-600' : ''} text-3xl select-none`}
                             >
                                 1
                             </label>
@@ -97,7 +97,7 @@ function OptionResponse({ dataQuestion, dataInstructor, setValid, actualIndex })
                             <input disabled type="radio" id="opcion2" name="escala" value="2" className="hidden peer" />
                             <label
                                 htmlFor="opcion2"
-                                className={`${compValue() == '2' ? '!bg-gray-400' : ''} px-5 py-4 text-gray-800 bg-white border-2 border-gray-500 rounded-lg cursor-pointer peer-checked:bg-gray-300 transition-all ${value != '2' ? 'hover:bg-gray-100 hover:text-gray-600' : ''} text-3xl select-none`}
+                                className={`${compValue() == '2' ? '!bg-gray-600' : ''} px-5 py-4 text-gray-800 bg-white border-2 border-gray-500 rounded-lg cursor-pointer peer-checked:bg-gray-300  ${value != '2' ? 'hover:bg-gray-100 hover:text-gray-600' : ''} text-3xl select-none`}
                             >
                                 2
                             </label>
@@ -109,7 +109,7 @@ function OptionResponse({ dataQuestion, dataInstructor, setValid, actualIndex })
                             <input disabled type="radio" id="opcion3" name="escala" value="3" className="hidden peer" />
                             <label
                                 htmlFor="opcion3"
-                                className={`${compValue() == '3' ? '!bg-gray-400' : ''} px-5 py-4 text-gray-800 bg-white border-2 border-gray-500 rounded-lg cursor-pointer peer-checked:bg-gray-300 transition-all ${value != '3' ? 'hover:bg-gray-100 hover:text-gray-600' : ''} text-3xl select-none`}
+                                className={`${compValue() == '3' ? '!bg-gray-600' : ''} px-5 py-4 text-gray-800 bg-white border-2 border-gray-500 rounded-lg cursor-pointer peer-checked:bg-gray-300  ${value != '3' ? 'hover:bg-gray-100 hover:text-gray-600' : ''} text-3xl select-none`}
                             >
                                 3
                             </label>
@@ -121,7 +121,7 @@ function OptionResponse({ dataQuestion, dataInstructor, setValid, actualIndex })
                             <input disabled type="radio" id="opcion4" name="escala" value="4" className="hidden peer" />
                             <label
                                 htmlFor="opcion4"
-                                className={`${compValue() == '4' ? '!bg-gray-400' : ''} px-5 py-4 text-gray-800 bg-white border-2 border-gray-500 rounded-lg cursor-pointer peer-checked:bg-gray-300 transition-all ${value != '4' ? 'hover:bg-gray-100 hover:text-gray-600' : ''} text-3xl select-none`}
+                                className={`${compValue() == '4' ? '!bg-gray-600' : ''} px-5 py-4 text-gray-800 bg-white border-2 border-gray-500 rounded-lg cursor-pointer peer-checked:bg-gray-300  ${value != '4' ? 'hover:bg-gray-100 hover:text-gray-600' : ''} text-3xl select-none`}
                             >
                                 4
                             </label>
@@ -133,7 +133,7 @@ function OptionResponse({ dataQuestion, dataInstructor, setValid, actualIndex })
                             <input disabled type="radio" id="opcion5" name="escala" value="5" className="hidden peer" />
                             <label
                                 htmlFor="opcion5"
-                                className={`${compValue() == '5' ? '!bg-gray-400' : ''} px-5 py-4 text-gray-800 bg-white border-2 border-gray-500 rounded-lg cursor-pointer peer-checked:bg-gray-300 transition-all ${value != '5' ? 'hover:bg-gray-100 hover:text-gray-600' : ''} text-3xl select-none`}
+                                className={`${compValue() == '5' ? '!bg-gray-600' : ''} px-5 py-4 text-gray-800 bg-white border-2 border-gray-500 rounded-lg cursor-pointer peer-checked:bg-gray-300  ${value != '5' ? 'hover:bg-gray-100 hover:text-gray-600' : ''} text-3xl select-none`}
                             >
                                 5
                             </label>
