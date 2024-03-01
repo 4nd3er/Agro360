@@ -5,11 +5,6 @@ import Menu from '../layouts/components/Menu';
 
 const AuthLayout = () => {
 
-    useEffect(() => {
-        var metaViewport = document.querySelector('meta[name="viewport"]');
-        metaViewport.setAttribute('content', 'width=1024, initial-scale=1.0');
-    }, [])
-
     return (
         <>
             <div className="flex flex-col h-screen">
