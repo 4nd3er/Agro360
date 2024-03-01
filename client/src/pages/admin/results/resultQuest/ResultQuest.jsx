@@ -43,8 +43,8 @@ const ResultQuest = () => {
     if (loading) return <Spinner />;
 
     return (
-        <article className='flex flex-col justify-start mt-5 min-h-[70vh] w-full md:w-full mx-auto gap-10'>
-            <header className='relative p-8 flex flex-col gap-2 shadow-lg rounded-md border-2'>
+        <article className='flex flex-col justify-start mt-5 min-h-[70vh] w-full md:w-full mx-auto gap-10 px-3 md:px-5 lg:px-3'>
+            <header className='relative p-4 md:p-6 lg:p-8  flex flex-col gap-2 shadow-lg rounded-md border-2'>
                 <aside className={`${form.status ? 'bg-color-sena' : 'bg-color-red'} absolute top-0 left-0 py-1 px-4 rounded-md text-color-white shadow-lg`}>
                     {form.status ? "Activo" : "Inactivo"}
                 </aside>

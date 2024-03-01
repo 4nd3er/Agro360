@@ -23,7 +23,7 @@ export const formValidator = z.object({
         .coerce
         .date()
         .min(new Date(), {
-            message: "The date must be greater than the current"
+            message: "La fecha asignada debe ser mayor a la recurrente"
         }),        
     status: z
         .boolean()

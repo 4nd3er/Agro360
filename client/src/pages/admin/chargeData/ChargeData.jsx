@@ -48,7 +48,7 @@ function ChargeData() {
         <div className='w-full flex flex-col p-5 justify-center items-center gap-8'>
             <h1 className='text-3xl font-bold text-color-sena'>Cargar Datos</h1>
             <ErrorsFormAlert errors={errors} success={success} className={'!m-0'} />
-            <form className='w-1/2' encType='multipart/form-data' onSubmit={onSubmitCourse}>
+            <form className='w-full md:w-2/3 lg:w-1/2' encType='multipart/form-data' onSubmit={onSubmitCourse}>
                 <label className="form-label">Fichas</label>
                 <div className="flex flex-row gap-1">
                     <input type="file" name="courses" className="focus:border-color-sena focus:ring-color-sena block w-full text-sm text-color-border border border-color-gray rounded-lg cursor-pointer bg-color-white dark:text-color-white focus:outline-none dark:bg-color-gray dark:border-color-gray dark:placeholder-color-white" id="multiple_files" accept='.xlsx, .xls' multiple
@@ -59,7 +59,7 @@ function ChargeData() {
                 </div>
                 <p class="mt-1 text-sm text-color-gray dark:text-color-white" id="file_input_help">XLS, XLSX</p>
             </form>
-            <form className='w-1/2' encType='multipart/form-data' onSubmit={onSubmitCronogram}>
+            <form className='w-full md:w-2/3 lg:w-1/2' encType='multipart/form-data' onSubmit={onSubmitCronogram}>
                 <label className="form-label">Cronogramas de Fichas</label>
                 <div className="flex flex-row gap-1">
                     <input type="file" name="cronograms" className="focus:border-color-sena focus:ring-color-sena block w-full text-sm text-color-border border border-color-gray rounded-lg cursor-pointer bg-color-white dark:text-color-white focus:outline-none dark:bg-color-gray dark:border-color-gray dark:placeholder-color-white" id="multiple_files" accept='.xlsx, .xls' multiple
@@ -70,7 +70,7 @@ function ChargeData() {
                 </div>
                 <p class="mt-1 text-sm text-color-gray dark:text-color-white" id="file_input_help">XLS, XLSX</p>
             </form>
-            <form className='w-1/2' encType='multipart/form-data' onSubmit={onSubmitInstructor}>
+            <form className='w-full md:w-2/3 lg:w-1/2' encType='multipart/form-data' onSubmit={onSubmitInstructor}>
                 <label className="form-label">Instructores</label>
                 <div className="flex flex-row gap-1">
                     <input type="file" name="instructors" className="focus:border-color-sena focus:ring-color-sena block w-full text-sm text-color-border border border-color-gray rounded-lg cursor-pointer bg-color-white dark:text-color-white focus:outline-none dark:bg-color-gray dark:border-color-gray dark:placeholder-color-white" id="multiple_files" accept='.xlsx, .xls' multiple
@@ -81,7 +81,7 @@ function ChargeData() {
                 </div>
                 <p class="mt-1 text-sm text-color-gray dark:text-color-white" id="file_input_help">XLS, XLSX</p>
             </form>
-            <form className='w-1/2' encType='multipart/form-data' onSubmit={onSubmitUsers}>
+            <form className='w-full md:w-2/3 lg:w-1/2' encType='multipart/form-data' onSubmit={onSubmitUsers}>
                 <label className="form-label">Usuarios</label>
                 <div className="flex flex-row gap-1">
                     <input type="file" name="users" className="focus:border-color-sena focus:ring-color-sena block w-full text-sm text-color-border border border-color-gray rounded-lg cursor-pointer bg-color-white dark:text-color-white focus:outline-none dark:bg-color-gray dark:border-color-gray dark:placeholder-color-white" id="multiple_files" accept='.xlsx, .xls' multiple

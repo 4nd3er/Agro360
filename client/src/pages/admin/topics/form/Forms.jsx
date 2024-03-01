@@ -82,7 +82,7 @@ const Forms = () => {
     }
 
     return (
-        <article className='min-h-[80vh] px-5 md:px-0 lg:px-8 xl:px-8'>
+        <article className='min-h-[80vh] px-5 lg:px-8 xl:px-8'>
             <Toaster />
             <header className="flex flex-col gap-8 md:flex-row md:gap-10 justify-between mt-4 md:mt-12 lg:mt-16 xl:mt-16">
                 <p className='flex flex-col gap-2 lg:basis-[50%]'>
@@ -91,7 +91,7 @@ const Forms = () => {
                 </p>
                 <section className="relative">
                     <input type="search"
-                        className="w-80 md:w-[17rem] lg:w-80 h-12 pl-11 pr-4 border border-color-sena rounded-full focus:outline-none focus:ring focus:border-blue-300 shadow-md"
+                        className="w-full h-12 pl-11 pr-4 border border-color-sena rounded-full focus:outline-none focus:ring focus:border-blue-300 shadow-md"
                         placeholder="Buscar..."
                         onChange={(e) => searchTopic(e.target.value)} />
                     <div className="absolute flex items-center top-3 left-3 text-color-sena">
@@ -158,7 +158,7 @@ const Forms = () => {
             </article>
             <hr />
             {loading && <Spinner /> || (
-                <article className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3 mr-0  md:mr-5 lg:mr-5 xl:mr-5 mt-10 mb-8">
+                <article className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3 mr-0 lg:mr-5 xl:mr-5 mt-10 mb-8">
                     {searchForms.length && (
                         searchForms.map(form => (
                             <CardForm key={form._id} form={form} setLoading={setLoading} />

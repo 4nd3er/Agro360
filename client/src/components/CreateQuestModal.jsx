@@ -78,7 +78,7 @@ const CreateQuestModal = ({ modalState, topic }) => {
 		}
 		if (formValues.fecha < `${new Date().toISOString().split('T')[0]}T${new Date().toString().split(' ').splice(2, 3)[2]}`) {
 			setAlert({
-				msg: 'La hola asignada debe ser mayor a la recurrente',
+				msg: 'La fecha asignada debe ser mayor a la recurrente',
 				error: true
 			})
 			cleaned();
