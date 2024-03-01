@@ -209,17 +209,17 @@ const EditQuest = () => {
             <form
                 onSubmit={e => handleSubmit(e)}
             >
-                <section className='flex flex-col justify-start mt-5 min-h-[70vh] w-3/4 mx-auto gap-10 mb-20'>
+                <section className='flex flex-col justify-start mt-5 min-h-[70vh] w-full lg:w-3/4 mx-auto gap-10 mb-20 px-3 md:px-10'>
                     <header className='p-2 py-4 text-center border-2 rounded-md flex flex-col gap-5 shadow-lg'>
                         <section>
                             <input
-                                className='border-0 border-b-2 focus:rounded-md border-gray-400 text-4xl font-bold' type="text" value={quest[0].name}
+                                className='border-0 border-b-2 focus:rounded-md border-gray-400 text-lg w-full md:w-5/6' type="text" value={quest[0].name}
                                 onChange={(e) => handleNameChange(e.target.value)}
                             />
                         </section>
                         <section>
                             <input
-                                className='border-0 border-b-2 focus:rounded-md border-gray-400 text-4xl font-bold' type="text" value={quest[0].description}
+                                className='border-0 border-b-2 focus:rounded-md border-gray-400  text-lg w-full md:w-5/6' type="text" value={quest[0].description}
                                 onChange={(e) => handleDescriptionChange(e.target.value)}
                             />
                         </section>
@@ -231,11 +231,11 @@ const EditQuest = () => {
                             key={questionIndex}
                         >
                             <div className='border-2 border-gray-300 p-2 rounded-md flex flex-col gap-2'>
-                                <div className='flex justify-between px-10'>
+                                <div className='flex flex-col md:flex-row lg:flex-row justify-between px-0 md:px-10 lg:px-10 gap-4'>
                                     <input
                                         name={`quest.${questionIndex}.question`}
                                         placeholder='Digite la pregunta'
-                                        className='border-b-2 p-2 border-gray-400 w-3/6 transition-all'
+                                        className='border-b-2 p-2 border-gray-400 w-full md:w-3/6 lg:w-3/6 transition-all'
                                         value={question.question}
                                         onChange={(e) => handleQuestionChange(e.target.value, questionIndex)}
                                     />
@@ -246,13 +246,13 @@ const EditQuest = () => {
                                     >
                                         <option value="6556ddbbfe823a88d48fafc4">Escala de Likert</option>
                                     </select>
-                                    <div className='cursor-pointer my-auto hover:scale-110 transition-all'
+                                    <div className='cursor-pointer my-auto lg:hover:scale-110 transition-all'
                                         onClick={() => deleteQuestion(questionIndex)}
                                     >
                                         <img src={DeleteQuestionSvg} />
                                     </div>
                                 </div>
-                                <div className='px-10 mb-5 text-red-500 flex justify-around select-none'>
+                                <div className='px-10 text-red-500 flex flex-col md:flex-row xl:flex-row justify-around select-none'>
                                     <span
                                         className={`${question.question == '' && validationQuestionContent ? 'opacity-100' : 'opacity-0'} transition-[.1s_all]`}
                                     >
@@ -264,7 +264,7 @@ const EditQuest = () => {
                                         Seleccione un elemento de la lista
                                     </span>
                                 </div>
-                                <div className='px-10'>
+                                <div className='px-0 md:px-10 lg:px-10'>
                                     {question.options.map((option, index) => (
                                         <OptionsQuest
                                             params={params}
@@ -294,13 +294,13 @@ const EditQuest = () => {
                 <section>
                     <button
                         type='submit'
-                        className='fixed bottom-8 right-6 bg-[#39A900] px-3 py-2 text-white rounded-lg'
+                        className='fixed bottom-8 right-1 lg:right-6 bg-[#39A900] px-7 py-2 text-white rounded-lg'
                     >
                         Guardar
                     </button>
                 </section>
             </form>
-            <section className='fixed right-28 bottom-20 bg-white p-2 rounded-xl border-2 shadow-xl'>
+            <section className='fixed bottom-20  right-1 lg:right-28 bg-white p-2 rounded-xl border-2 shadow-xl'>
                 <div className='flex flex-col gap-5 place-items-center'>
                     <button
                         onClick={addQuestion}

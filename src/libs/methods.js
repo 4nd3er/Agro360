@@ -106,14 +106,17 @@ export const getDataXlsx = (res, files) => {
         if (!files) return res.status(400).json({ message: ["Los archivos son requeridos"] })
         let invalidFormat = false
         for (const file of files) {
-            const compArchive = file.originalname
-            const format = compArchive.split(".")
+            const fileName = file.originalname
+            const format = fileName.split(".")
             if (format[format.length - 1] !== 'xlsx' && format[format.length - 1] !== 'xls') invalidFormat = true
 
             const archive = xlsx.read(file.buffer, { type: 'buffer' })
             const sheet = archive.SheetNames[0]
             const data = xlsx.utils.sheet_to_json(archive.Sheets[sheet])
-            filesData.push(data)
+            filesData.push({
+                name: fileName,
+                data
+            })
         }
         if (invalidFormat) return res.status(400).json({ message: ["Los archivos deben tener el formato XLSX o XLS"] })
 

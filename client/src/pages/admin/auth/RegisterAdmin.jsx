@@ -20,15 +20,15 @@ const RegisterAdmin = () => {
 
   return (
     <>
-      <article className="min-h-[80vh] flex items-center justify-center">
-        <section className="w-3/5 h-full flex flex-col justify-center items-center border-2 rounded-2xl border-gray-200 py-6 shadow-xl">
+      <article className="min-h-[80vh] flex items-center justify-center p-3">
+        <section className="w-full md:w-4/5 lg:w-3/5 h-full flex flex-col justify-center items-center border-2 rounded-2xl border-gray-200 py-6 shadow-xl">
           <header>
             <h1 className="text-color-sena font-black text-3xl mb-8">Nuevo administrador</h1>
           </header>
           <ErrorsFormAlert errors={errors} success={success} />
           <form className='flex flex-col gap-6 w-3/4' onSubmit={onSubmit}>
             {/*--------*/}
-            <section className="flex flex-row gap-2 justify-between">
+            <section className="flex flex-col lg:flex-row gap-2 justify-between">
               <div className="w-full">
                 <label className=' text-color-gray block text-sm font-bold' htmlFor='names'>Nombres</label>
                 <input id='names' type="text" placeholder='Nombres' className='w-full mt-3 p-2 border rounded-xl bg-register-label focus-visible: outline-8 outline-color-sena'
@@ -49,7 +49,7 @@ const RegisterAdmin = () => {
               </div>
             </section>
             {/*--------*/}
-            <section className="flex flex-row gap-2">
+            <section className="flex flex-col lg:flex-row gap-2">
               <div className="w-full">
                 <label className=' text-color-gray block text-sm font-bold' htmlFor='email'>Correo Electronico</label>
                 <input id='email' type="email" placeholder='Email de Registro' className='w-full mt-3 p-2 border rounded-xl bg-register-label focus-visible: outline-8 outline-color-sena'
@@ -76,7 +76,7 @@ const RegisterAdmin = () => {
             <section className="w-full flex items-center justify-center mt-4">
               <button
                 type="submit"
-                className={`${isValid ? 'bg-color-sena hover:cursor-pointer hover:bg-color-sena-hover' : 'bg-color-gray cursor-default'} w-1/2 py-1 text-white rounded-xl  transition-color`}
+                className={`${isValid ? 'bg-color-sena hover:cursor-pointer hover:bg-color-sena-hover' : 'bg-color-gray cursor-default'} w-full lg:w-1/2 py-2 text-white rounded-xl  transition-color`}
                 disabled={!isValid}>
                 Registrar
               </button>

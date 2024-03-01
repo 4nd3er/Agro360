@@ -36,7 +36,7 @@ const Login = () => {
                     </h1>
                 </div>
                 <div className="w-full lg:w-3/5 h-full">
-                    <div className="flex flex-col justify-center place-items-center min-h-[80vh]">
+                    <div className="flex flex-col justify-center place-items-center min-h-[80vh] p-5">
                         <div className="lg:hidden mb-5">
                             <h1 className="text-color-logo font-black text-6xl capitalize typing">
                                 AGRO
@@ -50,9 +50,9 @@ const Login = () => {
                                 {error}
                             </div>
                         ))}
-                        <form className='my-5 bg-white shadow rounded-lg px-10 py-5 lg:w-1/2' onSubmit={onSubmit}>
+                        <form className='my-5 bg-white border border-gray-300 shadow-2xl md:shadow-xl rounded-lg px-5  py-5 w-full md:w-2/3 lg:w-1/2' onSubmit={onSubmit}>
                             <div className='my-5'>
-                                <label className='text-color-label block text-sm font-bold' htmlFor='email'>Correo Electrónico</label>
+                                <label className='text-color-label block text-lg font-bold' htmlFor='email'>Correo Electrónico:</label>
                                 <input
                                     id='email'
                                     {...register('email', { required: true })}
@@ -64,7 +64,7 @@ const Login = () => {
                                 {errors.email && <p className='text-color-alert-red'>El correo electrónico es requerido</p>}
                             </div>
                             <div className='my-5'>
-                                <label className='text-color-label block text-sm font-bold' htmlFor='password'>Contraseña</label>
+                                <label className='text-color-label block text-lg font-bold' htmlFor='password'>Contraseña:</label>
                                 <input
                                     id='password'
                                     {...register('password', { required: true })}
@@ -83,7 +83,7 @@ const Login = () => {
                                 type="submit"
                                 disabled={!isValid}
                                 value="Iniciar Sesion"
-                                className={isValid ? 'bg-color-sena w-full py-3 text-color-white uppercase font-bold rounded-xl hover:cursor-pointer hover:bg-color-sena-hover transition-color' : 'bg-gray-400 w-full py-3 text-white uppercase font-bold rounded-xl hover:cursor-pointer'}
+                                className={isValid ? 'bg-color-sena mb-5 w-full py-3 text-color-white uppercase font-bold rounded-xl hover:cursor-pointer hover:bg-color-sena-hover transition-color' : 'bg-gray-400 w-full text-white uppercase font-bold rounded-xl hover:cursor-pointer'}
                             />
                         </form>
                         <nav className='lg:flex lg:justify-between'></nav>

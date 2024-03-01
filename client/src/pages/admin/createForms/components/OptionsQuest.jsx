@@ -99,7 +99,7 @@ const OptionsQuest = ({ option, index, questionIndex, question, handleOptionChan
                             </>
                         ))}
                     </div> */}
-                    <ul className="flex justify-between md:justify-center lg:justify-center gap-0 md:gap-14 lg:gap-16 mb-4">
+                    <ul className="flex justify-between md:justify-center lg:justify-center gap-0 md:gap-14 lg:gap-16">
                         <li className="flex flex-col text-center">
                             <input disabled type="radio" id="opcion1" name="escala" value="1" className="hidden peer" />
                             <label

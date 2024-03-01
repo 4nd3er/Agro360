@@ -61,16 +61,16 @@ const Topics = () => {
 
     return (
         <>
-            <section className='min-h-[80vh] px-5 md:px-0 lg:px-0 xl:px-0'>
+            <section className='min-h-[80vh] p-5 md:pl-5 md:pr-1 lg:p-0 xl:p-0'>
                 <header className="flex justify-between mt-5 md:mt-10 lg:mt-16 xl:mt-16">
                     <p>
-                        <span className="text-2xl md:text-4xl lg:text-4xl xl:text-4xl mr-8 md:mr-0 lg:mr-0 xl:mr-0 font-bold uppercase">Temáticas</span>
+                        <span className="text-2xl md:text-4xl lg:text-4xl xl:text-4xl mr-16 md:mr-0 lg:mr-0 xl:mr-0 font-bold uppercase">Temáticas</span>
                         <br />
                         <span className="text-lg text-color-gray uppercase">{role}</span>
                     </p>
                     <button
                         onClick={handleModalTopic}
-                        className='bg-color-blue-btn text-color-white font-bold py-2 px-3 rounded-lg uppercase mr-5 md:mr-5 lg:mr-10 xl:mr-10 hover:shadow-shadow-button'>
+                        className='bg-color-blue-btn text-color-white font-bold py-2 px-3 rounded-lg uppercase mr-0 md:mr-5 lg:mr-10 xl:mr-10 hover:shadow-shadow-button'>
                         Añadir Temática
                     </button>
                 </header>
