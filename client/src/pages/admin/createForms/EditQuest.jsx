@@ -47,7 +47,7 @@ const EditQuest = () => {
     }, [])
 
 
-    //* ------------- NAME, DESCRIPTION -------------
+    //* ------------- NAME, DESCRIPTION, DATEEND -------------
     const handleNameChange = (value) => {
         const updatedQuestions = [...quest];
         updatedQuestions[0].name = value;
@@ -59,7 +59,13 @@ const EditQuest = () => {
         updatedQuestions[0].description = value;
         setQuest(updatedQuestions);
     }
-    //* ------------- NAME, DESCRIPTION -------------
+
+    const handleDateEndChange = (value) => {
+        const updatedQuestions = [...quest];
+        updatedQuestions[0].end = value;
+        setQuest(updatedQuestions);
+    }
+    //* ------------- NAME, DESCRIPTION, DATEEND -------------
 
 
     //* ------------- QUESTION -------------
@@ -172,7 +178,7 @@ const EditQuest = () => {
         if ((isContentValid && isTypeValid && isOptionValid) == quest[0].questions.length) {
             try {
                 await updateForm(params.id, quest[0]);
-                Swal.fire({
+                await Swal.fire({
                     icon: 'success',
                     title: 'Encuesta actualizada!',
                     text: 'Se ha actualizado la encuesta exitosamente',
@@ -223,7 +229,13 @@ const EditQuest = () => {
                                 onChange={(e) => handleDescriptionChange(e.target.value)}
                             />
                         </section>
-                        <h1 className='text-xl text-[#39A900]'>{topic}</h1>
+                        <div className='flex items-center justify-evenly'>
+                            <h1 className='text-xl text-[#39A900]'>{topic}</h1>
+                            <input
+                                className='border-0 border-b-2 focus:rounded-md border-gray-400 text-lg w-full md:w-[34%]' type="datetime-local" value={quest[0].end.split('.')[0]}
+                                onChange={(e) => handleDateEndChange(e.target.value)}
+                            />
+                        </div>
                     </header>
                     {quest[0].questions.map((question, questionIndex) => (
                         <div

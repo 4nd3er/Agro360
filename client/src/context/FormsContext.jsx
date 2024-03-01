@@ -68,22 +68,14 @@ export const FormsProvider = ({ children }) => {
 
     // Create Form
     const createForm = async form => {
-        try {
-            const res = await createFormRequest(form);
-            return res.data
-        } catch (error) {
-            ContextErrors(error, setErrors)
-        }
+        const res = await createFormRequest(form);
+        return res.data
     };
 
     // Update Form
     const updateForm = async (id, form) => {
-        try {
-            const res = await updateFormRequest(id, form);
-            return res.data
-        } catch (error) {
-            ContextErrors(error, setErrors)
-        }
+        const res = await updateFormRequest(id, form);
+        return res.data
     };
 
     // Delete Form

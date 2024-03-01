@@ -83,7 +83,7 @@ export const updateForm = async (req, res) => {
             }
         }
 
-        await updateMethod(data, id, find, res, Forms, "Form")
+        await updateMethod(data, id, find, res, Forms, "La encuesta")
     } catch (error) {
         errorResponse(res, error)
     }
