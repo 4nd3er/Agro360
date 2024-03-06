@@ -8,11 +8,11 @@ export const createCourses = async (req, res) => {
     const files = req.files
 
     try {
-        const dataFiles = getDataXlsx(res, files)
-
-        for (const file of dataFiles) {
+        const convertedFiles = getDataXlsx(res, files)
+        for (const file of convertedFiles) {
+            const dataFile = file.data
             const courses = []
-            for (const [index, object] of file.entries()) {
+            for (const [index, object] of dataFile.entries()) {
                 const values = Object.values(object)
 
                 let courseName = values[0]
@@ -45,7 +45,7 @@ export const createCourses = async (req, res) => {
 
         res.json({
             response: "Fichas importadas satisfactoriamente",
-            data: dataFiles
+            data: convertedFiles
         })
     } catch (error) {
         errorResponse(res, error)
@@ -83,7 +83,7 @@ export const createCronograms = async (req, res) => {
                     if (!findCourse) return res.status(404).json({ message: [messages.notFound(`Ficha ${index} index ${index + 2}`)] })
                     const findInstructor = await Users.findOne({ names: instructorNames, lastnames: instructorLastnames })
                     if (!findInstructor) {
-                        instructorsNotFound.push(`${instructorNames} ${instructorLastnames}`)
+                        if (!instructorsNotFound.includes(`${instructorNames} ${instructorLastnames}`)) instructorsNotFound.push(`${instructorNames} ${instructorLastnames}`)
                         continue;
                     }
 
@@ -103,10 +103,10 @@ export const createCronograms = async (req, res) => {
                     continue;
                 }
                 const newCronogram = new CoursesCronogram(cronogram)
-                const saveCronogram = await newCronogram.save()
+                await newCronogram.save()
             }
         }
-        console.log(new Set(instructorsNotFound))
+        console.log(instructorsNotFound)
         res.json({
             response: "Cronograma de ficha importado correctamente",
             data: convertedFiles
@@ -119,11 +119,12 @@ export const createCronograms = async (req, res) => {
 export const createInstructors = async (req, res) => {
     const files = req.files
     try {
-        const dataFiles = getDataXlsx(res, files)
+        const convertedFiles = getDataXlsx(res, files)
 
-        for (const file of dataFiles) {
+        for (const file of convertedFiles) {
+            const dataFile = file.data
             const instructors = []
-            for (const [index, object] of file.entries()) {
+            for (const object of dataFile) {
                 const values = Object.values(object)
 
                 const instructor = values[0]
@@ -148,7 +149,7 @@ export const createInstructors = async (req, res) => {
         }
         res.json({
             response: "Instructores importados satisfactoriamente",
-            data: dataFiles
+            data: convertedFiles
         })
     } catch (error) {
         errorResponse(res, error)
@@ -158,10 +159,11 @@ export const createInstructors = async (req, res) => {
 export const createUsers = async (req, res) => {
     const files = req.files
     try {
-        const dataFiles = getDataXlsx(res, files)
-        for (const file of dataFiles) {
+        const convertedFiles = getDataXlsx(res, files)
+        for (const file of convertedFiles) {
+            const dataFiles = file.data
             const users = []
-            for (const [index, user] of file.entries()) {
+            for (const [index, user] of dataFiles.entries()) {
                 const values = Object.values(user)
                 console.log(values)
                 const names = values[0]
@@ -191,7 +193,7 @@ export const createUsers = async (req, res) => {
         }
         res.json({
             response: "Usuarios importados satisfactoriamente",
-            data: dataFiles
+            data: convertedFiles
         })
     } catch (error) {
         errorResponse(res, error)
