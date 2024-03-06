@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import '../css/CreateModalQuest.css';
 import Alert from './Alert';
 import { useRoles } from '../context/Context';
+import { FRONTEND_URL } from '../config';
 
 const CreateQuestModal = ({ modalState, topic }) => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -98,7 +99,7 @@ const CreateQuestModal = ({ modalState, topic }) => {
 					<div className="modal-form">
 						<h2 className="modal-title">CREAR ENCUESTA</h2>
 						{msg && <Alert alert={alert} />}
-						<form onSubmit={handleSubmit} name="form" action='crear-formulario/crear/' noValidate>
+						<form onSubmit={handleSubmit} name="form" action='/crear-formulario/crear/' noValidate>
 							<div className="input-container">
 								<label htmlFor="titulo">Titulo</label>
 								<input
@@ -131,10 +132,10 @@ const CreateQuestModal = ({ modalState, topic }) => {
 									value={formValues.opciones}
 									onChange={handleInputChange}
 									className="input-select">
+									<option value="">Seleccione Temática</option>
 									{topic && (<option value={topic._id}>{topic.name}</option>)
 										|| (
 											<>
-												<option value="">Seleccione Temática</option>
 												{topics.map(topic => (
 													<option key={topic._id} value={topic._id}>{topic.name}</option>
 												))}

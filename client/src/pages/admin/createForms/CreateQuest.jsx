@@ -30,6 +30,27 @@ const CreateQuest = () => {
 	const questionTypeValue = {};
 
 	useEffect(() => {
+		const titleParam = searchParams.get('titulo');
+		const descripParam = searchParams.get('descripcion');
+		const topicParam = searchParams.get('opciones');
+		const fechaParam = searchParams.get('fecha');
+
+		if (titleParam && descripParam && topicParam && fechaParam) {
+			localStorage.setItem('title', titleParam);
+			localStorage.setItem('descrip', descripParam);
+			localStorage.setItem('topic', topicParam);
+			localStorage.setItem('date', fechaParam);
+		}
+		setTitle(localStorage.getItem('title'));
+		setDescrip(localStorage.getItem('descrip'));
+		setTopic(localStorage.getItem('topic'));
+		setDate(localStorage.getItem('date'));
+		if (!localStorage.getItem('title') && !localStorage.getItem('descrip') && !localStorage.getItem('topic') && !localStorage.getItem('date')) {
+			window.location.href = '/crear-formulario';
+		}
+	}, [])
+	
+	useEffect(() => {
 		const questionType = async () => {
 			const res = await getQuestionsType();
 			setQuestionsType(res)
@@ -53,26 +74,6 @@ const CreateQuest = () => {
 	}, [questions]);
 
 
-	useEffect(() => {
-		const titleParam = searchParams.get('titulo');
-		const descripParam = searchParams.get('descripcion');
-		const topicParam = searchParams.get('opciones');
-		const fechaParam = searchParams.get('fecha');
-
-		if (titleParam && descripParam && topicParam && fechaParam) {
-			localStorage.setItem('title', titleParam);
-			localStorage.setItem('descrip', descripParam);
-			localStorage.setItem('topic', topicParam);
-			localStorage.setItem('date', fechaParam);
-		}
-		setTitle(localStorage.getItem('title'));
-		setDescrip(localStorage.getItem('descrip'));
-		setTopic(localStorage.getItem('topic'));
-		setDate(localStorage.getItem('date'));
-		if (!localStorage.getItem('title') && !localStorage.getItem('descrip') && !localStorage.getItem('topic') && !localStorage.getItem('date')) {
-			window.location.href = '/crear-formulario';
-		}
-	}, [])
 
 	if (questionsType) {
 		questionsType.map((questionType) => {
