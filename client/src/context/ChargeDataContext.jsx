@@ -20,6 +20,7 @@ export const ChargeDataProvider = ({ children }) => {
             setLoading(true)
             const res = await createCoursesRequest(data)
             ContextSuccess(res, setSuccess, setErrors, setLoading)
+            console.log(res.data)
             return res.data
         } catch (error) {
             ContextErrors(error, setErrors, setSuccess, setLoading)
@@ -31,6 +32,7 @@ export const ChargeDataProvider = ({ children }) => {
             setLoading(true)
             const res = await createCronogramsRequest(data)
             ContextSuccess(res, setSuccess, setErrors, setLoading)
+            console.log(res.data)
             return res.data
         } catch (error) {
             ContextErrors(error, setErrors, setSuccess, setLoading)
@@ -42,6 +44,7 @@ export const ChargeDataProvider = ({ children }) => {
             setLoading(true)
             const res = await createInstructorsRequest(data)
             ContextSuccess(res, setSuccess, setErrors, setLoading)
+            console.log(res.data)
             return res.data
         } catch (error) {
             ContextErrors(error, setErrors, setSuccess, setLoading)
@@ -53,6 +56,7 @@ export const ChargeDataProvider = ({ children }) => {
             setLoading(true)
             const res = await createUsersRequest(data)
             ContextSuccess(res, setSuccess, setErrors, setLoading)
+            console.log(res.data)
             return res.data
         } catch (error) {
             ContextErrors(error, setErrors, setSuccess, setLoading)
