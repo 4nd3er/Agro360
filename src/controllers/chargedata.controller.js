@@ -13,6 +13,7 @@ export const createCourses = async (req, res) => {
         const convertedFiles = getDataXlsx(res, files)
         for (const file of convertedFiles) {
             const dataFile = file.data
+            const fileName = file.name
             const courses = []
             for (const [index, object] of dataFile.entries()) {
                 const values = Object.values(object)
@@ -22,7 +23,7 @@ export const createCourses = async (req, res) => {
                 const typeCourse = values[1]
                 const numberCourse = values[2]
 
-                if (!courseName || !typeCourse || !numberCourse) return res.status(400).json({ message: ["Existen campo vacios o la estructura es incorrecta"] })
+                if (!courseName || !typeCourse || !numberCourse) return res.status(400).json({ message: [`${fileName}: La estructura del archivo es incorrecta, en fila ${index + 2}`] });
                 courseName = courseName.toString().toUpperCase()
 
                 const findCourseName = await CoursesNames.findOne({ name: courseName })
@@ -42,7 +43,7 @@ export const createCourses = async (req, res) => {
                     courses.push(data)
                 }
             }
-            await Courses.create(courses)
+            await Courses.insertMany(courses)
         }
 
         res.json({
@@ -59,7 +60,9 @@ export const createCronograms = async (req, res) => {
     try {
         const convertedFiles = getDataXlsx(res, files)
         const cronograms = []
+        const instructors = []
         const instructorsNotFound = []
+        const coursesNotFound = []
 
         for (const file of convertedFiles) {
             const fileName = file.name
@@ -68,44 +71,58 @@ export const createCronograms = async (req, res) => {
             for (const [index, object] of dataFile.entries()) {
                 const values = Object.values(object)
 
-                if (!values[0] || !values[1] || !values[2] || !values[3]) return res.status(400).json({ message: [`${fileName}: La estructura del archivo es incorrecta`] });
+                if (!values[0] || !values[1] || !values[2] || !values[3] || !values[4]) return res.status(400).json({ message: [`${fileName}: La estructura del archivo es incorrecta, en fila ${index + 2}`] });
+
                 const course = values[0].toString()
                 const end = parseDate(values[2])
                 const instructor = capitalizeString(values[3])
+                const instructorDocument = values[4]
 
                 const cronogramYear = end.toString().split(" ")[3]
                 const actualYear = new Date().getFullYear().toString()
 
                 if (instructor.length >= 10 && instructor !== 'Sin Programar' && cronogramYear === actualYear && end < new Date()) {
+                    let findInstructorId = _.find(instructors, ({ document }) => document == instructorDocument)
                     let [instructorNames, instructorLastnames] = getNamesLastnames(instructor)
                     instructorNames = deleteAccents(instructorNames)
                     instructorLastnames = deleteAccents(instructorLastnames)
+                    //Finds
                     const findCourse = await Courses.findOne({ number: course })
-                    if (!findCourse) return res.status(404).json({ message: [`${fileName}: ficha ${course} no encontrada en fila ${index + 1}`] })
-                    const findInstructor = await Users.findOne({ names: { $regex: instructorNames, $options: 'i' }, lastnames: { $regex: instructorLastnames, $options: 'i' } })
-                    if (!findInstructor) {
-                        if (!instructorsNotFound.includes(`${instructorNames} ${instructorLastnames}`)) instructorsNotFound.push(`${instructorNames} ${instructorLastnames}`)
+                    if (!findCourse) {
+                        if (!coursesNotFound.includes(course)) coursesNotFound.push(course)
                         continue;
+                        //return res.status(404).json({ message: [`${fileName}: ficha ${course} no encontrada en fila ${index + 2}`] })
                     }
                     const findCronogram = cronograms.find(cronogram => cronogram.course === findCourse._id.toString())
+
+                    if (!findInstructorId) {
+                        const findInstructor = await Users.findOne({ document: instructorDocument })
+                        if (!findInstructor) {
+                            const instructorNotFound = `${instructorNames} ${instructorLastnames}: ${instructorDocument}`
+                            if (!instructorsNotFound.includes(instructorNotFound)) instructorsNotFound.push(instructorNotFound)
+                            continue;
+                        }
+                        findInstructorId = { id: findInstructor._id }
+                        instructors.push({ id: findInstructorId.id, document: instructorDocument })
+                    }
                     if (!findCronogram) {
-                        cronograms.push({ course: findCourse._id.toString(), instructors: [findInstructor._id.toString()] })
+                        cronograms.push({ course: findCourse._id.toString(), instructors: [findInstructorId.id] })
                         continue;
                     }
-                    if (!findCronogram.instructors.includes(findInstructor._id.toString())) findCronogram.instructors.push(findInstructor._id.toString())
+                    if (!findCronogram.instructors.includes(findInstructorId.id)) findCronogram.instructors.push(findInstructorId.id)
                 }
             }
         }
 
         for (const cronogram of cronograms) {
             await CoursesCronogram.findOneAndDelete({ course: cronogram.course })
-            const newCronogram = new CoursesCronogram(cronogram)
-            await newCronogram.save()
         }
-        console.log("Instructors not found: ", instructorsNotFound)
+        await CoursesCronogram.insertMany(cronograms)
+
         res.json({
             response: "Cronograma de fichas importado correctamente",
             instructorsNotFound: instructorsNotFound,
+            coursesNotFound: coursesNotFound,
             data: convertedFiles
         })
     } catch (error) {
@@ -121,10 +138,10 @@ export const createInstructors = async (req, res) => {
         const notImage = []
 
         for (const file of convertedFiles) {
-            const dataFile = file.data
             const fileName = file.name
-            
-            for (const object of dataFile) {
+            const dataFile = file.data
+
+            for (const [index, object] of dataFile.entries()) {
                 const values = Object.values(object)
 
                 const instructor = values[0]
@@ -133,7 +150,11 @@ export const createInstructors = async (req, res) => {
                 const rol = "655b1f6df9b6aad257662a58"
                 const email = values[3]
 
-                if (!instructor || !documentType || !document || !email) return res.status(400).json({ message: [`${fileName}: La estructura del archivo es incorrecta`] })
+                if (!instructor || !documentType || !document || !email) return res.status(400).json({ message: [`${fileName}: La estructura del archivo es incorrecta, en fila ${index + 2}`] });
+
+                const findRepeatEmail = _.find(instructors, (arrayInstructor) => arrayInstructor.email == email.toString())
+                if (findRepeatEmail) return res.status(400).json({ message: [`${fileName}: El correo ${email} se encuentra duplicado`] })
+
                 let [instructorNames, instructorLastnames] = getNamesLastnames(instructor)
                 instructorNames = deleteAccents(instructorNames)
                 instructorLastnames = deleteAccents(instructorLastnames)
@@ -146,7 +167,7 @@ export const createInstructors = async (req, res) => {
                     await Users.findOneAndUpdate({ document: data.document }, data)
                     continue;
                 }
-                const findInstructorArray = _.find(instructors, ({ document }) => { data.document == document })
+                const findInstructorArray = _.find(instructors, ({ document }) => data.document == document)
                 if (!findInstructorArray) instructors.push(data)
             }
         }
@@ -178,9 +199,9 @@ export const createUsers = async (req, res) => {
                 const email = values[4]
                 const course = values[5]
 
-                if (!validateSenaEmail(email.toString())) return res.status(400).json({ message: [`Email invalido - fila #${index + 1}`] })
+                if (!validateSenaEmail(email.toString())) return res.status(400).json({ message: [`Email invalido - fila #${index + 2}`] })
                 const findCourse = await Courses.findOne({ number: course })
-                if (!findCourse) return res.status(400).json({ message: [messages.notFound(`Ficha - fila #${index + 1}`)] })
+                if (!findCourse) return res.status(400).json({ message: [messages.notFound(`Ficha - fila #${index + 2}`)] })
                 const findUser = await Users.findOne({ document: doc.toString() })
                 const data = {
                     names: capitalizeString(names),
@@ -194,7 +215,7 @@ export const createUsers = async (req, res) => {
                 if (findUser) await Users.findOneAndUpdate({ document: data.document }, data)
                 else users.push(data)
             }
-            await Users.create(users)
+            await Users.insertMany(users)
         }
         res.json({
             response: "Usuarios importados satisfactoriamente",
