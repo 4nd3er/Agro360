@@ -57,7 +57,7 @@ function ChargeData() {
                         })} />
                     <input name="" id="" className={`${validCourse ? 'bg-color-sena hover:bg-color-sena-hover' : 'bg-color-gray'} btn text-color-white`} type="submit" disabled={!validCourse} value="Enviar" />
                 </div>
-                <p class="mt-1 text-sm text-color-gray dark:text-color-white" id="file_input_help">XLS, XLSX</p>
+                <p className="mt-1 text-sm text-color-gray dark:text-color-white" id="file_input_help">XLS, XLSX</p>
             </form>
             <form className='w-full md:w-2/3 lg:w-1/2' encType='multipart/form-data' onSubmit={onSubmitCronogram}>
                 <label className="form-label">Cronogramas de Fichas</label>
@@ -68,7 +68,7 @@ function ChargeData() {
                         })} />
                     <input name="" id="" className={`${validCronogram ? 'bg-color-sena hover:bg-color-sena-hover' : 'bg-color-gray'} btn text-color-white`} type="submit" disabled={!validCronogram} value="Enviar" />
                 </div>
-                <p class="mt-1 text-sm text-color-gray dark:text-color-white" id="file_input_help">XLS, XLSX</p>
+                <p className="mt-1 text-sm text-color-gray dark:text-color-white" id="file_input_help">XLS, XLSX</p>
             </form>
             <form className='w-full md:w-2/3 lg:w-1/2' encType='multipart/form-data' onSubmit={onSubmitInstructor}>
                 <label className="form-label">Instructores</label>
@@ -79,7 +79,7 @@ function ChargeData() {
                         })} />
                     <input name="" id="" className={`${validInstructor ? 'bg-color-sena hover:bg-color-sena-hover' : 'bg-gray-500'} btn text-white`} type="submit" disabled={!validInstructor} value="Enviar" />
                 </div>
-                <p class="mt-1 text-sm text-color-gray dark:text-color-white" id="file_input_help">XLS, XLSX</p>
+                <p className="mt-1 text-sm text-color-gray dark:text-color-white" id="file_input_help">XLS, XLSX</p>
             </form>
             <form className='w-full md:w-2/3 lg:w-1/2' encType='multipart/form-data' onSubmit={onSubmitUsers}>
                 <label className="form-label">Usuarios</label>
@@ -90,7 +90,7 @@ function ChargeData() {
                         })} />
                     <input name="" id="" className={`${validUsers ? 'bg-color-sena hover:bg-color-sena-hover' : 'bg-color-gray'} btn text-color-white`} type="submit" disabled={!validUsers} value="Enviar" />
                 </div>
-                <p class="mt-1 text-sm text-color-gray dark:text-color-white" id="file_input_help">XLS, XLSX</p>
+                <p className="mt-1 text-sm text-color-gray dark:text-color-white" id="file_input_help">XLS, XLSX</p>
             </form>
         </div>
     )
