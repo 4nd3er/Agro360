@@ -62,7 +62,7 @@ const RegisterUsers = () => {
               placeholder='Digite sus nombres'
               {...register("names", {
                 required: true,
-                minLength: 5,
+                minLength: 3,
                 maxLength: 30
               })} />
           </div>
@@ -75,7 +75,7 @@ const RegisterUsers = () => {
               placeholder='Digite sus apellidos'
               {...register("lastnames", {
                 required: true,
-                minLength: 5,
+                minLength: 3,
                 maxLength: 30
               })} />
           </div>

@@ -347,11 +347,11 @@ const Response = () => {
                 setSlidesToShow(1);
                 setSlidesToScroll(1);
             } else if (screenWidth < 768 && instructors.length <= 2) {
-                setSlidesToShow(2);
-                setSlidesToScroll(2);
-            } else if (screenWidth < 1024) {
-                setSlidesToShow(2);
-                setSlidesToScroll(2);
+                setSlidesToShow(instructors.length);
+                setSlidesToScroll(instructors.length);
+            } else if (screenWidth < 1024 && instructors.length <= 2) {
+                setSlidesToShow(instructors.length);
+                setSlidesToScroll(instructors.length);
             } else if (screenWidth < 1280 && instructors.length > 2) {
                 setSlidesToShow(3);
                 setSlidesToScroll(3);
@@ -423,7 +423,7 @@ const Response = () => {
                                         <path d="M5 12l5 5l10 -10" />
                                     </svg>
                                 </div>
-                                <img src={instructor.image ? instructor.image : userImg} alt={names} className='rounded-s-lg h-20 xs:h-28 sm:h-36 md:h-48 lg:h-64 xl:h-72 w-1/3 border-solid border-2 border-transparent' />
+                                <img src={instructor.image ? instructor.image : userImg} alt={names} className='rounded-s-lg h-20 xs:h-28 sm:h-36 md:h-48 lg:h-64 xl:h-72 w-1/3 max-w-max border-solid border-2 border-transparent' />
                                 <p className="image-name text-xs w-18 xs:w-24 sm:w-28 md:w-40 lg:w-60 xl:text-2xl xl:w-full text-center mt-4 overflow-hidden text-ellipsis whitespace-nowrap">{names}</p>
                             </div>
                         )
