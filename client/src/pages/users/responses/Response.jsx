@@ -37,8 +37,6 @@ const Response = () => {
     const [slidesToShow, setSlidesToShow] = useState(2);
     const [slidesToScroll, setSlidesToScroll] = useState(2);
 
-    const [step, setStep] = useState(0); // Estado para el progreso del usuario
-
     const handleStep1Click = () => {
         setStep(1); // Cambiar al paso 2 al hacer clic en el botón del paso 1
     };
@@ -399,18 +397,6 @@ const Response = () => {
             </div>
 
             <div className='p-8 mt-4 border rounded-md shadow-lg relative'>
-                {step === 0 && (
-                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
-                        <div className="p-8 bg-white border border-green-500 rounded-md shadow-lg mt-4 ">
-                            <div className='text-center'>
-                                <p className='mb-4'>Paso 1: Debes seleccionar primero un instructor.</p>
-                                <button onClick={handleStep1Click} className="btn border border-green-500 rounded-md mt-2 m-auto hover:bg-green-500 hover:text-white transition-colors duration-300 ease-in-out">
-                                    Siguiente
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                )}
                 <Slider {...settings} className='p-6 md:p-4'>
                     {instructors ? instructors.map((instructor) => {
                         const id = instructor._id
@@ -433,14 +419,6 @@ const Response = () => {
 
 
             <div className='border rounded-md shadow-lg relative'>
-                {step === 1 && (
-                    <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10'>
-                        <div className="p-8 bg-white border border-green-500 rounded-md shadow-lg mt-4 text-center">
-                            <p className='mb-4'>Paso 2: Debes seleccionar una opción para la pregunta</p>
-                            <button className="btn border border-green-500 rounded-md mt-2 hover:bg-green-500 hover:text-white transition-colors duration-300 ease-in-out text-center" onClick={handleStep2Click}>Siguiente</button>
-                        </div>
-                    </div>
-                )}
 
                 {actualQuestion && actualInstructor && (
                     <div className={`p-8 flex flex-col md:items-center gap-8 mt-4 border rounded-md shadow-lg`}>
@@ -453,15 +431,6 @@ const Response = () => {
                 )}
             </div>
             <div className='relative'>
-                {step === 2 && (
-                    <div className='absolute top-1/2 left-1/2 right-0 transform -translate-y-1/2 z-1'>
-                        <div className="p-8 bg-white border border-green-500 rounded-md shadow-lg mt-4 text-center">
-                            <p className='mb-1'>Paso 3: Al haber constestado a cada instructor, se te habilitara la opcion siguiente</p>
-                            <button className="btn border border-green-500 rounded-md mt-2 hover:bg-green-500 hover:text-white transition-colors duration-300 ease-in-out text-center" onClick={handleStep3Click}>Terminar</button>
-                        </div>
-                    </div>
-                )}
-
                 {/* Botones de navegación */}
                 <div className={`${actualIndex > 0 ? 'justify-between' : 'justify-end'} flex flex-row w-full mt-5 `}>
                     {actualIndex > 0 && (
