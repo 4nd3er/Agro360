@@ -89,7 +89,7 @@ function OptionResponse({ dataQuestion, dataInstructor, setValid, actualIndex })
                             >
                                 1
                             </label>
-                            <label className="text-md mt-1">
+                            <label className="text-md mt-1 whitespace-nowrap">
                                 Nunca
                             </label>
                         </li>
@@ -101,7 +101,7 @@ function OptionResponse({ dataQuestion, dataInstructor, setValid, actualIndex })
                             >
                                 2
                             </label>
-                            <label className="text-md mt-1">
+                            <label className="text-md mt-1 whitespace-nowrap">
                                 Casi nunca
                             </label>
                         </li>
@@ -113,7 +113,7 @@ function OptionResponse({ dataQuestion, dataInstructor, setValid, actualIndex })
                             >
                                 3
                             </label>
-                            <label className="text-md mt-1">
+                            <label className="text-md mt-1 whitespace-nowrap">
                                 A veces
                             </label>
                         </li>
@@ -125,7 +125,7 @@ function OptionResponse({ dataQuestion, dataInstructor, setValid, actualIndex })
                             >
                                 4
                             </label>
-                            <label className="text-md mt-1">
+                            <label className="text-md mt-1 whitespace-nowrap">
                                 Casi siempre
                             </label>
                         </li>
@@ -137,7 +137,7 @@ function OptionResponse({ dataQuestion, dataInstructor, setValid, actualIndex })
                             >
                                 5
                             </label>
-                            <label className="text-md mt-1">
+                            <label className="text-md mt-1 whitespace-nowrap">
                                 Siempre
                             </label>
                         </li>

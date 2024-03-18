@@ -126,7 +126,7 @@ export const getFormtoResponse = async (req, res) => {
             const findInstructor = await Users.findById(instructor)
             if (!findInstructor) continue;
             const url = `${FRONTEND_URL}/${INSTRUCTOR_IMAGES_ROUTE}/${findInstructor.document}.png`
-            const image = await findImage(url) ? url : false
+            const image = await findImage(url)
             responseInstructors.push({...findInstructor._doc, image})
         }
 
