@@ -1,4 +1,6 @@
 import xlsx from 'xlsx'
+import http from 'http'
+import https from 'https'
 
 //* Codigo aleatorio de 6 digitos
 export function generateCode(digits) {
@@ -120,11 +122,12 @@ export function validateSenaEmail(email) {
 }
 
 //Comprobar existencia de una imagen
-export const findImage = async (route) => {
-    try {
-        const response = await fetch(route, { method: 'HEAD' });
-        return response.status !== 404;
-    } catch (error) {
-        return false;
-    }
+export const findImage = async (url) => {
+    return new Promise((resolve, reject) => {
+        const protocol = url.startsWith("https") ? https : http
+        protocol.get(url, (res) => {
+            if (res.statusCode === 200) resolve(url)
+            else resolve(false)
+        }).on('error', () => resolve(false))
+    })
 };
