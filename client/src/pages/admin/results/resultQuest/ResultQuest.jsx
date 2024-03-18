@@ -51,7 +51,7 @@ const ResultQuest = () => {
                 <section className='flex flex-col md:flex-row items-center justify-between mt-5'>
                     <h1 className='text-4xl text-color-sena'>{form.name}</h1>
                     <aside className='w-full md:w-1/3 flex flex-col items-end mt-5 md:mt-0'>
-                        <button className={`w-full md:w-full lg:w-2/3 xl:w-2/3 bg-color-white text-color-sena border-2 border-color-greend  ${!loadingReport ? 'hover:bg-color-sena hover:border-transparent hover:text-white' : 'cursor-progress'}  p-2 rounded-md shadow-md flex flex-row gap-4 items-center justify-center transition-colors duration-300`}
+                        <button className={`w-full md:w-full lg:w-2/3 xl:w-2/3 bg-color-white text-color-sena border-2 ${!loadingReport ? 'hover:bg-color-sena hover:border-transparent hover:text-white' : 'cursor-progress'}  p-2 rounded-md shadow-md flex flex-row gap-4 items-center justify-center transition-colors duration-300`}
                             onClick={generateReport} >
                             {loadingReport && (<Spinner className={'!m-0'} />) || (
                                 <>
@@ -77,8 +77,8 @@ const ResultQuest = () => {
             </div>
 
             <div className="flex flex-col gap-8 mb-8">
-                {results.map(({ instructor, responses }) => {
-                    return <QuestCard key={instructor._id} instructor={instructor} responses={responses} />
+                {results.map((result) => {
+                    return <QuestCard key={result.instructor._id} result={result} />
                 })}
             </div>
         </article>

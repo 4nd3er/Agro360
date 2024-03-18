@@ -118,3 +118,13 @@ export function validateSenaEmail(email) {
     const email2Regex = /^[a-zA-Z0-9._%+-]+@misena\.edu\.co$/
     return email1Regex.test(email) || email2Regex.test(email)
 }
+
+//Comprobar existencia de una imagen
+export const findImage = async (route) => {
+    try {
+        const response = await fetch(route, { method: 'HEAD' });
+        return response.status !== 404;
+    } catch (error) {
+        return false;
+    }
+};

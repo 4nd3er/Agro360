@@ -6,7 +6,6 @@ import OptionResponse from './components/OptionResponseComponent';
 import Spinner from '../../../components/Spinner';
 import Swal from 'sweetalert2';
 import Slider from 'react-slick';
-import { FRONTEND_URL } from '../../../config';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import '../../../App.css';
@@ -32,24 +31,9 @@ const Response = () => {
     const { getFormtoResponse, createResponse, checkUser, compFormResponse } = useResponses();
     const { getTopic } = useRoles();
 
+    const [carrouselSettings, setCarrouselSettings] = useState({})
+
     const [loading, setLoading] = useState(true)
-
-    const [slidesToShow, setSlidesToShow] = useState(2);
-    const [slidesToScroll, setSlidesToScroll] = useState(2);
-
-    const [step, setStep] = useState(0); // Estado para el progreso del usuario
-
-    const handleStep1Click = () => {
-        setStep(1); // Cambiar al paso 2 al hacer clic en el botón del paso 1
-    };
-
-    const handleStep2Click = () => {
-        setStep(2); // Cambiar al paso 3 al hacer clic en el botón del paso 2
-    };
-
-    const handleStep3Click = () => {
-        setStep(3); // Cambiar al paso 3
-    };
 
     //* GET DATA
     useEffect(() => {
@@ -60,20 +44,12 @@ const Response = () => {
                 localStorage.removeItem('user')
                 return navigate(`/forms/v/${idform}`)
             }
+
+            // Get Form and Instructors
             const res = await getFormtoResponse(idform);
-            const getInstructors = async () => {
-                const array = res.instructors.map(async (instructor) => {
-                    const img = `${FRONTEND_URL}/assets/instructores/${instructor.document}.png`
-                    instructor.image = img
-                    if (!await findImage(img)) instructor.image = false
-                    return instructor
-                })
-                const instructors = await Promise.all(array)
-                setInstructors(instructors)
-            }
-            getInstructors();
-            setActualInstructor(res.instructors[0])
             setForm(res.form);
+            setInstructors(res.instructors)
+            setActualInstructor(res.instructors[0])
 
             // Get Questions
             const questions = res.form.questions.map(question => question)
@@ -283,17 +259,6 @@ const Response = () => {
         })
     }
 
-    //Comprobar existencia de la imagen
-    const findImage = async (ruta) => {
-        try {
-            const response = await fetch(ruta, { method: 'HEAD' });
-            return response.status !== 404;
-        } catch (error) {
-            console.error('Error al verificar la existencia de la imagen:', error);
-            return false;
-        }
-    };
-
     //Comprobar si hay una respuesta guardada en el localStorage
     const compValue = (instructor) => {
         const responses = JSON.parse(localStorage.getItem('responses'))
@@ -337,45 +302,40 @@ const Response = () => {
     useEffect(() => {
         const handleResize = () => {
             const screenWidth = window.innerWidth;
-            if (screenWidth < 475) {
-                setSlidesToShow(1);
-                setSlidesToScroll(1);
+            let slidesToShow;
+            let slidesToScroll;
+
+            if (instructors.length == 1){
+                slidesToShow = 1;
+                slidesToScroll = 1;
             } else if (screenWidth < 640) {
-                setSlidesToShow(1);
-                setSlidesToScroll(1);
+                slidesToShow = 1;
+                slidesToScroll = 1;
             } else if (screenWidth < 768) {
-                setSlidesToShow(1);
-                setSlidesToScroll(1);
-            } else if (screenWidth < 768 && instructors.length <= 2) {
-                setSlidesToShow(2);
-                setSlidesToScroll(2);
+                slidesToShow = instructors.length < 2 ? instructors.length : 2;
+                slidesToScroll = 1;
             } else if (screenWidth < 1024) {
-                setSlidesToShow(2);
-                setSlidesToScroll(2);
-            } else if (screenWidth < 1280 && instructors.length > 2) {
-                setSlidesToShow(3);
-                setSlidesToScroll(3);
-            } else {
-                setSlidesToShow(instructors.length);
-                setSlidesToScroll(instructors.length);
+                slidesToShow = instructors.length < 3 ? instructors.length : 3;
+                slidesToScroll = 2;
+            } else if (screenWidth > 1024) {
+                slidesToShow = instructors.length < 4 ? instructors.length : 4;
+                slidesToScroll = 2;
             }
+
+            setCarrouselSettings({
+                dots: true,
+                arrows: true,
+                infinite: true,
+                speed: 1000,
+                slidesToShow: slidesToShow,
+                slidesToScroll: slidesToScroll
+            })
         };
 
         handleResize();
         window.addEventListener('resize', handleResize);
-
         return () => window.removeEventListener('resize', handleResize);
-    }, [window.innerWidth]);
-    //* OTHERS
-    // Configuración del carrusel utilizando la librería react-slick
-    const settings = {
-        dots: true,
-        arrows: true,
-        infinite: true,
-        speed: 1000,
-        slidesToShow: slidesToShow,
-        slidesToScroll: slidesToScroll
-    };
+    }, [instructors.length]);
 
     if (loading) return <Spinner />;
 
@@ -395,53 +355,32 @@ const Response = () => {
                     <h1 className='text-2xl sm:text-4xl font-bold text-color-sena mx-auto'>{form.name}</h1>
                 </div>
                 <h1 className='text-xl sm:text-2xl'>{form.description}</h1>
-                <h1 className='text-lg sm:text-xl text-green-600'>Tematica: <span className='font-bold text-lg sm:text-xl'>{topic ? topic.name : null}</span></h1>
+                <h1 className='text-lg sm:text-xl text-color-sena'>Tematica: <span className='font-bold text-lg sm:text-xl'>{topic ? topic.name : null}</span></h1>
             </div>
 
             <div className='p-8 mt-4 border rounded-md shadow-lg relative'>
-                {step === 0 && (
-                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
-                        <div className="p-8 bg-white border border-green-500 rounded-md shadow-lg mt-4 ">
-                            <div className='text-center'>
-                                <p className='mb-4'>Paso 1: Debes seleccionar primero un instructor.</p>
-                                <button onClick={handleStep1Click} className="btn border border-green-500 rounded-md mt-2 m-auto hover:bg-green-500 hover:text-white transition-colors duration-300 ease-in-out">
-                                    Siguiente
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                )}
-                <Slider {...settings} className='p-6 md:p-4'>
+                <Slider {...carrouselSettings} className='p-6 md:p-4 text-center'>
                     {instructors ? instructors.map((instructor) => {
                         const id = instructor._id
                         const names = `${instructor.names} ${instructor.lastnames}`
+
                         return (
-                            <div key={id} className={`relative image-container px-2 py-4 md:w-1/2 lg:w-1/3 !flex flex-col justify-center items-center rounded-xl transition-all ${instructor !== actualInstructor ? 'blur' : 'border-2 border-color-sena focus-visible:outline-none'} `} onClick={() => changeInstructor(instructor)}>
+                            <div key={id} className={`relative image-container px-2 py-4 !flex flex-col justify-center items-center rounded-xl transition-all ${instructor !== actualInstructor ? 'blur' : 'border-2 border-color-sena focus-visible:outline-none'} `} onClick={() => changeInstructor(instructor)}>
                                 <div className={`${!compValue(instructor) ? 'hidden' : 'absolute rounded-full bg-color-sena p-1 top-2 left-2'} `}>
                                     <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-check" width="18" viewBox="0 0 24 24" strokeWidth="3" stroke="#ffffff" fill="none" strokeLinecap="round" strokeLinejoin="round">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                         <path d="M5 12l5 5l10 -10" />
                                     </svg>
                                 </div>
-                                <img src={instructor.image ? instructor.image : userImg} alt={names} className='rounded-s-lg h-20 xs:h-28 sm:h-36 md:h-48 lg:h-64 xl:h-72 w-1/3 border-solid border-2 border-transparent' />
-                                <p className="image-name text-xs w-18 xs:w-24 sm:w-28 md:w-40 lg:w-60 xl:text-2xl xl:w-full text-center mt-4 overflow-hidden text-ellipsis whitespace-nowrap">{names}</p>
+                                <img src={instructor.image ? instructor.image : userImg} alt={names} className='rounded-s-lg h-56 w-full max-w-max border-solid border-2 border-transparent' /> {/*xs:h-28 sm:h-36 md:h-48 lg:h-64 xl:h-72*/}
+                                <p className="image-name w-full text-md xs:text-xl md:text-lg lg:text-xl 2xl:text-2xl text-center mt-4 overflow-hidden text-ellipsis whitespace-nowrap">{names}</p>
                             </div>
                         )
                     }) : null}
                 </Slider>
             </div>
 
-
             <div className='border rounded-md shadow-lg relative'>
-                {step === 1 && (
-                    <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10'>
-                        <div className="p-8 bg-white border border-green-500 rounded-md shadow-lg mt-4 text-center">
-                            <p className='mb-4'>Paso 2: Debes seleccionar una opción para la pregunta</p>
-                            <button className="btn border border-green-500 rounded-md mt-2 hover:bg-green-500 hover:text-white transition-colors duration-300 ease-in-out text-center" onClick={handleStep2Click}>Siguiente</button>
-                        </div>
-                    </div>
-                )}
-
                 {actualQuestion && actualInstructor && (
                     <div className={`p-8 flex flex-col md:items-center gap-8 mt-4 border rounded-md shadow-lg`}>
                         <div className='flex flex-col gap-2 text-lg'>
@@ -453,15 +392,6 @@ const Response = () => {
                 )}
             </div>
             <div className='relative'>
-                {step === 2 && (
-                    <div className='absolute top-1/2 left-1/2 right-0 transform -translate-y-1/2 z-1'>
-                        <div className="p-8 bg-white border border-green-500 rounded-md shadow-lg mt-4 text-center">
-                            <p className='mb-1'>Paso 3: Al haber constestado a cada instructor, se te habilitara la opcion siguiente</p>
-                            <button className="btn border border-green-500 rounded-md mt-2 hover:bg-green-500 hover:text-white transition-colors duration-300 ease-in-out text-center" onClick={handleStep3Click}>Terminar</button>
-                        </div>
-                    </div>
-                )}
-
                 {/* Botones de navegación */}
                 <div className={`${actualIndex > 0 ? 'justify-between' : 'justify-end'} flex flex-row w-full mt-5 `}>
                     {actualIndex > 0 && (

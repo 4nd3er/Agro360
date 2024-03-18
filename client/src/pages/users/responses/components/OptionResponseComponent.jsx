@@ -8,7 +8,7 @@ function OptionResponse({ dataQuestion, dataInstructor, setValid, actualIndex })
     const options = dataQuestion.options
     const instructor = dataInstructor.document
 
-    const compValue = () =>{
+    const compValue = () => {
         const responses = JSON.parse(localStorage.getItem('responses'))
         const getInstructor = responses.find(response => response.instructor === instructor)
         const getQuestion = getInstructor.answers.find(answer => answer.question === question)
@@ -66,9 +66,9 @@ function OptionResponse({ dataQuestion, dataInstructor, setValid, actualIndex })
                     {options.map((option) => {
                         return (
                             <div key={option._id} className="flex flex-col gap-1 items-center justify-center">
-                                <input id={option._id} value={option.option} 
-                                //checked={checkbox.find(checkbox => checkbox === option.option)} 
-                                onChange={(e) => handleChange([...value, e.target.value])} type="checkbox" className="w-5 h-5 text-blue-600 focus:ring-blue-500 ring-offset-gray-800 bg-gray-700 border-gray-600" />
+                                <input id={option._id} value={option.option}
+                                    //checked={checkbox.find(checkbox => checkbox === option.option)} 
+                                    onChange={(e) => handleChange([...value, e.target.value])} type="checkbox" className="w-5 h-5 text-blue-600 focus:ring-blue-500 ring-offset-gray-800 bg-gray-700 border-gray-600" />
                                 <label htmlFor={option._id}>
                                     {option.option}
                                 </label>
@@ -79,65 +79,65 @@ function OptionResponse({ dataQuestion, dataInstructor, setValid, actualIndex })
             )}
             {/* Escala de value */}
             {type == '6556ddbbfe823a88d48fafc4' && (
-                <div className='py-4 overflow-auto max-w-max'>
-                    <ul className="flex mb-4 gap-4 sm:gap-16 md:gap-4 lg:gap-16">
-                        <li className='flex flex-col text-c enter' onClick={() => handleChange('1')}>
+                <div className='py-4 overflow-auto w-full'>
+                    <ul className="flex justify-between md:justify-center mb-4 gap-14">
+                        <li className='flex flex-col justify-center items-center text-center' onClick={() => handleChange('1')}>
                             <input disabled type="radio" id="opcion1" name="escala" value="1" className="hidden peer" />
                             <label
                                 htmlFor="opcion1"
-                                className={`${compValue() === '1' ? '!bg-gray-400' : ''} px-5 py-4 text-gray-800 transition-all bg-white border-2 border-gray-500 rounded-lg cursor-pointer peer-checked:bg-gray-300  ${value != '1' ? 'hover:bg-gray-100 hover:text-gray-600' : ''} text-3xl select-none`}
+                                className={`${compValue() === '1' ? '!bg-gray-400' : ''} w-16 px-5 py-4 text-gray-800 bg-white border-2 border-gray-500 rounded-lg cursor-pointer peer-checked:bg-gray-300 transition-all ${value != '1' ? 'hover:bg-gray-100 hover:text-gray-600' : ''} text-3xl select-none`}
                             >
                                 1
                             </label>
-                            <label className="text-xs mt-1">
+                            <label className="text-md mt-1">
                                 Nunca
                             </label>
                         </li>
-                        <li className="flex flex-col text-center" onClick={() => handleChange('2')}>
+                        <li className="flex flex-col justify-center items-center text-center" onClick={() => handleChange('2')}>
                             <input disabled type="radio" id="opcion2" name="escala" value="2" className="hidden peer" />
                             <label
                                 htmlFor="opcion2"
-                                className={`${compValue() == '2' ? '!bg-gray-600' : ''} px-5 py-4 text-gray-800 bg-white border-2 border-gray-500 rounded-lg cursor-pointer peer-checked:bg-gray-300  ${value != '2' ? 'hover:bg-gray-100 hover:text-gray-600' : ''} text-3xl select-none`}
+                                className={`${compValue() == '2' ? '!bg-gray-400' : ''} w-16 px-5 py-4 text-gray-800 bg-white border-2 border-gray-500 rounded-lg cursor-pointer peer-checked:bg-gray-300 transition-all ${value != '2' ? 'hover:bg-gray-100 hover:text-gray-600' : ''} text-3xl select-none`}
                             >
                                 2
                             </label>
-                            <label className="text-xs mt-1">
+                            <label className="text-md mt-1">
                                 Casi nunca
                             </label>
                         </li>
-                        <li className="flex flex-col text-center" onClick={() => handleChange('3')}>
+                        <li className="flex flex-col justify-center items-center text-center" onClick={() => handleChange('3')}>
                             <input disabled type="radio" id="opcion3" name="escala" value="3" className="hidden peer" />
                             <label
                                 htmlFor="opcion3"
-                                className={`${compValue() == '3' ? '!bg-gray-600' : ''} px-5 py-4 text-gray-800 bg-white border-2 border-gray-500 rounded-lg cursor-pointer peer-checked:bg-gray-300  ${value != '3' ? 'hover:bg-gray-100 hover:text-gray-600' : ''} text-3xl select-none`}
+                                className={`${compValue() == '3' ? '!bg-gray-400' : ''} w-16 px-5 py-4 text-gray-800 bg-white border-2 border-gray-500 rounded-lg cursor-pointer peer-checked:bg-gray-300 transition-all ${value != '3' ? 'hover:bg-gray-100 hover:text-gray-600' : ''} text-3xl select-none`}
                             >
                                 3
                             </label>
-                            <label className="text-xs mt-1">
+                            <label className="text-md mt-1">
                                 A veces
                             </label>
                         </li>
-                        <li className="flex flex-col text-center" onClick={() => handleChange('4')}>
+                        <li className="flex flex-col justify-center items-center text-center" onClick={() => handleChange('4')}>
                             <input disabled type="radio" id="opcion4" name="escala" value="4" className="hidden peer" />
                             <label
                                 htmlFor="opcion4"
-                                className={`${compValue() == '4' ? '!bg-gray-600' : ''} px-5 py-4 text-gray-800 bg-white border-2 border-gray-500 rounded-lg cursor-pointer peer-checked:bg-gray-300  ${value != '4' ? 'hover:bg-gray-100 hover:text-gray-600' : ''} text-3xl select-none`}
+                                className={`${compValue() == '4' ? '!bg-gray-400' : ''} w-16 px-5 py-4 text-gray-800 bg-white border-2 border-gray-500 rounded-lg cursor-pointer peer-checked:bg-gray-300 transition-all ${value != '4' ? 'hover:bg-gray-100 hover:text-gray-600' : ''} text-3xl select-none`}
                             >
                                 4
                             </label>
-                            <label className="text-xs mt-1">
+                            <label className="text-md mt-1">
                                 Casi siempre
                             </label>
                         </li>
-                        <li className="flex flex-col text-center" onClick={() => handleChange('5')}>
+                        <li className="flex flex-col justify-center items-center text-center" onClick={() => handleChange('5')}>
                             <input disabled type="radio" id="opcion5" name="escala" value="5" className="hidden peer" />
                             <label
                                 htmlFor="opcion5"
-                                className={`${compValue() == '5' ? '!bg-gray-600' : ''} px-5 py-4 text-gray-800 bg-white border-2 border-gray-500 rounded-lg cursor-pointer peer-checked:bg-gray-300  ${value != '5' ? 'hover:bg-gray-100 hover:text-gray-600' : ''} text-3xl select-none`}
+                                className={`${compValue() == '5' ? '!bg-gray-400' : ''} w-16 px-5 py-4 text-gray-800 bg-white border-2 border-gray-500 rounded-lg cursor-pointer peer-checked:bg-gray-300 transition-all ${value != '5' ? 'hover:bg-gray-100 hover:text-gray-600' : ''} text-3xl select-none`}
                             >
                                 5
                             </label>
-                            <label className="text-xs mt-1">
+                            <label className="text-md mt-1">
                                 Siempre
                             </label>
                         </li>
