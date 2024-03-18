@@ -2,7 +2,8 @@ import bcrypt from 'bcrypt'
 import { Courses, CoursesCronogram, Forms, Responses, Users } from "../models/models.js"
 import { createMethod, getMethod, getOneMethod } from "../libs/methods.js"
 import { compObjectId, errorResponse, messages, sendEmailFormCode } from '../libs/libs.js'
-import { generateCode, capitalizeWord } from '../libs/functions.js'
+import { generateCode, findImage } from '../libs/functions.js'
+import { INSTRUCTOR_IMAGES_ROUTE, FRONTEND_URL } from '../config/config.js'
 
 //* Comprobar existencia del formulario
 export const compForm = async (req, res, next) => {
@@ -23,7 +24,7 @@ export const getCode = async (req, res) => {
     const { form } = req.params
     const { email } = req.query
 
-    try {        
+    try {
         const user = await Users.findOne({ email })
         if (!user) return res.status(404).json({ message: ["Usuario no encontrado"] })
         const userNames = `${user.names} ${user.lastnames}`
@@ -123,8 +124,12 @@ export const getFormtoResponse = async (req, res) => {
         const responseInstructors = []
         for (const instructor of idInstructors) {
             const findInstructor = await Users.findById(instructor)
-            responseInstructors.push(findInstructor)
+            if (!findInstructor) continue;
+            const url = `${FRONTEND_URL}/${INSTRUCTOR_IMAGES_ROUTE}/${findInstructor.document}.png`
+            const image = await findImage(url) ? url : false
+            responseInstructors.push({...findInstructor._doc, image})
         }
+
         res.json({
             instructors: responseInstructors,
             form: findForm
